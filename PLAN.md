@@ -24,6 +24,10 @@ SaaS DB 우선 참조
 - Chromex: <https://github.com/GENEXIS-AI/chromex>
 - Karpathy LLM Wiki 패턴: <https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f>
 
+Chromex는 reference implementation이자 필요 시 코드 출처로 참고하는 대상이다. Architect Browser Assistant는 Chromex와 런타임 연동되는 서비스가 아니며, live Chromex service나 upstream Chromex repo에 의존하지 않는다.
+
+Chromex 코드를 가져오는 경우 MIT license와 attribution을 보존하고, 이 repo의 아키텍처에 맞게 별도 코드로 편입한다. local bridge/runtime도 Architect Browser Assistant 전용으로 설계한다.
+
 ## 2. repo와 책임 경계
 
 워크스페이스는 기존대로 multi-repo 구조를 유지한다.
@@ -728,25 +732,49 @@ MVP 제외:
 
 승인 후 권장 순서:
 
-1. SaaS assistant API contract 정의
-2. assistant 기록과 knowledge 데이터 모델 정의
-3. task, 프로젝트, 법규, 중앙 지식 retrieval API 설계
-4. SaaS에 assistant thread와 답변 저장 구조 추가
-5. 관리자 WIKI 데이터 모델과 기본 review UI 설계
-6. MVP 파일 형식 추출 파이프라인 설계
-7. 이미지 OCR/선택 영역 분석 경로 설계
-8. `architect-browser-assistant`에 extension foundation 구성
-9. extension과 SaaS task 컨텍스트/API 연결
-10. local ChatGPT/Codex 실행 경로 연결
-11. 작업 기록 정리 UX 추가
-12. 하나의 프로젝트, 하나의 법규 문서 세트, 하나의 관리자 WIKI 흐름으로 end-to-end 검증
+1. `plans/01-task-assistant-core-loop.md`를 기준으로 첫 vertical slice 구현 계획을 확정한다.
+2. SaaS assistant API contract 정의
+3. assistant 기록과 knowledge 데이터 모델 정의
+4. task, 프로젝트, 법규, 중앙 지식 retrieval API 설계
+5. SaaS에 assistant thread와 답변 저장 구조 추가
+6. `architect-browser-assistant`에 extension foundation 구성
+7. extension과 SaaS task 컨텍스트/API 연결
+8. Architect Local Assistant Runtime adapter 구현
+9. local ChatGPT/Codex 실행 경로 연결
+10. 작업 기록 정리 UX 추가
+11. Knowledge admin 후보 큐의 최소 연결
+12. 첫 task assistant core loop end-to-end 검증
+13. 이후 관리자 WIKI, 파일/OCR, 웹/스킬 확장 세부 계획을 순차 작성한다.
 
-## 27. 구현 전 재검토 항목
+## 27. 하위 실행 계획 문서
+
+`PLAN.md`는 전체 제품 방향과 아키텍처 기준 문서다.
+
+구현 가능한 단위는 `plans/` 아래 하위 계획 문서로 분리한다.
+
+권장 문서 구조:
+
+```text
+architect-browser-assistant/
+  PLAN.md
+  plans/
+    01-task-assistant-core-loop.md
+    02-knowledge-admin-wiki.md
+    03-file-and-image-analysis.md
+    04-web-and-skill-expansion.md
+    05-saas-api-mode.md
+```
+
+첫 실행 계획은 `01-task-assistant-core-loop.md`다.
+
+첫 vertical slice에는 local ChatGPT/Codex runtime을 포함한다. 이 기능이 없으면 실제 제품 가치 검증이 불완전하기 때문이다. 다만 Chromex와 직접 연동하지 않고, Architect Browser Assistant 전용 runtime adapter를 둔다. 개발과 자동 테스트를 위해 mock runtime도 함께 둔다.
+
+## 28. 구현 전 재검토 항목
 
 아래 항목은 이 기획서의 방향을 막지는 않지만, 실제 구현 계획을 작성하기 전에 구체화해야 한다.
 
 - local ChatGPT/Codex bridge 방식
-- Chromex에서 어떤 구조를 가져오고 어떤 부분을 새로 작성할지
+- Chromex에서 어떤 구조/코드를 참고하거나 가져오고, 어떤 부분을 새로 작성할지
 - 검색 방식: Postgres text search, vector search, hybrid search, 단계적 적용 여부
 - 파일 추출 라이브러리와 OCR provider
 - 초기 법규 문서 세트
