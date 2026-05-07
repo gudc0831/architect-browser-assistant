@@ -3,6 +3,38 @@
 작성일: 2026-05-07
 상위 문서: `../PLAN.md`
 범위: 첫 구현 가능한 vertical slice
+현재 상태: `planning`
+
+## 문서 운영
+
+이 문서는 `PLAN.md`의 하위 실행 계획 문서다.
+
+`PLAN.md`는 전체 제품 방향성과 아키텍처 원칙을 유지한다. 이 문서는 첫 vertical slice의 세부 요구사항, 구현 결정, 테스트 기준, 구현 상태, 검증 결과를 누적한다.
+
+구현이 진행되면 아래 `Implementation Status`와 `Verification Log`를 갱신한다.
+
+## Implementation Status
+
+현재 구현 상태: `not_started`
+
+| 항목 | 상태 | 관련 commit | worklog | 검증 |
+| --- | --- | --- | --- | --- |
+| Task Assistant Core Loop PRD 작성 | 완료 | `46c6361` | `docs/worklogs/2026-05-07-1522-planning-doc-operations.md` | 문서 검토, 미완성 토큰 검색, diff check |
+| SaaS task context 인식 | 미구현 | - | - | - |
+| SaaS retrieval API contract | 미구현 | - | - | - |
+| ArchitectLocalAssistantRuntime adapter | 미구현 | - | - | - |
+| real local ChatGPT/Codex runtime path | 미구현 | - | - | - |
+| MockAssistantRuntime | 미구현 | - | - | - |
+| assistant 답변/근거 자동 저장 | 미구현 | - | - | - |
+| 신뢰도/출처 표시 | 미구현 | - | - | - |
+| 작업 기록 정리 초안 저장 | 미구현 | - | - | - |
+| Knowledge admin 후보 큐 최소 연결 | 미구현 | - | - | - |
+
+## Verification Log
+
+| 날짜 | 범위 | 결과 |
+| --- | --- | --- |
+| 2026-05-07 | PRD 문서 작성 | 첫 vertical slice에 real local runtime과 mock runtime을 모두 포함하도록 문서화함 |
 
 ## Problem Statement
 

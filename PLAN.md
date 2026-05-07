@@ -750,13 +750,17 @@ MVP 제외:
 
 `PLAN.md`는 전체 제품 방향과 아키텍처 기준 문서다.
 
-구현 가능한 단위는 `plans/` 아래 하위 계획 문서로 분리한다.
+세부 요구사항, 구현 단위, 검토 기준, 테스트 기준, 구현 완료 기록은 `plans/` 아래 하위 계획 문서에서 관리한다.
+
+`PLAN.md`에는 전체 방향성과 변경되면 안 되는 상위 원칙을 유지하고, 세부 구현 판단은 해당 하위 문서를 참조한다.
 
 권장 문서 구조:
 
 ```text
 architect-browser-assistant/
   PLAN.md
+  docs/
+    worklogs/
   plans/
     01-task-assistant-core-loop.md
     02-knowledge-admin-wiki.md
@@ -769,7 +773,43 @@ architect-browser-assistant/
 
 첫 vertical slice에는 local ChatGPT/Codex runtime을 포함한다. 이 기능이 없으면 실제 제품 가치 검증이 불완전하기 때문이다. 다만 Chromex와 직접 연동하지 않고, Architect Browser Assistant 전용 runtime adapter를 둔다. 개발과 자동 테스트를 위해 mock runtime도 함께 둔다.
 
-## 28. 구현 전 재검토 항목
+각 하위 계획 문서는 다음 운영 규칙을 따른다.
+
+- 문서 상단에 현재 상태를 표시한다: `planning`, `approved`, `in_progress`, `implemented`, `deferred`.
+- 구현이 완료되면 해당 하위 문서에 구현 완료 사실을 남긴다.
+- 완료 기록에는 commit hash, worklog 링크, 검증 명령/수동 검증 결과, 남은 제한 사항을 포함한다.
+- 세부 테스트 기준과 검토 결과는 `PLAN.md`가 아니라 해당 하위 문서에 축적한다.
+
+## 28. worklog와 commit 운영 규칙
+
+앞으로 개발 작업은 commit과 worklog를 함께 누적한다.
+
+worklog 위치:
+
+```text
+docs/worklogs/YYYY-MM-DD-HHMM-<short-slug>.md
+```
+
+worklog 형식은 기존 `architect-saas`의 compact worklog 관행을 따른다.
+
+```text
+Req: 사용자의 요청 또는 작업 목표
+Diff: 변경된 파일과 핵심 변경 요약
+Why: 왜 이 변경이 필요한지
+Verify/Time: 실행한 검증과 작업 시간 또는 완료 시각
+```
+
+운영 원칙:
+
+- 의미 있는 계획/구현/검증 변경마다 worklog를 남긴다.
+- worklog는 해당 commit에 함께 포함한다.
+- 구현 commit 후 관련 하위 계획 문서의 구현 상태를 갱신한다.
+- 하위 계획 문서는 "무엇이 구현되었는지", "어떻게 검증했는지", "무엇이 남았는지"를 추적한다.
+- `PLAN.md`는 전체 방향 문서이므로 상세 검증 로그를 직접 누적하지 않고 하위 문서와 worklog를 참조한다.
+
+이번 검토에서 `find-skills`로 worklog 관련 skill을 검색했지만, 검색 결과의 설치 수가 낮아 외부 skill은 설치하지 않았다. 대신 기존 repo에서 검증된 compact worklog 방식을 이 프로젝트 운영 규칙으로 채택한다.
+
+## 29. 구현 전 재검토 항목
 
 아래 항목은 이 기획서의 방향을 막지는 않지만, 실제 구현 계획을 작성하기 전에 구체화해야 한다.
 
