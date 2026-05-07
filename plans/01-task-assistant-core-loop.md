@@ -30,6 +30,7 @@
 | 신뢰도/출처 표시 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | side panel build, SaaS confidence reason |
 | 작업 기록 정리 초안 저장 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | `/api/assistant/summaries`, side panel approve/defer flow |
 | Knowledge admin 후보 큐 최소 연결 | 부분 구현 | SaaS `6702f16` | SaaS worklog | `candidateState: candidate`; Admin WIKI UI는 후속 slice |
+| `/daily` task-reactive PC assistant panel | 구현/검증 완료 | SaaS `cc0b915` | Browser `docs/worklogs/2026-05-07-1657-task-reactive-assistant-plan.md`, SaaS `docs/worklogs/2026-05-07-1657-daily-task-assistant-panel.md` | Browser-use로 `/daily` task 선택, panel open, retrieve/generate/save, summary approve 검증 |
 
 ## Verification Log
 
@@ -38,6 +39,8 @@
 | 2026-05-07 | PRD 문서 작성 | 첫 vertical slice에 real local runtime과 mock runtime을 모두 포함하도록 문서화함 |
 | 2026-05-07 | foundation 구현 검증 | SaaS `typecheck`, `lint`, `build` 통과. Browser assistant `typecheck`, `lint`, `test`, `build` 통과. Harness reviewer P1 findings 3건 수정. Real local ChatGPT/Codex bridge는 unavailable stub로 남김 |
 | 2026-05-07 | 즉시 테스트 harness 추가 | SaaS `/assistant-test`에서 same-origin으로 retrieve, mock generate, record save, summary approve 흐름을 테스트할 수 있게 함 |
+| 2026-05-07 | 제품 방향 전환 반영 | `/assistant-test`는 개발 harness로 유지하고, 실제 UX goal은 `/daily` task 클릭에 반응하는 PC 전용 assistant panel로 구체화함 |
+| 2026-05-07 | `/daily` task-reactive panel 검증 | `npm run typecheck`, `npm run lint`, `npm run build` 통과. Browser-use로 `AI 검토 001`에서 근거 조회, 의견 저장, 작업 기록 승인까지 확인함 |
 
 ## Implementation Notes
 
@@ -60,6 +63,13 @@
   - `architect-saas`에 `/assistant-test` route를 추가해 Chrome extension 설치 전에도 same-origin API 흐름을 확인할 수 있게 했다.
   - workspace root에 `사용자 가이드.md`를 추가했다.
 
+2026-05-07 방향 전환:
+
+- `/assistant-test`는 구현 검증용 harness로만 둔다.
+- 실제 사용자 UX는 기존 `/daily` 또는 `/board` 업무 화면에서 task를 클릭하면 assistant가 해당 task에 반응하는 방식으로 전환한다.
+- 모바일 assistant는 후속 확장으로 남기고, 첫 구현 goal은 PC 전용 floating/docked panel이다.
+- Chrome action popup은 장시간 task 검토에 적합하지 않으므로 기본 UX로 두지 않는다. Chrome 전용 제약이 필요할 경우에도 side panel 또는 SaaS 화면 안 panel을 우선한다.
+
 남은 제한 사항:
 
 - real local ChatGPT/Codex bridge는 아직 구현되지 않았고 `LocalRuntimeClient`가 unavailable 상태를 반환한다.
@@ -71,7 +81,7 @@
 
 건축 업무 SaaS의 task에는 검토 내용, 첨부파일, 댓글, 결정 사항, 과거 검토 맥락이 흩어져 있다. 사용자는 특정 task를 검토할 때 이전 판단, 조직 공통 실무 지식, 법규 근거, 프로젝트 문서를 다시 찾아야 하며, 답변이나 결론이 개인 대화나 임시 메모로 흩어져 조직 지식으로 축적되지 않는다.
 
-Architect Browser Assistant의 첫 vertical slice는 이 문제를 task 하나의 실제 사용 흐름에서 검증한다. 사용자는 SaaS task 화면에서 assistant side panel을 열고 질문한다. assistant는 SaaS DB에서 근거를 검색하고, Architect 전용 local ChatGPT/Codex runtime으로 답변을 생성하며, 답변과 근거를 task assistant 기록에 자동 저장한다. 사용자는 AI가 제안한 작업 기록 정리 초안을 승인하거나 수정한다.
+Architect Browser Assistant의 첫 vertical slice는 이 문제를 task 하나의 실제 사용 흐름에서 검증한다. 사용자는 SaaS `/daily` 업무 화면에서 task row/card를 클릭하고, 같은 화면 안의 PC 전용 assistant panel을 켜서 질문한다. assistant는 선택된 task에 반응하고 SaaS DB에서 근거를 검색하며, Architect 전용 local ChatGPT/Codex runtime 또는 현재 slice의 mock runtime으로 답변을 생성한다. 답변과 근거는 task assistant 기록에 자동 저장된다. 사용자는 AI가 제안한 작업 기록 정리 초안을 승인하거나 수정한다.
 
 이 slice는 mock 답변만으로 끝나면 안 된다. 제품의 핵심 가치가 "SaaS DB 근거 + 사용자 local ChatGPT/Codex 실행"이므로, 첫 slice에 local runtime adapter를 포함해야 실제 기능 검증이 가능하다.
 
@@ -82,8 +92,9 @@ Architect Browser Assistant의 첫 vertical slice는 이 문제를 task 하나�
 핵심 흐름:
 
 ```text
-SaaS task 화면
-  -> browser assistant side panel
+SaaS /daily task 화면
+  -> task row/card 클릭
+  -> PC 전용 floating/docked assistant panel
   -> 현재 task context 인식
   -> SaaS retrieval API로 중앙 지식/법규/task/project 근거 검색
   -> ArchitectLocalAssistantRuntime으로 local ChatGPT/Codex 답변 생성
@@ -132,6 +143,10 @@ Chromex는 reference implementation이자 필요 시 코드 출처다. 코드를
 
 - The first implementation unit is `Task Assistant Core Loop`, not the entire product plan.
 - The whole product direction stays in `PLAN.md`; this file is the first concrete PRD-style execution plan.
+- The product UX target is not `/assistant-test`; that route remains a harness only.
+- The first user-facing implementation target is a PC-only assistant panel that reacts to selected `/daily` tasks.
+- Mobile assistant UX is explicitly out of scope for this slice.
+- Chrome action popup is not the primary UX because it cannot stay open reliably beside the task list.
 - The first slice includes local ChatGPT/Codex runtime support because real feature validation requires actual answer generation.
 - A mock runtime is also required for development and automated testing.
 - Chromex is not a runtime integration target. It is a reference and possible code source.
@@ -256,6 +271,7 @@ Required testable modules:
 Good tests for this slice:
 
 - Given a selected task, the extension sends the correct task ID/project ID to SaaS retrieval.
+- Given a selected `/daily` task, the PC assistant panel shows the selected task and sends that task ID to SaaS retrieval.
 - Given retrieval evidence, the runtime receives the evidence in priority order.
 - Given a runtime answer, the SaaS stores answer text, source metadata, confidence score, user ID, task ID, and execution mode.
 - Given no local runtime, the UI shows evidence and disables generation rather than failing silently.

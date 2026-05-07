@@ -605,7 +605,17 @@ MVP에서 기존 SaaS 권한 체계에 임시 매핑할 수는 있지만, 제품
 
 ## 21. 브라우저 assistant UX
 
-MVP 기본 화면은 task 중심 side panel이다.
+MVP 기본 화면은 PC 전용 task 중심 assistant panel이다.
+
+제품 검증 기준은 별도 assistant 테스트 페이지가 아니라 기존 SaaS 업무 화면과 함께 쓰는 흐름이다. 사용자는 `/daily` 또는 `/board`에서 task를 클릭하고, 같은 화면 안에서 assistant를 켜고 끄며, 선택된 task에 반응하는 답변과 검토 의견을 받아야 한다.
+
+구현 우선순위:
+
+1. SaaS 화면 안의 PC 전용 floating/docked assistant panel
+2. Chrome MV3 side panel
+3. Chrome action popup은 보조 진입점으로만 사용
+
+Chrome action popup은 포커스를 잃으면 닫히는 UX 특성 때문에 장시간 task 검토용 기본 화면으로 쓰지 않는다. 구현 난이도나 배포 제약이 있을 경우 MVP는 Chrome 전용으로 제한해도 되지만, 사용 흐름은 항상 "task 클릭에 반응하는 assistant"여야 한다.
 
 side panel 중심 정보:
 
@@ -626,17 +636,20 @@ side panel 중심 정보:
 
 ## 22. 브라우저 동작 범위
 
-MVP는 `architect-saas` task 화면 중심으로 동작한다.
+MVP는 `architect-saas` task 화면 중심으로 동작하며, 모바일 구현은 후속 확장으로 둔다.
 
 MVP:
 
 - SaaS task 컨텍스트 자동 인식
-- 현재 task 기준 side panel 사용
+- `/daily` task row/card 클릭에 반응
+- 현재 task 기준 PC 전용 assistant panel 사용
 - task, 첨부파일, 선택 영역, 프로젝트 컨텍스트 기반 분석
 - assistant 기록을 SaaS task에 저장
 
 후속:
 
+- 모바일 assistant UX
+- Chrome extension side panel의 production-grade 배포
 - 외부 법규/지자체/자료 사이트에서 선택 텍스트 분석
 - 외부 페이지 내용을 task 기록에 연결
 - 관리자가 허용한 도메인에서만 업무 기록 저장
@@ -715,7 +728,8 @@ MVP는 업무 공간 데이터만 저장한다.
 MVP 포함:
 
 - Chromex 참고 구조 기반 extension foundation
-- task 중심 side panel
+- PC 전용 task-reactive assistant panel
+- Chrome extension side panel foundation
 - SaaS DB retrieval API
 - 검색 우선순위 모델
 - local ChatGPT/Codex 실행 경로
@@ -754,18 +768,19 @@ MVP 제외:
 승인 후 권장 순서:
 
 1. `plans/01-task-assistant-core-loop.md`를 기준으로 첫 vertical slice 구현 계획을 확정한다.
-2. SaaS assistant API contract 정의
-3. assistant 기록과 knowledge 데이터 모델 정의
-4. task, 프로젝트, 법규, 중앙 지식 retrieval API 설계
-5. SaaS에 assistant thread와 답변 저장 구조 추가
-6. `architect-browser-assistant`에 extension foundation 구성
-7. extension과 SaaS task 컨텍스트/API 연결
-8. Architect Local Assistant Runtime adapter 구현
-9. local ChatGPT/Codex 실행 경로 연결
-10. 작업 기록 정리 UX 추가
-11. Knowledge admin 후보 큐의 최소 연결
-12. 첫 task assistant core loop end-to-end 검증
-13. 이후 관리자 WIKI, 파일/OCR, 웹/스킬 확장 세부 계획을 순차 작성한다.
+2. `/daily`에서 task 클릭에 반응하는 PC 전용 assistant panel을 먼저 구현한다.
+3. SaaS assistant API contract 정의
+4. assistant 기록과 knowledge 데이터 모델 정의
+5. task, 프로젝트, 법규, 중앙 지식 retrieval API 설계
+6. SaaS에 assistant thread와 답변 저장 구조 추가
+7. `architect-browser-assistant`에 extension foundation 구성
+8. extension과 SaaS task 컨텍스트/API 연결
+9. Architect Local Assistant Runtime adapter 구현
+10. local ChatGPT/Codex 실행 경로 연결
+11. 작업 기록 정리 UX 추가
+12. Knowledge admin 후보 큐의 최소 연결
+13. 첫 task assistant core loop end-to-end 검증
+14. 이후 관리자 WIKI, 파일/OCR, 웹/스킬 확장 세부 계획을 순차 작성한다.
 
 ## 28. 하위 실행 계획 문서
 
