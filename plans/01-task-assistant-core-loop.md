@@ -20,16 +20,16 @@
 | 항목 | 상태 | 관련 commit | worklog | 검증 |
 | --- | --- | --- | --- | --- |
 | Task Assistant Core Loop PRD 작성 | 완료 | `46c6361` | `docs/worklogs/2026-05-07-1522-planning-doc-operations.md` | 문서 검토, 미완성 토큰 검색, diff check |
-| SaaS task context 인식 | foundation 구현 | pending | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run typecheck`, `npm run build` |
-| SaaS retrieval API contract | foundation 구현 | pending | SaaS: `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `docs/assistant-extension-contract.md`, `npm run build` |
-| ArchitectLocalAssistantRuntime adapter | foundation 구현 | pending | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run typecheck` |
-| local runtime discovery/spike | 부분 완료 | pending | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | real bridge 미정, stub unavailable |
+| SaaS task context 인식 | foundation 구현 | SaaS `6702f16` | SaaS `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run typecheck`, `npm run build` |
+| SaaS retrieval API contract | foundation 구현 | SaaS `6702f16` | SaaS `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `docs/assistant-extension-contract.md`, `npm run build` |
+| ArchitectLocalAssistantRuntime adapter | foundation 구현 | Browser `2872dd5` | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run typecheck` |
+| local runtime discovery/spike | 부분 완료 | Browser `2872dd5` | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | real bridge 미정, stub unavailable |
 | real local ChatGPT/Codex runtime path | 미구현 | - | - | runtime discovery 후 별도 구현 필요 |
-| MockAssistantRuntime | foundation 구현 | pending | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run test` |
-| assistant 답변/근거 자동 저장 | foundation 구현 | pending | SaaS/browser worklogs | `npm run typecheck`, `npm run build` |
-| 신뢰도/출처 표시 | foundation 구현 | pending | SaaS/browser worklogs | side panel build, SaaS confidence reason |
-| 작업 기록 정리 초안 저장 | foundation 구현 | pending | SaaS/browser worklogs | `/api/assistant/summaries`, side panel approve/defer flow |
-| Knowledge admin 후보 큐 최소 연결 | 부분 구현 | pending | SaaS worklog | `candidateState: candidate`; Admin WIKI UI는 후속 slice |
+| MockAssistantRuntime | foundation 구현 | Browser `2872dd5` | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run test` |
+| assistant 답변/근거 자동 저장 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | `npm run typecheck`, `npm run build` |
+| 신뢰도/출처 표시 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | side panel build, SaaS confidence reason |
+| 작업 기록 정리 초안 저장 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | `/api/assistant/summaries`, side panel approve/defer flow |
+| Knowledge admin 후보 큐 최소 연결 | 부분 구현 | SaaS `6702f16` | SaaS worklog | `candidateState: candidate`; Admin WIKI UI는 후속 slice |
 
 ## Verification Log
 
