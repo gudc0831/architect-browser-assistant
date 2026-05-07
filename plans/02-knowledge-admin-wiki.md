@@ -4,7 +4,7 @@
 상위 문서: `../PLAN.md`
 이전 slice: `01-task-assistant-core-loop.md`
 범위: task assistant 기록에서 생긴 후보를 관리자 검토를 거쳐 중앙 공식 지식/WIKI로 승격하는 첫 관리자 vertical slice
-현재 상태: `approved`
+현재 상태: `implemented`
 
 ## 문서 운영
 
@@ -12,23 +12,24 @@
 
 ## Implementation Status
 
-현재 구현 상태: `not_started`
+현재 구현 상태: `foundation_implemented`
 
 | 항목 | 상태 | 관련 commit | worklog | 검증 |
 | --- | --- | --- | --- | --- |
 | 02 PRD 작성 | 완료 | `f5efca3` | `docs/worklogs/2026-05-07-1728-slice-roadmap-prd.md` | 문서 생성, roadmap 연결 |
-| Knowledge candidate 목록 API | 미구현 | - | - | 후보 목록에 assistant summary 기반 항목 표시 |
-| Knowledge candidate 상세 API | 미구현 | - | - | 후보 원문, 정리 초안, 근거, task/project 맥락 표시 |
-| Knowledge candidate 승인/수정/반려 API | 미구현 | - | - | 승인, 수정 승인, 반려 상태 전이 검증 |
-| 중앙 공식 지식 최소 저장 구조 | 미구현 | - | - | 승인된 후보가 WIKI item 최소 구조로 저장 |
-| `/admin/knowledge` UI | 미구현 | - | - | 후보 목록, 상세, 승인/반려 액션 수동 검증 |
-| 감사/검토 이력 | 미구현 | - | - | 누가 언제 어떤 판단을 했는지 기록 |
+| Knowledge candidate 목록 API | foundation 구현 | SaaS `26f58f0` | SaaS `docs/worklogs/2026-05-07-1735-knowledge-admin-wiki.md` | `/api/admin/knowledge/candidates` 200, build route 포함 |
+| Knowledge candidate 상세 API | foundation 구현 | SaaS `26f58f0` | SaaS worklog | `/api/admin/knowledge/candidates/[recordId]`, Browser-use 상세 로딩 |
+| Knowledge candidate 승인/수정/반려 API | foundation 구현 | SaaS `26f58f0` | SaaS worklog | Browser-use `WIKI 지식 승인`, 승인 상태 표시 |
+| 중앙 공식 지식 최소 저장 구조 | foundation 구현 | SaaS `26f58f0` | SaaS worklog | assistant record `metadata.approvedKnowledgeItem`에 retrieval-ready WIKI draft 저장 |
+| `/admin/knowledge` UI | foundation 구현 | SaaS `26f58f0` | SaaS worklog | 후보 목록, 상세, WIKI draft 편집, 승인/반려 footer 확인 |
+| 감사/검토 이력 | foundation 구현 | SaaS `26f58f0` | SaaS worklog | `metadata.knowledgeReview`에 reviewer/status/reviewedAt/rejectionReason 저장 |
 
 ## Verification Log
 
 | 날짜 | 범위 | 결과 |
 | --- | --- | --- |
 | 2026-05-07 | PRD 작성 | 01 slice의 `candidateState: candidate` metadata를 02 slice의 입력으로 명확히 연결함 |
+| 2026-05-07 | 02 foundation 구현 검증 | SaaS `npm run typecheck`, `npm run lint`, `npm run build` 통과. Browser-use로 `/admin/knowledge` 후보 상세 로딩과 `WIKI 지식 승인` 확인. Console error/warn 없음 |
 
 ## Problem Statement
 
@@ -230,3 +231,19 @@ Manual browser flow:
 ## Success Criteria
 
 02 is implemented when a Knowledge admin can review an assistant-generated candidate from `/daily`, approve or reject it, and see the approved item stored as retrieval-ready official knowledge with source references and review metadata.
+
+## Implementation Notes
+
+2026-05-07 foundation 구현:
+
+- `architect-saas`에 `/admin/knowledge` route와 `KnowledgeAdminShell`을 추가했다.
+- `GET /api/admin/knowledge/candidates`, `GET /api/admin/knowledge/candidates/:recordId`, `POST approve`, `POST reject`, `GET /api/admin/knowledge/items`를 추가했다.
+- 별도 중앙 WIKI 테이블을 만들기 전 단계로 기존 assistant record의 `candidateState`와 `metadata`를 사용한다.
+- 승인된 WIKI draft는 `metadata.approvedKnowledgeItem`에 저장하고, 검토 이력은 `metadata.knowledgeReview`에 저장한다.
+- 이 방식은 첫 관리자 loop 검증용 foundation이다. 후속 slice에서 중앙 공식 지식 테이블, 검색 인덱스, 사용자용 WIKI 화면으로 분리할 수 있다.
+
+남은 제한 사항:
+
+- Knowledge admin 권한은 MVP에서 기존 global admin으로 임시 매핑했다.
+- 승인된 지식은 아직 별도 knowledge table이 아니라 assistant record metadata에 저장된다.
+- 자동 중복 병합, 관련 WIKI 링크 제안, 사용자용 WIKI 화면은 후속 구현이다.
