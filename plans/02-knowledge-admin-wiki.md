@@ -16,7 +16,7 @@
 
 | 항목 | 상태 | 관련 commit | worklog | 검증 |
 | --- | --- | --- | --- | --- |
-| 02 PRD 작성 | 완료 | `1fb2f9f` | `docs/worklogs/2026-05-07-1728-slice-roadmap-prd.md` | 문서 생성, roadmap 연결 |
+| 02 PRD 작성 | 완료 | `f5efca3` | `docs/worklogs/2026-05-07-1728-slice-roadmap-prd.md` | 문서 생성, roadmap 연결 |
 | Knowledge candidate 목록 API | 미구현 | - | - | 후보 목록에 assistant summary 기반 항목 표시 |
 | Knowledge candidate 상세 API | 미구현 | - | - | 후보 원문, 정리 초안, 근거, task/project 맥락 표시 |
 | Knowledge candidate 승인/수정/반려 API | 미구현 | - | - | 승인, 수정 승인, 반려 상태 전이 검증 |
