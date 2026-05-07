@@ -3,7 +3,7 @@
 작성일: 2026-05-07
 상위 문서: `../PLAN.md`
 범위: 첫 구현 가능한 vertical slice
-현재 상태: `planning`
+현재 상태: `in_progress`
 
 ## 문서 운영
 
@@ -15,27 +15,53 @@
 
 ## Implementation Status
 
-현재 구현 상태: `not_started`
+현재 구현 상태: `foundation_implemented`
 
 | 항목 | 상태 | 관련 commit | worklog | 검증 |
 | --- | --- | --- | --- | --- |
 | Task Assistant Core Loop PRD 작성 | 완료 | `46c6361` | `docs/worklogs/2026-05-07-1522-planning-doc-operations.md` | 문서 검토, 미완성 토큰 검색, diff check |
-| SaaS task context 인식 | 미구현 | - | - | - |
-| SaaS retrieval API contract | 미구현 | - | - | - |
-| ArchitectLocalAssistantRuntime adapter | 미구현 | - | - | - |
-| local runtime discovery/spike | 미구현 | - | - | - |
-| real local ChatGPT/Codex runtime path | 미구현 | - | - | - |
-| MockAssistantRuntime | 미구현 | - | - | - |
-| assistant 답변/근거 자동 저장 | 미구현 | - | - | - |
-| 신뢰도/출처 표시 | 미구현 | - | - | - |
-| 작업 기록 정리 초안 저장 | 미구현 | - | - | - |
-| Knowledge admin 후보 큐 최소 연결 | 미구현 | - | - | - |
+| SaaS task context 인식 | foundation 구현 | pending | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run typecheck`, `npm run build` |
+| SaaS retrieval API contract | foundation 구현 | pending | SaaS: `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `docs/assistant-extension-contract.md`, `npm run build` |
+| ArchitectLocalAssistantRuntime adapter | foundation 구현 | pending | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run typecheck` |
+| local runtime discovery/spike | 부분 완료 | pending | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | real bridge 미정, stub unavailable |
+| real local ChatGPT/Codex runtime path | 미구현 | - | - | runtime discovery 후 별도 구현 필요 |
+| MockAssistantRuntime | foundation 구현 | pending | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run test` |
+| assistant 답변/근거 자동 저장 | foundation 구현 | pending | SaaS/browser worklogs | `npm run typecheck`, `npm run build` |
+| 신뢰도/출처 표시 | foundation 구현 | pending | SaaS/browser worklogs | side panel build, SaaS confidence reason |
+| 작업 기록 정리 초안 저장 | foundation 구현 | pending | SaaS/browser worklogs | `/api/assistant/summaries`, side panel approve/defer flow |
+| Knowledge admin 후보 큐 최소 연결 | 부분 구현 | pending | SaaS worklog | `candidateState: candidate`; Admin WIKI UI는 후속 slice |
 
 ## Verification Log
 
 | 날짜 | 범위 | 결과 |
 | --- | --- | --- |
 | 2026-05-07 | PRD 문서 작성 | 첫 vertical slice에 real local runtime과 mock runtime을 모두 포함하도록 문서화함 |
+| 2026-05-07 | foundation 구현 검증 | SaaS `typecheck`, `lint`, `build` 통과. Browser assistant `typecheck`, `lint`, `test`, `build` 통과. Harness reviewer P1 findings 3건 수정. Real local ChatGPT/Codex bridge는 unavailable stub로 남김 |
+
+## Implementation Notes
+
+2026-05-07 foundation 구현 내용:
+
+- `architect-saas`:
+  - `docs/assistant-extension-contract.md`에 extension API contract를 추가했다.
+  - `/api/assistant/task-context`, `/api/assistant/retrieve`, `/api/assistant/records`, `/api/assistant/summaries`를 추가했다.
+  - `src/use-cases/assistant-service.ts`에서 current project/task 권한 검증, task/project 기반 evidence retrieval, assistant record 저장, work summary draft 저장을 처리한다.
+  - `assistant_task_records`, `assistant_work_summary_drafts` Prisma 모델과 migration을 추가했다.
+  - assistant 신규 테이블에 RLS와 project/task/profile 기반 policy를 추가했다.
+  - `ARCHITECT_ASSISTANT_EXTENSION_ORIGINS` 환경변수로 명시 등록된 Chrome extension origin만 mutation integrity guard를 통과하도록 했다.
+  - local backend에서도 assistant records를 data-guard snapshot/write path로 저장하도록 `assistant` local store를 추가했다.
+- `architect-browser-assistant`:
+  - Chrome MV3, Vite, React 기반 side panel scaffold를 추가했다.
+  - SaaS API client와 extension-owned contract 타입을 추가했다.
+  - `ArchitectLocalAssistantRuntime` adapter, deterministic `MockAssistantRuntime`, unavailable `LocalRuntimeClient` stub를 추가했다.
+  - `chrome.storage` safe wrapper가 credential-like key 저장을 차단한다.
+
+남은 제한 사항:
+
+- real local ChatGPT/Codex bridge는 아직 구현되지 않았고 `LocalRuntimeClient`가 unavailable 상태를 반환한다.
+- Chrome extension origin은 SaaS `ARCHITECT_ASSISTANT_EXTENSION_ORIGINS` allowlist에 등록된 경우에만 mutation POST가 허용된다. 실제 배포 전 extension ID와 쿠키/SameSite 정책 검증이 필요하다.
+- 중앙 공식 지식, 법규 DB, 파일 텍스트 추출 retrieval은 다음 slices에서 실제 데이터 소스를 추가해야 한다.
+- Admin WIKI 후보 큐는 `candidateState` metadata 수준이며 UI는 아직 없다.
 
 ## Problem Statement
 
