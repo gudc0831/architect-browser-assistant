@@ -37,6 +37,7 @@
 | --- | --- | --- |
 | 2026-05-07 | PRD 문서 작성 | 첫 vertical slice에 real local runtime과 mock runtime을 모두 포함하도록 문서화함 |
 | 2026-05-07 | foundation 구현 검증 | SaaS `typecheck`, `lint`, `build` 통과. Browser assistant `typecheck`, `lint`, `test`, `build` 통과. Harness reviewer P1 findings 3건 수정. Real local ChatGPT/Codex bridge는 unavailable stub로 남김 |
+| 2026-05-07 | 즉시 테스트 harness 추가 | SaaS `/assistant-test`에서 same-origin으로 retrieve, mock generate, record save, summary approve 흐름을 테스트할 수 있게 함 |
 
 ## Implementation Notes
 
@@ -55,6 +56,9 @@
   - SaaS API client와 extension-owned contract 타입을 추가했다.
   - `ArchitectLocalAssistantRuntime` adapter, deterministic `MockAssistantRuntime`, unavailable `LocalRuntimeClient` stub를 추가했다.
   - `chrome.storage` safe wrapper가 credential-like key 저장을 차단한다.
+- 즉시 테스트 경로:
+  - `architect-saas`에 `/assistant-test` route를 추가해 Chrome extension 설치 전에도 same-origin API 흐름을 확인할 수 있게 했다.
+  - workspace root에 `사용자 가이드.md`를 추가했다.
 
 남은 제한 사항:
 
