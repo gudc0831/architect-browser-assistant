@@ -775,6 +775,8 @@ MVP 제외:
 
 `PLAN.md`에는 전체 방향성과 변경되면 안 되는 상위 원칙을 유지하고, 세부 구현 판단은 해당 하위 문서를 참조한다.
 
+slice 계획, goal 기반 작업, 구현 상태 갱신, worklog 작성이 필요한 경우 `$slice-planning-worklog` 스킬을 사용한다.
+
 권장 문서 구조:
 
 ```text
@@ -819,6 +821,8 @@ cross-repo 변경 원칙:
 
 앞으로 개발 작업은 commit과 worklog를 함께 누적한다.
 
+새 slice 문서 또는 worklog 구조를 만들 때는 `$slice-planning-worklog` 스킬과 helper script를 우선 사용한다.
+
 worklog 위치:
 
 ```text
@@ -843,6 +847,8 @@ Verify/Time: 실행한 검증과 작업 시간 또는 완료 시각
 - `PLAN.md`는 전체 방향 문서이므로 상세 검증 로그를 직접 누적하지 않고 하위 문서와 worklog를 참조한다.
 
 이번 검토에서 `find-skills`로 worklog 관련 skill을 검색했지만, 검색 결과의 설치 수가 낮아 외부 skill은 설치하지 않았다. 대신 기존 repo에서 검증된 compact worklog 방식을 이 프로젝트 운영 규칙으로 채택한다.
+
+이 프로젝트 전용으로 `slice-planning-worklog` 스킬을 생성했다. 향후 goal을 사용하거나 slice별 계획/구현 상태/worklog를 관리할 때 이 스킬을 먼저 적용한다.
 
 ## 31. 구현 전 재검토 항목
 
