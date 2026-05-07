@@ -6,7 +6,7 @@
 
 ## 1. 제품 방향
 
-Architect Browser Assistant는 건축 업무 task 검토에 특화된 Chromex 기반 브라우저 어시스턴트다.
+Architect Browser Assistant는 건축 업무 task 검토에 특화된 Chromex 참고 구조 기반 브라우저 어시스턴트다.
 
 이 제품은 일반 챗봇이 아니다. 사용자가 SaaS의 task를 중심으로 질문하면, 중앙 공식 지식 DB, 법규 DB, 프로젝트 업무 데이터, 첨부파일 분석 결과, 웹/스킬 결과를 근거로 검토 의견을 제공하고, 그 결과를 다시 조직 지식으로 축적하는 서비스다.
 
@@ -14,7 +14,7 @@ Architect Browser Assistant는 건축 업무 task 검토에 특화된 Chromex �
 
 ```text
 SaaS DB 우선 참조
-  + 로컬 Chromex형 브라우저 도구
+  + Chromex-inspired 로컬 브라우저 도구
   + 사용자 로컬 ChatGPT/Codex 실행
   + 관리자 승인 기반 지식 축적 루프
 ```
@@ -249,7 +249,24 @@ assistant는 다음 순서로 근거를 검색한다.
 
 assistant는 open web보다 SaaS DB, 중앙 공식 지식, 공식 출처를 우선한다.
 
-## 9. task assistant 기록
+## 9. extension API 보안 경계
+
+extension은 SaaS API를 호출하지만, production DB나 Supabase service role credential에 직접 접근하지 않는다.
+
+MVP API 보안 원칙:
+
+- SaaS session과 기존 SaaS 인증 체계를 사용한다.
+- SaaS API는 서버 측에서 사용자, 조직, 프로젝트 권한을 다시 검증한다.
+- extension origin과 호출 경로를 명확히 제한한다.
+- request integrity, CSRF, allowed origin 정책은 `architect-saas` 기존 보안 패턴을 따른다.
+- ChatGPT/Codex credential, SaaS service role key, OpenAI API key는 extension storage에 저장하지 않는다.
+- extension storage에는 최소 설정과 비민감 상태만 저장한다.
+- task context, 검색 근거, assistant 기록 저장은 항상 SaaS API를 통해 수행한다.
+- 권한 실패, 세션 만료, runtime unavailable 상태를 UI에서 명확히 표시한다.
+
+이 보안 경계의 세부 구현은 첫 하위 계획 문서와 `architect-saas` API contract 문서에서 구체화한다.
+
+## 10. task assistant 기록
 
 assistant 질의/답변은 일반 task 댓글과 분리된 전용 대화 스레드로 저장한다.
 
@@ -270,7 +287,7 @@ assistant 질의/답변은 일반 task 댓글과 분리된 전용 대화 스레�
 - 사용자 작업 기록 정리 상태
 - 관리자 AI 분류 상태
 
-## 10. 답변 자동 저장과 작업 기록 정리 UX
+## 11. 답변 자동 저장과 작업 기록 정리 UX
 
 assistant 답변 원문과 근거는 자동으로 task assistant 기록에 저장한다.
 
@@ -315,7 +332,7 @@ assistant 답변 생성
 - "태그와 결론은 나중에 수정할 수 있습니다."
 - "법규 근거는 검토 기록에 함께 남습니다."
 
-## 11. Review Closure Gate
+## 12. Review Closure Gate
 
 Review Closure Gate는 모든 task에 적용하지 않는다.
 
@@ -346,7 +363,7 @@ task 완료 또는 공식 정리본 저장 시 요구할 필드:
 
 AI가 먼저 초안을 만들고, 사용자는 승인하거나 수정한다.
 
-## 12. 법규 체크 답변 정책
+## 13. 법규 체크 답변 정책
 
 법규 체크는 최종 법적 판정이 아니라 업무 검토 의견이다.
 
@@ -372,7 +389,7 @@ AI가 먼저 초안을 만들고, 사용자는 승인하거나 수정한다.
 - 추가 확인이 필요한 기관/자료
 - 최종 실무 검토 필요 표시
 
-## 13. 신뢰도 점수
+## 14. 신뢰도 점수
 
 assistant 답변은 0-100% 신뢰도 점수를 표시한다.
 
@@ -400,7 +417,7 @@ assistant 답변은 0-100% 신뢰도 점수를 표시한다.
 - 점수를 제한한 조건
 - 신뢰도를 높이기 위해 추가 확인할 근거
 
-## 14. 법규 DB 구축
+## 15. 법규 DB 구축
 
 MVP 법규 DB는 관리자 업로드와 공식 출처 링크 기반으로 시작한다.
 
@@ -434,7 +451,7 @@ MVP 포함 범위:
 
 자동 수집 문서는 관리자 검토 전까지 공식 지식으로 반영하지 않는다.
 
-## 15. 파일과 이미지 분석
+## 16. 파일과 이미지 분석
 
 MVP 파일 분석 범위:
 
@@ -458,7 +475,7 @@ MVP 이미지 분석 제한:
 
 이미지 분석 결과는 task assistant 기록의 근거로 저장하고, 사용자 또는 관리자의 확인을 거친다.
 
-## 16. 관리자 WIKI
+## 17. 관리자 WIKI
 
 관리자 WIKI는 별도 repo가 아니라 `architect-saas`의 관리자 모듈로 시작한다.
 
@@ -489,7 +506,7 @@ MVP route 개념:
 
 향후 사용자에게도 공개할 수 있도록 항목별 공개 범위 모델을 유지한다.
 
-## 17. LLM WIKI 패턴
+## 18. LLM WIKI 패턴
 
 Karpathy LLM Wiki 방식은 다음 구조로 반영한다.
 
@@ -540,7 +557,7 @@ SaaS DB가 source of truth다.
 
 Obsidian/Notion은 후속 export, sync, view 대상이며 MVP 원본 저장소가 아니다.
 
-## 18. Obsidian/Notion 방향
+## 19. Obsidian/Notion 방향
 
 MVP에서는 Markdown 호환 내부 구조를 보존한다.
 
@@ -560,7 +577,7 @@ MVP에 포함하지 않는 것:
 
 별도 정책이 생기기 전까지 공식 원본은 SaaS DB다.
 
-## 19. 역할과 권한
+## 20. 역할과 권한
 
 관리자 역할은 분리한다.
 
@@ -586,7 +603,7 @@ MVP에 포함하지 않는 것:
 
 MVP에서 기존 SaaS 권한 체계에 임시 매핑할 수는 있지만, 제품 설계상 Knowledge admin 권한은 Project manager와 분리한다.
 
-## 20. 브라우저 assistant UX
+## 21. 브라우저 assistant UX
 
 MVP 기본 화면은 task 중심 side panel이다.
 
@@ -607,7 +624,7 @@ side panel 중심 정보:
 
 이 문서는 흐름과 정보 구조를 정의하고, 최종 화면 디자인을 확정하지 않는다.
 
-## 21. 브라우저 동작 범위
+## 22. 브라우저 동작 범위
 
 MVP는 `architect-saas` task 화면 중심으로 동작한다.
 
@@ -625,7 +642,7 @@ MVP:
 - 관리자가 허용한 도메인에서만 업무 기록 저장
 - 외부 웹/스킬 결과는 관리자 승인 전 공식 지식으로 사용하지 않음
 
-## 22. assistant 실행 범위
+## 23. assistant 실행 범위
 
 MVP assistant는 답변과 제안 중심으로 동작한다.
 
@@ -649,7 +666,7 @@ MVP assistant는 답변과 제안 중심으로 동작한다.
 
 실제 task 생성/수정/완료는 사용자 확인 후 SaaS가 통제하는 UI/API 경로로 처리한다.
 
-## 23. 감사 로그와 거버넌스
+## 24. 감사 로그와 거버넌스
 
 SaaS는 다음을 기록해야 한다.
 
@@ -666,7 +683,7 @@ SaaS는 다음을 기록해야 한다.
 
 감사 로그는 신뢰, 디버깅, 조직 API 모드, 법규 검토 책임 경계에 필요하다.
 
-## 24. 개인정보와 데이터 경계
+## 25. 개인정보와 데이터 경계
 
 MVP는 업무 공간 데이터만 저장한다.
 
@@ -689,11 +706,15 @@ MVP는 업무 공간 데이터만 저장한다.
 
 제품은 조직 업무 공간에서 생성된 task 기록이 조직의 프로젝트 기록과 지식 DB 품질 향상에 사용될 수 있음을 명확히 알려야 한다.
 
-## 25. MVP 범위
+## 26. MVP 범위
+
+이 문서에서 말하는 MVP는 전체 제품의 첫 공개 가능한 최소 제품 범위다. MVP는 하나의 구현 작업이 아니라 여러 하위 실행 계획 문서의 합으로 완성된다.
+
+첫 구현 단위는 `plans/01-task-assistant-core-loop.md`의 `Task Assistant Core Loop` vertical slice다. 첫 slice는 local runtime, SaaS retrieval, task assistant 기록 저장, 작업 기록 정리의 핵심 루프만 검증한다. 관리자 WIKI, 파일/OCR, 웹/스킬 확장, SaaS API 모드는 별도 하위 계획 문서로 순차 진행한다.
 
 MVP 포함:
 
-- Chromex 기반 extension foundation
+- Chromex 참고 구조 기반 extension foundation
 - task 중심 side panel
 - SaaS DB retrieval API
 - 검색 우선순위 모델
@@ -726,7 +747,7 @@ MVP 제외:
 - 사용자용 WIKI 화면
 - 외부 웹페이지 task 캡처의 실제 구현
 
-## 26. 권장 구현 순서
+## 27. 권장 구현 순서
 
 사용자 검토와 승인 전에는 구현을 시작하지 않는다.
 
@@ -746,7 +767,7 @@ MVP 제외:
 12. 첫 task assistant core loop end-to-end 검증
 13. 이후 관리자 WIKI, 파일/OCR, 웹/스킬 확장 세부 계획을 순차 작성한다.
 
-## 27. 하위 실행 계획 문서
+## 28. 하위 실행 계획 문서
 
 `PLAN.md`는 전체 제품 방향과 아키텍처 기준 문서다.
 
@@ -780,7 +801,21 @@ architect-browser-assistant/
 - 완료 기록에는 commit hash, worklog 링크, 검증 명령/수동 검증 결과, 남은 제한 사항을 포함한다.
 - 세부 테스트 기준과 검토 결과는 `PLAN.md`가 아니라 해당 하위 문서에 축적한다.
 
-## 28. worklog와 commit 운영 규칙
+## 29. cross-repo 작업 운영 규칙
+
+이 제품은 `architect-browser-assistant`와 `architect-saas`를 함께 수정할 수 있다.
+
+cross-repo 변경 원칙:
+
+- browser assistant repo는 extension, local runtime, side panel, browser context, extension packaging을 담당한다.
+- SaaS repo는 auth, RBAC, retrieval API, assistant records, knowledge data, Admin WIKI, audit log를 담당한다.
+- SaaS API/data model 변경이 필요하면 `architect-saas`에도 별도 worklog와 commit을 남긴다.
+- 양쪽 repo를 함께 수정한 경우 각 repo의 worklog에서 상대 repo의 commit 또는 계획 문서를 참조한다.
+- 가능하면 같은 작업명 또는 같은 slice 이름을 사용해 commit과 worklog를 연결한다.
+- 한쪽 repo의 구현 상태가 다른 repo의 미구현 API에 의존하면 하위 계획 문서에 blocking dependency로 표시한다.
+- extension은 SaaS API contract를 기준으로 개발하며, DB schema에 직접 의존하지 않는다.
+
+## 30. worklog와 commit 운영 규칙
 
 앞으로 개발 작업은 commit과 worklog를 함께 누적한다.
 
@@ -809,10 +844,11 @@ Verify/Time: 실행한 검증과 작업 시간 또는 완료 시각
 
 이번 검토에서 `find-skills`로 worklog 관련 skill을 검색했지만, 검색 결과의 설치 수가 낮아 외부 skill은 설치하지 않았다. 대신 기존 repo에서 검증된 compact worklog 방식을 이 프로젝트 운영 규칙으로 채택한다.
 
-## 29. 구현 전 재검토 항목
+## 31. 구현 전 재검토 항목
 
 아래 항목은 이 기획서의 방향을 막지는 않지만, 실제 구현 계획을 작성하기 전에 구체화해야 한다.
 
+- 첫 구현 전 local ChatGPT/Codex runtime discovery/spike 수행
 - local ChatGPT/Codex bridge 방식
 - Chromex에서 어떤 구조/코드를 참고하거나 가져오고, 어떤 부분을 새로 작성할지
 - 검색 방식: Postgres text search, vector search, hybrid search, 단계적 적용 여부

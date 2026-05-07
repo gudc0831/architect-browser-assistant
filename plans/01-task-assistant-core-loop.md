@@ -23,6 +23,7 @@
 | SaaS task context 인식 | 미구현 | - | - | - |
 | SaaS retrieval API contract | 미구현 | - | - | - |
 | ArchitectLocalAssistantRuntime adapter | 미구현 | - | - | - |
+| local runtime discovery/spike | 미구현 | - | - | - |
 | real local ChatGPT/Codex runtime path | 미구현 | - | - | - |
 | MockAssistantRuntime | 미구현 | - | - | - |
 | assistant 답변/근거 자동 저장 | 미구현 | - | - | - |
@@ -67,6 +68,8 @@ Chromex는 runtime dependency가 아니다.
 
 Chromex는 reference implementation이자 필요 시 코드 출처다. 코드를 가져오는 경우 license와 attribution을 보존하고, Architect Browser Assistant의 local runtime/bridge 구조 안으로 편입한다. 이 PRD에서 만드는 runtime은 Architect Browser Assistant 전용 runtime이다.
 
+이 첫 slice는 전체 MVP가 아니다. 전체 MVP는 `PLAN.md`의 여러 하위 실행 계획을 통해 완성된다. 이 문서는 local runtime, SaaS retrieval, task assistant 기록 저장, 작업 기록 정리의 핵심 루프를 먼저 검증한다.
+
 ## User Stories
 
 1. As a task user, I want to open an assistant side panel from the current task, so that I can ask questions without leaving the task context.
@@ -105,11 +108,25 @@ Chromex는 reference implementation이자 필요 시 코드 출처다. 코드를
 - If Chromex code is copied, MIT license and attribution must be preserved.
 - Copied Chromex code must be adapted into Architect Browser Assistant-owned modules rather than used as a live upstream dependency.
 - The extension must call SaaS APIs and must not connect directly to the production DB.
+- The extension must not store ChatGPT/Codex credentials, SaaS service role keys, OpenAI API keys, or production DB credentials.
+- SaaS APIs must re-check user, organization, project, and task permissions server-side.
 - SaaS retrieval is responsible for permission checks and returning evidence.
 - The extension/local runtime is responsible for answer generation using retrieved evidence.
 - The SaaS must store task assistant records, answer text, source metadata, confidence score, and cleanup state.
 - Assistant records are separate from ordinary task comments.
 - The core runtime interface should be a narrow adapter.
+
+Before implementation, run a local runtime discovery/spike.
+
+The spike must answer:
+
+- Which Chromex structures or files are useful as reference or import candidates?
+- Which copied code would require MIT license and attribution preservation?
+- Whether native messaging, local bridge, app-server, or another local runtime path is the right first implementation path
+- How local ChatGPT/Codex availability is detected
+- How the runtime receives SaaS evidence without leaking SaaS secrets
+- What can be tested with mock runtime and what requires real runtime verification
+- What browser extension permissions are minimally required
 
 Runtime adapter decision:
 
@@ -157,6 +174,8 @@ interface ArchitectLocalAssistantRuntime {
 
 The exact implementation of local ChatGPT/Codex bridge remains an implementation-planning item, but this PRD requires the adapter boundary and a working real-runtime path in the first vertical slice.
 
+The local runtime discovery/spike is therefore the first implementation task inside this slice. If the spike shows that the real runtime cannot be completed safely inside the slice, the mock runtime may support UI/API work, but the slice remains unvalidated until real local runtime answer generation works end-to-end.
+
 SaaS retrieval contract should support the current search priority:
 
 1. Central official knowledge
@@ -167,6 +186,25 @@ SaaS retrieval contract should support the current search priority:
 
 The first slice does not need full Admin WIKI UI. It only needs enough candidate metadata so a later Knowledge Admin WIKI can consume it.
 
+Cross-repo contract:
+
+- `architect-browser-assistant` owns side panel UI, runtime adapter, extension context detection, and runtime invocation.
+- `architect-saas` owns retrieval API, auth/RBAC checks, task assistant record persistence, confidence data persistence, and candidate metadata persistence.
+- Changes in each repo must be committed with a matching worklog.
+- Worklogs should cross-reference the related repo commit or plan when a slice spans both repos.
+- The browser assistant must use SaaS API contracts and must not depend directly on Prisma schema or database internals.
+
+Minimum E2E fixture set:
+
+- One SaaS user with access to one project
+- One project with at least one active task
+- One central official knowledge item relevant to that task
+- One regulation source or regulation document record
+- One project/task record that can be retrieved as same-project context
+- One assistant question that can use all three evidence classes
+- One mock runtime response for automated tests
+- One real local runtime path for product validation
+
 ## Testing Decisions
 
 Tests should focus on external behavior, not implementation details.
@@ -176,12 +214,14 @@ Required testable modules:
 - Task context detection contract
 - SaaS retrieval request/response contract
 - Assistant runtime adapter behavior
+- Local runtime discovery output review
 - Mock runtime behavior
 - Task assistant record persistence
 - Confidence score display data
 - Work-record cleanup draft save flow
 - Permission failure behavior
 - Runtime unavailable behavior
+- Extension credential-storage guardrails
 
 Good tests for this slice:
 
@@ -192,6 +232,8 @@ Good tests for this slice:
 - Given mock runtime, the side panel can complete the full save flow in automated tests.
 - Given a user-edited cleanup draft, the saved task summary differs from the AI draft and preserves audit metadata.
 - Given insufficient evidence, the confidence explanation indicates limits instead of overclaiming.
+- Given an unauthorized task/project, SaaS retrieval returns no protected evidence.
+- Given extension storage inspection, no GPT/Codex token, service role key, OpenAI API key, or DB credential is stored.
 
 Manual product verification for the first slice:
 
@@ -205,6 +247,7 @@ Manual product verification for the first slice:
 8. Edit and save the work-record cleanup draft.
 9. Confirm the record is visible from the task.
 10. Confirm candidate metadata exists for future Knowledge admin flow.
+11. Confirm `architect-saas` and `architect-browser-assistant` worklogs cross-reference the slice if both repos changed.
 
 ## Out of Scope
 
