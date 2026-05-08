@@ -3,7 +3,7 @@
 작성일: 2026-05-07
 상위 문서: `../PLAN.md`
 범위: 첫 구현 가능한 vertical slice
-현재 상태: `in_progress`
+현재 상태: `implemented`
 
 ## 문서 운영
 
@@ -15,7 +15,7 @@
 
 ## Implementation Status
 
-현재 구현 상태: `foundation_implemented`
+현재 구현 상태: `implemented_with_documented_runtime_gap`
 
 | 항목 | 상태 | 관련 commit | worklog | 검증 |
 | --- | --- | --- | --- | --- |
@@ -31,6 +31,7 @@
 | 작업 기록 정리 초안 저장 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | `/api/assistant/summaries`, side panel approve/defer flow |
 | Knowledge admin 후보 큐 최소 연결 | 부분 구현 | SaaS `6702f16` | SaaS worklog | `candidateState: candidate`; Admin WIKI UI는 후속 slice |
 | `/daily` task-reactive PC assistant panel | 구현/검증 완료 | SaaS `cc0b915` | Browser `docs/worklogs/2026-05-07-1657-task-reactive-assistant-plan.md`, SaaS `docs/worklogs/2026-05-07-1657-daily-task-assistant-panel.md` | Browser-use로 `/daily` task 선택, panel open, retrieve/generate/save, summary approve 검증 |
+| Goal 1 closeout | 완료 | Browser closeout commit | `docs/worklogs/2026-05-08-0947-goal-1-closeout.md` | 병렬 에이전트 2개로 browser/SaaS closeout 범위 점검, 문서 상태 정리 |
 
 ## Verification Log
 
@@ -41,6 +42,7 @@
 | 2026-05-07 | 즉시 테스트 harness 추가 | SaaS `/assistant-test`에서 same-origin으로 retrieve, mock generate, record save, summary approve 흐름을 테스트할 수 있게 함 |
 | 2026-05-07 | 제품 방향 전환 반영 | `/assistant-test`는 개발 harness로 유지하고, 실제 UX goal은 `/daily` task 클릭에 반응하는 PC 전용 assistant panel로 구체화함 |
 | 2026-05-07 | `/daily` task-reactive panel 검증 | `npm run typecheck`, `npm run lint`, `npm run build` 통과. Browser-use로 `AI 검토 001`에서 근거 조회, 의견 저장, 작업 기록 승인까지 확인함 |
+| 2026-05-08 | Goal 1 closeout | 병렬 에이전트가 browser-assistant와 SaaS closeout 상태를 읽기 전용으로 점검했다. SaaS는 추가 blocker 없음. 01 문서와 roadmap 상태를 implemented로 정리한다. |
 
 ## Implementation Notes
 
@@ -70,9 +72,16 @@
 - 모바일 assistant는 후속 확장으로 남기고, 첫 구현 goal은 PC 전용 floating/docked panel이다.
 - Chrome action popup은 장시간 task 검토에 적합하지 않으므로 기본 UX로 두지 않는다. Chrome 전용 제약이 필요할 경우에도 side panel 또는 SaaS 화면 안 panel을 우선한다.
 
+Closeout 결정:
+
+- Goal 1은 `Task Assistant Core Loop foundation` 범위로 닫는다.
+- `/daily` task-reactive assistant panel, retrieval, mock generation, record save, summary approve, candidate metadata foundation은 구현/검증 완료로 본다.
+- real local ChatGPT/Codex bridge는 Goal 1 완료 조건에서 제외하고, 별도 후속 runtime goal로 남긴다.
+- Slice 02, 03, 04는 Goal 1 위에 쌓이는 후속 slice이므로 01 closeout이 현재 04 작업 상태를 변경하지 않는다.
+
 남은 제한 사항:
 
-- real local ChatGPT/Codex bridge는 아직 구현되지 않았고 `LocalRuntimeClient`가 unavailable 상태를 반환한다.
+- real local ChatGPT/Codex bridge는 아직 구현되지 않았고 `LocalRuntimeClient`가 unavailable 상태를 반환한다. 이 항목은 후속 runtime goal로 defer하며 Goal 1 closeout blocker가 아니다.
 - Chrome extension origin은 SaaS `ARCHITECT_ASSISTANT_EXTENSION_ORIGINS` allowlist에 등록된 경우에만 mutation POST가 허용된다. 실제 배포 전 extension ID와 쿠키/SameSite 정책 검증이 필요하다.
 - 중앙 공식 지식, 법규 DB, 파일 텍스트 추출 retrieval은 다음 slices에서 실제 데이터 소스를 추가해야 한다.
 - Admin WIKI 후보 큐는 `candidateState` metadata 수준이며 UI는 아직 없다.

@@ -21,7 +21,7 @@
 
 | Slice | 문서 | 상태 | 목적 | 주요 repo |
 | --- | --- | --- | --- | --- |
-| 01 | `01-task-assistant-core-loop.md` | `in_progress` | `/daily` task-reactive assistant core loop, retrieval, record save, summary approve foundation | `architect-saas`, `architect-browser-assistant` |
+| 01 | `01-task-assistant-core-loop.md` | `implemented` | `/daily` task-reactive assistant core loop, retrieval, record save, summary approve foundation | `architect-saas`, `architect-browser-assistant` |
 | 02 | `02-knowledge-admin-wiki.md` | `implemented` | task assistant 기록에서 생긴 후보를 Knowledge admin이 검토하고 WIKI 지식으로 승격하는 첫 관리자 루프 | `architect-saas` |
 | 03 | `03-file-and-image-analysis.md` | `implemented` | PDF/DOCX/XLSX/TXT/CSV와 PNG/JPG OCR 결과를 task assistant 근거로 저장 | `architect-saas`, `architect-browser-assistant` |
 | 04 | `04-web-and-skill-expansion.md` | `approved` | 사용자가 허용한 웹/스킬 결과를 task 기록과 지식 후보로 연결 | `architect-browser-assistant`, `architect-saas` |
@@ -29,7 +29,21 @@
 
 ## 현재 Goal 기록
 
-Codex goal 도구에는 완료된 01 goal이 남아 있어 새 goal 생성이 실패한다. 따라서 실행 목표는 이 roadmap과 각 slice 문서의 상태로 관리한다.
+Codex goal 도구의 01 objective는 `complete` 상태다. 새 goal 생성은 기존 goal record 유지로 실패할 수 있으므로, 이후 실행 목표는 이 roadmap과 각 slice 문서의 상태로 관리한다.
+
+Goal 1 closeout:
+
+```text
+Implement and verify 01 Task Assistant Core Loop foundation across architect-browser-assistant and architect-saas.
+```
+
+상태:
+
+1. `/daily` task-reactive assistant panel 구현/검증 완료.
+2. SaaS assistant retrieval, record save, summary approve foundation 구현/검증 완료.
+3. browser assistant runtime adapter와 mock runtime foundation 구현/검증 완료.
+4. real local ChatGPT/Codex bridge는 후속 runtime goal로 defer. Goal 1 closeout blocker가 아니다.
+5. Slice 04 `approved` 상태와 현재 실행 goal은 유지한다.
 
 완료된 실행 목표:
 
