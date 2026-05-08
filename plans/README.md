@@ -2,7 +2,7 @@
 
 작성일: 2026-05-07
 상위 문서: `../PLAN.md`
-현재 실행 목표: `03 File And Image Analysis` 첫 vertical slice를 구현/검증 완료했다. 다음 후보는 `04 Web And Skill Expansion` PRD 구체화다.
+현재 실행 목표: `04 Web And Skill Expansion`을 implementation-ready 상태로 만든다.
 
 ## 운영 원칙
 
@@ -24,7 +24,7 @@
 | 01 | `01-task-assistant-core-loop.md` | `in_progress` | `/daily` task-reactive assistant core loop, retrieval, record save, summary approve foundation | `architect-saas`, `architect-browser-assistant` |
 | 02 | `02-knowledge-admin-wiki.md` | `implemented` | task assistant 기록에서 생긴 후보를 Knowledge admin이 검토하고 WIKI 지식으로 승격하는 첫 관리자 루프 | `architect-saas` |
 | 03 | `03-file-and-image-analysis.md` | `implemented` | PDF/DOCX/XLSX/TXT/CSV와 PNG/JPG OCR 결과를 task assistant 근거로 저장 | `architect-saas`, `architect-browser-assistant` |
-| 04 | `04-web-and-skill-expansion.md` | `planning` | 사용자가 허용한 웹/스킬 결과를 task 기록과 지식 후보로 연결 | `architect-browser-assistant`, `architect-saas` |
+| 04 | `04-web-and-skill-expansion.md` | `approved` | 사용자가 허용한 웹/스킬 결과를 task 기록과 지식 후보로 연결 | `architect-browser-assistant`, `architect-saas` |
 | 05 | `05-saas-api-mode.md` | `planned` | 조직 단위 SaaS API 실행 모드, 사용량, 감사, 관리자 정책 | `architect-saas` |
 
 ## 현재 Goal 기록
@@ -45,8 +45,22 @@ Implement file analysis metadata storage and assistant evidence retrieval for th
 4. 미확인 파일/OCR 근거의 낮은 confidence 정책이 코드에 반영된다. 완료.
 5. typecheck/lint, 문서 worklog, commit까지 완료한다. 완료.
 
-다음 후보 goal:
+현재 실행 goal:
 
 ```text
 Make 04 Web And Skill Expansion implementation-ready.
+```
+
+성공 기준:
+
+1. SaaS API contract와 evidence metadata schema가 확정된다. 완료.
+2. assistant 팝업에서 웹/스킬 근거 사용 동의 UX가 정의된다. 완료.
+3. browser assistant와 SaaS 책임 경계가 문서화된다. 완료.
+4. 첫 구현 단위와 검증 기준이 확정된다. 완료.
+5. PRD/worklog/commit이 완료된다. 진행 중.
+
+다음 구현 goal 후보:
+
+```text
+Implement and verify 04 external evidence storage and assistant retrieval for /daily.
 ```
