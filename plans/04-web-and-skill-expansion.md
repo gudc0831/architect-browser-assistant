@@ -16,17 +16,19 @@ Make 04 Web And Skill Expansion implementation-ready.
 
 ## Implementation Status
 
-현재 구현 상태: `implementation_ready`
+현재 구현 상태: `implemented`
 
 | 항목 | 상태 | 관련 commit | worklog | 검증 |
 | --- | --- | --- | --- | --- |
-| 04 PRD 구체화 | 완료 | pending | `docs/worklogs/2026-05-08-0940-web-skill-expansion-prd.md` | 문서 검토 |
-| SaaS evidence contract 정의 | 완료 | pending | 같은 worklog | 기존 `AssistantEvidence` 호환성 확인 |
-| 사용자 명시 허용 UX 정의 | 완료 | pending | 같은 worklog | `/daily` assistant popup 범위 기준 |
-| browser/SaaS 책임 경계 정의 | 완료 | pending | 같은 worklog | `PLAN.md` cross-repo 규칙 대조 |
-| 첫 구현 단위와 검증 기준 확정 | 완료 | pending | 같은 worklog | 성공 기준 작성 |
-| SaaS 저장 API 구현 | 미구현 | - | - | 다음 implementation goal |
-| browser assistant 실행 결과 전달 | 미구현 | - | - | 다음 implementation goal |
+| 04 PRD 구체화 | 완료 | documented | `docs/worklogs/2026-05-08-0940-web-skill-expansion-prd.md` | 문서 검토 |
+| SaaS evidence contract 정의 | 완료 | documented | 같은 worklog | 기존 `AssistantEvidence` 호환성 확인 |
+| 사용자 명시 허용 UX 정의 | 완료 | documented | 같은 worklog | `/daily` assistant popup 범위 기준 |
+| browser/SaaS 책임 경계 정의 | 완료 | documented | 같은 worklog | `PLAN.md` cross-repo 규칙 대조 |
+| 첫 구현 단위와 검증 기준 확정 | 완료 | documented | 같은 worklog | 성공 기준 작성 |
+| SaaS 저장 API 구현 | 완료 | this slice | `docs/worklogs/2026-05-08-1048-external-evidence-retrieval.md` | `npm run typecheck`, `npm run lint`, `npm run build`, in-app browser |
+| `/daily` retrieval 연결 | 완료 | this slice | `docs/worklogs/2026-05-08-1048-external-evidence-retrieval.md` | `web_or_skill` evidence 확인 |
+| Knowledge admin source 표시 | 완료 | this slice | `docs/worklogs/2026-05-08-1048-external-evidence-retrieval.md` | source URL/tool name 확인 |
+| browser assistant 실행 결과 전달 | 완료 | pending | `docs/worklogs/2026-05-08-1024-browser-external-evidence-handoff.md` | `npm run typecheck`, `npm run lint`, `npm run test`, `npm run build` |
 
 ## 사용자 문제
 
@@ -189,7 +191,7 @@ Assistant evidence 변환:
 - 민감정보, 로그인 세션, 비공개 문서 전송은 별도 사용자 확인이 필요하다.
 - 외부 페이지 원문 전체를 장문 저장하지 않는다. excerpt는 검토에 필요한 짧은 요약 중심으로 제한한다.
 
-## 첫 구현 Goal 후보
+## 완료된 첫 구현 Goal
 
 ```text
 Implement and verify 04 external evidence storage and assistant retrieval for /daily.
@@ -221,6 +223,6 @@ Implement and verify 04 external evidence storage and assistant retrieval for /d
 
 ## Residual Risks
 
-- 실제 자동 browser capture는 이 PRD의 첫 implementation goal 이후 별도 확장이다.
+- 현재 browser handoff는 사용자가 승인한 title/URL/excerpt 또는 skill output 요약을 전송하는 첫 경로다. 전체 페이지 자동 수집, 임의 외부 사이트 text extraction, 민감정보 분류는 후속 확장이다.
 - 외부 웹 결과의 신뢰도 ranking은 초기에 보수적으로 낮게 둔다.
 - 저작권/민감정보 저장 정책은 organization policy가 생기면 더 좁게 조정해야 한다.

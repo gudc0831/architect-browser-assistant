@@ -9,6 +9,8 @@ body {
 }
 
 button,
+input,
+select,
 textarea {
   font: inherit;
 }
@@ -111,6 +113,7 @@ textarea {
 
 .evidence-list,
 .answer-block,
+.external-evidence-block,
 .summary-editor {
   display: grid;
   gap: 10px;
@@ -118,11 +121,65 @@ textarea {
 
 .evidence-item,
 .answer-block,
+.external-evidence-block,
 .summary-editor {
   border: 1px solid #d4dad2;
   border-radius: 8px;
   background: #ffffff;
   padding: 12px;
+}
+
+.section-heading,
+.check-row,
+.field-grid label {
+  display: flex;
+  gap: 8px;
+}
+
+.section-heading {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-heading span {
+  color: #657168;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.check-row {
+  align-items: flex-start;
+  color: #26302b;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.check-row input {
+  margin-top: 2px;
+  accent-color: #2f6b57;
+}
+
+.field-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.field-grid label {
+  flex-direction: column;
+  color: #657168;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+input,
+select {
+  min-height: 34px;
+  border: 1px solid #c8d0c8;
+  border-radius: 6px;
+  background: #fff;
+  color: #17201c;
+  padding: 0 9px;
 }
 
 .evidence-item div {
@@ -146,6 +203,13 @@ textarea {
   color: #26302b;
   font-size: 13px;
   line-height: 1.45;
+}
+
+.evidence-item a {
+  color: #2f6b57;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .error-text {

@@ -1,7 +1,9 @@
 import type {
   AssistantEvidence,
   AssistantRecordResponse,
+  ExternalEvidenceSourceType,
   RetrieveResponse,
+  SaveExternalEvidenceResponse,
   WorkSummaryDraftResponse,
 } from "./contracts";
 import { readSafeSetting } from "../storage/safe-storage";
@@ -45,6 +47,19 @@ export async function saveWorkSummaryDraft(input: {
   status: "draft" | "approved" | "deferred";
 }): Promise<WorkSummaryDraftResponse> {
   return postJson<WorkSummaryDraftResponse>("/api/assistant/summaries", input);
+}
+
+export async function saveExternalEvidence(input: {
+  taskId: string;
+  sourceType: ExternalEvidenceSourceType;
+  title: string;
+  excerpt: string;
+  sourceUrl?: string;
+  toolName?: string;
+  permissionState: "user_approved";
+  capturedAt: string;
+}): Promise<SaveExternalEvidenceResponse> {
+  return postJson<SaveExternalEvidenceResponse>("/api/assistant/external-evidence", input);
 }
 
 async function postJson<T>(path: string, body: unknown): Promise<T> {

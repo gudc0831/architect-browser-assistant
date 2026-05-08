@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { createAssistantRuntime } from "../runtime/runtime-factory";
 import type { AssistantRuntimeStatus, AssistantRuntimeOutput } from "../runtime/ArchitectLocalAssistantRuntime";
-import { retrieveEvidence, saveAssistantRecord, saveWorkSummaryDraft } from "../saas/client";
-import type { AssistantEvidence, AssistantTaskContext } from "../saas/contracts";
-import { writeSafeSetting } from "../storage/safe-storage";
+import { retrieveEvidence, saveAssistantRecord, saveExternalEvidence, saveWorkSummaryDraft } from "../saas/client";
+import type { AssistantEvidence, AssistantTaskContext, ExternalEvidenceSourceType } from "../saas/contracts";
+import { readSafeSetting, writeSafeSetting } from "../storage/safe-storage";
 
 type DetectedTaskContext = {
   taskId: string;
@@ -18,6 +18,20 @@ type PanelState =
   | { state: "ready"; task: DetectedTaskContext }
   | { state: "error"; message: string };
 
+type ActiveTabSource = {
+  title: string;
+  url: string;
+  capturedAt: string;
+};
+
+const externalSourceOptions: Array<{ value: ExternalEvidenceSourceType; label: string }> = [
+  { value: "web_page", label: "Web page" },
+  { value: "skill_output", label: "Skill output" },
+  { value: "external_document", label: "External document" },
+  { value: "manufacturer_doc", label: "Manufacturer doc" },
+  { value: "public_standard", label: "Public standard" },
+];
+
 export function App() {
   const [panelState, setPanelState] = useState<PanelState>({ state: "idle" });
   const [runtimeStatus, setRuntimeStatus] = useState<AssistantRuntimeStatus | null>(null);
@@ -27,6 +41,13 @@ export function App() {
   const [output, setOutput] = useState<AssistantRuntimeOutput | null>(null);
   const [recordId, setRecordId] = useState<string | null>(null);
   const [summaryStatus, setSummaryStatus] = useState<string>("");
+  const [externalAllowed, setExternalAllowed] = useState(false);
+  const [externalSourceType, setExternalSourceType] = useState<ExternalEvidenceSourceType>("web_page");
+  const [externalTitle, setExternalTitle] = useState("");
+  const [externalUrl, setExternalUrl] = useState("");
+  const [externalToolName, setExternalToolName] = useState("Architect Browser Assistant");
+  const [externalExcerpt, setExternalExcerpt] = useState("");
+  const [externalStatus, setExternalStatus] = useState("");
 
   useEffect(() => {
     void refreshTaskContext();
@@ -34,11 +55,33 @@ export function App() {
   }, []);
 
   const canGenerate = useMemo(() => Boolean(taskContext && question.trim() && runtimeStatus?.available), [question, runtimeStatus, taskContext]);
+  const activeTaskId = taskContext?.taskId || (panelState.state === "ready" ? panelState.task.taskId : "");
+  const canSaveExternalEvidence = Boolean(
+    activeTaskId &&
+      externalAllowed &&
+      externalTitle.trim() &&
+      externalExcerpt.trim() &&
+      (externalUrl.trim() || externalToolName.trim()),
+  );
 
   async function refreshTaskContext() {
     setPanelState({ state: "loading", label: "task context" });
     const response = await chrome.runtime.sendMessage({ type: "architect:get-task-context" });
     if (!response?.ok) {
+      const lastTaskId = await readSafeSetting("lastTaskId", "" as string);
+      if (lastTaskId) {
+        setPanelState({
+          state: "ready",
+          task: {
+            taskId: lastTaskId,
+            title: `Last selected task ${lastTaskId.slice(0, 8)}`,
+            url: "",
+          },
+        });
+        setExternalStatus("Using the last selected SaaS task. Open /daily and select a task to change the target.");
+        return;
+      }
+
       setPanelState({ state: "error", message: response?.error ?? "Task context unavailable" });
       return;
     }
@@ -103,6 +146,52 @@ export function App() {
     setSummaryStatus(`Summary ${saved.status}`);
   }
 
+  async function handleCaptureActiveTab() {
+    setExternalStatus("Capturing current tab...");
+    try {
+      const response = (await chrome.runtime.sendMessage({ type: "architect:get-active-tab-source" })) as
+        | { ok: true; data: ActiveTabSource }
+        | { ok: false; error?: string };
+      if (!response?.ok) {
+        setExternalStatus(response?.error ?? "Active tab source unavailable");
+        return;
+      }
+
+      setExternalTitle((current) => current || response.data.title);
+      setExternalUrl(response.data.url);
+      setExternalStatus("Captured current tab title and URL. Add the evidence excerpt before saving.");
+    } catch (error) {
+      setExternalStatus(error instanceof Error ? error.message : "Active tab source unavailable");
+    }
+  }
+
+  async function handleSaveExternalEvidence() {
+    if (!canSaveExternalEvidence || !activeTaskId) {
+      setExternalStatus("Approve external evidence and fill title, excerpt, and source URL or tool name first.");
+      return;
+    }
+
+    setExternalStatus("Saving external evidence...");
+    try {
+      const saved = await saveExternalEvidence({
+        taskId: activeTaskId,
+        sourceType: externalSourceType,
+        title: externalTitle,
+        excerpt: externalExcerpt,
+        sourceUrl: externalUrl || undefined,
+        toolName: externalToolName || undefined,
+        permissionState: "user_approved",
+        capturedAt: new Date().toISOString(),
+      });
+      setEvidence((items) => [saved.evidence, ...items.filter((item) => item.id !== saved.evidence.id)]);
+      setExternalTitle("");
+      setExternalExcerpt("");
+      setExternalStatus("External evidence saved to the selected task.");
+    } catch (error) {
+      setExternalStatus(error instanceof Error ? error.message : "External evidence save failed");
+    }
+  }
+
   const taskTitle =
     taskContext?.title || (panelState.state === "ready" ? panelState.task.title : "") || "No task selected";
 
@@ -142,6 +231,79 @@ export function App() {
         </div>
       </section>
 
+      <section className="external-evidence-block">
+        <div className="section-heading">
+          <h2>External Evidence</h2>
+          <span>{externalAllowed ? "user approved" : "off"}</span>
+        </div>
+        <label className="check-row">
+          <input
+            type="checkbox"
+            checked={externalAllowed}
+            onChange={(event) => setExternalAllowed(event.target.checked)}
+          />
+          <span>Save this as user-approved web/skill evidence for the selected task</span>
+        </label>
+        <div className="field-grid">
+          <label>
+            <span>Source type</span>
+            <select
+              value={externalSourceType}
+              onChange={(event) => setExternalSourceType(event.target.value as ExternalEvidenceSourceType)}
+              disabled={!externalAllowed}
+            >
+              {externalSourceOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>Title</span>
+            <input
+              value={externalTitle}
+              onChange={(event) => setExternalTitle(event.target.value)}
+              disabled={!externalAllowed}
+              placeholder="Source title or skill result name"
+            />
+          </label>
+          <label>
+            <span>Source URL</span>
+            <input
+              value={externalUrl}
+              onChange={(event) => setExternalUrl(event.target.value)}
+              disabled={!externalAllowed}
+              placeholder="https://..."
+            />
+          </label>
+          <label>
+            <span>Tool / skill</span>
+            <input
+              value={externalToolName}
+              onChange={(event) => setExternalToolName(event.target.value)}
+              disabled={!externalAllowed}
+              placeholder="browser-use, manufacturer search, Codex skill"
+            />
+          </label>
+        </div>
+        <textarea
+          value={externalExcerpt}
+          onChange={(event) => setExternalExcerpt(event.target.value)}
+          disabled={!externalAllowed}
+          placeholder="Paste the short evidence excerpt or summarized skill output. Do not paste private pages or full documents."
+        />
+        <div className="button-row">
+          <button type="button" onClick={handleCaptureActiveTab} disabled={!externalAllowed}>
+            Capture tab
+          </button>
+          <button type="button" onClick={handleSaveExternalEvidence} disabled={!canSaveExternalEvidence}>
+            Save evidence
+          </button>
+        </div>
+        {externalStatus ? <p className="muted">{externalStatus}</p> : null}
+      </section>
+
       <section className="evidence-list">
         <h2>Evidence</h2>
         {evidence.length === 0 ? <p className="muted">Retrieved SaaS evidence will appear here.</p> : null}
@@ -152,6 +314,11 @@ export function App() {
               <span>{item.kind}</span>
             </div>
             <p>{item.excerpt}</p>
+            {item.sourceUrl ? (
+              <a href={item.sourceUrl} target="_blank" rel="noreferrer">
+                Source
+              </a>
+            ) : null}
           </article>
         ))}
       </section>

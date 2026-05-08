@@ -5,6 +5,25 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message?.type === "architect:get-active-tab-source") {
+    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      if (!tab?.url || !isHttpUrl(tab.url)) {
+        sendResponse({ ok: false, error: "Active tab source is not an http(s) page" });
+        return;
+      }
+
+      sendResponse({
+        ok: true,
+        data: {
+          title: tab.title?.trim() || "Browser source",
+          url: tab.url,
+          capturedAt: new Date().toISOString(),
+        },
+      });
+    });
+    return true;
+  }
+
   if (message?.type !== "architect:get-task-context") {
     return false;
   }
@@ -25,3 +44,12 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   return true;
 });
+
+function isHttpUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}

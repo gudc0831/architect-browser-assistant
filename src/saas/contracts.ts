@@ -42,3 +42,31 @@ export type WorkSummaryDraftResponse = {
   id: string;
   status: "draft" | "approved" | "deferred";
 };
+
+export type ExternalEvidenceSourceType =
+  | "web_page"
+  | "skill_output"
+  | "external_document"
+  | "manufacturer_doc"
+  | "public_standard";
+
+export type ExternalEvidenceRecord = {
+  id: string;
+  projectId: string;
+  taskId: string;
+  sourceType: ExternalEvidenceSourceType;
+  title: string;
+  excerpt: string;
+  sourceUrl?: string;
+  toolName?: string;
+  permissionState: "user_approved";
+  capturedAt: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type SaveExternalEvidenceResponse = {
+  externalEvidence: ExternalEvidenceRecord;
+  evidence: AssistantEvidence;
+};
