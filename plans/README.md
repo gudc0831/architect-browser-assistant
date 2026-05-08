@@ -23,7 +23,7 @@
 | --- | --- | --- | --- | --- |
 | 01 | `01-task-assistant-core-loop.md` | `in_progress` | `/daily` task-reactive assistant core loop, retrieval, record save, summary approve foundation | `architect-saas`, `architect-browser-assistant` |
 | 02 | `02-knowledge-admin-wiki.md` | `implemented` | task assistant 기록에서 생긴 후보를 Knowledge admin이 검토하고 WIKI 지식으로 승격하는 첫 관리자 루프 | `architect-saas` |
-| 03 | `03-file-and-image-analysis.md` | `planned` | PDF/DOCX/XLSX/TXT/CSV와 PNG/JPG OCR 결과를 task assistant 근거로 저장 | `architect-saas`, `architect-browser-assistant` |
+| 03 | `03-file-and-image-analysis.md` | `in_progress` | PDF/DOCX/XLSX/TXT/CSV와 PNG/JPG OCR 결과를 task assistant 근거로 저장 | `architect-saas`, `architect-browser-assistant` |
 | 04 | `04-web-and-skill-expansion.md` | `planned` | 사용자가 허용한 웹/스킬 결과를 task 기록과 지식 후보로 연결 | `architect-browser-assistant`, `architect-saas` |
 | 05 | `05-saas-api-mode.md` | `planned` | 조직 단위 SaaS API 실행 모드, 사용량, 감사, 관리자 정책 | `architect-saas` |
 
@@ -34,13 +34,13 @@ Codex goal 도구에는 완료된 01 goal이 남아 있어 새 goal 생성이 �
 다음 실행 목표:
 
 ```text
-Make 03 File And Image Analysis implementation-ready.
+Implement file analysis metadata storage and assistant evidence retrieval for the /daily PC popup.
 ```
 
 성공 기준:
 
-1. 03 PRD에 파일 형식별 ingestion 범위가 정리된다.
-2. OCR/이미지 분석의 신뢰도 제한과 사용자 확인 UX가 정리된다.
-3. SaaS와 browser assistant의 책임 경계가 정리된다.
-4. 첫 구현 단위와 검증 기준이 명확하다.
-5. 03 문서와 worklog가 commit에 포함된다.
+1. 선택 task의 assistant 팝업에서 첨부 파일 목록을 볼 수 있다.
+2. 파일별 분석 텍스트와 요약을 저장할 수 있다.
+3. 저장된 분석 결과가 다음 assistant 근거 조회에 `project_document` evidence로 나타난다.
+4. 미확인 파일/OCR 근거의 낮은 confidence 정책이 코드에 반영된다.
+5. typecheck/lint, 문서 worklog, commit까지 완료한다.
