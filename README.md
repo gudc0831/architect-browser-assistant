@@ -82,4 +82,16 @@ Useful verifier options:
 - `--skip-registry`: skip HKCU registry inspection.
 - `--strict`: return a non-zero exit code when any check fails.
 
+Verify the generation handler without invoking Codex:
+
+```powershell
+npm run native-host:verify-generation -- --json --mock --strict
+```
+
+Real generation is a separate approval step because it sends the bounded verification prompt through the user's Codex CLI:
+
+```powershell
+npm run native-host:verify-generation -- --json --allow-external --strict
+```
+
 After registration, reload the extension and use `/daily` for normal work. The side panel remains available for manual diagnostics only.
