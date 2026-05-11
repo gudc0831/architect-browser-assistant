@@ -2,9 +2,11 @@
 
 Created: 2026-05-11
 Parent document: [../PLAN.md](../PLAN.md)
-Current status: `in_progress`
+Current status: `implemented`
 Goal: Implement and verify 10 Local Codex real generation evidence flow and update the continuation roadmap.
-Worklog: [../docs/worklogs/2026-05-11-1349-local-codex-real-generation-evidence.md](../docs/worklogs/2026-05-11-1349-local-codex-real-generation-evidence.md)
+Worklogs:
+- [../docs/worklogs/2026-05-11-1349-local-codex-real-generation-evidence.md](../docs/worklogs/2026-05-11-1349-local-codex-real-generation-evidence.md)
+- [../docs/worklogs/2026-05-11-1402-local-codex-real-generation-evidence-complete.md](../docs/worklogs/2026-05-11-1402-local-codex-real-generation-evidence-complete.md)
 
 ## Problem Statement
 
@@ -37,13 +39,13 @@ Real generation requires `--allow-external` because the prompt is sent through t
 
 ## Implementation Status
 
-Current implementation state: `in_progress`
+Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
 | Slice 10 PRD and active goal documentation | done | df7d65f | this worklog | Document updated |
 | `native-host:verify-generation` command | done | df7d65f | this worklog | Mock verifier passed |
-| Real Codex generation evidence | pending approval | - | this worklog | External Codex CLI execution blocked until explicit user approval of data transfer |
+| Real Codex generation evidence | done | pending | completion worklog | Passed after explicit user approval |
 | Browser README verifier instructions | done | df7d65f | this worklog | Document updated |
 | `/daily` browser generation evidence | deferred | - | - | Next slice |
 
@@ -57,6 +59,7 @@ Current implementation state: `in_progress`
 | 2026-05-11 | Safe repo verification | Passed `npm run native-host:self-test`, `npm run typecheck`, `npm run test`, `npm run lint`, and `npm run build` |
 | 2026-05-11 | Real native-host generation verifier | Blocked pending explicit approval because it sends the verification prompt through Codex CLI |
 | 2026-05-11 | Real verifier execution request | Not run: external Codex/OpenAI data transfer still needs explicit user approval after disclosure |
+| 2026-05-11 | Real native-host generation verifier | Passed after explicit approval with `npm run native-host:verify-generation -- --json --allow-external --strict`; mode `real`, elapsed `14879ms`, draft summary returned |
 
 ## Implementation Decisions
 
@@ -82,8 +85,7 @@ Current implementation state: `in_progress`
 
 - Real native generation does not prove the content script is active on the currently open `/daily` page; the next slice must record `/daily` UI evidence.
 - The Codex CLI may require network/auth state in the user's Windows profile.
-- Real generation evidence is still pending until the user explicitly approves external Codex/OpenAI data transfer for the bounded verifier prompt.
-- Approval must cover the command `npm run native-host:verify-generation -- --json --allow-external --strict` and acknowledge that the verification prompt includes task/evidence context.
+- The real generation output is command-level evidence from the native host handler, not browser UI evidence from the `/daily` popup.
 
 ## Next Slice Candidate
 
