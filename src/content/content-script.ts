@@ -1,5 +1,7 @@
 import { detectTaskContext } from "./task-context-detector";
 
+document.documentElement.dataset.architectBrowserAssistant = "installed";
+
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type !== "architect:detect-task-context") {
     return false;
