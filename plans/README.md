@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-11): `Slice 14 implemented; next candidate is assistant-origin audit indicators in task history/detail.`
+Current implementation goal (2026-05-11): `Slice 15 implemented; next candidate is structured assistant-action audit persistence.`
 
 Slice 13 made assistant-backed task closure explicit before approving work summaries. The next slice should turn approved summaries into safer task update suggestions instead of direct automatic task edits.
 
@@ -29,6 +29,7 @@ Slice 13 made assistant-backed task closure explicit before approving work summa
 | 12 | [12-local-codex-run-history-diagnostics.md](12-local-codex-run-history-diagnostics.md) | `implemented` | Show Local Codex run history and diagnostics in the default `/daily` in-page assistant popup | `architect-saas`, `architect-browser-assistant` |
 | 13 | [13-assistant-closure-gate.md](13-assistant-closure-gate.md) | `implemented` | Gate assistant-backed work-summary approval with explicit closure requirements | `architect-saas`, `architect-browser-assistant` |
 | 14 | [14-work-summary-task-proposals.md](14-work-summary-task-proposals.md) | `implemented` | Turn approved work summaries into optional task update and follow-up task proposals | `architect-saas`, `architect-browser-assistant` |
+| 15 | [15-assistant-origin-audit-indicators.md](15-assistant-origin-audit-indicators.md) | `implemented` | Show assistant-origin task change provenance in task detail/history | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -49,13 +50,14 @@ Slice 13 made assistant-backed task closure explicit before approving work summa
 15. `Implement and verify 12 Local Codex run history and diagnostics display in the /daily in-page assistant popup.`
 16. `Implement and verify 13 assistant-backed task closure and work-summary approval flow for the /daily in-page assistant popup.`
 17. `Implement and verify 14 approved work-summary task update suggestions and follow-up task proposals for the /daily in-page assistant popup.`
+18. `Implement and verify 15 assistant-origin audit indicators in task detail/history for approved assistant summary task changes.`
 
 ## Next Goal Candidate
 
-`Add assistant-origin audit indicators to task history/detail so users can see which task changes came from approved assistant summaries.`
+`Add structured assistant-action audit persistence so task provenance does not depend only on decision/note text markers.`
 
 Success criteria:
 
-1. Task detail/history shows when a decision entry came from an approved assistant summary.
-2. Assistant record id and created follow-up task id remain visible without opening raw logs.
-3. Existing task editing and follow-up creation flows keep working without extra required steps.
+1. Assistant task update and follow-up creation actions write structured audit records.
+2. Task detail can read provenance from structured records while preserving existing text-marker fallback.
+3. Existing assistant proposal actions remain explicit and version-safe.
