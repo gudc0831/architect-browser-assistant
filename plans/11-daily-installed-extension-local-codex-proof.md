@@ -39,7 +39,7 @@ Current implementation state: `in_progress`
 | --- | --- | --- | --- | --- |
 | Slice 11 PRD and active goal documentation | done | a636a2d | this worklog | Document updated |
 | Extension build and installed-path verification | done | a636a2d | this worklog | `npm run build` passed; installed-path verifier passed with 7 pass / 0 fail under user profile access |
-| Chrome profile extension registration verification | done | pending | this worklog | `extension:verify-chrome-profile` found the extension in Chrome `Default` profile pointing to `dist` |
+| Chrome profile extension registration verification | done | 537ab6a | this worklog | `extension:verify-chrome-profile` found the extension in Chrome `Default` profile pointing to `dist` |
 | `/daily` browser `Check bridge` evidence | blocked | - | this worklog | Chrome `/daily` page loaded, but extension content script did not respond |
 | `/daily` missing-bridge operator guidance | done | SaaS `bc000af`, `510832a` | SaaS worklog `2026-05-11-1412-local-codex-bridge-reload-guidance.md` | SaaS `npm run typecheck` passed; `/daily` popup displayed reload/verifier guidance |
 | `/daily` real Local Codex generation evidence | pending | - | this worklog | - |
