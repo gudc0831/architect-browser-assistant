@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-11): `Turn approved work summaries into optional task update and follow-up proposals.`
+Current implementation goal (2026-05-11): `Slice 14 implemented; next candidate is assistant-origin audit indicators in task history/detail.`
 
 Slice 13 made assistant-backed task closure explicit before approving work summaries. The next slice should turn approved summaries into safer task update suggestions instead of direct automatic task edits.
 
@@ -28,6 +28,7 @@ Slice 13 made assistant-backed task closure explicit before approving work summa
 | 11 | [11-daily-installed-extension-local-codex-proof.md](11-daily-installed-extension-local-codex-proof.md) | `implemented` | Run installed-extension Local Codex proof from the default `/daily` in-page assistant popup | `architect-browser-assistant`, `architect-saas` |
 | 12 | [12-local-codex-run-history-diagnostics.md](12-local-codex-run-history-diagnostics.md) | `implemented` | Show Local Codex run history and diagnostics in the default `/daily` in-page assistant popup | `architect-saas`, `architect-browser-assistant` |
 | 13 | [13-assistant-closure-gate.md](13-assistant-closure-gate.md) | `implemented` | Gate assistant-backed work-summary approval with explicit closure requirements | `architect-saas`, `architect-browser-assistant` |
+| 14 | [14-work-summary-task-proposals.md](14-work-summary-task-proposals.md) | `implemented` | Turn approved work summaries into optional task update and follow-up task proposals | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -47,13 +48,14 @@ Slice 13 made assistant-backed task closure explicit before approving work summa
 14. `Implement and verify 11 /daily installed-extension Local Codex browser proof.`
 15. `Implement and verify 12 Local Codex run history and diagnostics display in the /daily in-page assistant popup.`
 16. `Implement and verify 13 assistant-backed task closure and work-summary approval flow for the /daily in-page assistant popup.`
+17. `Implement and verify 14 approved work-summary task update suggestions and follow-up task proposals for the /daily in-page assistant popup.`
 
 ## Next Goal Candidate
 
-`Turn approved work-summary data into optional task update suggestions and follow-up task creation proposals.`
+`Add assistant-origin audit indicators to task history/detail so users can see which task changes came from approved assistant summaries.`
 
 Success criteria:
 
-1. Approved work-summary fields can be proposed as task note/status/follow-up updates.
-2. No task is auto-edited without a separate user confirmation.
-3. Verification evidence is recorded in the slice worklog.
+1. Task detail/history shows when a decision entry came from an approved assistant summary.
+2. Assistant record id and created follow-up task id remain visible without opening raw logs.
+3. Existing task editing and follow-up creation flows keep working without extra required steps.
