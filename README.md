@@ -1,6 +1,6 @@
 # Architect Browser Assistant
 
-Planned Chrome extension repository for the Architect SaaS workspace.
+Chrome extension repository for the Architect SaaS workspace.
 
 The implementation direction is Chromex-inspired, but the extension is Architect-owned code rather than a live Chromex dependency. Keep it separate from `architect-saas`:
 
@@ -10,32 +10,36 @@ D:\architect-workspace\
   architect-browser-assistant\
 ```
 
-Future implementation should preserve the SaaS boundary:
+Repository boundary:
 
 - The extension owns browser UI, page context collection, native bridge/local login integration, and calls to SaaS APIs.
 - The SaaS app owns authentication, permissions, database access, retrieval, assistant records, and audit/rate-limit policy.
 - The extension must not connect directly to the production database.
 
-## First Slice
+## Implemented Slices
 
-The first implementation slice is `Task Assistant Core Loop`.
+- Slice 01: Chrome MV3 side-panel foundation, SaaS task context detection, retrieval/record/summary API client, local runtime adapter, deterministic mock runtime, and guarded `chrome.storage`.
+- Slice 06: Chrome native messaging permission, service-worker local runtime routes, Node native host, Windows installer script, and manual side-panel diagnostics for Local Codex.
+- Slice 07: In-page `/daily` assistant popup bridge to the Local Codex extension/native-host runtime.
 
-- Chrome MV3 side panel foundation
-- SaaS task context detection
-- SaaS retrieval/record/summary API client
-- `ArchitectLocalAssistantRuntime` adapter
-- deterministic `MockAssistantRuntime`
-- guarded `chrome.storage` wrapper that rejects credential-like keys
+## Default User Surface
+
+The SaaS `/daily` in-page assistant popup is the default PC workflow. Select a task in `/daily`, open the bottom-right `AI review` popup, and choose the execution mode:
+
+- `Mock`: deterministic local SaaS client response for development.
+- `SaaS API`: organization-governed SaaS generation path.
+- `Local Codex (extension)`: in-page popup request sent through the Chrome extension content script, service worker, native host, and local Codex CLI.
+
+The Chrome side panel is secondary and hidden during normal work. Open it manually only for bridge diagnostics, such as confirming native host availability or inspecting Local Codex errors.
 
 ## Local Codex Bridge
 
-Slice 06 adds the first installable local bridge path:
+The bridge path is intentionally narrow:
 
 - Chrome MV3 uses the `nativeMessaging` permission.
-- The SaaS `/daily` in-page `AI 검토` popup is the default assistant UI.
-- The Chrome side panel remains available as a secondary/native-bridge verification surface; clicking the extension action does not open it by default.
-- When manually opened, the side panel talks to the service worker, and the service worker calls native host `com.architect.browser_assistant.codex_bridge`.
-- The native host runs `codex exec - --json --sandbox read-only --skip-git-repo-check` with the selected task context and evidence.
+- The content script accepts only same-window, same-origin page messages for `status` and `generate`.
+- The service worker forwards those local runtime requests to native host `com.architect.browser_assistant.codex_bridge`.
+- The native host runs `codex exec - --json --sandbox read-only --skip-git-repo-check` with the selected task context, question, and evidence.
 - No ChatGPT, Codex, OpenAI, or SaaS secret is stored in extension storage.
 
 Development checks:
@@ -63,4 +67,4 @@ For a bridge smoke test without invoking the real Codex CLI, add `-Mock`:
 npm run native-host:install:windows -- -ExtensionId <chrome-extension-id> -Mock
 ```
 
-After registration, keep using the SaaS `/daily` in-page `AI 검토` popup for normal work. For local bridge diagnostics, manually open the Chrome side panel, change Mode to `Local Codex`, retrieve evidence, and generate an answer. If Codex CLI is not installed or authenticated, the side panel reports the native host/Codex status instead of saving credentials.
+After registration, reload the extension and use `/daily` for normal work. The side panel remains available for manual diagnostics only.

@@ -1,0 +1,4 @@
+Req: Implement the next planned goal, slice 07, so the SaaS `/daily` in-page assistant popup can use the Local Codex extension/native-host bridge while the Chrome side panel stays secondary.
+Diff: Added `plans/07-in-page-local-codex-bridge.md`; added a same-window/same-origin content-script bridge from SaaS page messages to extension local-runtime messages; added a bridge unit test; updated roadmap/README guidance for in-page Local Codex usage.
+Why: The product direction makes the in-page PC popup the default assistant surface, so Local Codex generation must be reachable from the selected daily task workflow instead of only from the side panel.
+Verify/Time: `npm run typecheck`, `npm run lint`, `npm run test` (6 files, 13 tests), `npm run native-host:self-test`, and `npm run build` passed in `architect-browser-assistant`; cross-repo SaaS typecheck/lint/build passed with existing unrelated lint warnings | 2026-05-11 13:07-13:18 KST.
