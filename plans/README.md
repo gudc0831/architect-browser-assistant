@@ -1,8 +1,9 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-11): `Slice 16 implemented; next candidate is admin-facing assistant action audit review.`
+Current implementation goal (2026-05-11): `Slice 17 implemented; next candidate is admin assistant audit export or governance drill-down.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
+Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
 
 ## Operating Rules
 
@@ -31,6 +32,7 @@ Slice 16 moved assistant-origin task-change provenance from text-marker-only det
 | 14 | [14-work-summary-task-proposals.md](14-work-summary-task-proposals.md) | `implemented` | Turn approved work summaries into optional task update and follow-up task proposals | `architect-saas`, `architect-browser-assistant` |
 | 15 | [15-assistant-origin-audit-indicators.md](15-assistant-origin-audit-indicators.md) | `implemented` | Show assistant-origin task change provenance in task detail/history | `architect-saas`, `architect-browser-assistant` |
 | 16 | [16-structured-assistant-action-audit.md](16-structured-assistant-action-audit.md) | `implemented` | Persist structured assistant task-update and follow-up creation audit records | `architect-saas`, `architect-browser-assistant` |
+| 17 | [17-admin-action-audit-review.md](17-admin-action-audit-review.md) | `implemented` | Admin review surface for assistant action audits with filters and `/daily` task links | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -53,13 +55,14 @@ Slice 16 moved assistant-origin task-change provenance from text-marker-only det
 17. `Implement and verify 14 approved work-summary task update suggestions and follow-up task proposals for the /daily in-page assistant popup.`
 18. `Implement and verify 15 assistant-origin audit indicators in task detail/history for approved assistant summary task changes.`
 19. `Implement and verify 16 structured assistant-action audit persistence for approved assistant task changes.`
+20. `Implement and verify 17 admin-facing assistant action audit review surface with filters and task links.`
 
 ## Next Goal Candidate
 
-`Add an admin-facing assistant action audit review surface with filters by task, action, assistant record, and actor.`
+`Add admin assistant action audit export or governance drill-down for operational review.`
 
 Success criteria:
 
-1. Admin users can list assistant task action audit records by project.
-2. Filters cover action type, task id/display id, assistant record id, and actor.
-3. The review surface links back to `/daily` task detail where possible.
+1. Admin users can export filtered assistant action audit records or open a richer per-record review view.
+2. Export/drill-down preserves task links, assistant record ids, actor ids, and summary metadata.
+3. The feature remains read-only for audit integrity.
