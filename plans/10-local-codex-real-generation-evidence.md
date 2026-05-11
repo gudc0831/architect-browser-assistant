@@ -41,10 +41,10 @@ Current implementation state: `in_progress`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 10 PRD and active goal documentation | done | pending | this worklog | Document updated |
-| `native-host:verify-generation` command | done | pending | this worklog | Mock verifier passed |
+| Slice 10 PRD and active goal documentation | done | df7d65f | this worklog | Document updated |
+| `native-host:verify-generation` command | done | df7d65f | this worklog | Mock verifier passed |
 | Real Codex generation evidence | pending approval | - | this worklog | External Codex CLI execution blocked until explicit user approval |
-| Browser README verifier instructions | done | pending | this worklog | Document updated |
+| Browser README verifier instructions | done | df7d65f | this worklog | Document updated |
 | `/daily` browser generation evidence | deferred | - | - | Next slice |
 
 ## Verification Log
