@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-11): `Implement and verify 07 in-page Local Codex bridge for the /daily assistant popup.`
+Current implementation goal (2026-05-11): `Implement and verify 08 Local Codex bridge health checklist for the /daily in-page assistant popup.`
 
 The Codex goal tool still contains the completed slice 01 objective, so ongoing goals are tracked here and in the active slice PRD/worklog.
 
@@ -22,6 +22,7 @@ The Codex goal tool still contains the completed slice 01 objective, so ongoing 
 | 05 | [05-saas-api-mode.md](05-saas-api-mode.md) | `implemented` | SaaS API mode, policy, usage ledger, live provider adapter, admin reporting | `architect-saas` |
 | 06 | [06-local-codex-bridge-packaging.md](06-local-codex-bridge-packaging.md) | `implemented` | Chrome native messaging bridge, local Codex host, Windows install foundation, side-panel diagnostics | `architect-browser-assistant` |
 | 07 | [07-in-page-local-codex-bridge.md](07-in-page-local-codex-bridge.md) | `implemented` | Use the Local Codex bridge from the default `/daily` in-page assistant popup | `architect-browser-assistant`, `architect-saas` |
+| 08 | [08-local-codex-health-checklist.md](08-local-codex-health-checklist.md) | `implemented` | Add an in-page Local Codex bridge health checklist before real installed-extension generation | `architect-browser-assistant`, `architect-saas` |
 
 ## Completed Goal Log
 
@@ -35,15 +36,16 @@ The Codex goal tool still contains the completed slice 01 objective, so ongoing 
 8. `Implement and verify 06 Local Codex bridge packaging and extension install foundation.`
 9. `Make the SaaS /daily in-page popup the default assistant UI while the Chrome side panel remains manual.`
 10. `Implement and verify 07 in-page Local Codex bridge for the /daily assistant popup.`
+11. `Implement and verify 08 Local Codex bridge health checklist for the /daily in-page assistant popup.`
 
 ## Next Goal Candidate
 
-`Verify real installed-extension Local Codex generation from /daily and add an operator-facing bridge health checklist.`
+`Run and record real installed-extension Local Codex generation from /daily on the target Windows profile.`
 
 Success criteria:
 
 1. The rebuilt extension is loaded in Chrome and the content script is active on the SaaS origin.
 2. The Windows native host registry entry points to the generated launcher for the actual extension id.
-3. `/daily` in-page `Local Codex (extension)` mode returns a real authenticated Codex answer for a selected task.
-4. Failure states distinguish missing extension, missing native host, missing Codex CLI, and unauthenticated Codex CLI.
-5. Verification steps are documented in the user guide and slice worklog.
+3. `/daily` in-page `Check bridge` reports all readiness steps as pass.
+4. `/daily` in-page `Local Codex (extension)` mode returns a real authenticated Codex answer for a selected task.
+5. Verification evidence is recorded in the slice worklog.
