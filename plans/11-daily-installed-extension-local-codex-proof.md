@@ -40,8 +40,8 @@ Current implementation state: `in_progress`
 | Slice 11 PRD and active goal documentation | done | a636a2d | this worklog | Document updated |
 | Extension build and installed-path verification | done | a636a2d | this worklog | `npm run build` passed; installed-path verifier passed with 7 pass / 0 fail under user profile access |
 | Chrome profile extension registration verification | done | 537ab6a | this worklog | `extension:verify-chrome-profile` found the extension in Chrome `Default` profile pointing to `dist` |
-| Native host Chrome protocol and launcher hardening | done | pending | this worklog | Fixed one-frame native message reads, real-mode launcher path pinning, WindowsApps Codex path rejection, and launcher self-test coverage |
-| `/daily` browser `Check bridge` evidence | done | pending | this worklog | Chrome `/daily` popup passed `Extension bridge`, `Native host / Codex`, `Credentials`, and `Generation` |
+| Native host Chrome protocol and launcher hardening | done | 8e47892 | this worklog | Fixed one-frame native message reads, real-mode launcher path pinning, WindowsApps Codex path rejection, and launcher self-test coverage |
+| `/daily` browser `Check bridge` evidence | done | 8e47892 | this worklog | Chrome `/daily` popup passed `Extension bridge`, `Native host / Codex`, `Credentials`, and `Generation` |
 | `/daily` missing-bridge operator guidance | done | SaaS `bc000af`, `510832a` | SaaS worklog `2026-05-11-1412-local-codex-bridge-reload-guidance.md` | SaaS `npm run typecheck` passed; `/daily` popup displayed reload/verifier guidance |
 | `/daily` real Local Codex generation evidence | pending | - | this worklog | - |
 | Assistant record saved as `local-chatgpt-codex` | pending | - | this worklog | - |
