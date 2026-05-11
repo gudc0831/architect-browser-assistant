@@ -39,6 +39,7 @@ Current implementation state: `in_progress`
 | --- | --- | --- | --- | --- |
 | Slice 11 PRD and active goal documentation | done | a636a2d | this worklog | Document updated |
 | Extension build and installed-path verification | done | a636a2d | this worklog | `npm run build` passed; installed-path verifier passed with 7 pass / 0 fail under user profile access |
+| Chrome profile extension registration verification | done | pending | this worklog | `extension:verify-chrome-profile` found the extension in Chrome `Default` profile pointing to `dist` |
 | `/daily` browser `Check bridge` evidence | blocked | - | this worklog | Chrome `/daily` page loaded, but extension content script did not respond |
 | `/daily` missing-bridge operator guidance | done | SaaS `bc000af`, `510832a` | SaaS worklog `2026-05-11-1412-local-codex-bridge-reload-guidance.md` | SaaS `npm run typecheck` passed; `/daily` popup displayed reload/verifier guidance |
 | `/daily` real Local Codex generation evidence | pending | - | this worklog | - |
@@ -56,6 +57,7 @@ Current implementation state: `in_progress`
 | 2026-05-11 | Chrome extension reload automation | Blocked: browser security policy prevents navigating automation to `chrome://extensions/?id=ianebfgjhjklildppcocmbmifedapooj`; user must reload the unpacked extension manually |
 | 2026-05-11 | `/daily` missing-bridge guidance | Added clearer SaaS popup recovery guidance, verified with SaaS `npm run typecheck`, and confirmed the updated guidance appears in the `/daily` popup |
 | 2026-05-11 | `/daily` Chrome extension-surface recheck | Still blocked after page refresh: `Extension bridge` fail, `Native host / Codex` warn, `Generation` fail; manual extension reload remains required |
+| 2026-05-11 | Chrome profile extension registration | Passed `npm run extension:verify-chrome-profile -- --json --strict`; Chrome `Default` profile has extension id `ianebfgjhjklildppcocmbmifedapooj` pointing to `D:\architect-workspace\architect-browser-assistant\dist` |
 
 ## Implementation Decisions
 
@@ -89,7 +91,7 @@ Current implementation state: `in_progress`
 
 1. Open `chrome://extensions` in Chrome.
 2. Find `Architect Browser Assistant` with extension id `ianebfgjhjklildppcocmbmifedapooj`.
-3. Click reload for the unpacked extension.
+3. Click reload for the unpacked extension. The profile verifier shows this id is registered in Chrome `Default` and points to `D:\architect-workspace\architect-browser-assistant\dist`.
 4. Refresh `http://localhost:3000/daily`.
 5. Tell Codex to continue; the active goal remains open until `Check bridge`, real generation, and saved-record evidence are recorded.
 

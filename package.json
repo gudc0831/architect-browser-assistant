@@ -11,6 +11,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "native-host:self-test": "node native-host/codex-bridge-host.mjs --self-test",
     "native-host:install:windows": "powershell -ExecutionPolicy Bypass -File scripts/install-native-host-windows.ps1",
+    "extension:verify-chrome-profile": "node scripts/verify-chrome-extension-profile.mjs",
     "native-host:verify-generation": "node scripts/verify-local-codex-generation.mjs",
     "native-host:verify:windows": "node scripts/verify-local-codex-bridge.mjs"
   },

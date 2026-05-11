@@ -94,4 +94,10 @@ Real generation is a separate approval step because it sends the bounded verific
 npm run native-host:verify-generation -- --json --allow-external --strict
 ```
 
+Verify that Chrome has the unpacked extension registered in the profile used for `/daily`:
+
+```powershell
+npm run extension:verify-chrome-profile -- --json --strict
+```
+
 After registration, reload the extension and use `/daily` for normal work. The side panel remains available for manual diagnostics only.
