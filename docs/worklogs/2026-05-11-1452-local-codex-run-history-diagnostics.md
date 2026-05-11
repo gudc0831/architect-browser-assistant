@@ -1,0 +1,4 @@
+Req: Start Slice 12 as a goal for Local Codex run history and diagnostics in the `/daily` popup.
+Diff: Added Slice 12 PRD and roadmap updates. SaaS implementation commit `fa2b0f0` adds task-scoped assistant record history, popup history cards, post-save refresh, and Local Codex diagnostic display.
+Why: Slice 11 proved Local Codex generation and saved records; the operator now needs visible run history and diagnostics inside the default task popup.
+Verify/Time: `npm run typecheck`; `npm run lint` (passes with existing warnings); assistant record verifier matched Local Codex record `5a17423c-c291-4609-98b6-a39d6634d968`; browser verification on `/daily` task 001 showed latest `Local Codex / 47% / extension bridge / evidence 10` history and `Page bridge missing` diagnostic in the in-app browser | 2026-05-11 15:18 KST.
