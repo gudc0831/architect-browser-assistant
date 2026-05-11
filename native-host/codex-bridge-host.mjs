@@ -111,13 +111,17 @@ export async function handleRequest(request) {
   return errorResponse("unknown_request_type", `Unsupported native bridge request: ${String(request.type)}`, request.requestId);
 }
 
-async function readNativeMessage() {
-  const buffer = await readAllStdin();
+export async function readNativeMessage(input = process.stdin) {
+  const buffer = await readNativeMessageBuffer(input);
   if (buffer.length < 4) {
     throw new Error("Native message header is missing.");
   }
 
   const length = isLittleEndian ? buffer.readUInt32LE(0) : buffer.readUInt32BE(0);
+  if (length > MAX_HOST_RESPONSE_BYTES) {
+    throw new Error("Native message body exceeded the 1 MB host limit.");
+  }
+
   const body = buffer.subarray(4, 4 + length);
   if (body.length !== length) {
     throw new Error("Native message body length does not match the header.");
@@ -126,12 +130,65 @@ async function readNativeMessage() {
   return JSON.parse(body.toString("utf8"));
 }
 
-async function readAllStdin() {
-  const chunks = [];
-  for await (const chunk of process.stdin) {
-    chunks.push(Buffer.from(chunk));
-  }
-  return Buffer.concat(chunks);
+function readNativeMessageBuffer(input) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    let totalLength = 0;
+    let expectedLength = null;
+    let settled = false;
+
+    function finish(error, buffer) {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      input.off("data", handleData);
+      input.off("end", handleEnd);
+      input.off("error", handleError);
+
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      resolve(buffer);
+    }
+
+    function handleData(chunk) {
+      chunks.push(Buffer.from(chunk));
+      totalLength += chunk.length;
+
+      const buffer = Buffer.concat(chunks, totalLength);
+      if (expectedLength === null && totalLength >= 4) {
+        const bodyLength = isLittleEndian ? buffer.readUInt32LE(0) : buffer.readUInt32BE(0);
+        if (bodyLength > MAX_HOST_RESPONSE_BYTES) {
+          finish(new Error("Native message body exceeded the 1 MB host limit."));
+          return;
+        }
+
+        expectedLength = 4 + bodyLength;
+      }
+
+      if (expectedLength !== null && totalLength >= expectedLength) {
+        input.pause?.();
+        finish(null, buffer.subarray(0, expectedLength));
+      }
+    }
+
+    function handleEnd() {
+      finish(new Error("Native message body length does not match the header."));
+    }
+
+    function handleError(error) {
+      finish(error);
+    }
+
+    input.on("data", handleData);
+    input.on("end", handleEnd);
+    input.on("error", handleError);
+    input.resume?.();
+  });
 }
 
 function writeNativeMessage(payload) {

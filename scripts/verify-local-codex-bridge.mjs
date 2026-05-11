@@ -47,7 +47,7 @@ async function verify() {
 
   await verifyDistManifest();
   const hostManifest = await verifyHostManifest();
-  verifyLauncher(hostManifest);
+  await verifyLauncher(hostManifest);
   await verifyRegistry(hostManifest);
   await verifyNativeHostMock();
   if (!options.mockOnly) {
@@ -110,7 +110,7 @@ async function verifyHostManifest() {
   return manifest;
 }
 
-function verifyLauncher(manifest) {
+async function verifyLauncher(manifest) {
   const manifestLauncherPath = typeof manifest?.path === "string" ? manifest.path : launcherPath;
   const expected = path.resolve(manifestLauncherPath);
   const exists = existsSync(expected);
@@ -119,6 +119,61 @@ function verifyLauncher(manifest) {
     "Native host launcher",
     exists ? "pass" : "fail",
     exists ? `Launcher exists: ${expected}` : `Launcher is missing: ${expected}`,
+  );
+
+  if (!exists) {
+    return;
+  }
+
+  const launcherText = await readFile(expected, "utf8");
+  const mockEnabled = /\bARCHITECT_CODEX_BRIDGE_MOCK=1\b/.test(launcherText);
+  addCheck(
+    "launcher-mode",
+    "Native host launcher mode",
+    options.mockOnly || !mockEnabled ? "pass" : "fail",
+    mockEnabled
+      ? options.mockOnly
+        ? "Launcher is intentionally configured for mock mode."
+        : "Launcher is still configured for mock mode; re-run the installer without -Mock for real Local Codex generation."
+      : "Launcher is configured for real Local Codex mode.",
+  );
+
+  const nodePath = extractQuotedLauncherCommand(launcherText);
+  addCheck(
+    "launcher-node-path",
+    "Native host Node path",
+    nodePath && path.isAbsolute(nodePath) && existsSync(nodePath) ? "pass" : "fail",
+    nodePath && path.isAbsolute(nodePath) && existsSync(nodePath)
+      ? `Launcher uses absolute Node path: ${nodePath}.`
+      : "Launcher should use an absolute node.exe path so Chrome can start the native host without relying on PATH.",
+  );
+
+  const codexCliPath = extractLauncherEnvValue(launcherText, "ARCHITECT_CODEX_CLI_PATH");
+  const codexCliPathUsesWindowsApps = Boolean(codexCliPath && /\\Program Files\\WindowsApps\\/i.test(codexCliPath));
+  addCheck(
+    "launcher-codex-path",
+    "Native host Codex CLI path",
+    options.mockOnly || (codexCliPath && existsSync(codexCliPath) && !codexCliPathUsesWindowsApps) ? "pass" : "fail",
+    codexCliPath
+      ? codexCliPathUsesWindowsApps
+        ? "Launcher points at a WindowsApps packaged executable; use the user Codex bin wrapper instead to avoid spawn EPERM."
+        : existsSync(codexCliPath)
+        ? `Launcher pins Codex CLI path: ${codexCliPath}.`
+        : `Launcher pins Codex CLI path but the file was not found: ${codexCliPath}.`
+      : options.mockOnly
+        ? "Codex CLI path is not required for mock-only verification."
+        : "Launcher should set ARCHITECT_CODEX_CLI_PATH for real generation from Chrome.",
+  );
+
+  const selfTest = await runCmdLauncher(expected, ["--self-test"]);
+  const selfTestOk = selfTest.code === 0 && isJsonObjectOk(selfTest.stdout);
+  addCheck(
+    "launcher-self-test",
+    "Native host launcher self-test",
+    selfTestOk ? "pass" : "fail",
+    selfTestOk
+      ? "Launcher can start Node and run the native host self-test."
+      : selfTest.stderr || selfTest.stdout || "Launcher self-test failed.",
   );
 }
 
@@ -225,6 +280,10 @@ function runProcess(command, args) {
   });
 }
 
+function runCmdLauncher(command, args) {
+  return runProcess("cmd.exe", ["/d", "/c", "call", command, ...args]);
+}
+
 function parseRegistryDefaultValue(stdout) {
   const line = stdout
     .split(/\r?\n/)
@@ -237,6 +296,25 @@ function parseRegistryDefaultValue(stdout) {
 function extractExtensionId(origin) {
   const match = String(origin ?? "").match(/^chrome-extension:\/\/([a-p]{32})\/$/);
   return match?.[1] ?? null;
+}
+
+function extractQuotedLauncherCommand(launcherText) {
+  const match = launcherText.match(/^\s*"([^"]+)"\s+"[^"]*codex-bridge-host\.mjs"/im);
+  return match?.[1] ?? null;
+}
+
+function extractLauncherEnvValue(launcherText, name) {
+  const quotedPattern = new RegExp(`^\\s*set\\s+"${name}=([^"]+)"`, "im");
+  const plainPattern = new RegExp(`^\\s*set\\s+${name}=([^\\r\\n]+)`, "im");
+  return quotedPattern.exec(launcherText)?.[1]?.trim() ?? plainPattern.exec(launcherText)?.[1]?.trim() ?? null;
+}
+
+function isJsonObjectOk(value) {
+  try {
+    return JSON.parse(value).ok === true;
+  } catch {
+    return false;
+  }
 }
 
 function addCheck(id, label, status, detail, meta) {

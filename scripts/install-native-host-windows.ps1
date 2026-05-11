@@ -6,6 +6,8 @@ param(
 
   [string]$NodePath = "node.exe",
 
+  [string]$CodexCliPath = "",
+
   [switch]$Mock,
 
   [switch]$NoRegistry
@@ -42,15 +44,44 @@ if ($ExtensionId -notmatch "^[a-p]{32}$") {
   throw "ExtensionId must be the 32-character Chrome extension id from chrome://extensions."
 }
 
+if ($NodePath -eq "node.exe") {
+  $nodeCommand = Get-Command node.exe -ErrorAction SilentlyContinue
+  if ($nodeCommand -and $nodeCommand.Source) {
+    $NodePath = $nodeCommand.Source
+  }
+}
+
+if ([string]::IsNullOrWhiteSpace($CodexCliPath)) {
+  $codexCommand = Get-Command codex.exe -All -ErrorAction SilentlyContinue |
+    Where-Object { $_.Source -and $_.Source -notlike "*\Program Files\WindowsApps\*" } |
+    Select-Object -First 1
+
+  if (-not $codexCommand) {
+    $codexCommand = Get-Command codex -All -ErrorAction SilentlyContinue |
+      Where-Object { $_.Source -and $_.Source -notlike "*\Program Files\WindowsApps\*" } |
+      Select-Object -First 1
+  }
+
+  if ($codexCommand -and $codexCommand.Source) {
+    $CodexCliPath = $codexCommand.Source
+  }
+}
+
 $mockLine = ""
 if ($Mock) {
   $mockLine = "set ARCHITECT_CODEX_BRIDGE_MOCK=1"
 }
 
+$codexLine = ""
+if (-not [string]::IsNullOrWhiteSpace($CodexCliPath)) {
+  $codexLine = "set `"ARCHITECT_CODEX_CLI_PATH=$CodexCliPath`""
+}
+
 $launcher = @"
 @echo off
 $mockLine
-"$NodePath" "$hostScriptPath"
+$codexLine
+"$NodePath" "$hostScriptPath" %*
 "@
 Set-Content -LiteralPath $launcherPath -Value $launcher -Encoding ASCII
 

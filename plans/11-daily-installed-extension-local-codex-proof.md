@@ -40,7 +40,8 @@ Current implementation state: `in_progress`
 | Slice 11 PRD and active goal documentation | done | a636a2d | this worklog | Document updated |
 | Extension build and installed-path verification | done | a636a2d | this worklog | `npm run build` passed; installed-path verifier passed with 7 pass / 0 fail under user profile access |
 | Chrome profile extension registration verification | done | 537ab6a | this worklog | `extension:verify-chrome-profile` found the extension in Chrome `Default` profile pointing to `dist` |
-| `/daily` browser `Check bridge` evidence | blocked | - | this worklog | Chrome `/daily` page loaded, but extension content script did not respond |
+| Native host Chrome protocol and launcher hardening | done | pending | this worklog | Fixed one-frame native message reads, real-mode launcher path pinning, WindowsApps Codex path rejection, and launcher self-test coverage |
+| `/daily` browser `Check bridge` evidence | done | pending | this worklog | Chrome `/daily` popup passed `Extension bridge`, `Native host / Codex`, `Credentials`, and `Generation` |
 | `/daily` missing-bridge operator guidance | done | SaaS `bc000af`, `510832a` | SaaS worklog `2026-05-11-1412-local-codex-bridge-reload-guidance.md` | SaaS `npm run typecheck` passed; `/daily` popup displayed reload/verifier guidance |
 | `/daily` real Local Codex generation evidence | pending | - | this worklog | - |
 | Assistant record saved as `local-chatgpt-codex` | pending | - | this worklog | - |
@@ -58,6 +59,8 @@ Current implementation state: `in_progress`
 | 2026-05-11 | `/daily` missing-bridge guidance | Added clearer SaaS popup recovery guidance, verified with SaaS `npm run typecheck`, and confirmed the updated guidance appears in the `/daily` popup |
 | 2026-05-11 | `/daily` Chrome extension-surface recheck | Still blocked after page refresh: `Extension bridge` fail, `Native host / Codex` warn, `Generation` fail; manual extension reload remains required |
 | 2026-05-11 | Chrome profile extension registration | Passed `npm run extension:verify-chrome-profile -- --json --strict`; Chrome `Default` profile has extension id `ianebfgjhjklildppcocmbmifedapooj` pointing to `D:\architect-workspace\architect-browser-assistant\dist` |
+| 2026-05-11 | Native host launcher and protocol hardening | Passed `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run native-host:verify:windows -- --extension-id ianebfgjhjklildppcocmbmifedapooj --json --strict` with 11 pass / 0 fail |
+| 2026-05-11 | `/daily` Chrome extension-surface bridge proof | Passed in the `/daily` in-page popup: `Extension bridge`, `Native host / Codex`, `Credentials`, and `Generation` all reported pass |
 
 ## Implementation Decisions
 
@@ -66,6 +69,8 @@ Current implementation state: `in_progress`
 - Use the installed extension id already registered in HKCU unless verification shows it is stale.
 - Do not treat direct native-host script success as sufficient for this slice; it is only a prerequisite.
 - When Chrome extension reload cannot be automated, stop at the explicit user action instead of bypassing browser security controls.
+- Read one Chrome native message frame immediately instead of waiting for stdin EOF; Chrome keeps the native messaging pipe open while it waits for a response.
+- Pin the native host launcher to an absolute user-level Codex wrapper path and fail verification for `Program Files\WindowsApps` packaged executable paths that produce `spawn EPERM`.
 
 ## Testing Decisions
 
@@ -83,17 +88,13 @@ Current implementation state: `in_progress`
 
 ## Residual Risks
 
-- The Codex in-app browser may not load the user's installed Chrome extension; proof may require the user's Chrome profile.
+- The Codex in-app browser does not load the user's installed Chrome extension; installed-extension proof uses the user's Chrome profile.
 - Chrome extension reload currently requires user-visible browser interaction because `chrome://extensions` is blocked to browser automation.
-- The next slice may need a dedicated browser proof harness if extension UI automation remains fragile.
+- Real generation still requires explicit user approval because selected task context and evidence are sent through Codex CLI to the external Codex/OpenAI service.
 
-## User Action Needed
+## User Approval Needed
 
-1. Open `chrome://extensions` in Chrome.
-2. Find `Architect Browser Assistant` with extension id `ianebfgjhjklildppcocmbmifedapooj`.
-3. Click reload for the unpacked extension. The profile verifier shows this id is registered in Chrome `Default` and points to `D:\architect-workspace\architect-browser-assistant\dist`.
-4. Refresh `http://localhost:3000/daily`.
-5. Tell Codex to continue; the active goal remains open until `Check bridge`, real generation, and saved-record evidence are recorded.
+The `/daily` bridge proof is ready. The next action is real Local Codex generation for selected task `001`, which sends the selected task context, question, and retrieved evidence through the user's Codex CLI to the external Codex/OpenAI service. The active goal remains open until real generation and saved-record evidence are recorded.
 
 ## Next Slice Candidate
 

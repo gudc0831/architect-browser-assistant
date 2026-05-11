@@ -63,6 +63,8 @@ Windows unpacked extension setup:
 npm run native-host:install:windows -- -ExtensionId <chrome-extension-id>
 ```
 
+The installer writes a launcher with absolute `node.exe` and Codex CLI paths. Use the default real-mode install for `/daily` Local Codex generation; `-Mock` is only for smoke tests.
+
 For a bridge smoke test without invoking the real Codex CLI, add `-Mock`:
 
 ```powershell

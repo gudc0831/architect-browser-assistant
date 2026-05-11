@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildCodexPrompt, handleRequest, parseCodexJsonlOutput } from "./codex-bridge-host.mjs";
+import { PassThrough } from "node:stream";
+import { buildCodexPrompt, handleRequest, parseCodexJsonlOutput, readNativeMessage } from "./codex-bridge-host.mjs";
 
 const input = {
   question: "Check closure risk",
@@ -58,5 +59,18 @@ describe("codex native host", () => {
 
     expect(response.ok).toBe(true);
     expect(response.output.answer).toContain("Local Codex bridge mock response");
+  });
+
+  it("reads one framed native message without waiting for stdin to close", async () => {
+    const stream = new PassThrough();
+    const pendingMessage = readNativeMessage(stream);
+    const payload = Buffer.from(JSON.stringify({ type: "status", requestId: "framed-status" }), "utf8");
+    const header = Buffer.alloc(4);
+    header.writeUInt32LE(payload.length, 0);
+
+    stream.write(header);
+    stream.write(payload);
+
+    await expect(pendingMessage).resolves.toEqual({ type: "status", requestId: "framed-status" });
   });
 });
