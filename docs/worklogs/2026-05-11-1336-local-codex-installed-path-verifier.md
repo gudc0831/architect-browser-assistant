@@ -1,0 +1,4 @@
+Req: Implement the next goal, a Local Codex installed-path verifier for the `/daily` bridge.
+Diff: Added `scripts/verify-local-codex-bridge.mjs`, `native-host:verify:windows`, `plans/09-local-codex-installed-path-verifier.md`, and README/roadmap verifier instructions; changed the Windows Codex executable fallback to `codex.exe`.
+Why: The in-page checklist needs a matching local command that checks the Windows/native-host install path before users debug `/daily` generation.
+Verify/Time: Registered HKCU native host for extension id `ianebfgjhjklildppcocmbmifedapooj`; `npm run native-host:verify:windows -- --json --strict` passed with 7 pass / 0 warn / 0 fail; `npm run typecheck`, `npm run test`, `npm run lint`, `npm run native-host:self-test`, and `npm run build` passed | 2026-05-11 13:36-13:44 KST.

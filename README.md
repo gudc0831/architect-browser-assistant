@@ -21,6 +21,8 @@ Repository boundary:
 - Slice 01: Chrome MV3 side-panel foundation, SaaS task context detection, retrieval/record/summary API client, local runtime adapter, deterministic mock runtime, and guarded `chrome.storage`.
 - Slice 06: Chrome native messaging permission, service-worker local runtime routes, Node native host, Windows installer script, and manual side-panel diagnostics for Local Codex.
 - Slice 07: In-page `/daily` assistant popup bridge to the Local Codex extension/native-host runtime.
+- Slice 08: In-page `/daily` Local Codex bridge health checklist.
+- Slice 09: Local installed-path verifier for extension manifest, HKCU registry, launcher, native host, and Codex CLI status.
 
 ## Default User Surface
 
@@ -66,5 +68,18 @@ For a bridge smoke test without invoking the real Codex CLI, add `-Mock`:
 ```powershell
 npm run native-host:install:windows -- -ExtensionId <chrome-extension-id> -Mock
 ```
+
+Verify the installed path:
+
+```powershell
+npm run native-host:verify:windows -- --extension-id <chrome-extension-id> --strict
+```
+
+Useful verifier options:
+
+- `--json`: print machine-readable check results.
+- `--mock-only`: verify extension/native-host path without checking real Codex CLI.
+- `--skip-registry`: skip HKCU registry inspection.
+- `--strict`: return a non-zero exit code when any check fails.
 
 After registration, reload the extension and use `/daily` for normal work. The side panel remains available for manual diagnostics only.

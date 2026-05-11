@@ -34,7 +34,7 @@ export default [
     },
   },
   {
-    files: ["native-host/**/*.mjs"],
+    files: ["native-host/**/*.mjs", "scripts/**/*.mjs"],
     languageOptions: {
       globals: {
         Buffer: "readonly",

@@ -178,7 +178,7 @@ async function runCodexExec(input) {
 }
 
 function getCodexCommand() {
-  return process.env.ARCHITECT_CODEX_CLI_PATH || (process.platform === "win32" ? "codex.cmd" : "codex");
+  return process.env.ARCHITECT_CODEX_CLI_PATH || (process.platform === "win32" ? "codex.exe" : "codex");
 }
 
 function getCodexTimeoutMs() {

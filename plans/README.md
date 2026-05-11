@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-11): `Implement and verify 08 Local Codex bridge health checklist for the /daily in-page assistant popup.`
+Current implementation goal (2026-05-11): `Implement and verify 09 Local Codex installed-path verifier for the /daily bridge.`
 
 The Codex goal tool still contains the completed slice 01 objective, so ongoing goals are tracked here and in the active slice PRD/worklog.
 
@@ -23,6 +23,7 @@ The Codex goal tool still contains the completed slice 01 objective, so ongoing 
 | 06 | [06-local-codex-bridge-packaging.md](06-local-codex-bridge-packaging.md) | `implemented` | Chrome native messaging bridge, local Codex host, Windows install foundation, side-panel diagnostics | `architect-browser-assistant` |
 | 07 | [07-in-page-local-codex-bridge.md](07-in-page-local-codex-bridge.md) | `implemented` | Use the Local Codex bridge from the default `/daily` in-page assistant popup | `architect-browser-assistant`, `architect-saas` |
 | 08 | [08-local-codex-health-checklist.md](08-local-codex-health-checklist.md) | `implemented` | Add an in-page Local Codex bridge health checklist before real installed-extension generation | `architect-browser-assistant`, `architect-saas` |
+| 09 | [09-local-codex-installed-path-verifier.md](09-local-codex-installed-path-verifier.md) | `implemented` | Verify extension manifest, HKCU registry, native host launcher, mock status, and Codex CLI status from one command | `architect-browser-assistant`, `architect-saas` |
 
 ## Completed Goal Log
 
@@ -37,6 +38,7 @@ The Codex goal tool still contains the completed slice 01 objective, so ongoing 
 9. `Make the SaaS /daily in-page popup the default assistant UI while the Chrome side panel remains manual.`
 10. `Implement and verify 07 in-page Local Codex bridge for the /daily assistant popup.`
 11. `Implement and verify 08 Local Codex bridge health checklist for the /daily in-page assistant popup.`
+12. `Implement and verify 09 Local Codex installed-path verifier for the /daily bridge.`
 
 ## Next Goal Candidate
 
@@ -44,8 +46,8 @@ The Codex goal tool still contains the completed slice 01 objective, so ongoing 
 
 Success criteria:
 
-1. The rebuilt extension is loaded in Chrome and the content script is active on the SaaS origin.
-2. The Windows native host registry entry points to the generated launcher for the actual extension id.
-3. `/daily` in-page `Check bridge` reports all readiness steps as pass.
-4. `/daily` in-page `Local Codex (extension)` mode returns a real authenticated Codex answer for a selected task.
+1. The rebuilt extension is reloaded in Chrome.
+2. `/daily` in-page `Check bridge` reports all readiness steps as pass.
+3. `/daily` in-page `Local Codex (extension)` mode returns a real authenticated Codex answer for a selected task.
+4. The assistant record is saved with execution mode `local-chatgpt-codex`.
 5. Verification evidence is recorded in the slice worklog.
