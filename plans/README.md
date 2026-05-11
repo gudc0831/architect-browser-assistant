@@ -1,8 +1,8 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-11): `Implement and verify 10 Local Codex real generation evidence flow and update the continuation roadmap.`
+Current implementation goal (2026-05-11): `Implement and verify 11 /daily installed-extension Local Codex browser proof.`
 
-Slice 10 real native-host generation evidence is recorded. The next goal should move to `/daily` browser proof with the installed extension.
+Slice 10 real native-host generation evidence is recorded. Slice 11 is now focused on `/daily` browser proof with the installed extension.
 
 ## Operating Rules
 
@@ -25,6 +25,7 @@ Slice 10 real native-host generation evidence is recorded. The next goal should 
 | 08 | [08-local-codex-health-checklist.md](08-local-codex-health-checklist.md) | `implemented` | Add an in-page Local Codex bridge health checklist before real installed-extension generation | `architect-browser-assistant`, `architect-saas` |
 | 09 | [09-local-codex-installed-path-verifier.md](09-local-codex-installed-path-verifier.md) | `implemented` | Verify extension manifest, HKCU registry, native host launcher, mock status, and Codex CLI status from one command | `architect-browser-assistant`, `architect-saas` |
 | 10 | [10-local-codex-real-generation-evidence.md](10-local-codex-real-generation-evidence.md) | `implemented` | Prove the native host `generate` path can produce a grounded Local Codex answer before `/daily` browser proof | `architect-browser-assistant` |
+| 11 | [11-daily-installed-extension-local-codex-proof.md](11-daily-installed-extension-local-codex-proof.md) | `in_progress` | Run installed-extension Local Codex proof from the default `/daily` in-page assistant popup | `architect-browser-assistant`, `architect-saas` |
 
 ## Completed Goal Log
 
@@ -44,12 +45,11 @@ Slice 10 real native-host generation evidence is recorded. The next goal should 
 
 ## Next Goal Candidate
 
-`Run and record real installed-extension Local Codex generation from /daily on the target Windows profile.`
+`Improve operator-facing diagnostics and saved-record evidence display for Local Codex runs.`
 
 Success criteria:
 
-1. The rebuilt extension is reloaded in Chrome.
-2. `/daily` in-page `Check bridge` reports all readiness steps as pass.
-3. `/daily` in-page `Local Codex (extension)` mode returns a real authenticated Codex answer for a selected task.
-4. The assistant record is saved with execution mode `local-chatgpt-codex`.
-5. Verification evidence is recorded in the slice worklog.
+1. Slice 11 browser proof is recorded or its automation blocker is documented.
+2. Local Codex run records expose execution mode and runtime mode clearly in the task assistant history.
+3. The `/daily` popup gives actionable diagnostics when bridge or native-host readiness fails.
+4. Verification evidence is recorded in the slice worklog.
