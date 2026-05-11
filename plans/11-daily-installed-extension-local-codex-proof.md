@@ -55,6 +55,7 @@ Current implementation state: `in_progress`
 | 2026-05-11 | `/daily` Chrome extension-surface check | Failed: `Check bridge` reported `Extension bridge` fail and `Native host / Codex` warn because the page bridge did not respond |
 | 2026-05-11 | Chrome extension reload automation | Blocked: browser security policy prevents navigating automation to `chrome://extensions/?id=ianebfgjhjklildppcocmbmifedapooj`; user must reload the unpacked extension manually |
 | 2026-05-11 | `/daily` missing-bridge guidance | Added clearer SaaS popup recovery guidance, verified with SaaS `npm run typecheck`, and confirmed the updated guidance appears in the `/daily` popup |
+| 2026-05-11 | `/daily` Chrome extension-surface recheck | Still blocked after page refresh: `Extension bridge` fail, `Native host / Codex` warn, `Generation` fail; manual extension reload remains required |
 
 ## Implementation Decisions
 
