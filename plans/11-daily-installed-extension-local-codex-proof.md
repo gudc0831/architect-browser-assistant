@@ -37,8 +37,8 @@ Current implementation state: `in_progress`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 11 PRD and active goal documentation | done | pending | this worklog | Document updated |
-| Extension build and installed-path verification | done | pending | this worklog | `npm run build` passed; installed-path verifier passed with 7 pass / 0 fail under user profile access |
+| Slice 11 PRD and active goal documentation | done | a636a2d | this worklog | Document updated |
+| Extension build and installed-path verification | done | a636a2d | this worklog | `npm run build` passed; installed-path verifier passed with 7 pass / 0 fail under user profile access |
 | `/daily` browser `Check bridge` evidence | blocked | - | this worklog | Chrome `/daily` page loaded, but extension content script did not respond |
 | `/daily` real Local Codex generation evidence | pending | - | this worklog | - |
 | Assistant record saved as `local-chatgpt-codex` | pending | - | this worklog | - |
