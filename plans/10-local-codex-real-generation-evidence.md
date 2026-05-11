@@ -45,7 +45,7 @@ Current implementation state: `implemented`
 | --- | --- | --- | --- | --- |
 | Slice 10 PRD and active goal documentation | done | df7d65f | this worklog | Document updated |
 | `native-host:verify-generation` command | done | df7d65f | this worklog | Mock verifier passed |
-| Real Codex generation evidence | done | pending | completion worklog | Passed after explicit user approval |
+| Real Codex generation evidence | done | 0a1027e | completion worklog | Passed after explicit user approval |
 | Browser README verifier instructions | done | df7d65f | this worklog | Document updated |
 | `/daily` browser generation evidence | deferred | - | - | Next slice |
 
