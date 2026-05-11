@@ -40,6 +40,7 @@ Current implementation state: `in_progress`
 | Slice 11 PRD and active goal documentation | done | a636a2d | this worklog | Document updated |
 | Extension build and installed-path verification | done | a636a2d | this worklog | `npm run build` passed; installed-path verifier passed with 7 pass / 0 fail under user profile access |
 | `/daily` browser `Check bridge` evidence | blocked | - | this worklog | Chrome `/daily` page loaded, but extension content script did not respond |
+| `/daily` missing-bridge operator guidance | done | SaaS `bc000af` | SaaS worklog `2026-05-11-1412-local-codex-bridge-reload-guidance.md` | SaaS `npm run typecheck` passed |
 | `/daily` real Local Codex generation evidence | pending | - | this worklog | - |
 | Assistant record saved as `local-chatgpt-codex` | pending | - | this worklog | - |
 
@@ -53,6 +54,7 @@ Current implementation state: `in_progress`
 | 2026-05-11 | `/daily` in-app browser check | Failed as expected: Codex in-app browser has no Architect extension content script |
 | 2026-05-11 | `/daily` Chrome extension-surface check | Failed: `Check bridge` reported `Extension bridge` fail and `Native host / Codex` warn because the page bridge did not respond |
 | 2026-05-11 | Chrome extension reload automation | Blocked: browser security policy prevents navigating automation to `chrome://extensions/?id=ianebfgjhjklildppcocmbmifedapooj`; user must reload the unpacked extension manually |
+| 2026-05-11 | `/daily` missing-bridge guidance | Added clearer SaaS popup recovery guidance and verified with SaaS `npm run typecheck` |
 
 ## Implementation Decisions
 
