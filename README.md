@@ -32,7 +32,9 @@ The first implementation slice is `Task Assistant Core Loop`.
 Slice 06 adds the first installable local bridge path:
 
 - Chrome MV3 uses the `nativeMessaging` permission.
-- The side panel talks to the service worker, and the service worker calls native host `com.architect.browser_assistant.codex_bridge`.
+- The SaaS `/daily` in-page `AI 검토` popup is the default assistant UI.
+- The Chrome side panel remains available as a secondary/native-bridge verification surface; clicking the extension action does not open it by default.
+- When manually opened, the side panel talks to the service worker, and the service worker calls native host `com.architect.browser_assistant.codex_bridge`.
 - The native host runs `codex exec - --json --sandbox read-only --skip-git-repo-check` with the selected task context and evidence.
 - No ChatGPT, Codex, OpenAI, or SaaS secret is stored in extension storage.
 
@@ -61,4 +63,4 @@ For a bridge smoke test without invoking the real Codex CLI, add `-Mock`:
 npm run native-host:install:windows -- -ExtensionId <chrome-extension-id> -Mock
 ```
 
-After registration, open the extension side panel, change Mode to `Local Codex`, retrieve evidence, and generate an answer. If Codex CLI is not installed or authenticated, the panel remains available but reports the native host/Codex status instead of saving credentials.
+After registration, keep using the SaaS `/daily` in-page `AI 검토` popup for normal work. For local bridge diagnostics, manually open the Chrome side panel, change Mode to `Local Codex`, retrieve evidence, and generate an answer. If Codex CLI is not installed or authenticated, the side panel reports the native host/Codex status instead of saving credentials.

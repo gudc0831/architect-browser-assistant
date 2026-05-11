@@ -7,7 +7,7 @@ import {
 } from "../runtime/native-bridge-contract";
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch((error) => {
+  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch((error) => {
     console.error("Failed to configure side panel", error);
   });
 });

@@ -19,7 +19,7 @@ Latest official docs checked before implementation:
 Implementation decisions from those docs:
 
 - Use Chrome `nativeMessaging`, not a localhost server, for the first local bridge because Chrome provides host registration, allowed extension origins, and stdio framing.
-- Keep the persistent PC UI in the MV3 side panel. The side panel calls the service worker; the service worker calls the native host.
+- Keep the SaaS in-page PC assistant popup as the default user surface. The Chrome MV3 side panel remains a secondary diagnostic/native-bridge surface and is not opened from the extension action by default.
 - Register a per-user Windows native host under HKCU after the real unpacked extension id is known.
 - Invoke Codex through `codex exec - --json` so the native host can pass a generated prompt on stdin and parse machine-readable JSONL events.
 - Run Codex in a read-only sandbox for this answer-generation bridge. This slice must not let the browser extension mutate the local workspace.
@@ -30,21 +30,22 @@ The product direction requires user-local ChatGPT/Codex execution for architectu
 
 ## Solution
 
-Add a Chrome native messaging bridge foundation:
+Add a Chrome native messaging bridge foundation while preserving the SaaS in-page popup as the default assistant surface:
 
 1. Add `nativeMessaging` to the MV3 manifest.
 2. Add service worker routes for local runtime status, capabilities, and generation.
 3. Make `LocalRuntimeClient` call those routes instead of returning a hard-coded unavailable state.
 4. Add a Node native host that speaks Chrome native messaging framing and can run `codex exec`.
 5. Add Windows host registration tooling and a mock self-test path for installation verification before real Codex auth is available.
-6. Add a side-panel runtime mode selector so testers can switch between deterministic mock and Local Codex.
+6. Keep a side-panel runtime mode selector for manual native-bridge verification, but do not make it the primary task assistant UI.
 
 ## User Stories
 
-1. As an architect task user, I can select `Local Codex` in the extension side panel and immediately see whether the local bridge is available.
-2. As an architect task user, I can generate an answer from selected task context and retrieved evidence without storing Codex credentials in the extension.
-3. As a developer/operator, I can build the extension, load it unpacked, register the Windows native host after obtaining the extension id, and run a mock bridge smoke test.
-4. As a security reviewer, I can verify that extension storage still rejects credential-like keys and that the native host is origin-scoped through Chrome native messaging.
+1. As an architect task user, I use the `/daily` in-page `AI 검토` popup as the default assistant workflow.
+2. As a developer/operator, I can manually open the Chrome side panel to select `Local Codex` and see whether the local bridge is available.
+3. As an architect task user, I can generate an answer from selected task context and retrieved evidence without storing Codex credentials in the extension when using the side panel bridge.
+4. As a developer/operator, I can build the extension, load it unpacked, register the Windows native host after obtaining the extension id, and run a mock bridge smoke test.
+5. As a security reviewer, I can verify that extension storage still rejects credential-like keys and that the native host is origin-scoped through Chrome native messaging.
 
 ## Implementation Status
 
@@ -56,6 +57,7 @@ Current implementation state: `implemented`
 | MV3 native messaging permission and service worker routes | done | pending | this worklog | `npm run typecheck`, `npm run test` |
 | `LocalRuntimeClient` bridge implementation | done | pending | this worklog | `npm run typecheck`, `npm run test` |
 | Side-panel runtime selector and error reporting | done | pending | this worklog | `npm run typecheck`, `npm run build` |
+| SaaS in-page popup remains default while side panel is secondary | done | pending | follow-up worklog | `npm run typecheck`, `npm run build` |
 | Node native host with Codex `exec` JSONL parsing | done | pending | this worklog | `npm run native-host:self-test`, `npm run test` |
 | Windows native host installer script | done | pending | this worklog | Script review, build verification |
 | Real Chrome native host registration | deferred | - | - | Requires unpacked extension id from tester's Chrome profile |
@@ -69,10 +71,12 @@ Current implementation state: `implemented`
 | 2026-05-11 | Bridge unit and protocol tests | `npm run typecheck` passed; `npm run test` passed |
 | 2026-05-11 | Native host mock smoke test | `npm run native-host:self-test` passed |
 | 2026-05-11 | Final static verification | `npm run lint` passed; `npm run build` passed |
+| 2026-05-11 | Default UI direction update | SaaS in-page popup restored as default; side panel set to manual/secondary. `npm run typecheck`, `npm run test`, `npm run lint`, `npm run build` passed. |
 
 ## Functional Decisions
 
 - The extension never stores Codex, ChatGPT, OpenAI, or SaaS service credentials.
+- The SaaS `/daily` in-page popup is the default assistant UI. Chrome side panel functionality is retained for native bridge checks, but the extension action does not automatically open it.
 - The native host accepts only three request types: `status`, `capabilities`, and `generate`.
 - `generate` sends only selected task context, the user question, and evidence excerpts already returned or approved through SaaS flows.
 - The native host asks Codex to return a JSON object with `answer` and `draftSummary`; if Codex returns plain text, the host falls back to a safe draft summary wrapper.

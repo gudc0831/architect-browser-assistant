@@ -151,7 +151,7 @@ Implement and verify 06 Local Codex bridge packaging and extension install found
 Success criteria:
 
 1. MV3 extension declares `nativeMessaging` and routes local runtime requests through the service worker. Complete.
-2. Side panel can switch to `Local Codex` and surfaces native host availability/errors. Complete.
+2. `/daily` in-page `AI 검토` popup remains the default assistant UI, while the manually opened side panel can switch to `Local Codex` and surface native host availability/errors. Complete.
 3. Native host can run a mock protocol self-test and is ready to invoke `codex exec - --json` when Codex CLI is installed. Complete.
 4. Windows install script generates launcher/manifest and can register the host after the unpacked extension id is known. Complete.
 5. typecheck/test/native-host self-test/lint/build verification is tracked in slice 06. Complete.
