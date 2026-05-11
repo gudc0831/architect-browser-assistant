@@ -9,3 +9,6 @@ dist/
 !.env.example
 
 tsconfig.tsbuildinfo
+
+native-host/architect-codex-bridge.cmd
+native-host/com.architect.browser_assistant.codex_bridge.json

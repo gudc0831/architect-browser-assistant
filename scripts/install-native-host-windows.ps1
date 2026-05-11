@@ -2,7 +2,7 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$ExtensionId,
 
-  [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
+  [string]$RepoRoot = "",
 
   [string]$NodePath = "node.exe",
 
@@ -12,6 +12,21 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+
+$scriptRoot = $PSScriptRoot
+if ([string]::IsNullOrWhiteSpace($scriptRoot)) {
+  $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+}
+
+if ([string]::IsNullOrWhiteSpace($scriptRoot)) {
+  $scriptRoot = Join-Path (Get-Location).Path "scripts"
+}
+
+if ([string]::IsNullOrWhiteSpace($RepoRoot)) {
+  $RepoRoot = (Resolve-Path (Join-Path $scriptRoot "..")).Path
+} else {
+  $RepoRoot = (Resolve-Path $RepoRoot).Path
+}
 
 $hostName = "com.architect.browser_assistant.codex_bridge"
 $nativeHostDir = Join-Path $RepoRoot "native-host"
