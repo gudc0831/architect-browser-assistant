@@ -43,7 +43,7 @@ Current implementation state: `in_progress`
 | --- | --- | --- | --- | --- |
 | Slice 10 PRD and active goal documentation | done | df7d65f | this worklog | Document updated |
 | `native-host:verify-generation` command | done | df7d65f | this worklog | Mock verifier passed |
-| Real Codex generation evidence | pending approval | - | this worklog | External Codex CLI execution blocked until explicit user approval |
+| Real Codex generation evidence | pending approval | - | this worklog | External Codex CLI execution blocked until explicit user approval of data transfer |
 | Browser README verifier instructions | done | df7d65f | this worklog | Document updated |
 | `/daily` browser generation evidence | deferred | - | - | Next slice |
 
@@ -56,6 +56,7 @@ Current implementation state: `in_progress`
 | 2026-05-11 | Real native-host generation guard | Passed: `npm run native-host:verify-generation -- --json --strict` stops before Codex CLI unless `--allow-external` is supplied |
 | 2026-05-11 | Safe repo verification | Passed `npm run native-host:self-test`, `npm run typecheck`, `npm run test`, `npm run lint`, and `npm run build` |
 | 2026-05-11 | Real native-host generation verifier | Blocked pending explicit approval because it sends the verification prompt through Codex CLI |
+| 2026-05-11 | Real verifier execution request | Not run: external Codex/OpenAI data transfer still needs explicit user approval after disclosure |
 
 ## Implementation Decisions
 
@@ -81,7 +82,8 @@ Current implementation state: `in_progress`
 
 - Real native generation does not prove the content script is active on the currently open `/daily` page; the next slice must record `/daily` UI evidence.
 - The Codex CLI may require network/auth state in the user's Windows profile.
-- Real generation evidence is still pending until the user explicitly approves external Codex CLI execution for the bounded verifier prompt.
+- Real generation evidence is still pending until the user explicitly approves external Codex/OpenAI data transfer for the bounded verifier prompt.
+- Approval must cover the command `npm run native-host:verify-generation -- --json --allow-external --strict` and acknowledge that the verification prompt includes task/evidence context.
 
 ## Next Slice Candidate
 
