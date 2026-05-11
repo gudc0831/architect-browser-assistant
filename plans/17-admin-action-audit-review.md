@@ -34,10 +34,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 17 PRD and roadmap entry | done | pending commit | this worklog | Document created and updated |
-| Shared action-audit parser | done | pending SaaS commit | SaaS worklog | `npm run typecheck` passed |
-| Admin action-audit API | done | pending SaaS commit | SaaS worklog | filtered API checks passed |
-| Admin review UI and filters | done | pending SaaS commit | SaaS worklog | Browser verified list, filters, href, and `/daily?taskId` detail focus |
+| Slice 17 PRD and roadmap entry | done | browser `b0e1c63` | this worklog | Document created and updated |
+| Shared action-audit parser | done | SaaS `b3b9f48` | SaaS worklog | `npm run typecheck` passed |
+| Admin action-audit API | done | SaaS `b3b9f48` | SaaS worklog | filtered API checks passed |
+| Admin review UI and filters | done | SaaS `b3b9f48` | SaaS worklog | Browser verified list, filters, href, and `/daily?taskId` detail focus |
 
 ## Verification Log
 
