@@ -2,7 +2,7 @@
 
 Created: 2026-05-11
 Parent document: [../PLAN.md](../PLAN.md)
-Current status: `in_progress`
+Current status: `implemented`
 Goal: Implement and verify 11 `/daily` installed-extension Local Codex browser proof.
 Worklog: [../docs/worklogs/2026-05-11-1405-daily-installed-extension-local-codex-proof.md](../docs/worklogs/2026-05-11-1405-daily-installed-extension-local-codex-proof.md)
 
@@ -33,7 +33,7 @@ Run and record the installed-extension browser proof:
 
 ## Implementation Status
 
-Current implementation state: `in_progress`
+Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
@@ -43,8 +43,8 @@ Current implementation state: `in_progress`
 | Native host Chrome protocol and launcher hardening | done | 8e47892 | this worklog | Fixed one-frame native message reads, real-mode launcher path pinning, WindowsApps Codex path rejection, and launcher self-test coverage |
 | `/daily` browser `Check bridge` evidence | done | 8e47892 | this worklog | Chrome `/daily` popup passed `Extension bridge`, `Native host / Codex`, `Credentials`, and `Generation` |
 | `/daily` missing-bridge operator guidance | done | SaaS `bc000af`, `510832a` | SaaS worklog `2026-05-11-1412-local-codex-bridge-reload-guidance.md` | SaaS `npm run typecheck` passed; `/daily` popup displayed reload/verifier guidance |
-| `/daily` real Local Codex generation evidence | pending | - | this worklog | - |
-| Assistant record saved as `local-chatgpt-codex` | pending | - | this worklog | - |
+| `/daily` real Local Codex generation evidence | done | SaaS `1db0a25` | SaaS worklog `2026-05-11-1442-local-codex-record-verification.md` | Browser `/daily` popup generated a Local Codex answer for selected task `001` after explicit user approval |
+| Assistant record saved as `local-chatgpt-codex` | done | SaaS `1db0a25` | SaaS worklog `2026-05-11-1442-local-codex-record-verification.md` | `npm run assistant:verify-record -- --backend-mode local --execution-mode local-chatgpt-codex --runtime-mode extension-native-bridge-in-page --question-contains 001 --since-minutes 30 --json --strict` passed |
 
 ## Verification Log
 
@@ -61,6 +61,8 @@ Current implementation state: `in_progress`
 | 2026-05-11 | Chrome profile extension registration | Passed `npm run extension:verify-chrome-profile -- --json --strict`; Chrome `Default` profile has extension id `ianebfgjhjklildppcocmbmifedapooj` pointing to `D:\architect-workspace\architect-browser-assistant\dist` |
 | 2026-05-11 | Native host launcher and protocol hardening | Passed `npm run test`, `npm run typecheck`, `npm run lint`, and `npm run native-host:verify:windows -- --extension-id ianebfgjhjklildppcocmbmifedapooj --json --strict` with 11 pass / 0 fail |
 | 2026-05-11 | `/daily` Chrome extension-surface bridge proof | Passed in the `/daily` in-page popup: `Extension bridge`, `Native host / Codex`, `Credentials`, and `Generation` all reported pass |
+| 2026-05-11 | `/daily` real Local Codex generation | Passed after explicit user approval; task `001` generated a Korean architecture review answer and the popup reported saved confidence `47%` |
+| 2026-05-11 | Saved assistant record verification | Passed SaaS verifier with record `5a17423c-c291-4609-98b6-a39d6634d968`, task `arch-task-001`, execution mode `local-chatgpt-codex`, runtime mode `extension-native-bridge-in-page`, confidence `47` |
 
 ## Implementation Decisions
 
@@ -92,10 +94,10 @@ Current implementation state: `in_progress`
 - Chrome extension reload currently requires user-visible browser interaction because `chrome://extensions` is blocked to browser automation.
 - Real generation still requires explicit user approval because selected task context and evidence are sent through Codex CLI to the external Codex/OpenAI service.
 
-## User Approval Needed
+## Completion Evidence
 
-The `/daily` bridge proof is ready. The next action is real Local Codex generation for selected task `001`, which sends the selected task context, question, and retrieved evidence through the user's Codex CLI to the external Codex/OpenAI service. The active goal remains open until real generation and saved-record evidence are recorded.
+The `/daily` installed-extension Local Codex proof is complete for selected task `001`. The run used the default in-page popup, passed the extension/native-host health check, generated a real Local Codex answer after explicit user approval, and saved an assistant record verified as `local-chatgpt-codex`.
 
 ## Next Slice Candidate
 
-If `/daily` browser proof passes, improve operator-facing diagnostics and saved-record evidence display for Local Codex runs.
+Improve operator-facing diagnostics and saved-record evidence display for Local Codex runs.

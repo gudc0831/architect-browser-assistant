@@ -1,8 +1,8 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-11): `Implement and verify 11 /daily installed-extension Local Codex browser proof.`
+Current implementation goal (2026-05-11): `Improve operator-facing diagnostics and saved-record evidence display for Local Codex runs.`
 
-Slice 10 real native-host generation evidence is recorded. Slice 11 is now focused on `/daily` browser proof with the installed extension.
+Slice 11 installed-extension `/daily` browser proof is recorded. The next work should make Local Codex run evidence easier for operators to inspect from the task assistant UI.
 
 ## Operating Rules
 
@@ -25,7 +25,7 @@ Slice 10 real native-host generation evidence is recorded. Slice 11 is now focus
 | 08 | [08-local-codex-health-checklist.md](08-local-codex-health-checklist.md) | `implemented` | Add an in-page Local Codex bridge health checklist before real installed-extension generation | `architect-browser-assistant`, `architect-saas` |
 | 09 | [09-local-codex-installed-path-verifier.md](09-local-codex-installed-path-verifier.md) | `implemented` | Verify extension manifest, HKCU registry, native host launcher, mock status, and Codex CLI status from one command | `architect-browser-assistant`, `architect-saas` |
 | 10 | [10-local-codex-real-generation-evidence.md](10-local-codex-real-generation-evidence.md) | `implemented` | Prove the native host `generate` path can produce a grounded Local Codex answer before `/daily` browser proof | `architect-browser-assistant` |
-| 11 | [11-daily-installed-extension-local-codex-proof.md](11-daily-installed-extension-local-codex-proof.md) | `in_progress` | Run installed-extension Local Codex proof from the default `/daily` in-page assistant popup | `architect-browser-assistant`, `architect-saas` |
+| 11 | [11-daily-installed-extension-local-codex-proof.md](11-daily-installed-extension-local-codex-proof.md) | `implemented` | Run installed-extension Local Codex proof from the default `/daily` in-page assistant popup | `architect-browser-assistant`, `architect-saas` |
 
 ## Completed Goal Log
 
@@ -42,6 +42,7 @@ Slice 10 real native-host generation evidence is recorded. Slice 11 is now focus
 11. `Implement and verify 08 Local Codex bridge health checklist for the /daily in-page assistant popup.`
 12. `Implement and verify 09 Local Codex installed-path verifier for the /daily bridge.`
 13. `Implement and verify 10 Local Codex real generation evidence flow and update the continuation roadmap.`
+14. `Implement and verify 11 /daily installed-extension Local Codex browser proof.`
 
 ## Next Goal Candidate
 
