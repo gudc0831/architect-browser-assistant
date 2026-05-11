@@ -33,4 +33,19 @@ export default [
       "no-console": ["warn", { "allow": ["warn", "error"] }],
     },
   },
+  {
+    files: ["native-host/**/*.mjs"],
+    languageOptions: {
+      globals: {
+        Buffer: "readonly",
+        clearTimeout: "readonly",
+        console: "readonly",
+        process: "readonly",
+        setTimeout: "readonly",
+      },
+    },
+    rules: {
+      "no-control-regex": "off",
+    },
+  },
 ];

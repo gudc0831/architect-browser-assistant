@@ -24,6 +24,8 @@ type ActiveTabSource = {
   capturedAt: string;
 };
 
+type RuntimeMode = "mock" | "local-chatgpt-codex";
+
 const externalSourceOptions: Array<{ value: ExternalEvidenceSourceType; label: string }> = [
   { value: "web_page", label: "Web page" },
   { value: "skill_output", label: "Skill output" },
@@ -34,6 +36,7 @@ const externalSourceOptions: Array<{ value: ExternalEvidenceSourceType; label: s
 
 export function App() {
   const [panelState, setPanelState] = useState<PanelState>({ state: "idle" });
+  const [runtimeMode, setRuntimeMode] = useState<RuntimeMode>("mock");
   const [runtimeStatus, setRuntimeStatus] = useState<AssistantRuntimeStatus | null>(null);
   const [question, setQuestion] = useState("");
   const [taskContext, setTaskContext] = useState<AssistantTaskContext | null>(null);
@@ -91,8 +94,18 @@ export function App() {
   }
 
   async function refreshRuntimeStatus() {
+    const mode = await readSafeSetting<RuntimeMode>("runtimeMode", "mock");
+    setRuntimeMode(mode);
     const runtime = await createAssistantRuntime();
     setRuntimeStatus(await runtime.isAvailable());
+  }
+
+  async function handleRuntimeModeChange(nextMode: RuntimeMode) {
+    setRuntimeMode(nextMode);
+    setOutput(null);
+    setSummaryStatus("");
+    await writeSafeSetting("runtimeMode", nextMode);
+    await refreshRuntimeStatus();
   }
 
   async function handleRetrieve() {
@@ -117,19 +130,24 @@ export function App() {
     }
 
     const runtime = await createAssistantRuntime();
-    const generated = await runtime.generateAnswer({ question, taskContext, evidence });
-    setOutput(generated);
-    const saved = await saveAssistantRecord({
-      taskId: taskContext.taskId,
-      question,
-      answer: generated.answer,
-      evidence,
-      executionMode: runtimeStatus?.mode ?? "mock",
-      runtimeMode: runtimeStatus?.mode ?? "mock",
-      draftSummary: generated.draftSummary,
-    });
-    setRecordId(saved.id);
-    setSummaryStatus(`Saved record with confidence ${saved.confidenceScore}%`);
+    setSummaryStatus("Generating answer...");
+    try {
+      const generated = await runtime.generateAnswer({ question, taskContext, evidence });
+      setOutput(generated);
+      const saved = await saveAssistantRecord({
+        taskId: taskContext.taskId,
+        question,
+        answer: generated.answer,
+        evidence,
+        executionMode: runtimeStatus?.mode ?? "mock",
+        runtimeMode: runtimeStatus?.mode ?? "mock",
+        draftSummary: generated.draftSummary,
+      });
+      setRecordId(saved.id);
+      setSummaryStatus(`Saved record with confidence ${saved.confidenceScore}%`);
+    } catch (error) {
+      setSummaryStatus(error instanceof Error ? error.message : "Answer generation failed");
+    }
   }
 
   async function handleSaveSummary(status: "approved" | "deferred") {
@@ -208,8 +226,20 @@ export function App() {
       </header>
 
       <section className="status-strip">
-        <span>{runtimeStatus?.available ? "Runtime ready" : "Runtime unavailable"}</span>
-        <strong>{runtimeStatus?.mode ?? "checking"}</strong>
+        <div>
+          <span>{runtimeStatus?.available ? "Runtime ready" : "Runtime unavailable"}</span>
+          {runtimeStatus?.reason ? <small>{runtimeStatus.reason}</small> : null}
+        </div>
+        <label className="mode-select">
+          <span>Mode</span>
+          <select
+            value={runtimeMode}
+            onChange={(event) => void handleRuntimeModeChange(event.target.value as RuntimeMode)}
+          >
+            <option value="mock">Mock</option>
+            <option value="local-chatgpt-codex">Local Codex</option>
+          </select>
+        </label>
       </section>
 
       {panelState.state === "error" ? <p className="error-text">{panelState.message}</p> : null}

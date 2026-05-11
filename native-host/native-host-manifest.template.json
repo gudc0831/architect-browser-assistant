@@ -1,0 +1,7 @@
+{
+  "name": "com.architect.browser_assistant.codex_bridge",
+  "description": "Architect Browser Assistant local Codex bridge",
+  "path": "__GENERATED_LAUNCHER_PATH__",
+  "type": "stdio",
+  "allowed_origins": ["chrome-extension://__EXTENSION_ID__/"]
+}

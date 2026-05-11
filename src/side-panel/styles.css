@@ -67,12 +67,30 @@ h2 {
 
 .status-strip {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
   border-left: 4px solid #2f6b57;
   background: #ffffff;
   padding: 10px;
   font-size: 13px;
+}
+
+.status-strip div,
+.mode-select {
+  display: grid;
+  gap: 4px;
+}
+
+.status-strip small,
+.mode-select span {
+  color: #657168;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.mode-select {
+  min-width: 128px;
 }
 
 .composer {

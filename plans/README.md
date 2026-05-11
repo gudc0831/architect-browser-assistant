@@ -1,5 +1,7 @@
 # Slice Roadmap
 
+Current implementation goal (2026-05-11): `Implement and verify 06 Local Codex bridge packaging and extension install foundation.`
+
 작성일: 2026-05-07
 상위 문서: `../PLAN.md`
 현재 실행 목표: `05 SaaS API Mode`의 live provider adapter와 admin reporting까지 구현 완료했다.
@@ -26,6 +28,7 @@
 | 03 | `03-file-and-image-analysis.md` | `implemented` | PDF/DOCX/XLSX/TXT/CSV와 PNG/JPG OCR 결과를 task assistant 근거로 저장 | `architect-saas`, `architect-browser-assistant` |
 | 04 | `04-web-and-skill-expansion.md` | `implemented` | 사용자가 허용한 웹/스킬 결과를 task 기록과 지식 후보로 연결 | `architect-browser-assistant`, `architect-saas` |
 | 05 | `05-saas-api-mode.md` | `implemented` | 조직 단위 SaaS API 실행 모드, 사용량, 감사, 관리자 정책 | `architect-saas` |
+| 06 | `06-local-codex-bridge-packaging.md` | `implemented` | Chrome native messaging bridge, local Codex host, Windows install foundation, extension runtime selector | `architect-browser-assistant` |
 
 ## 현재 Goal 기록
 
@@ -137,4 +140,24 @@ Implement SaaS API Mode live provider adapter and admin reporting.
 
 ```text
 Implement local ChatGPT/Codex bridge packaging and extension install verification.
+```
+
+Completed execution goal:
+
+```text
+Implement and verify 06 Local Codex bridge packaging and extension install foundation.
+```
+
+Success criteria:
+
+1. MV3 extension declares `nativeMessaging` and routes local runtime requests through the service worker. Complete.
+2. Side panel can switch to `Local Codex` and surfaces native host availability/errors. Complete.
+3. Native host can run a mock protocol self-test and is ready to invoke `codex exec - --json` when Codex CLI is installed. Complete.
+4. Windows install script generates launcher/manifest and can register the host after the unpacked extension id is known. Complete.
+5. typecheck/test/native-host self-test/lint/build verification is tracked in slice 06. Complete.
+
+Next implementation goal candidate:
+
+```text
+Verify real Chrome native host registration and authenticated local Codex generation on the target Windows profile.
 ```

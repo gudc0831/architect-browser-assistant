@@ -7,7 +7,7 @@ export const manifest: ManifestV3Export = {
   name: "Architect Browser Assistant",
   version: "0.1.0",
   description: "Task-centered assistant side panel for Architect SaaS.",
-  permissions: ["sidePanel", "storage", "activeTab"],
+  permissions: ["sidePanel", "storage", "activeTab", "nativeMessaging"],
   host_permissions: [saasOrigin],
   background: {
     service_worker: "src/background/service-worker.ts",

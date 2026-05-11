@@ -2,7 +2,7 @@
 
 작성일: 2026-05-08
 상위 문서: `../PLAN.md`
-현재 상태: `approved`
+현재 상태: `implemented`
 
 ## Goal
 

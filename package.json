@@ -8,7 +8,9 @@
     "build": "vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "eslint . --ext .ts,.tsx",
+    "native-host:self-test": "node native-host/codex-bridge-host.mjs --self-test",
+    "native-host:install:windows": "powershell -ExecutionPolicy Bypass -File scripts/install-native-host-windows.ps1"
   },
   "dependencies": {
     "@crxjs/vite-plugin": "^2.0.3",
