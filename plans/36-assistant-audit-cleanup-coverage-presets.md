@@ -33,10 +33,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 36 PRD and roadmap entry | implemented | architect-browser-assistant `0331fff` | [browser worklog](../docs/worklogs/2026-05-12-1344-assistant-audit-cleanup-coverage-presets.md) | PRD and roadmap updated |
+| Slice 36 PRD and roadmap entry | implemented | architect-browser-assistant `e62e7d4` | [browser worklog](../docs/worklogs/2026-05-12-1344-assistant-audit-cleanup-coverage-presets.md) | PRD and roadmap updated |
 | Cleanup coverage preset API filter | implemented | architect-saas `e1f1292` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1344-assistant-audit-cleanup-coverage-presets.md) | API returned `coveragePreset` in coverage/summary/JSON and filtered rows |
 | Admin UI preset selector | implemented | architect-saas `e1f1292` | SaaS worklog | Browser verified `Coverage preset` selector and `Stale unreviewed` state |
-| User guide and worklogs | implemented | architect-saas `e1f1292`; architect-browser-assistant `0331fff` | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `e1f1292`; architect-browser-assistant `e62e7d4` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
