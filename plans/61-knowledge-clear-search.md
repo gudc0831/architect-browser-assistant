@@ -26,8 +26,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 61 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1840-knowledge-clear-search.md) | PRD and roadmap updated |
-| Knowledge clear search action | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1840-knowledge-clear-search.md) | Final batch verification pending |
+| Slice 61 PRD and roadmap entry | implemented | `82543f3` | [browser worklog](../docs/worklogs/2026-05-12-1840-knowledge-clear-search.md) | PRD and roadmap updated |
+| Knowledge clear search action | implemented | `1d10dc1` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1840-knowledge-clear-search.md) | Final batch verification pending |
 
 ## Verification Log
 
