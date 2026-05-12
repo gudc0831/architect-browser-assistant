@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 63 implemented; next candidate is Knowledge copy source handoff.`
+Current implementation goal (2026-05-12): `Slice 64 implemented; next candidate is Knowledge preview density toggle.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -50,6 +50,7 @@ Slice 60 added Knowledge draft length counters.
 Slice 61 added Knowledge clear search action.
 Slice 62 added Knowledge reset draft action.
 Slice 63 added Knowledge copy Markdown action.
+Slice 64 added Knowledge copy source handoff action.
 
 ## Operating Rules
 
@@ -125,6 +126,7 @@ Slice 63 added Knowledge copy Markdown action.
 | 61 | [61-knowledge-clear-search.md](61-knowledge-clear-search.md) | `implemented` | Knowledge clear search action | `architect-saas`, `architect-browser-assistant` |
 | 62 | [62-knowledge-reset-draft.md](62-knowledge-reset-draft.md) | `implemented` | Knowledge reset draft action | `architect-saas`, `architect-browser-assistant` |
 | 63 | [63-knowledge-copy-markdown.md](63-knowledge-copy-markdown.md) | `implemented` | Knowledge copy Markdown action | `architect-saas`, `architect-browser-assistant` |
+| 64 | [64-knowledge-copy-source-handoff.md](64-knowledge-copy-source-handoff.md) | `implemented` | Knowledge copy source handoff action | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -194,13 +196,14 @@ Slice 63 added Knowledge copy Markdown action.
 64. `Implement and verify 61 Knowledge clear search action.`
 65. `Implement and verify 62 Knowledge reset draft action.`
 66. `Implement and verify 63 Knowledge copy Markdown action.`
+67. `Implement and verify 64 Knowledge copy source handoff action.`
 
 ## Next Goal Candidate
 
-`Add a Knowledge copy source handoff action so admins can copy candidate, task, scope, and evidence context as a compact review handoff.`
+`Add a Knowledge preview density toggle so admins can switch the Markdown preview between compact and expanded review modes.`
 
 Success criteria:
 
-1. Knowledge draft editor exposes a copy source handoff action.
-2. The copied text includes candidate record, task id, scope, state, confidence, and evidence count.
-3. The source-handoff slice is documented in the next slice PRD.
+1. Knowledge draft Markdown preview exposes a compact/expanded toggle.
+2. Compact mode constrains the preview height without changing the editable body.
+3. The preview-density slice is documented in the next slice PRD.
