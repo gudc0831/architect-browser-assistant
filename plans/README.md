@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 75 implemented; next candidate is Knowledge candidate out-of-filter jump action.`
+Current implementation goal (2026-05-12): `Slice 76 implemented; next candidate is Knowledge candidate queue density controls.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -62,6 +62,7 @@ Slice 72 added Knowledge active candidate filter chips.
 Slice 73 added Knowledge clear candidate filters action.
 Slice 74 added Knowledge candidate sort controls.
 Slice 75 added Knowledge candidate selection summary.
+Slice 76 added Knowledge show selected candidate action.
 
 ## Operating Rules
 
@@ -149,6 +150,7 @@ Slice 75 added Knowledge candidate selection summary.
 | 73 | [73-knowledge-clear-candidate-filters.md](73-knowledge-clear-candidate-filters.md) | `implemented` | Knowledge clear candidate filters action | `architect-saas`, `architect-browser-assistant` |
 | 74 | [74-knowledge-candidate-sort-controls.md](74-knowledge-candidate-sort-controls.md) | `implemented` | Knowledge candidate sort controls | `architect-saas`, `architect-browser-assistant` |
 | 75 | [75-knowledge-candidate-selection-summary.md](75-knowledge-candidate-selection-summary.md) | `implemented` | Knowledge candidate selection summary | `architect-saas`, `architect-browser-assistant` |
+| 76 | [76-knowledge-show-selected-candidate.md](76-knowledge-show-selected-candidate.md) | `implemented` | Knowledge show selected candidate action | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -230,13 +232,14 @@ Slice 75 added Knowledge candidate selection summary.
 76. `Implement and verify 73 Knowledge clear candidate filters action.`
 77. `Implement and verify 74 Knowledge candidate sort controls.`
 78. `Implement and verify 75 Knowledge candidate selection summary.`
+79. `Implement and verify 76 Knowledge show selected candidate action.`
 
 ## Next Goal Candidate
 
-`Add a Knowledge out-of-filter jump action so admins can return the queue filters to the selected candidate when it is hidden.`
+`Add Knowledge candidate queue density controls so admins can switch between compact and detailed candidate rows.`
 
 Success criteria:
 
-1. Candidate selection summary exposes an action when selected item is outside filters.
-2. The action clears filters enough to reveal the selected candidate.
-3. The out-of-filter action slice is documented in the next slice PRD.
+1. Candidate queue exposes compact and detailed row controls.
+2. Compact mode preserves title, state, and risk chips.
+3. The queue-density slice is documented in the next slice PRD.
