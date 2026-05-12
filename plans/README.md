@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 45 implemented; next candidate is cleanup governance queue grouping.`
+Current implementation goal (2026-05-12): `Slice 46 implemented; next candidate is cleanup queue metrics.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -32,6 +32,7 @@ Slice 42 added a clear-filter action for cleanup review coverage filters.
 Slice 43 added active filter summary chips for cleanup review coverage.
 Slice 44 added a stale-unreviewed cleanup coverage shortcut.
 Slice 45 added a reviewed cleanup coverage shortcut.
+Slice 46 added cleanup governance queue grouping.
 
 ## Operating Rules
 
@@ -89,6 +90,7 @@ Slice 45 added a reviewed cleanup coverage shortcut.
 | 43 | [43-assistant-audit-cleanup-active-filter-chips.md](43-assistant-audit-cleanup-active-filter-chips.md) | `implemented` | Active filter summary chips for cleanup review coverage | `architect-saas`, `architect-browser-assistant` |
 | 44 | [44-assistant-audit-cleanup-stale-unreviewed-shortcut.md](44-assistant-audit-cleanup-stale-unreviewed-shortcut.md) | `implemented` | Stale-unreviewed cleanup coverage shortcut | `architect-saas`, `architect-browser-assistant` |
 | 45 | [45-assistant-audit-cleanup-reviewed-shortcut.md](45-assistant-audit-cleanup-reviewed-shortcut.md) | `implemented` | Reviewed cleanup coverage shortcut | `architect-saas`, `architect-browser-assistant` |
+| 46 | [46-assistant-audit-cleanup-queue-grouping.md](46-assistant-audit-cleanup-queue-grouping.md) | `implemented` | Cleanup governance queue grouping | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -140,13 +142,14 @@ Slice 45 added a reviewed cleanup coverage shortcut.
 46. `Implement and verify 43 assistant audit cleanup active filter chips.`
 47. `Implement and verify 44 assistant audit cleanup stale-unreviewed shortcut.`
 48. `Implement and verify 45 assistant audit cleanup reviewed shortcut.`
+49. `Implement and verify 46 assistant audit cleanup governance queue grouping.`
 
 ## Next Goal Candidate
 
-`Add cleanup governance queue grouping so admins can group cleanup runs by review status and stale state before moving into broader Knowledge/WIKI product work.`
+`Add cleanup queue metrics so admins can compare run counts, note counts, and cleanup counts across cleanup governance groups.`
 
 Success criteria:
 
-1. Cleanup coverage rows can be grouped into reviewed, stale unreviewed, and other unreviewed sections.
-2. Grouping remains read-only and uses existing cleanup coverage data.
-3. The grouping slice is documented in the next slice PRD.
+1. Each cleanup queue group shows run count, note count, deleted count, and skipped count.
+2. Metrics are derived from the existing cleanup coverage rows without new persistence.
+3. The metrics slice is documented in the next slice PRD.
