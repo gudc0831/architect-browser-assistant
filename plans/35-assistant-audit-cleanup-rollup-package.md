@@ -32,10 +32,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 35 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1405-assistant-audit-cleanup-rollup-package.md) | PRD and roadmap updated |
+| Slice 35 PRD and roadmap entry | implemented | architect-browser-assistant `bf2ff60` | [browser worklog](../docs/worklogs/2026-05-12-1405-assistant-audit-cleanup-rollup-package.md) | PRD and roadmap updated |
 | Markdown rollup export API | implemented | architect-saas `69c0211` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1405-assistant-audit-cleanup-rollup-package.md) | API returned Markdown attachment with title, reviewer counts, stale threshold, and token |
 | Admin UI export action | implemented | architect-saas `69c0211` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1405-assistant-audit-cleanup-rollup-package.md) | Browser verified `Export rollup package` link |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `69c0211`; architect-browser-assistant `bf2ff60` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
