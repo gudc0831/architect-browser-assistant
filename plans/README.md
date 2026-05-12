@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 82 implemented; next candidate is Knowledge evidence source coverage.`
+Current implementation goal (2026-05-12): `Slice 83 implemented; next candidate is Knowledge unsourced evidence guardrail.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -69,6 +69,7 @@ Slice 79 added Knowledge candidate risk totals.
 Slice 80 added Knowledge visible candidate risk totals.
 Slice 81 added Knowledge evidence priority rollup.
 Slice 82 added Knowledge evidence priority chips.
+Slice 83 added Knowledge evidence source coverage.
 
 ## Operating Rules
 
@@ -163,6 +164,7 @@ Slice 82 added Knowledge evidence priority chips.
 | 80 | [80-knowledge-visible-candidate-risk-totals.md](80-knowledge-visible-candidate-risk-totals.md) | `implemented` | Knowledge visible candidate risk totals | `architect-saas`, `architect-browser-assistant` |
 | 81 | [81-knowledge-evidence-priority-rollup.md](81-knowledge-evidence-priority-rollup.md) | `implemented` | Knowledge evidence priority rollup | `architect-saas`, `architect-browser-assistant` |
 | 82 | [82-knowledge-evidence-priority-chips.md](82-knowledge-evidence-priority-chips.md) | `implemented` | Knowledge evidence priority chips | `architect-saas`, `architect-browser-assistant` |
+| 83 | [83-knowledge-evidence-source-coverage.md](83-knowledge-evidence-source-coverage.md) | `implemented` | Knowledge evidence source coverage | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -251,13 +253,14 @@ Slice 82 added Knowledge evidence priority chips.
 83. `Implement and verify 80 Knowledge visible candidate risk totals.`
 84. `Implement and verify 81 Knowledge evidence priority rollup.`
 85. `Implement and verify 82 Knowledge evidence priority chips.`
+86. `Implement and verify 83 Knowledge evidence source coverage.`
 
 ## Next Goal Candidate
 
-`Add Knowledge evidence source coverage so reviewers can see how many evidence rows include source URLs.`
+`Add Knowledge unsourced evidence guardrail so approval notes warn when selected evidence lacks source URLs.`
 
 Success criteria:
 
-1. Knowledge draft detail exposes evidence source coverage chips.
-2. Coverage separates sourced and unsourced evidence rows.
-3. The evidence-source-coverage slice is documented in the next slice PRD.
+1. Approval guardrails include unsourced evidence warning when applicable.
+2. Warning clears when all evidence has source URLs or there is no evidence.
+3. The unsourced-evidence-guardrail slice is documented in the next slice PRD.
