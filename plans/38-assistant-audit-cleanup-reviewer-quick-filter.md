@@ -32,9 +32,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 38 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1403-assistant-audit-cleanup-reviewer-quick-filter.md) | PRD and roadmap updated |
-| Admin UI reviewer quick filter | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1403-assistant-audit-cleanup-reviewer-quick-filter.md) | Browser verified reviewer quick filter sets reviewer field |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | User guide and compact worklogs updated |
+| Slice 38 PRD and roadmap entry | implemented | architect-browser-assistant `b2392d4` | [browser worklog](../docs/worklogs/2026-05-12-1403-assistant-audit-cleanup-reviewer-quick-filter.md) | PRD and roadmap updated |
+| Admin UI reviewer quick filter | implemented | architect-saas `6765815` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1403-assistant-audit-cleanup-reviewer-quick-filter.md) | Browser verified reviewer quick filter sets reviewer field |
+| User guide and worklogs | implemented | architect-saas `6765815`; architect-browser-assistant `b2392d4` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
