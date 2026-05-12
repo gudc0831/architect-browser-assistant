@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 22 implemented; next candidate is assistant audit retention and archival controls.`
+Current implementation goal (2026-05-12): `Slice 23 implemented; next candidate is guarded assistant audit cleanup execution.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -9,6 +9,7 @@ Slice 19 added a read-only governance drill-down for individual assistant action
 Slice 20 added append-only governance review notes to the assistant action audit drill-down.
 Slice 21 added a read-only per-record Markdown evidence package export from the assistant action audit drill-down.
 Slice 22 added filtered cross-audit governance note reporting and CSV export.
+Slice 23 added read-only assistant audit retention preview and JSON archive preview export.
 
 ## Operating Rules
 
@@ -43,6 +44,7 @@ Slice 22 added filtered cross-audit governance note reporting and CSV export.
 | 20 | [20-assistant-audit-governance-note-capture.md](20-assistant-audit-governance-note-capture.md) | `implemented` | Append-only governance notes in assistant action audit drill-down | `architect-saas`, `architect-browser-assistant` |
 | 21 | [21-assistant-audit-evidence-package-export.md](21-assistant-audit-evidence-package-export.md) | `implemented` | Read-only per-record assistant action audit evidence package export | `architect-saas`, `architect-browser-assistant` |
 | 22 | [22-filtered-governance-note-export-reporting.md](22-filtered-governance-note-export-reporting.md) | `implemented` | Filtered cross-audit governance note report and CSV export | `architect-saas`, `architect-browser-assistant` |
+| 23 | [23-assistant-audit-retention-archive-preview.md](23-assistant-audit-retention-archive-preview.md) | `implemented` | Read-only assistant audit retention preview and archive export | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -71,13 +73,14 @@ Slice 22 added filtered cross-audit governance note reporting and CSV export.
 23. `Implement and verify 20 assistant audit governance note capture for operational review.`
 24. `Implement and verify 21 assistant audit evidence package export for operational review.`
 25. `Implement and verify 22 filtered governance note export/reporting across assistant action audits.`
+26. `Implement and verify 23 assistant audit retention archive preview controls.`
 
 ## Next Goal Candidate
 
-`Add assistant audit retention and archival controls for old audit and governance-note events.`
+`Add guarded assistant audit cleanup execution that requires an archive preview/export token before deletion.`
 
 Success criteria:
 
-1. Admin users can see audit retention policy status and old assistant audit/governance-note counts by month.
-2. Admin users can run a read-only archival preview before any destructive cleanup.
-3. The archive/export path preserves source audit ids, assistant record ids, note metadata, and task labels before deletion is allowed.
+1. Admin users can run cleanup only after a matching archive preview/export is generated for the same retention cutoff.
+2. Cleanup requires explicit confirmation and reports deleted vs skipped event counts.
+3. Cleanup writes an audit event containing archive preview id, cutoff, actor id, deleted ids, and skipped ids.
