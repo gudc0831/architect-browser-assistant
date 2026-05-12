@@ -27,8 +27,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 69 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-2040-knowledge-review-status-banner.md) | PRD and roadmap updated |
-| Knowledge review status banner | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-2040-knowledge-review-status-banner.md) | Final batch verification pending |
+| Slice 69 PRD and roadmap entry | implemented | `8952038` | [browser worklog](../docs/worklogs/2026-05-12-2040-knowledge-review-status-banner.md) | PRD and roadmap updated |
+| Knowledge review status banner | implemented | `f729226` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-2040-knowledge-review-status-banner.md) | Final batch verification pending |
 
 ## Verification Log
 
