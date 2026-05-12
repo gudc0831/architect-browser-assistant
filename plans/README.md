@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 89 implemented; next candidate is Knowledge evidence filter handoff.`
+Current implementation goal (2026-05-13): `Slice 90 implemented; next candidate is Knowledge visible evidence summary.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -76,6 +76,7 @@ Slice 86 added Knowledge evidence source filters.
 Slice 87 added Knowledge evidence priority filters.
 Slice 88 added Knowledge active evidence filter chips.
 Slice 89 added Knowledge clear evidence filters action.
+Slice 90 added Knowledge evidence filter handoff copy action.
 
 ## Operating Rules
 
@@ -177,6 +178,7 @@ Slice 89 added Knowledge clear evidence filters action.
 | 87 | [87-knowledge-evidence-priority-filter.md](87-knowledge-evidence-priority-filter.md) | `implemented` | Knowledge evidence priority filters | `architect-saas`, `architect-browser-assistant` |
 | 88 | [88-knowledge-active-evidence-filter-chips.md](88-knowledge-active-evidence-filter-chips.md) | `implemented` | Knowledge active evidence filter chips | `architect-saas`, `architect-browser-assistant` |
 | 89 | [89-knowledge-clear-evidence-filters.md](89-knowledge-clear-evidence-filters.md) | `implemented` | Knowledge clear evidence filters action | `architect-saas`, `architect-browser-assistant` |
+| 90 | [90-knowledge-evidence-filter-handoff.md](90-knowledge-evidence-filter-handoff.md) | `implemented` | Knowledge evidence filter handoff copy action | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -272,13 +274,14 @@ Slice 89 added Knowledge clear evidence filters action.
 90. `Implement and verify 87 Knowledge evidence priority filters.`
 91. `Implement and verify 88 Knowledge active evidence filter chips.`
 92. `Implement and verify 89 Knowledge clear evidence filters action.`
+93. `Implement and verify 90 Knowledge evidence filter handoff copy action.`
 
 ## Next Goal Candidate
 
-`Add Knowledge evidence filter handoff so reviewers can copy the exact evidence review scope.`
+`Add Knowledge visible evidence summary so reviewers can see source and priority counts for the currently visible evidence rows.`
 
 Success criteria:
 
-1. Evidence panel exposes a copyable filter handoff action.
-2. Handoff includes source, priority, visible count, and selected candidate.
-3. The evidence-filter-handoff slice is documented in the next slice PRD.
+1. Evidence panel exposes visible evidence source and priority summary chips.
+2. Summary derives from the currently filtered evidence rows.
+3. The visible-evidence-summary slice is documented in the next slice PRD.
