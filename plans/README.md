@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 55 implemented; next candidate is Knowledge draft source-reference chips.`
+Current implementation goal (2026-05-12): `Slice 56 implemented; next candidate is Knowledge draft freshness chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -42,6 +42,7 @@ Slice 52 added Knowledge candidate quick filters.
 Slice 53 added Knowledge candidate search.
 Slice 54 added Knowledge draft readiness chips.
 Slice 55 added Knowledge draft Markdown preview.
+Slice 56 added Knowledge draft source-reference chips.
 
 ## Operating Rules
 
@@ -109,6 +110,7 @@ Slice 55 added Knowledge draft Markdown preview.
 | 53 | [53-knowledge-candidate-search.md](53-knowledge-candidate-search.md) | `implemented` | Knowledge candidate search | `architect-saas`, `architect-browser-assistant` |
 | 54 | [54-knowledge-draft-readiness.md](54-knowledge-draft-readiness.md) | `implemented` | Knowledge draft readiness checklist | `architect-saas`, `architect-browser-assistant` |
 | 55 | [55-knowledge-draft-markdown-preview.md](55-knowledge-draft-markdown-preview.md) | `implemented` | Knowledge draft Markdown preview | `architect-saas`, `architect-browser-assistant` |
+| 56 | [56-knowledge-draft-source-chips.md](56-knowledge-draft-source-chips.md) | `implemented` | Knowledge draft source-reference chips | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -170,13 +172,14 @@ Slice 55 added Knowledge draft Markdown preview.
 56. `Implement and verify 53 Knowledge candidate search.`
 57. `Implement and verify 54 Knowledge draft readiness checklist.`
 58. `Implement and verify 55 Knowledge draft Markdown preview.`
+59. `Implement and verify 56 Knowledge draft source-reference chips.`
 
 ## Next Goal Candidate
 
-`Add Knowledge draft source-reference chips so admins can quickly see task id, assistant record id, evidence count, and publication scope before approving.`
+`Add Knowledge draft freshness chips so admins can see candidate created, updated, and reviewed timestamps in the draft editor.`
 
 Success criteria:
 
-1. Knowledge draft detail shows source-reference chips for task id, assistant record id, evidence count, and publication scope.
-2. Chips are read-only and derived from the current candidate detail/draft state.
-3. The source-reference slice is documented in the next slice PRD.
+1. Knowledge draft detail shows created, updated, and reviewed timestamp chips.
+2. Chips are read-only and derived from the current candidate detail.
+3. The freshness-chip slice is documented in the next slice PRD.
