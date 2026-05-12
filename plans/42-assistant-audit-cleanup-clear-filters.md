@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 42 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1420-assistant-audit-cleanup-clear-filters.md) | PRD and roadmap updated |
-| Admin UI clear-filter action | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1420-assistant-audit-cleanup-clear-filters.md) | Browser verified clear action resets cleanup filters |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | User guide and compact worklogs updated |
+| Slice 42 PRD and roadmap entry | implemented | architect-browser-assistant `b5b8d58` | [browser worklog](../docs/worklogs/2026-05-12-1420-assistant-audit-cleanup-clear-filters.md) | PRD and roadmap updated |
+| Admin UI clear-filter action | implemented | architect-saas `616302b` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1420-assistant-audit-cleanup-clear-filters.md) | Browser verified clear action resets cleanup filters |
+| User guide and worklogs | implemented | architect-saas `616302b`; architect-browser-assistant `b5b8d58` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
