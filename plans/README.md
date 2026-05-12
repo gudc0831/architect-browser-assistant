@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 73 implemented; next candidate is Knowledge candidate sort controls.`
+Current implementation goal (2026-05-12): `Slice 74 implemented; next candidate is Knowledge candidate selection summary.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -60,6 +60,7 @@ Slice 70 added Knowledge candidate row risk chips.
 Slice 71 added Knowledge candidate risk quick filters.
 Slice 72 added Knowledge active candidate filter chips.
 Slice 73 added Knowledge clear candidate filters action.
+Slice 74 added Knowledge candidate sort controls.
 
 ## Operating Rules
 
@@ -145,6 +146,7 @@ Slice 73 added Knowledge clear candidate filters action.
 | 71 | [71-knowledge-candidate-risk-filters.md](71-knowledge-candidate-risk-filters.md) | `implemented` | Knowledge candidate risk quick filters | `architect-saas`, `architect-browser-assistant` |
 | 72 | [72-knowledge-active-candidate-filter-chips.md](72-knowledge-active-candidate-filter-chips.md) | `implemented` | Knowledge active candidate filter chips | `architect-saas`, `architect-browser-assistant` |
 | 73 | [73-knowledge-clear-candidate-filters.md](73-knowledge-clear-candidate-filters.md) | `implemented` | Knowledge clear candidate filters action | `architect-saas`, `architect-browser-assistant` |
+| 74 | [74-knowledge-candidate-sort-controls.md](74-knowledge-candidate-sort-controls.md) | `implemented` | Knowledge candidate sort controls | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -224,13 +226,14 @@ Slice 73 added Knowledge clear candidate filters action.
 74. `Implement and verify 71 Knowledge candidate risk quick filters.`
 75. `Implement and verify 72 Knowledge active candidate filter chips.`
 76. `Implement and verify 73 Knowledge clear candidate filters action.`
+77. `Implement and verify 74 Knowledge candidate sort controls.`
 
 ## Next Goal Candidate
 
-`Add Knowledge candidate sort controls so admins can order the queue by recency or low confidence.`
+`Add Knowledge candidate selection summary so admins can see whether the selected candidate is inside the current filtered queue.`
 
 Success criteria:
 
-1. Candidate queue exposes sort controls.
-2. Sorting covers newest first and low confidence first.
-3. The candidate-sort slice is documented in the next slice PRD.
+1. Candidate queue exposes a selected-candidate summary.
+2. Summary shows selected candidate position within current filters.
+3. The selection-summary slice is documented in the next slice PRD.
