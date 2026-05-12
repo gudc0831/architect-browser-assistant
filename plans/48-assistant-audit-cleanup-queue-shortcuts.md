@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 48 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1525-assistant-audit-cleanup-queue-shortcuts.md) | PRD and roadmap updated |
-| Admin UI queue shortcuts | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1525-assistant-audit-cleanup-queue-shortcuts.md) | Browser UI verified queue shortcut labels and `Focus reviewed` preset transition |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks completed |
+| Slice 48 PRD and roadmap entry | implemented | `architect-browser-assistant` `8bf7168` | [browser worklog](../docs/worklogs/2026-05-12-1525-assistant-audit-cleanup-queue-shortcuts.md) | PRD and roadmap updated |
+| Admin UI queue shortcuts | implemented | `architect-saas` `d3ca688` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1525-assistant-audit-cleanup-queue-shortcuts.md) | Browser UI verified queue shortcut labels and `Focus reviewed` preset transition |
+| User guide and worklogs | implemented | `architect-saas` `d3ca688`; `architect-browser-assistant` `8bf7168` | browser/SaaS worklogs | Static checks completed |
 
 ## Verification Log
 
