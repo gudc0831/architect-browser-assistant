@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 27 implemented; next candidate is cleanup review notes.`
+Current implementation goal (2026-05-12): `Slice 28 implemented; next candidate is cleanup review-note reporting/export.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -14,6 +14,7 @@ Slice 24 added guarded assistant audit cleanup execution requiring a matching ar
 Slice 25 added assistant audit cleanup history reporting and CSV export.
 Slice 26 added read-only assistant audit cleanup dry-run comparison and JSON export.
 Slice 27 added assistant audit cleanup detail drill-down and Markdown evidence package export.
+Slice 28 added append-only assistant audit cleanup review notes and package inclusion.
 
 ## Operating Rules
 
@@ -53,6 +54,7 @@ Slice 27 added assistant audit cleanup detail drill-down and Markdown evidence p
 | 25 | [25-assistant-audit-cleanup-history-reporting.md](25-assistant-audit-cleanup-history-reporting.md) | `implemented` | Assistant audit cleanup history reporting and CSV export | `architect-saas`, `architect-browser-assistant` |
 | 26 | [26-assistant-audit-cleanup-dry-run-comparison.md](26-assistant-audit-cleanup-dry-run-comparison.md) | `implemented` | Read-only cleanup dry-run comparison against current retention preview | `architect-saas`, `architect-browser-assistant` |
 | 27 | [27-assistant-audit-cleanup-detail-package.md](27-assistant-audit-cleanup-detail-package.md) | `implemented` | Cleanup detail drill-down and Markdown evidence package export | `architect-saas`, `architect-browser-assistant` |
+| 28 | [28-assistant-audit-cleanup-review-notes.md](28-assistant-audit-cleanup-review-notes.md) | `implemented` | Append-only cleanup review notes in cleanup detail/package | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -86,13 +88,14 @@ Slice 27 added assistant audit cleanup detail drill-down and Markdown evidence p
 28. `Implement and verify 25 assistant audit cleanup history reporting and export.`
 29. `Implement and verify 26 assistant audit cleanup dry-run comparison.`
 30. `Implement and verify 27 assistant audit cleanup detail package export.`
+31. `Implement and verify 28 assistant audit cleanup review notes.`
 
 ## Next Goal Candidate
 
-`Add assistant audit cleanup review notes so admins can append post-cleanup governance notes to a cleanup run.`
+`Add cleanup review-note reporting and CSV export so admins can review cleanup notes across cleanup runs by category, reviewer, token, and month.`
 
 Success criteria:
 
-1. Admin users can append category-based review notes to a cleanup run.
-2. Cleanup detail shows append-only cleanup review notes with reviewer and timestamp.
-3. Notes do not mutate cleanup metadata and are excluded from retention action/governance cleanup eligibility.
+1. Admin users can list cleanup review notes across cleanup runs with category, reviewer, token, and month filters.
+2. The report links each note back to cleanup detail and exposes cleanup token/count context.
+3. CSV export mirrors the active filters and includes note text, reviewer, timestamp, cleanup id, cleanup token, and cleanup counts.
