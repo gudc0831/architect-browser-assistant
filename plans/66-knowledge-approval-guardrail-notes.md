@@ -27,8 +27,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 66 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1955-knowledge-approval-guardrail-notes.md) | PRD and roadmap updated |
-| Knowledge approval guardrail notes | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1955-knowledge-approval-guardrail-notes.md) | Final batch verification pending |
+| Slice 66 PRD and roadmap entry | implemented | `001bed6` | [browser worklog](../docs/worklogs/2026-05-12-1955-knowledge-approval-guardrail-notes.md) | PRD and roadmap updated |
+| Knowledge approval guardrail notes | implemented | `0cd17ee` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1955-knowledge-approval-guardrail-notes.md) | Final batch verification pending |
 
 ## Verification Log
 
