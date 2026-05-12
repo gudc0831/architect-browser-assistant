@@ -32,10 +32,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 34 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1352-assistant-audit-cleanup-stale-alerts.md) | PRD and roadmap updated |
+| Slice 34 PRD and roadmap entry | implemented | architect-browser-assistant `7038048` | [browser worklog](../docs/worklogs/2026-05-12-1352-assistant-audit-cleanup-stale-alerts.md) | PRD and roadmap updated |
 | Stale coverage API fields | implemented | architect-saas `08c7339` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1352-assistant-audit-cleanup-stale-alerts.md) | API returned stale threshold, stale count, `isStale`, and export fields |
 | Admin UI stale alerts | implemented | architect-saas `08c7339` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1352-assistant-audit-cleanup-stale-alerts.md) | Browser verified `Stale days` control and `Stale unreviewed` metric |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `08c7339`; architect-browser-assistant `7038048` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
