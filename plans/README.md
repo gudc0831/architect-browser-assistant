@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 57 implemented; next candidate is Knowledge draft approval summary chips.`
+Current implementation goal (2026-05-12): `Slice 58 implemented; next candidate is Knowledge evidence-kind rollup chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -44,6 +44,7 @@ Slice 54 added Knowledge draft readiness chips.
 Slice 55 added Knowledge draft Markdown preview.
 Slice 56 added Knowledge draft source-reference chips.
 Slice 57 added Knowledge draft freshness chips.
+Slice 58 added Knowledge draft approval summary chips.
 
 ## Operating Rules
 
@@ -113,6 +114,7 @@ Slice 57 added Knowledge draft freshness chips.
 | 55 | [55-knowledge-draft-markdown-preview.md](55-knowledge-draft-markdown-preview.md) | `implemented` | Knowledge draft Markdown preview | `architect-saas`, `architect-browser-assistant` |
 | 56 | [56-knowledge-draft-source-chips.md](56-knowledge-draft-source-chips.md) | `implemented` | Knowledge draft source-reference chips | `architect-saas`, `architect-browser-assistant` |
 | 57 | [57-knowledge-draft-freshness-chips.md](57-knowledge-draft-freshness-chips.md) | `implemented` | Knowledge draft freshness chips | `architect-saas`, `architect-browser-assistant` |
+| 58 | [58-knowledge-draft-approval-summary.md](58-knowledge-draft-approval-summary.md) | `implemented` | Knowledge draft approval summary chips | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -176,13 +178,14 @@ Slice 57 added Knowledge draft freshness chips.
 58. `Implement and verify 55 Knowledge draft Markdown preview.`
 59. `Implement and verify 56 Knowledge draft source-reference chips.`
 60. `Implement and verify 57 Knowledge draft freshness chips.`
+61. `Implement and verify 58 Knowledge draft approval summary chips.`
 
 ## Next Goal Candidate
 
-`Add Knowledge draft approval summary chips so admins can see current candidate state, cleanup state, confidence, and review status before approving.`
+`Add Knowledge evidence-kind rollup chips so admins can see what evidence types support a candidate.`
 
 Success criteria:
 
-1. Knowledge draft detail shows state, cleanup state, confidence, and review status chips.
-2. Chips are read-only and derived from the current candidate detail.
-3. The approval-summary slice is documented in the next slice PRD.
+1. Knowledge draft detail shows evidence-kind counts.
+2. Counts are read-only and derived from candidate evidence.
+3. The evidence-rollup slice is documented in the next slice PRD.
