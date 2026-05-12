@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 53 implemented; next candidate is Knowledge draft readiness checklist.`
+Current implementation goal (2026-05-12): `Slice 54 implemented; next candidate is Knowledge draft Markdown preview.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -40,6 +40,7 @@ Slice 50 added cleanup governance queue density controls.
 Slice 51 added Knowledge candidate queue counts.
 Slice 52 added Knowledge candidate quick filters.
 Slice 53 added Knowledge candidate search.
+Slice 54 added Knowledge draft readiness chips.
 
 ## Operating Rules
 
@@ -105,6 +106,7 @@ Slice 53 added Knowledge candidate search.
 | 51 | [51-knowledge-candidate-queue-counts.md](51-knowledge-candidate-queue-counts.md) | `implemented` | Knowledge candidate queue counts | `architect-saas`, `architect-browser-assistant` |
 | 52 | [52-knowledge-candidate-quick-filters.md](52-knowledge-candidate-quick-filters.md) | `implemented` | Knowledge candidate quick filters | `architect-saas`, `architect-browser-assistant` |
 | 53 | [53-knowledge-candidate-search.md](53-knowledge-candidate-search.md) | `implemented` | Knowledge candidate search | `architect-saas`, `architect-browser-assistant` |
+| 54 | [54-knowledge-draft-readiness.md](54-knowledge-draft-readiness.md) | `implemented` | Knowledge draft readiness checklist | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -164,13 +166,14 @@ Slice 53 added Knowledge candidate search.
 54. `Implement and verify 51 Knowledge candidate queue counts.`
 55. `Implement and verify 52 Knowledge candidate quick filters.`
 56. `Implement and verify 53 Knowledge candidate search.`
+57. `Implement and verify 54 Knowledge draft readiness checklist.`
 
 ## Next Goal Candidate
 
-`Add Knowledge draft readiness checklist so admins can see whether title, summary, body, tags, and evidence are present before approving.`
+`Add Knowledge draft Markdown preview so admins can inspect the compiled WIKI body without editing controls.`
 
 Success criteria:
 
-1. Knowledge candidate detail shows readiness items for title, summary, body, tags, and evidence.
-2. Readiness uses local detail/draft state and does not block approval yet.
-3. The readiness-checklist slice is documented in the next slice PRD.
+1. Knowledge draft editor exposes a preview panel for the current Markdown body.
+2. Preview remains read-only and updates from local draft state.
+3. The Markdown-preview slice is documented in the next slice PRD.
