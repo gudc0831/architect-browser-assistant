@@ -27,13 +27,14 @@ Current implementation state: `implemented`
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
 | Slice 65 PRD and roadmap entry | implemented | `c994256` | [browser worklog](../docs/worklogs/2026-05-12-1940-knowledge-preview-density.md) | PRD and roadmap updated |
-| Knowledge preview density toggle | implemented | `0ea94e5` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1940-knowledge-preview-density.md) | Final batch verification pending |
+| Knowledge preview density toggle | implemented | `0ea94e5` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1940-knowledge-preview-density.md) | `npm run typecheck`, `npm run lint`, API 200, and Browser UI verification passed |
 
 ## Verification Log
 
 | Date | Scope | Result |
 | --- | --- | --- |
 | 2026-05-12 | Planning | Slice selected from Slice 64 next candidate: Knowledge preview density toggle |
+| 2026-05-12 | Final verification | SaaS typecheck passed; SaaS lint passed with 7 pre-existing hook warnings; browser-assistant typecheck/lint passed; `/api/admin/knowledge/candidates` returned 200; agent-browser verified `Compact preview` toggles to `Expanded preview` |
 
 ## Next Slice Candidate
 

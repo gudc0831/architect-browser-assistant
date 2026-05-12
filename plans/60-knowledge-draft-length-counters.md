@@ -27,13 +27,14 @@ Current implementation state: `implemented`
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
 | Slice 60 PRD and roadmap entry | implemented | `architect-browser-assistant` `378d702` | [browser worklog](../docs/worklogs/2026-05-12-1825-knowledge-draft-length-counters.md) | PRD and roadmap updated |
-| Knowledge draft length counters | implemented | `architect-saas` `a214d97` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1825-knowledge-draft-length-counters.md) | Final batch verification pending |
+| Knowledge draft length counters | implemented | `architect-saas` `a214d97` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1825-knowledge-draft-length-counters.md) | `npm run typecheck`, `npm run lint`, API 200, and Browser UI verification passed |
 
 ## Verification Log
 
 | Date | Scope | Result |
 | --- | --- | --- |
 | 2026-05-12 | Planning | Slice selected from Slice 59 next candidate: Knowledge draft length counters |
+| 2026-05-12 | Final verification | SaaS typecheck passed; SaaS lint passed with 7 pre-existing hook warnings; browser-assistant typecheck/lint passed; `/api/admin/knowledge/candidates` returned 200; agent-browser verified Title/Summary/Body/Tags counters on `/admin/knowledge` |
 
 ## Next Slice Candidate
 

@@ -27,13 +27,14 @@ Current implementation state: `implemented`
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
 | Slice 62 PRD and roadmap entry | implemented | `21c7959` | [browser worklog](../docs/worklogs/2026-05-12-1855-knowledge-reset-draft.md) | PRD and roadmap updated |
-| Knowledge reset draft action | implemented | `ed1bb89` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1855-knowledge-reset-draft.md) | Final batch verification pending |
+| Knowledge reset draft action | implemented | `ed1bb89` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1855-knowledge-reset-draft.md) | `npm run typecheck`, `npm run lint`, API 200, and Browser UI verification passed |
 
 ## Verification Log
 
 | Date | Scope | Result |
 | --- | --- | --- |
 | 2026-05-12 | Planning | Slice selected from Slice 61 next candidate: Knowledge reset draft action |
+| 2026-05-12 | Final verification | SaaS typecheck passed; SaaS lint passed with 7 pre-existing hook warnings; browser-assistant typecheck/lint passed; `/api/admin/knowledge/candidates` returned 200; agent-browser verified `Reset draft` restores edited title from the selected candidate detail |
 
 ## Next Slice Candidate
 

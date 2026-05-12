@@ -27,13 +27,14 @@ Current implementation state: `implemented`
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
 | Slice 59 PRD and roadmap entry | implemented | `architect-browser-assistant` `0b1623d` | [browser worklog](../docs/worklogs/2026-05-12-1810-knowledge-evidence-kind-rollup.md) | PRD and roadmap updated |
-| Knowledge evidence-kind rollup chips | implemented | `architect-saas` `50f7eaf` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1810-knowledge-evidence-kind-rollup.md) | Final batch verification pending |
+| Knowledge evidence-kind rollup chips | implemented | `architect-saas` `50f7eaf` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1810-knowledge-evidence-kind-rollup.md) | `npm run typecheck`, `npm run lint`, API 200, and Browser UI verification passed |
 
 ## Verification Log
 
 | Date | Scope | Result |
 | --- | --- | --- |
 | 2026-05-12 | Planning | Slice selected from Slice 58 next candidate: Knowledge evidence-kind rollup chips |
+| 2026-05-12 | Final verification | SaaS typecheck passed; SaaS lint passed with 7 pre-existing hook warnings; browser-assistant typecheck/lint passed; `/api/admin/knowledge/candidates` returned 200; agent-browser verified evidence-kind rollup chips on `/admin/knowledge` |
 
 ## Next Slice Candidate
 

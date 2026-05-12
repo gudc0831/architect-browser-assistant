@@ -27,13 +27,14 @@ Current implementation state: `implemented`
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
 | Slice 58 PRD and roadmap entry | implemented | `architect-browser-assistant` `cf6a859` | [browser worklog](../docs/worklogs/2026-05-12-1755-knowledge-draft-approval-summary.md) | PRD and roadmap updated |
-| Knowledge draft approval summary chips | implemented | `architect-saas` `139dc81` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1755-knowledge-draft-approval-summary.md) | Final batch verification pending |
+| Knowledge draft approval summary chips | implemented | `architect-saas` `139dc81` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1755-knowledge-draft-approval-summary.md) | `npm run typecheck`, `npm run lint`, API 200, and Browser UI verification passed |
 
 ## Verification Log
 
 | Date | Scope | Result |
 | --- | --- | --- |
 | 2026-05-12 | Planning | Slice selected from Slice 57 next candidate: Knowledge draft approval summary chips |
+| 2026-05-12 | Final verification | SaaS typecheck passed; SaaS lint passed with 7 pre-existing hook warnings; browser-assistant typecheck/lint passed; `/api/admin/knowledge/candidates` returned 200; agent-browser verified State/Cleanup/Confidence/Review chips on `/admin/knowledge` |
 
 ## Next Slice Candidate
 
