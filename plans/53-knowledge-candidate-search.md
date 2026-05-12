@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 53 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1640-knowledge-candidate-search.md) | PRD and roadmap updated |
-| Knowledge Admin search | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1640-knowledge-candidate-search.md) | Browser UI verified search field renders and accepts text |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks completed |
+| Slice 53 PRD and roadmap entry | implemented | `architect-browser-assistant` `071e2df` | [browser worklog](../docs/worklogs/2026-05-12-1640-knowledge-candidate-search.md) | PRD and roadmap updated |
+| Knowledge Admin search | implemented | `architect-saas` `ba84b35` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1640-knowledge-candidate-search.md) | Browser UI verified search field renders and accepts text |
+| User guide and worklogs | implemented | `architect-saas` `ba84b35`; `architect-browser-assistant` `071e2df` | browser/SaaS worklogs | Static checks completed |
 
 ## Verification Log
 
