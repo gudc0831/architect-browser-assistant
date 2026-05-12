@@ -26,8 +26,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 62 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1855-knowledge-reset-draft.md) | PRD and roadmap updated |
-| Knowledge reset draft action | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1855-knowledge-reset-draft.md) | Final batch verification pending |
+| Slice 62 PRD and roadmap entry | implemented | `21c7959` | [browser worklog](../docs/worklogs/2026-05-12-1855-knowledge-reset-draft.md) | PRD and roadmap updated |
+| Knowledge reset draft action | implemented | `ed1bb89` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1855-knowledge-reset-draft.md) | Final batch verification pending |
 
 ## Verification Log
 
