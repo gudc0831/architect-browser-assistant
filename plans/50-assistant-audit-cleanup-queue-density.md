@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 50 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1555-assistant-audit-cleanup-queue-density.md) | PRD and roadmap updated |
-| Admin UI density toggle | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1555-assistant-audit-cleanup-queue-density.md) | Browser UI verified compact/detailed toggle |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks completed |
+| Slice 50 PRD and roadmap entry | implemented | `architect-browser-assistant` `5515cf1` | [browser worklog](../docs/worklogs/2026-05-12-1555-assistant-audit-cleanup-queue-density.md) | PRD and roadmap updated |
+| Admin UI density toggle | implemented | `architect-saas` `a9a5c9c` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1555-assistant-audit-cleanup-queue-density.md) | Browser UI verified compact/detailed toggle |
+| User guide and worklogs | implemented | `architect-saas` `a9a5c9c`; `architect-browser-assistant` `5515cf1` | browser/SaaS worklogs | Static checks completed |
 
 ## Verification Log
 
