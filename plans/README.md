@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 44 implemented; next candidate is cleanup coverage reviewed-only shortcut.`
+Current implementation goal (2026-05-12): `Slice 45 implemented; next candidate is cleanup governance queue grouping.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -31,6 +31,7 @@ Slice 41 added stale-threshold preset buttons for cleanup coverage.
 Slice 42 added a clear-filter action for cleanup review coverage filters.
 Slice 43 added active filter summary chips for cleanup review coverage.
 Slice 44 added a stale-unreviewed cleanup coverage shortcut.
+Slice 45 added a reviewed cleanup coverage shortcut.
 
 ## Operating Rules
 
@@ -87,6 +88,7 @@ Slice 44 added a stale-unreviewed cleanup coverage shortcut.
 | 42 | [42-assistant-audit-cleanup-clear-filters.md](42-assistant-audit-cleanup-clear-filters.md) | `implemented` | Clear-filter action for cleanup review coverage filters | `architect-saas`, `architect-browser-assistant` |
 | 43 | [43-assistant-audit-cleanup-active-filter-chips.md](43-assistant-audit-cleanup-active-filter-chips.md) | `implemented` | Active filter summary chips for cleanup review coverage | `architect-saas`, `architect-browser-assistant` |
 | 44 | [44-assistant-audit-cleanup-stale-unreviewed-shortcut.md](44-assistant-audit-cleanup-stale-unreviewed-shortcut.md) | `implemented` | Stale-unreviewed cleanup coverage shortcut | `architect-saas`, `architect-browser-assistant` |
+| 45 | [45-assistant-audit-cleanup-reviewed-shortcut.md](45-assistant-audit-cleanup-reviewed-shortcut.md) | `implemented` | Reviewed cleanup coverage shortcut | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -137,13 +139,14 @@ Slice 44 added a stale-unreviewed cleanup coverage shortcut.
 45. `Implement and verify 42 assistant audit cleanup clear-filter action.`
 46. `Implement and verify 43 assistant audit cleanup active filter chips.`
 47. `Implement and verify 44 assistant audit cleanup stale-unreviewed shortcut.`
+48. `Implement and verify 45 assistant audit cleanup reviewed shortcut.`
 
 ## Next Goal Candidate
 
-`Add cleanup coverage reviewed-only shortcut so admins can return directly to reviewed cleanup evidence.`
+`Add cleanup governance queue grouping so admins can group cleanup runs by review status and stale state before moving into broader Knowledge/WIKI product work.`
 
 Success criteria:
 
-1. Admin users can switch directly to reviewed cleanup coverage with one action.
-2. The action sets coverage preset consistently and leaves cleanup metadata unchanged.
-3. The reviewed-only shortcut is documented in the next slice PRD and remains read-only.
+1. Cleanup coverage rows can be grouped into reviewed, stale unreviewed, and other unreviewed sections.
+2. Grouping remains read-only and uses existing cleanup coverage data.
+3. The grouping slice is documented in the next slice PRD.
