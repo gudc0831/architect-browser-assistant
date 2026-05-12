@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 94 implemented; next candidate is Knowledge dirty-draft approval guardrail.`
+Current implementation goal (2026-05-13): `Slice 95 implemented; next candidate is Knowledge copy dirty-draft summary.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -81,6 +81,7 @@ Slice 91 added Knowledge visible evidence summary.
 Slice 92 added Knowledge evidence empty-state guidance.
 Slice 93 added Knowledge draft dirty-state indicators.
 Slice 94 added Knowledge dirty-draft reset warning.
+Slice 95 added Knowledge dirty-draft approval guardrail.
 
 ## Operating Rules
 
@@ -187,6 +188,7 @@ Slice 94 added Knowledge dirty-draft reset warning.
 | 92 | [92-knowledge-evidence-empty-state-guidance.md](92-knowledge-evidence-empty-state-guidance.md) | `implemented` | Knowledge evidence empty-state guidance | `architect-saas`, `architect-browser-assistant` |
 | 93 | [93-knowledge-draft-dirty-state-indicators.md](93-knowledge-draft-dirty-state-indicators.md) | `implemented` | Knowledge draft dirty-state indicators | `architect-saas`, `architect-browser-assistant` |
 | 94 | [94-knowledge-dirty-draft-reset-warning.md](94-knowledge-dirty-draft-reset-warning.md) | `implemented` | Knowledge dirty-draft reset warning | `architect-saas`, `architect-browser-assistant` |
+| 95 | [95-knowledge-dirty-draft-approval-guardrail.md](95-knowledge-dirty-draft-approval-guardrail.md) | `implemented` | Knowledge dirty-draft approval guardrail | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -287,13 +289,14 @@ Slice 94 added Knowledge dirty-draft reset warning.
 95. `Implement and verify 92 Knowledge evidence empty-state guidance.`
 96. `Implement and verify 93 Knowledge draft dirty-state indicators.`
 97. `Implement and verify 94 Knowledge dirty-draft reset warning.`
+98. `Implement and verify 95 Knowledge dirty-draft approval guardrail.`
 
 ## Next Goal Candidate
 
-`Add Knowledge dirty-draft approval guardrail so approval notes mention when a reviewer is approving edited draft fields.`
+`Add Knowledge copy dirty-draft summary so reviewers can copy changed-field context for handoff before approval.`
 
 Success criteria:
 
-1. Approval guardrails mention changed draft fields when present.
-2. Guardrail is ready when no fields changed.
-3. The dirty-draft-approval-guardrail slice is documented in the next slice PRD.
+1. Draft editor exposes a copy dirty-draft summary action.
+2. Copied summary includes changed field names and selected candidate context.
+3. The copy-dirty-draft-summary slice is documented in the next slice PRD.
