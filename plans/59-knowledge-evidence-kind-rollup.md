@@ -26,8 +26,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 59 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1810-knowledge-evidence-kind-rollup.md) | PRD and roadmap updated |
-| Knowledge evidence-kind rollup chips | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1810-knowledge-evidence-kind-rollup.md) | Final batch verification pending |
+| Slice 59 PRD and roadmap entry | implemented | `architect-browser-assistant` `0b1623d` | [browser worklog](../docs/worklogs/2026-05-12-1810-knowledge-evidence-kind-rollup.md) | PRD and roadmap updated |
+| Knowledge evidence-kind rollup chips | implemented | `architect-saas` `50f7eaf` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1810-knowledge-evidence-kind-rollup.md) | Final batch verification pending |
 
 ## Verification Log
 
