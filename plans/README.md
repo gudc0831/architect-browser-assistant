@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 32 implemented; next candidate is cleanup coverage JSON export.`
+Current implementation goal (2026-05-12): `Slice 33 implemented; next candidate is stale cleanup review alerts.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -19,6 +19,7 @@ Slice 29 added filtered cleanup review-note reporting and CSV export.
 Slice 30 added cleanup review-note summary metrics for category, reviewer, and reviewed/unreviewed coverage.
 Slice 31 added cleanup reviewed/unreviewed coverage CSV export.
 Slice 32 added an on-screen cleanup reviewed/unreviewed coverage dashboard.
+Slice 33 added cleanup coverage JSON export with filters, summary counts, and coverage rows.
 
 ## Operating Rules
 
@@ -63,6 +64,7 @@ Slice 32 added an on-screen cleanup reviewed/unreviewed coverage dashboard.
 | 30 | [30-assistant-audit-cleanup-note-summary.md](30-assistant-audit-cleanup-note-summary.md) | `implemented` | Cleanup review-note category/reviewer and reviewed/unreviewed coverage summary | `architect-saas`, `architect-browser-assistant` |
 | 31 | [31-assistant-audit-cleanup-coverage-export.md](31-assistant-audit-cleanup-coverage-export.md) | `implemented` | Cleanup reviewed/unreviewed coverage CSV export | `architect-saas`, `architect-browser-assistant` |
 | 32 | [32-assistant-audit-cleanup-coverage-dashboard.md](32-assistant-audit-cleanup-coverage-dashboard.md) | `implemented` | On-screen cleanup reviewed/unreviewed coverage dashboard | `architect-saas`, `architect-browser-assistant` |
+| 33 | [33-assistant-audit-cleanup-coverage-json.md](33-assistant-audit-cleanup-coverage-json.md) | `implemented` | Cleanup reviewed/unreviewed coverage JSON export | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -101,13 +103,14 @@ Slice 32 added an on-screen cleanup reviewed/unreviewed coverage dashboard.
 33. `Implement and verify 30 assistant audit cleanup review-note summary metrics.`
 34. `Implement and verify 31 assistant audit cleanup reviewed/unreviewed coverage CSV export.`
 35. `Implement and verify 32 assistant audit cleanup reviewed/unreviewed coverage dashboard.`
+36. `Implement and verify 33 assistant audit cleanup coverage JSON export.`
 
 ## Next Goal Candidate
 
-`Add cleanup coverage JSON export so admins can download machine-readable coverage evidence using the same filters as the dashboard and CSV.`
+`Add stale cleanup review alerts so admins can identify cleanup runs that remain unreviewed beyond a configurable age threshold.`
 
 Success criteria:
 
-1. Admin users can export cleanup coverage as JSON with the same filter scope as the dashboard and CSV.
-2. JSON includes a read-only warning, filters, summary counts, and coverage rows.
-3. The export is machine-readable evidence and does not mutate cleanup notes or cleanup metadata.
+1. Admin users can set a stale threshold in days for cleanup review coverage.
+2. Coverage rows show stale/unreviewed status for cleanup runs older than the threshold without notes.
+3. Stale counts are read-only and reconcile with coverage rows.
