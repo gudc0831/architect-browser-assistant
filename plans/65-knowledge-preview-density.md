@@ -26,8 +26,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 65 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1940-knowledge-preview-density.md) | PRD and roadmap updated |
-| Knowledge preview density toggle | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1940-knowledge-preview-density.md) | Final batch verification pending |
+| Slice 65 PRD and roadmap entry | implemented | `c994256` | [browser worklog](../docs/worklogs/2026-05-12-1940-knowledge-preview-density.md) | PRD and roadmap updated |
+| Knowledge preview density toggle | implemented | `0ea94e5` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1940-knowledge-preview-density.md) | Final batch verification pending |
 
 ## Verification Log
 
