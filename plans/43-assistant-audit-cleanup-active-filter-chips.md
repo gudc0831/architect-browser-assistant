@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 43 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1423-assistant-audit-cleanup-active-filter-chips.md) | PRD and roadmap updated |
-| Admin UI active filter chips | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1423-assistant-audit-cleanup-active-filter-chips.md) | Browser verified default and stale-threshold chips |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | User guide and compact worklogs updated |
+| Slice 43 PRD and roadmap entry | implemented | architect-browser-assistant `9b137f7` | [browser worklog](../docs/worklogs/2026-05-12-1423-assistant-audit-cleanup-active-filter-chips.md) | PRD and roadmap updated |
+| Admin UI active filter chips | implemented | architect-saas `21b2f83` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1423-assistant-audit-cleanup-active-filter-chips.md) | Browser verified default and stale-threshold chips |
+| User guide and worklogs | implemented | architect-saas `21b2f83`; architect-browser-assistant `9b137f7` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
