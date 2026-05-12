@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 24 implemented; next candidate is assistant audit cleanup history reporting.`
+Current implementation goal (2026-05-12): `Slice 25 implemented; next candidate is cleanup dry-run comparison.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -11,6 +11,7 @@ Slice 21 added a read-only per-record Markdown evidence package export from the 
 Slice 22 added filtered cross-audit governance note reporting and CSV export.
 Slice 23 added read-only assistant audit retention preview and JSON archive preview export.
 Slice 24 added guarded assistant audit cleanup execution requiring a matching archive preview token and explicit confirmation.
+Slice 25 added assistant audit cleanup history reporting and CSV export.
 
 ## Operating Rules
 
@@ -47,6 +48,7 @@ Slice 24 added guarded assistant audit cleanup execution requiring a matching ar
 | 22 | [22-filtered-governance-note-export-reporting.md](22-filtered-governance-note-export-reporting.md) | `implemented` | Filtered cross-audit governance note report and CSV export | `architect-saas`, `architect-browser-assistant` |
 | 23 | [23-assistant-audit-retention-archive-preview.md](23-assistant-audit-retention-archive-preview.md) | `implemented` | Read-only assistant audit retention preview and archive export | `architect-saas`, `architect-browser-assistant` |
 | 24 | [24-guarded-assistant-audit-cleanup-execution.md](24-guarded-assistant-audit-cleanup-execution.md) | `implemented` | Guarded assistant audit cleanup execution after matching preview token | `architect-saas`, `architect-browser-assistant` |
+| 25 | [25-assistant-audit-cleanup-history-reporting.md](25-assistant-audit-cleanup-history-reporting.md) | `implemented` | Assistant audit cleanup history reporting and CSV export | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -77,13 +79,14 @@ Slice 24 added guarded assistant audit cleanup execution requiring a matching ar
 25. `Implement and verify 22 filtered governance note export/reporting across assistant action audits.`
 26. `Implement and verify 23 assistant audit retention archive preview controls.`
 27. `Implement and verify 24 guarded assistant audit cleanup execution.`
+28. `Implement and verify 25 assistant audit cleanup history reporting and export.`
 
 ## Next Goal Candidate
 
-`Add assistant audit cleanup history reporting and export so admins can review cleanup runs separately from the live audit timeline.`
+`Add assistant audit cleanup dry-run comparison that shows what changed between a previous cleanup token and the current retention preview.`
 
 Success criteria:
 
-1. Admin users can filter cleanup audit events by month, actor, cutoff, and preview token.
-2. Admin users can export cleanup history with deleted/skipped ids and count metadata.
-3. Cleanup history links back to the retention preview policy context without mixing cleanup events into action-audit retention counts.
+1. Admin users can select a previous cleanup token and compare it with the current retention preview token.
+2. The comparison shows newly eligible, already deleted/skipped, and still protected counts without deleting records.
+3. The comparison can be exported as read-only JSON for review before another cleanup run.
