@@ -32,10 +32,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 31 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1310-assistant-audit-cleanup-coverage-export.md) | PRD and roadmap updated |
+| Slice 31 PRD and roadmap entry | implemented | architect-browser-assistant `b05d2a1` | [browser worklog](../docs/worklogs/2026-05-12-1310-assistant-audit-cleanup-coverage-export.md) | PRD and roadmap updated |
 | Coverage CSV export API | implemented | architect-saas `b69a0d9` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1310-assistant-audit-cleanup-coverage-export.md) | API returned CSV attachment with coverage status, reviewed row, and reviewer ids |
 | Admin UI export action | implemented | architect-saas `b69a0d9` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1310-assistant-audit-cleanup-coverage-export.md) | Browser verified `Export coverage CSV` link in cleanup note report |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `b69a0d9`; architect-browser-assistant `b05d2a1` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
