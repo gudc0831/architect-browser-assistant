@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 39 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1408-assistant-audit-cleanup-token-quick-filter.md) | PRD and roadmap updated |
-| Admin UI token quick filter | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1408-assistant-audit-cleanup-token-quick-filter.md) | Browser verified `Focus token` sets preview-token filter |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | User guide and compact worklogs updated |
+| Slice 39 PRD and roadmap entry | implemented | architect-browser-assistant `28b20da` | [browser worklog](../docs/worklogs/2026-05-12-1408-assistant-audit-cleanup-token-quick-filter.md) | PRD and roadmap updated |
+| Admin UI token quick filter | implemented | architect-saas `82ede1a` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1408-assistant-audit-cleanup-token-quick-filter.md) | Browser verified `Focus token` sets preview-token filter |
+| User guide and worklogs | implemented | architect-saas `82ede1a`; architect-browser-assistant `28b20da` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
