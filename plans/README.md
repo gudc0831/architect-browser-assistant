@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 81 implemented; next candidate is Knowledge evidence priority chips.`
+Current implementation goal (2026-05-12): `Slice 82 implemented; next candidate is Knowledge evidence source coverage.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -68,6 +68,7 @@ Slice 78 added Knowledge candidate filter handoff copy action.
 Slice 79 added Knowledge candidate risk totals.
 Slice 80 added Knowledge visible candidate risk totals.
 Slice 81 added Knowledge evidence priority rollup.
+Slice 82 added Knowledge evidence priority chips.
 
 ## Operating Rules
 
@@ -161,6 +162,7 @@ Slice 81 added Knowledge evidence priority rollup.
 | 79 | [79-knowledge-candidate-risk-totals.md](79-knowledge-candidate-risk-totals.md) | `implemented` | Knowledge candidate risk totals | `architect-saas`, `architect-browser-assistant` |
 | 80 | [80-knowledge-visible-candidate-risk-totals.md](80-knowledge-visible-candidate-risk-totals.md) | `implemented` | Knowledge visible candidate risk totals | `architect-saas`, `architect-browser-assistant` |
 | 81 | [81-knowledge-evidence-priority-rollup.md](81-knowledge-evidence-priority-rollup.md) | `implemented` | Knowledge evidence priority rollup | `architect-saas`, `architect-browser-assistant` |
+| 82 | [82-knowledge-evidence-priority-chips.md](82-knowledge-evidence-priority-chips.md) | `implemented` | Knowledge evidence priority chips | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -248,13 +250,14 @@ Slice 81 added Knowledge evidence priority rollup.
 82. `Implement and verify 79 Knowledge candidate risk totals.`
 83. `Implement and verify 80 Knowledge visible candidate risk totals.`
 84. `Implement and verify 81 Knowledge evidence priority rollup.`
+85. `Implement and verify 82 Knowledge evidence priority chips.`
 
 ## Next Goal Candidate
 
-`Add Knowledge evidence priority chips so each evidence row exposes its priority tier.`
+`Add Knowledge evidence source coverage so reviewers can see how many evidence rows include source URLs.`
 
 Success criteria:
 
-1. Evidence rows show priority tier chips.
-2. Chips use the same tier boundaries as the rollup.
-3. The evidence-priority-chip slice is documented in the next slice PRD.
+1. Knowledge draft detail exposes evidence source coverage chips.
+2. Coverage separates sourced and unsourced evidence rows.
+3. The evidence-source-coverage slice is documented in the next slice PRD.
