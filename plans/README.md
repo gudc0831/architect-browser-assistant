@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 83 implemented; next candidate is Knowledge unsourced evidence guardrail.`
+Current implementation goal (2026-05-12): `Slice 84 implemented; next candidate is Knowledge high-priority evidence guardrail.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -70,6 +70,7 @@ Slice 80 added Knowledge visible candidate risk totals.
 Slice 81 added Knowledge evidence priority rollup.
 Slice 82 added Knowledge evidence priority chips.
 Slice 83 added Knowledge evidence source coverage.
+Slice 84 added Knowledge unsourced evidence guardrail.
 
 ## Operating Rules
 
@@ -165,6 +166,7 @@ Slice 83 added Knowledge evidence source coverage.
 | 81 | [81-knowledge-evidence-priority-rollup.md](81-knowledge-evidence-priority-rollup.md) | `implemented` | Knowledge evidence priority rollup | `architect-saas`, `architect-browser-assistant` |
 | 82 | [82-knowledge-evidence-priority-chips.md](82-knowledge-evidence-priority-chips.md) | `implemented` | Knowledge evidence priority chips | `architect-saas`, `architect-browser-assistant` |
 | 83 | [83-knowledge-evidence-source-coverage.md](83-knowledge-evidence-source-coverage.md) | `implemented` | Knowledge evidence source coverage | `architect-saas`, `architect-browser-assistant` |
+| 84 | [84-knowledge-unsourced-evidence-guardrail.md](84-knowledge-unsourced-evidence-guardrail.md) | `implemented` | Knowledge unsourced evidence guardrail | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -254,13 +256,14 @@ Slice 83 added Knowledge evidence source coverage.
 84. `Implement and verify 81 Knowledge evidence priority rollup.`
 85. `Implement and verify 82 Knowledge evidence priority chips.`
 86. `Implement and verify 83 Knowledge evidence source coverage.`
+87. `Implement and verify 84 Knowledge unsourced evidence guardrail.`
 
 ## Next Goal Candidate
 
-`Add Knowledge unsourced evidence guardrail so approval notes warn when selected evidence lacks source URLs.`
+`Add Knowledge high-priority evidence guardrail so approval notes warn when no high-priority evidence supports the draft.`
 
 Success criteria:
 
-1. Approval guardrails include unsourced evidence warning when applicable.
-2. Warning clears when all evidence has source URLs or there is no evidence.
-3. The unsourced-evidence-guardrail slice is documented in the next slice PRD.
+1. Approval guardrails include high-priority evidence coverage.
+2. Warning appears when evidence exists but no high-priority evidence is present.
+3. The high-priority-evidence-guardrail slice is documented in the next slice PRD.
