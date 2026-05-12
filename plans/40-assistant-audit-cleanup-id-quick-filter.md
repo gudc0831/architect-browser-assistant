@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 40 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1412-assistant-audit-cleanup-id-quick-filter.md) | PRD and roadmap updated |
-| Admin UI cleanup-id quick filter | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1412-assistant-audit-cleanup-id-quick-filter.md) | Browser verified `Focus cleanup` sets cleanup-id filter |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | User guide and compact worklogs updated |
+| Slice 40 PRD and roadmap entry | implemented | architect-browser-assistant `9926bc9` | [browser worklog](../docs/worklogs/2026-05-12-1412-assistant-audit-cleanup-id-quick-filter.md) | PRD and roadmap updated |
+| Admin UI cleanup-id quick filter | implemented | architect-saas `0ddb4e1` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1412-assistant-audit-cleanup-id-quick-filter.md) | Browser verified `Focus cleanup` sets cleanup-id filter |
+| User guide and worklogs | implemented | architect-saas `0ddb4e1`; architect-browser-assistant `9926bc9` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
