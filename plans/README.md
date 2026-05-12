@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 43 implemented; next candidate is cleanup coverage stale-only quick filter.`
+Current implementation goal (2026-05-12): `Slice 44 implemented; next candidate is cleanup coverage reviewed-only shortcut.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -30,6 +30,7 @@ Slice 40 added cleanup-id quick filters for cleanup coverage rows.
 Slice 41 added stale-threshold preset buttons for cleanup coverage.
 Slice 42 added a clear-filter action for cleanup review coverage filters.
 Slice 43 added active filter summary chips for cleanup review coverage.
+Slice 44 added a stale-unreviewed cleanup coverage shortcut.
 
 ## Operating Rules
 
@@ -85,6 +86,7 @@ Slice 43 added active filter summary chips for cleanup review coverage.
 | 41 | [41-assistant-audit-cleanup-stale-threshold-presets.md](41-assistant-audit-cleanup-stale-threshold-presets.md) | `implemented` | Stale-threshold preset buttons for cleanup coverage | `architect-saas`, `architect-browser-assistant` |
 | 42 | [42-assistant-audit-cleanup-clear-filters.md](42-assistant-audit-cleanup-clear-filters.md) | `implemented` | Clear-filter action for cleanup review coverage filters | `architect-saas`, `architect-browser-assistant` |
 | 43 | [43-assistant-audit-cleanup-active-filter-chips.md](43-assistant-audit-cleanup-active-filter-chips.md) | `implemented` | Active filter summary chips for cleanup review coverage | `architect-saas`, `architect-browser-assistant` |
+| 44 | [44-assistant-audit-cleanup-stale-unreviewed-shortcut.md](44-assistant-audit-cleanup-stale-unreviewed-shortcut.md) | `implemented` | Stale-unreviewed cleanup coverage shortcut | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -134,13 +136,14 @@ Slice 43 added active filter summary chips for cleanup review coverage.
 44. `Implement and verify 41 assistant audit cleanup stale-threshold presets.`
 45. `Implement and verify 42 assistant audit cleanup clear-filter action.`
 46. `Implement and verify 43 assistant audit cleanup active filter chips.`
+47. `Implement and verify 44 assistant audit cleanup stale-unreviewed shortcut.`
 
 ## Next Goal Candidate
 
-`Add cleanup coverage stale-only quick filter so admins can switch directly to stale unreviewed coverage using one action.`
+`Add cleanup coverage reviewed-only shortcut so admins can return directly to reviewed cleanup evidence.`
 
 Success criteria:
 
-1. Admin users can switch directly to stale-unreviewed cleanup coverage with one action.
-2. The action sets coverage preset and stale threshold consistently.
-3. The stale-only quick filter is documented in the next slice PRD and remains read-only.
+1. Admin users can switch directly to reviewed cleanup coverage with one action.
+2. The action sets coverage preset consistently and leaves cleanup metadata unchanged.
+3. The reviewed-only shortcut is documented in the next slice PRD and remains read-only.
