@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 51 implemented; next candidate is Knowledge candidate quick filters.`
+Current implementation goal (2026-05-12): `Slice 52 implemented; next candidate is Knowledge candidate search.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -38,6 +38,7 @@ Slice 48 added cleanup governance queue shortcuts.
 Slice 49 added cleanup governance queue row chips.
 Slice 50 added cleanup governance queue density controls.
 Slice 51 added Knowledge candidate queue counts.
+Slice 52 added Knowledge candidate quick filters.
 
 ## Operating Rules
 
@@ -101,6 +102,7 @@ Slice 51 added Knowledge candidate queue counts.
 | 49 | [49-assistant-audit-cleanup-row-chips.md](49-assistant-audit-cleanup-row-chips.md) | `implemented` | Cleanup governance queue row chips | `architect-saas`, `architect-browser-assistant` |
 | 50 | [50-assistant-audit-cleanup-queue-density.md](50-assistant-audit-cleanup-queue-density.md) | `implemented` | Cleanup governance queue density controls | `architect-saas`, `architect-browser-assistant` |
 | 51 | [51-knowledge-candidate-queue-counts.md](51-knowledge-candidate-queue-counts.md) | `implemented` | Knowledge candidate queue counts | `architect-saas`, `architect-browser-assistant` |
+| 52 | [52-knowledge-candidate-quick-filters.md](52-knowledge-candidate-quick-filters.md) | `implemented` | Knowledge candidate quick filters | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -158,13 +160,14 @@ Slice 51 added Knowledge candidate queue counts.
 52. `Implement and verify 49 assistant audit cleanup row chips.`
 53. `Implement and verify 50 assistant audit cleanup queue density controls.`
 54. `Implement and verify 51 Knowledge candidate queue counts.`
+55. `Implement and verify 52 Knowledge candidate quick filters.`
 
 ## Next Goal Candidate
 
-`Add Knowledge candidate quick filters so admins can change candidate state filters without opening the select.`
+`Add Knowledge candidate search so admins can filter candidates by title, summary, task, project, or tag text.`
 
 Success criteria:
 
-1. Knowledge Admin exposes quick buttons for candidate, approved, rejected, and all states.
-2. Quick filters use the existing filter state and keep the select in sync.
-3. The quick-filter slice is documented in the next slice PRD.
+1. Knowledge Admin exposes a candidate search field.
+2. Search filters the loaded candidate list across title, summary, task, project, and tags.
+3. The search slice is documented in the next slice PRD.
