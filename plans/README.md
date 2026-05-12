@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 67 implemented; next candidate is Knowledge copy approval checklist.`
+Current implementation goal (2026-05-12): `Slice 68 implemented; next candidate is Knowledge review status banner.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -54,6 +54,7 @@ Slice 64 added Knowledge copy source handoff action.
 Slice 65 added Knowledge preview density toggle.
 Slice 66 added Knowledge approval guardrail notes.
 Slice 67 added Knowledge guardrail summary chips.
+Slice 68 added Knowledge copy approval checklist action.
 
 ## Operating Rules
 
@@ -133,6 +134,7 @@ Slice 67 added Knowledge guardrail summary chips.
 | 65 | [65-knowledge-preview-density.md](65-knowledge-preview-density.md) | `implemented` | Knowledge preview density toggle | `architect-saas`, `architect-browser-assistant` |
 | 66 | [66-knowledge-approval-guardrail-notes.md](66-knowledge-approval-guardrail-notes.md) | `implemented` | Knowledge approval guardrail notes | `architect-saas`, `architect-browser-assistant` |
 | 67 | [67-knowledge-guardrail-summary-chips.md](67-knowledge-guardrail-summary-chips.md) | `implemented` | Knowledge guardrail summary chips | `architect-saas`, `architect-browser-assistant` |
+| 68 | [68-knowledge-copy-approval-checklist.md](68-knowledge-copy-approval-checklist.md) | `implemented` | Knowledge copy approval checklist action | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -206,13 +208,14 @@ Slice 67 added Knowledge guardrail summary chips.
 68. `Implement and verify 65 Knowledge preview density toggle.`
 69. `Implement and verify 66 Knowledge approval guardrail notes.`
 70. `Implement and verify 67 Knowledge guardrail summary chips.`
+71. `Implement and verify 68 Knowledge copy approval checklist action.`
 
 ## Next Goal Candidate
 
-`Add a Knowledge copy approval checklist action so admins can copy guardrail notes and readiness state for review handoff.`
+`Add a Knowledge review status banner so admins see one concise approval posture above the draft tools.`
 
 Success criteria:
 
-1. Knowledge draft editor exposes a copy approval checklist action.
-2. Copied text includes readiness, guardrail notes, confidence, and evidence summary.
-3. The copy-approval-checklist slice is documented in the next slice PRD.
+1. Knowledge draft editor shows a concise review status banner.
+2. Banner derives its state from warning count and readiness.
+3. The review-status-banner slice is documented in the next slice PRD.
