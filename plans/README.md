@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 49 implemented; next candidate is cleanup queue density controls.`
+Current implementation goal (2026-05-12): `Slice 50 implemented; next candidate is Knowledge candidate queue counts.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -36,6 +36,7 @@ Slice 46 added cleanup governance queue grouping.
 Slice 47 added cleanup governance queue metrics.
 Slice 48 added cleanup governance queue shortcuts.
 Slice 49 added cleanup governance queue row chips.
+Slice 50 added cleanup governance queue density controls.
 
 ## Operating Rules
 
@@ -97,6 +98,7 @@ Slice 49 added cleanup governance queue row chips.
 | 47 | [47-assistant-audit-cleanup-queue-metrics.md](47-assistant-audit-cleanup-queue-metrics.md) | `implemented` | Cleanup governance queue metrics | `architect-saas`, `architect-browser-assistant` |
 | 48 | [48-assistant-audit-cleanup-queue-shortcuts.md](48-assistant-audit-cleanup-queue-shortcuts.md) | `implemented` | Cleanup governance queue shortcuts | `architect-saas`, `architect-browser-assistant` |
 | 49 | [49-assistant-audit-cleanup-row-chips.md](49-assistant-audit-cleanup-row-chips.md) | `implemented` | Cleanup governance queue row chips | `architect-saas`, `architect-browser-assistant` |
+| 50 | [50-assistant-audit-cleanup-queue-density.md](50-assistant-audit-cleanup-queue-density.md) | `implemented` | Cleanup governance queue density controls | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -152,13 +154,14 @@ Slice 49 added cleanup governance queue row chips.
 50. `Implement and verify 47 assistant audit cleanup queue metrics.`
 51. `Implement and verify 48 assistant audit cleanup queue shortcuts.`
 52. `Implement and verify 49 assistant audit cleanup row chips.`
+53. `Implement and verify 50 assistant audit cleanup queue density controls.`
 
 ## Next Goal Candidate
 
-`Add cleanup queue density controls so admins can switch between detailed and compact queue row display.`
+`Add Knowledge candidate queue counts so admins can see candidate, approved, rejected, and all state totals before filtering.`
 
 Success criteria:
 
-1. Admins can toggle cleanup queue rows between detailed and compact display.
-2. Compact display keeps actions and metadata chips visible while hiding secondary detail fields.
-3. The density-control slice is documented in the next slice PRD.
+1. Knowledge Admin shows state totals for candidate, approved, rejected, and all candidate rows.
+2. Counts are derived from the existing candidate list response.
+3. The queue-count slice is documented in the next slice PRD.
