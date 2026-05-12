@@ -32,10 +32,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 30 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1242-assistant-audit-cleanup-note-summary.md) | PRD and roadmap updated |
+| Slice 30 PRD and roadmap entry | implemented | architect-browser-assistant `06c26ef` | [browser worklog](../docs/worklogs/2026-05-12-1242-assistant-audit-cleanup-note-summary.md) | PRD and roadmap updated |
 | Cleanup note summary API | implemented | architect-saas `a0275ad` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1242-assistant-audit-cleanup-note-summary.md) | API returned total notes, cleanup coverage, category counts, and reviewer counts |
 | Admin UI summary metrics | implemented | architect-saas `a0275ad` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1242-assistant-audit-cleanup-note-summary.md) | Browser verified summary metrics above cleanup note report cards |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `a0275ad`; architect-browser-assistant `06c26ef` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
