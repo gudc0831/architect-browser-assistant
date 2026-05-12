@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 65 implemented; next candidate is Knowledge approval guardrail notes.`
+Current implementation goal (2026-05-12): `Slice 66 implemented; next candidate is Knowledge guardrail summary chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -52,6 +52,7 @@ Slice 62 added Knowledge reset draft action.
 Slice 63 added Knowledge copy Markdown action.
 Slice 64 added Knowledge copy source handoff action.
 Slice 65 added Knowledge preview density toggle.
+Slice 66 added Knowledge approval guardrail notes.
 
 ## Operating Rules
 
@@ -129,6 +130,7 @@ Slice 65 added Knowledge preview density toggle.
 | 63 | [63-knowledge-copy-markdown.md](63-knowledge-copy-markdown.md) | `implemented` | Knowledge copy Markdown action | `architect-saas`, `architect-browser-assistant` |
 | 64 | [64-knowledge-copy-source-handoff.md](64-knowledge-copy-source-handoff.md) | `implemented` | Knowledge copy source handoff action | `architect-saas`, `architect-browser-assistant` |
 | 65 | [65-knowledge-preview-density.md](65-knowledge-preview-density.md) | `implemented` | Knowledge preview density toggle | `architect-saas`, `architect-browser-assistant` |
+| 66 | [66-knowledge-approval-guardrail-notes.md](66-knowledge-approval-guardrail-notes.md) | `implemented` | Knowledge approval guardrail notes | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -200,13 +202,14 @@ Slice 65 added Knowledge preview density toggle.
 66. `Implement and verify 63 Knowledge copy Markdown action.`
 67. `Implement and verify 64 Knowledge copy source handoff action.`
 68. `Implement and verify 65 Knowledge preview density toggle.`
+69. `Implement and verify 66 Knowledge approval guardrail notes.`
 
 ## Next Goal Candidate
 
-`Add Knowledge approval guardrail notes so admins see a concise warning when readiness fields or evidence are missing before approval.`
+`Add Knowledge guardrail summary chips so admins can scan warning count and confidence band without reading every note.`
 
 Success criteria:
 
-1. Knowledge draft editor shows guardrail notes derived from readiness fields and evidence count.
-2. Notes are read-only and do not block approval in the first iteration.
-3. The approval-guardrail slice is documented in the next slice PRD.
+1. Knowledge draft editor shows compact guardrail summary chips.
+2. Summary includes warning count and confidence band.
+3. The guardrail-summary slice is documented in the next slice PRD.
