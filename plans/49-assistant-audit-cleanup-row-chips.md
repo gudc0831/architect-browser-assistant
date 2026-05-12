@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 49 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1540-assistant-audit-cleanup-row-chips.md) | PRD and roadmap updated |
-| Admin UI row chips | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1540-assistant-audit-cleanup-row-chips.md) | Browser UI verified row chip categories render |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks completed |
+| Slice 49 PRD and roadmap entry | implemented | `architect-browser-assistant` `bfc48b9` | [browser worklog](../docs/worklogs/2026-05-12-1540-assistant-audit-cleanup-row-chips.md) | PRD and roadmap updated |
+| Admin UI row chips | implemented | `architect-saas` `6e92b15` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1540-assistant-audit-cleanup-row-chips.md) | Browser UI verified row chip categories render |
+| User guide and worklogs | implemented | `architect-saas` `6e92b15`; `architect-browser-assistant` `bfc48b9` | browser/SaaS worklogs | Static checks completed |
 
 ## Verification Log
 
