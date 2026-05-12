@@ -26,8 +26,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 60 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1825-knowledge-draft-length-counters.md) | PRD and roadmap updated |
-| Knowledge draft length counters | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1825-knowledge-draft-length-counters.md) | Final batch verification pending |
+| Slice 60 PRD and roadmap entry | implemented | `architect-browser-assistant` `378d702` | [browser worklog](../docs/worklogs/2026-05-12-1825-knowledge-draft-length-counters.md) | PRD and roadmap updated |
+| Knowledge draft length counters | implemented | `architect-saas` `a214d97` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1825-knowledge-draft-length-counters.md) | Final batch verification pending |
 
 ## Verification Log
 
