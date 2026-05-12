@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 69 implemented; next candidate is Knowledge candidate row risk chips.`
+Current implementation goal (2026-05-12): `Slice 70 implemented; next candidate is Knowledge candidate risk quick filters.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -56,6 +56,7 @@ Slice 66 added Knowledge approval guardrail notes.
 Slice 67 added Knowledge guardrail summary chips.
 Slice 68 added Knowledge copy approval checklist action.
 Slice 69 added Knowledge review status banner.
+Slice 70 added Knowledge candidate row risk chips.
 
 ## Operating Rules
 
@@ -137,6 +138,7 @@ Slice 69 added Knowledge review status banner.
 | 67 | [67-knowledge-guardrail-summary-chips.md](67-knowledge-guardrail-summary-chips.md) | `implemented` | Knowledge guardrail summary chips | `architect-saas`, `architect-browser-assistant` |
 | 68 | [68-knowledge-copy-approval-checklist.md](68-knowledge-copy-approval-checklist.md) | `implemented` | Knowledge copy approval checklist action | `architect-saas`, `architect-browser-assistant` |
 | 69 | [69-knowledge-review-status-banner.md](69-knowledge-review-status-banner.md) | `implemented` | Knowledge review status banner | `architect-saas`, `architect-browser-assistant` |
+| 70 | [70-knowledge-candidate-row-risk-chips.md](70-knowledge-candidate-row-risk-chips.md) | `implemented` | Knowledge candidate row risk chips | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -212,13 +214,14 @@ Slice 69 added Knowledge review status banner.
 70. `Implement and verify 67 Knowledge guardrail summary chips.`
 71. `Implement and verify 68 Knowledge copy approval checklist action.`
 72. `Implement and verify 69 Knowledge review status banner.`
+73. `Implement and verify 70 Knowledge candidate row risk chips.`
 
 ## Next Goal Candidate
 
-`Add Knowledge candidate row risk chips so admins can see warning count and confidence band before opening a candidate.`
+`Add Knowledge candidate risk quick filters so admins can focus low-confidence or unreviewed candidates from the queue.`
 
 Success criteria:
 
-1. Candidate queue rows show compact risk chips.
-2. Chips include confidence band and reviewed/unreviewed state from list data.
-3. The candidate-row-risk slice is documented in the next slice PRD.
+1. Knowledge candidate queue exposes risk quick filters.
+2. Filters cover low-confidence and unreviewed candidate groups.
+3. The candidate-risk-filter slice is documented in the next slice PRD.
