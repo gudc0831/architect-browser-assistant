@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 62 implemented; next candidate is Knowledge copy Markdown action.`
+Current implementation goal (2026-05-12): `Slice 63 implemented; next candidate is Knowledge copy source handoff.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -49,6 +49,7 @@ Slice 59 added Knowledge evidence-kind rollup chips.
 Slice 60 added Knowledge draft length counters.
 Slice 61 added Knowledge clear search action.
 Slice 62 added Knowledge reset draft action.
+Slice 63 added Knowledge copy Markdown action.
 
 ## Operating Rules
 
@@ -123,6 +124,7 @@ Slice 62 added Knowledge reset draft action.
 | 60 | [60-knowledge-draft-length-counters.md](60-knowledge-draft-length-counters.md) | `implemented` | Knowledge draft length counters | `architect-saas`, `architect-browser-assistant` |
 | 61 | [61-knowledge-clear-search.md](61-knowledge-clear-search.md) | `implemented` | Knowledge clear search action | `architect-saas`, `architect-browser-assistant` |
 | 62 | [62-knowledge-reset-draft.md](62-knowledge-reset-draft.md) | `implemented` | Knowledge reset draft action | `architect-saas`, `architect-browser-assistant` |
+| 63 | [63-knowledge-copy-markdown.md](63-knowledge-copy-markdown.md) | `implemented` | Knowledge copy Markdown action | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -191,13 +193,14 @@ Slice 62 added Knowledge reset draft action.
 63. `Implement and verify 60 Knowledge draft length counters.`
 64. `Implement and verify 61 Knowledge clear search action.`
 65. `Implement and verify 62 Knowledge reset draft action.`
+66. `Implement and verify 63 Knowledge copy Markdown action.`
 
 ## Next Goal Candidate
 
-`Add a Knowledge copy Markdown action so admins can copy the current WIKI draft body for handoff or external review.`
+`Add a Knowledge copy source handoff action so admins can copy candidate, task, scope, and evidence context as a compact review handoff.`
 
 Success criteria:
 
-1. Knowledge draft editor exposes a copy Markdown action.
-2. Copy uses the current edited Markdown body rather than the original candidate body.
-3. The copy-Markdown slice is documented in the next slice PRD.
+1. Knowledge draft editor exposes a copy source handoff action.
+2. The copied text includes candidate record, task id, scope, state, confidence, and evidence count.
+3. The source-handoff slice is documented in the next slice PRD.
