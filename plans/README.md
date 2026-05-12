@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 74 implemented; next candidate is Knowledge candidate selection summary.`
+Current implementation goal (2026-05-12): `Slice 75 implemented; next candidate is Knowledge candidate out-of-filter jump action.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -61,6 +61,7 @@ Slice 71 added Knowledge candidate risk quick filters.
 Slice 72 added Knowledge active candidate filter chips.
 Slice 73 added Knowledge clear candidate filters action.
 Slice 74 added Knowledge candidate sort controls.
+Slice 75 added Knowledge candidate selection summary.
 
 ## Operating Rules
 
@@ -147,6 +148,7 @@ Slice 74 added Knowledge candidate sort controls.
 | 72 | [72-knowledge-active-candidate-filter-chips.md](72-knowledge-active-candidate-filter-chips.md) | `implemented` | Knowledge active candidate filter chips | `architect-saas`, `architect-browser-assistant` |
 | 73 | [73-knowledge-clear-candidate-filters.md](73-knowledge-clear-candidate-filters.md) | `implemented` | Knowledge clear candidate filters action | `architect-saas`, `architect-browser-assistant` |
 | 74 | [74-knowledge-candidate-sort-controls.md](74-knowledge-candidate-sort-controls.md) | `implemented` | Knowledge candidate sort controls | `architect-saas`, `architect-browser-assistant` |
+| 75 | [75-knowledge-candidate-selection-summary.md](75-knowledge-candidate-selection-summary.md) | `implemented` | Knowledge candidate selection summary | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -227,13 +229,14 @@ Slice 74 added Knowledge candidate sort controls.
 75. `Implement and verify 72 Knowledge active candidate filter chips.`
 76. `Implement and verify 73 Knowledge clear candidate filters action.`
 77. `Implement and verify 74 Knowledge candidate sort controls.`
+78. `Implement and verify 75 Knowledge candidate selection summary.`
 
 ## Next Goal Candidate
 
-`Add Knowledge candidate selection summary so admins can see whether the selected candidate is inside the current filtered queue.`
+`Add a Knowledge out-of-filter jump action so admins can return the queue filters to the selected candidate when it is hidden.`
 
 Success criteria:
 
-1. Candidate queue exposes a selected-candidate summary.
-2. Summary shows selected candidate position within current filters.
-3. The selection-summary slice is documented in the next slice PRD.
+1. Candidate selection summary exposes an action when selected item is outside filters.
+2. The action clears filters enough to reveal the selected candidate.
+3. The out-of-filter action slice is documented in the next slice PRD.
