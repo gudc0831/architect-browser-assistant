@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 46 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1450-assistant-audit-cleanup-queue-grouping.md) | PRD and roadmap updated |
-| Admin UI queue grouping | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1450-assistant-audit-cleanup-queue-grouping.md) | Browser UI verified all three queue headings render |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks and API verification completed |
+| Slice 46 PRD and roadmap entry | implemented | `architect-browser-assistant` `f072f1c` | [browser worklog](../docs/worklogs/2026-05-12-1450-assistant-audit-cleanup-queue-grouping.md) | PRD and roadmap updated |
+| Admin UI queue grouping | implemented | `architect-saas` `3bfe8dd` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1450-assistant-audit-cleanup-queue-grouping.md) | Browser UI verified all three queue headings render |
+| User guide and worklogs | implemented | `architect-saas` `3bfe8dd`; `architect-browser-assistant` `f072f1c` | browser/SaaS worklogs | Static checks and API verification completed |
 
 ## Verification Log
 
