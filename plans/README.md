@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 58 implemented; next candidate is Knowledge evidence-kind rollup chips.`
+Current implementation goal (2026-05-12): `Slice 59 implemented; next candidate is Knowledge draft length counters.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -45,6 +45,7 @@ Slice 55 added Knowledge draft Markdown preview.
 Slice 56 added Knowledge draft source-reference chips.
 Slice 57 added Knowledge draft freshness chips.
 Slice 58 added Knowledge draft approval summary chips.
+Slice 59 added Knowledge evidence-kind rollup chips.
 
 ## Operating Rules
 
@@ -115,6 +116,7 @@ Slice 58 added Knowledge draft approval summary chips.
 | 56 | [56-knowledge-draft-source-chips.md](56-knowledge-draft-source-chips.md) | `implemented` | Knowledge draft source-reference chips | `architect-saas`, `architect-browser-assistant` |
 | 57 | [57-knowledge-draft-freshness-chips.md](57-knowledge-draft-freshness-chips.md) | `implemented` | Knowledge draft freshness chips | `architect-saas`, `architect-browser-assistant` |
 | 58 | [58-knowledge-draft-approval-summary.md](58-knowledge-draft-approval-summary.md) | `implemented` | Knowledge draft approval summary chips | `architect-saas`, `architect-browser-assistant` |
+| 59 | [59-knowledge-evidence-kind-rollup.md](59-knowledge-evidence-kind-rollup.md) | `implemented` | Knowledge evidence-kind rollup chips | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -179,13 +181,14 @@ Slice 58 added Knowledge draft approval summary chips.
 59. `Implement and verify 56 Knowledge draft source-reference chips.`
 60. `Implement and verify 57 Knowledge draft freshness chips.`
 61. `Implement and verify 58 Knowledge draft approval summary chips.`
+62. `Implement and verify 59 Knowledge evidence-kind rollup chips.`
 
 ## Next Goal Candidate
 
-`Add Knowledge evidence-kind rollup chips so admins can see what evidence types support a candidate.`
+`Add Knowledge draft length counters for title, summary, body, and tags.`
 
 Success criteria:
 
-1. Knowledge draft detail shows evidence-kind counts.
-2. Counts are read-only and derived from candidate evidence.
-3. The evidence-rollup slice is documented in the next slice PRD.
+1. Knowledge draft editor shows title, summary, body, and tag counts.
+2. Counts update from local draft state.
+3. The length-counter slice is documented in the next slice PRD.
