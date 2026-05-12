@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 80 implemented; next candidate is Knowledge evidence priority rollup.`
+Current implementation goal (2026-05-12): `Slice 81 implemented; next candidate is Knowledge evidence priority chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -67,6 +67,7 @@ Slice 77 added Knowledge candidate queue density controls.
 Slice 78 added Knowledge candidate filter handoff copy action.
 Slice 79 added Knowledge candidate risk totals.
 Slice 80 added Knowledge visible candidate risk totals.
+Slice 81 added Knowledge evidence priority rollup.
 
 ## Operating Rules
 
@@ -159,6 +160,7 @@ Slice 80 added Knowledge visible candidate risk totals.
 | 78 | [78-knowledge-candidate-filter-handoff.md](78-knowledge-candidate-filter-handoff.md) | `implemented` | Knowledge candidate filter handoff copy action | `architect-saas`, `architect-browser-assistant` |
 | 79 | [79-knowledge-candidate-risk-totals.md](79-knowledge-candidate-risk-totals.md) | `implemented` | Knowledge candidate risk totals | `architect-saas`, `architect-browser-assistant` |
 | 80 | [80-knowledge-visible-candidate-risk-totals.md](80-knowledge-visible-candidate-risk-totals.md) | `implemented` | Knowledge visible candidate risk totals | `architect-saas`, `architect-browser-assistant` |
+| 81 | [81-knowledge-evidence-priority-rollup.md](81-knowledge-evidence-priority-rollup.md) | `implemented` | Knowledge evidence priority rollup | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -245,13 +247,14 @@ Slice 80 added Knowledge visible candidate risk totals.
 81. `Implement and verify 78 Knowledge candidate filter handoff copy action.`
 82. `Implement and verify 79 Knowledge candidate risk totals.`
 83. `Implement and verify 80 Knowledge visible candidate risk totals.`
+84. `Implement and verify 81 Knowledge evidence priority rollup.`
 
 ## Next Goal Candidate
 
-`Add Knowledge evidence priority rollup so reviewers can see high/normal/low evidence weight before approving a draft.`
+`Add Knowledge evidence priority chips so each evidence row exposes its priority tier.`
 
 Success criteria:
 
-1. Knowledge draft detail exposes evidence priority rollup chips.
-2. Rollup groups evidence by priority tier.
-3. The evidence-priority-rollup slice is documented in the next slice PRD.
+1. Evidence rows show priority tier chips.
+2. Chips use the same tier boundaries as the rollup.
+3. The evidence-priority-chip slice is documented in the next slice PRD.
