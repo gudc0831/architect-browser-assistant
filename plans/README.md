@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 35 implemented; next candidate is cleanup review coverage filter presets.`
+Current implementation goal (2026-05-12): `Slice 36 implemented; next candidate is cleanup review saved filter links.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -22,6 +22,7 @@ Slice 32 added an on-screen cleanup reviewed/unreviewed coverage dashboard.
 Slice 33 added cleanup coverage JSON export with filters, summary counts, and coverage rows.
 Slice 34 added stale cleanup review alerts for aged unreviewed cleanup runs.
 Slice 35 added cleanup reviewer rollup Markdown package export.
+Slice 36 added cleanup review coverage presets for all, reviewed, and stale unreviewed cleanup runs.
 
 ## Operating Rules
 
@@ -69,6 +70,7 @@ Slice 35 added cleanup reviewer rollup Markdown package export.
 | 33 | [33-assistant-audit-cleanup-coverage-json.md](33-assistant-audit-cleanup-coverage-json.md) | `implemented` | Cleanup reviewed/unreviewed coverage JSON export | `architect-saas`, `architect-browser-assistant` |
 | 34 | [34-assistant-audit-cleanup-stale-alerts.md](34-assistant-audit-cleanup-stale-alerts.md) | `implemented` | Stale cleanup review alerts for aged unreviewed cleanup runs | `architect-saas`, `architect-browser-assistant` |
 | 35 | [35-assistant-audit-cleanup-rollup-package.md](35-assistant-audit-cleanup-rollup-package.md) | `implemented` | Cleanup reviewer rollup Markdown package export | `architect-saas`, `architect-browser-assistant` |
+| 36 | [36-assistant-audit-cleanup-coverage-presets.md](36-assistant-audit-cleanup-coverage-presets.md) | `implemented` | Cleanup coverage presets for all, reviewed, and stale unreviewed runs | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -110,13 +112,14 @@ Slice 35 added cleanup reviewer rollup Markdown package export.
 36. `Implement and verify 33 assistant audit cleanup coverage JSON export.`
 37. `Implement and verify 34 assistant audit cleanup stale review alerts.`
 38. `Implement and verify 35 assistant audit cleanup reviewer rollup package export.`
+39. `Implement and verify 36 assistant audit cleanup coverage filter presets.`
 
 ## Next Goal Candidate
 
-`Add cleanup review coverage filter presets so admins can quickly switch between all cleanup runs, stale unreviewed runs, and reviewed cleanup runs.`
+`Add cleanup review saved filter links so admins can copy a URL-like query summary for monthly governance handoff.`
 
 Success criteria:
 
-1. Admin users can switch coverage filters with explicit presets for all, reviewed, and stale unreviewed cleanup runs.
-2. Presets update the visible dashboard and exports without mutating cleanup notes.
-3. Preset state is visible in the Admin UI and documented in the next slice PRD.
+1. Admin users can copy a stable text link or query summary for the active cleanup coverage filters.
+2. The copied handoff preserves month, category, reviewer, token, cleanup id, stale threshold, and coverage preset.
+3. The saved filter link is documented in the next slice PRD and remains read-only.
