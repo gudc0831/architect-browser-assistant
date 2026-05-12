@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 38 implemented; next candidate is cleanup coverage token quick filter.`
+Current implementation goal (2026-05-12): `Slice 39 implemented; next candidate is cleanup coverage cleanup-id quick filter.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -25,6 +25,7 @@ Slice 35 added cleanup reviewer rollup Markdown package export.
 Slice 36 added cleanup review coverage presets for all, reviewed, and stale unreviewed cleanup runs.
 Slice 37 added a copyable cleanup review coverage filter handoff string.
 Slice 38 added reviewer-count quick filters for cleanup review coverage.
+Slice 39 added archive preview token quick filters for cleanup coverage rows.
 
 ## Operating Rules
 
@@ -75,6 +76,7 @@ Slice 38 added reviewer-count quick filters for cleanup review coverage.
 | 36 | [36-assistant-audit-cleanup-coverage-presets.md](36-assistant-audit-cleanup-coverage-presets.md) | `implemented` | Cleanup coverage presets for all, reviewed, and stale unreviewed runs | `architect-saas`, `architect-browser-assistant` |
 | 37 | [37-assistant-audit-cleanup-filter-handoff.md](37-assistant-audit-cleanup-filter-handoff.md) | `implemented` | Copyable cleanup coverage filter handoff string | `architect-saas`, `architect-browser-assistant` |
 | 38 | [38-assistant-audit-cleanup-reviewer-quick-filter.md](38-assistant-audit-cleanup-reviewer-quick-filter.md) | `implemented` | Reviewer-count quick filters for cleanup coverage | `architect-saas`, `architect-browser-assistant` |
+| 39 | [39-assistant-audit-cleanup-token-quick-filter.md](39-assistant-audit-cleanup-token-quick-filter.md) | `implemented` | Archive preview token quick filters for cleanup coverage rows | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -119,13 +121,14 @@ Slice 38 added reviewer-count quick filters for cleanup review coverage.
 39. `Implement and verify 36 assistant audit cleanup coverage filter presets.`
 40. `Implement and verify 37 assistant audit cleanup coverage filter handoff.`
 41. `Implement and verify 38 assistant audit cleanup reviewer quick filter.`
+42. `Implement and verify 39 assistant audit cleanup token quick filter.`
 
 ## Next Goal Candidate
 
-`Add cleanup coverage token quick filter so admins can focus one archive preview token directly from coverage rows.`
+`Add cleanup coverage cleanup-id quick filter so admins can isolate one cleanup run directly from coverage rows.`
 
 Success criteria:
 
-1. Cleanup coverage rows expose a quick action to focus the archive preview token.
-2. The token quick filter updates cleanup notes, summary, coverage dashboard, and exports.
+1. Cleanup coverage rows expose a quick action to focus one cleanup id.
+2. The cleanup-id quick filter updates cleanup notes, summary, coverage dashboard, and exports.
 3. The quick filter is documented in the next slice PRD and remains read-only.
