@@ -33,11 +33,11 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 24 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1100-guarded-assistant-audit-cleanup.md) | PRD and roadmap updated |
+| Slice 24 PRD and roadmap entry | implemented | `architect-browser-assistant` `1e0454b` | [browser worklog](../docs/worklogs/2026-05-12-1100-guarded-assistant-audit-cleanup.md) | PRD and roadmap updated |
 | Preview token | implemented | `architect-saas` `1b0be19` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1100-guarded-assistant-audit-cleanup.md) | Preview/export include deterministic archive preview token |
 | Guarded cleanup API | implemented | `architect-saas` `1b0be19` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1100-guarded-assistant-audit-cleanup.md) | Token mismatch returned 400; matching token/cutoff/confirmation wrote cleanup audit |
 | Admin UI cleanup controls | implemented | `architect-saas` `1b0be19` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1100-guarded-assistant-audit-cleanup.md) | Browser verified disabled default state and enabled guarded state |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | `architect-saas` `1b0be19`; `architect-browser-assistant` `1e0454b` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
