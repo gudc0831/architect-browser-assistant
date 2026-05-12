@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 45 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1430-assistant-audit-cleanup-reviewed-shortcut.md) | PRD and roadmap updated |
-| Admin UI reviewed shortcut | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1430-assistant-audit-cleanup-reviewed-shortcut.md) | Browser UI verified `Show reviewed cleanup` sets Coverage preset to `reviewed` |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks and API verification completed |
+| Slice 45 PRD and roadmap entry | implemented | `architect-browser-assistant` `d629b18` | [browser worklog](../docs/worklogs/2026-05-12-1430-assistant-audit-cleanup-reviewed-shortcut.md) | PRD and roadmap updated |
+| Admin UI reviewed shortcut | implemented | `architect-saas` `400933a` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1430-assistant-audit-cleanup-reviewed-shortcut.md) | Browser UI verified `Show reviewed cleanup` sets Coverage preset to `reviewed` |
+| User guide and worklogs | implemented | `architect-saas` `400933a`; `architect-browser-assistant` `d629b18` | browser/SaaS worklogs | Static checks and API verification completed |
 
 ## Verification Log
 
