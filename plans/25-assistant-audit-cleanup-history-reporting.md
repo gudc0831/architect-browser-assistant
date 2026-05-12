@@ -33,11 +33,11 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 25 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1117-assistant-audit-cleanup-history.md) | PRD and roadmap updated |
+| Slice 25 PRD and roadmap entry | implemented | `architect-browser-assistant` `e1ef84e` | [browser worklog](../docs/worklogs/2026-05-12-1117-assistant-audit-cleanup-history.md) | PRD and roadmap updated |
 | Cleanup history API | implemented | `architect-saas` `f893dab` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1117-assistant-audit-cleanup-history.md) | API returned cleanup run and token filter matched 1 row |
 | Cleanup history CSV export | implemented | `architect-saas` `f893dab` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1117-assistant-audit-cleanup-history.md) | CSV export returned headers for cleanup audit id, token, deleted ids, skipped ids |
 | Admin UI cleanup history report | implemented | `architect-saas` `f893dab` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1117-assistant-audit-cleanup-history.md) | Browser verified cleanup history section and mobile layout |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | `architect-saas` `f893dab`; `architect-browser-assistant` `e1ef84e` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
