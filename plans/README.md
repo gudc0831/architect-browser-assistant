@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 41 implemented; next candidate is cleanup coverage clear filters.`
+Current implementation goal (2026-05-12): `Slice 42 implemented; next candidate is cleanup coverage active filter summary chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -28,6 +28,7 @@ Slice 38 added reviewer-count quick filters for cleanup review coverage.
 Slice 39 added archive preview token quick filters for cleanup coverage rows.
 Slice 40 added cleanup-id quick filters for cleanup coverage rows.
 Slice 41 added stale-threshold preset buttons for cleanup coverage.
+Slice 42 added a clear-filter action for cleanup review coverage filters.
 
 ## Operating Rules
 
@@ -81,6 +82,7 @@ Slice 41 added stale-threshold preset buttons for cleanup coverage.
 | 39 | [39-assistant-audit-cleanup-token-quick-filter.md](39-assistant-audit-cleanup-token-quick-filter.md) | `implemented` | Archive preview token quick filters for cleanup coverage rows | `architect-saas`, `architect-browser-assistant` |
 | 40 | [40-assistant-audit-cleanup-id-quick-filter.md](40-assistant-audit-cleanup-id-quick-filter.md) | `implemented` | Cleanup-id quick filters for cleanup coverage rows | `architect-saas`, `architect-browser-assistant` |
 | 41 | [41-assistant-audit-cleanup-stale-threshold-presets.md](41-assistant-audit-cleanup-stale-threshold-presets.md) | `implemented` | Stale-threshold preset buttons for cleanup coverage | `architect-saas`, `architect-browser-assistant` |
+| 42 | [42-assistant-audit-cleanup-clear-filters.md](42-assistant-audit-cleanup-clear-filters.md) | `implemented` | Clear-filter action for cleanup review coverage filters | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -128,13 +130,14 @@ Slice 41 added stale-threshold preset buttons for cleanup coverage.
 42. `Implement and verify 39 assistant audit cleanup token quick filter.`
 43. `Implement and verify 40 assistant audit cleanup-id quick filter.`
 44. `Implement and verify 41 assistant audit cleanup stale-threshold presets.`
+45. `Implement and verify 42 assistant audit cleanup clear-filter action.`
 
 ## Next Goal Candidate
 
-`Add cleanup coverage clear-filter action so admins can return the cleanup review report to the default all-runs scope in one click.`
+`Add cleanup coverage active filter summary chips so admins can see the current cleanup review scope at a glance.`
 
 Success criteria:
 
-1. Admin users can clear cleanup review filters back to the default all-runs scope in one action.
-2. The clear action resets category, reviewer, token, cleanup id, stale threshold, and coverage preset.
-3. The clear action is documented in the next slice PRD and remains read-only.
+1. The cleanup review report shows active filter chips for non-default scope values.
+2. The chips reflect category, reviewer, token, cleanup id, stale threshold, and coverage preset.
+3. The summary chips are documented in the next slice PRD and remain read-only.
