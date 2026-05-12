@@ -33,11 +33,11 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 22 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1027-governance-note-export-reporting.md) | Document and roadmap updated |
+| Slice 22 PRD and roadmap entry | implemented | browser-assistant `0a662c3` | [browser worklog](../docs/worklogs/2026-05-12-1027-governance-note-export-reporting.md) | Document and roadmap updated |
 | Governance note report API | implemented | architect-saas `9c710f2` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1027-governance-note-export-reporting.md) | API proof returned filtered governance note rows |
 | Governance note CSV export | implemented | architect-saas `9c710f2` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1027-governance-note-export-reporting.md) | CSV proof returned attachment with note/audit/task columns |
 | Admin UI report and drill-down link | implemented | architect-saas `9c710f2` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1027-governance-note-export-reporting.md) | Browser proof confirmed report filters, export URL, source audit drill-down, and `/daily` link |
-| User guide and worklogs | implemented | pending repo commits | SaaS and browser worklogs | `사용자 가이드.md`, PRD, roadmap, worklogs updated |
+| User guide and worklogs | implemented | architect-saas `9c710f2`, browser-assistant `0a662c3` | SaaS and browser worklogs | `사용자 가이드.md`, PRD, roadmap, worklogs updated |
 
 ## Verification Log
 
