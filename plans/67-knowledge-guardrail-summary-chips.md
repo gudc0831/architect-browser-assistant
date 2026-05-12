@@ -28,13 +28,14 @@ Current implementation state: `implemented`
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
 | Slice 67 PRD and roadmap entry | implemented | `f835bb5` | [browser worklog](../docs/worklogs/2026-05-12-2010-knowledge-guardrail-summary-chips.md) | PRD and roadmap updated |
-| Knowledge guardrail summary chips | implemented | `19072f1` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-2010-knowledge-guardrail-summary-chips.md) | Final batch verification pending |
+| Knowledge guardrail summary chips | implemented | `19072f1` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-2010-knowledge-guardrail-summary-chips.md) | `npm run typecheck`, `npm run lint`, API 200, and Browser UI verification passed |
 
 ## Verification Log
 
 | Date | Scope | Result |
 | --- | --- | --- |
 | 2026-05-12 | Planning | Slice selected from Slice 66 next candidate: Knowledge guardrail summary chips |
+| 2026-05-12 | Final verification | SaaS typecheck passed; SaaS lint passed with 7 pre-existing hook warnings; browser-assistant typecheck/lint passed; `/api/admin/knowledge/candidates` returned 200; agent-browser verified guardrail warning count, readiness ratio, and confidence band chips |
 
 ## Next Slice Candidate
 

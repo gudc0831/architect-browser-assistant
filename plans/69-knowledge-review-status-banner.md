@@ -28,13 +28,14 @@ Current implementation state: `implemented`
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
 | Slice 69 PRD and roadmap entry | implemented | `8952038` | [browser worklog](../docs/worklogs/2026-05-12-2040-knowledge-review-status-banner.md) | PRD and roadmap updated |
-| Knowledge review status banner | implemented | `f729226` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-2040-knowledge-review-status-banner.md) | Final batch verification pending |
+| Knowledge review status banner | implemented | `f729226` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-2040-knowledge-review-status-banner.md) | `npm run typecheck`, `npm run lint`, API 200, and Browser UI verification passed |
 
 ## Verification Log
 
 | Date | Scope | Result |
 | --- | --- | --- |
 | 2026-05-12 | Planning | Slice selected from Slice 68 next candidate: Knowledge review status banner |
+| 2026-05-12 | Final verification | SaaS typecheck passed; SaaS lint passed with 7 pre-existing hook warnings; browser-assistant typecheck/lint passed; `/api/admin/knowledge/candidates` returned 200; agent-browser verified `Knowledge review status banner` on `/admin/knowledge` |
 
 ## Next Slice Candidate
 
