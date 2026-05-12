@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 48 implemented; next candidate is cleanup queue row chips.`
+Current implementation goal (2026-05-12): `Slice 49 implemented; next candidate is cleanup queue density controls.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -35,6 +35,7 @@ Slice 45 added a reviewed cleanup coverage shortcut.
 Slice 46 added cleanup governance queue grouping.
 Slice 47 added cleanup governance queue metrics.
 Slice 48 added cleanup governance queue shortcuts.
+Slice 49 added cleanup governance queue row chips.
 
 ## Operating Rules
 
@@ -95,6 +96,7 @@ Slice 48 added cleanup governance queue shortcuts.
 | 46 | [46-assistant-audit-cleanup-queue-grouping.md](46-assistant-audit-cleanup-queue-grouping.md) | `implemented` | Cleanup governance queue grouping | `architect-saas`, `architect-browser-assistant` |
 | 47 | [47-assistant-audit-cleanup-queue-metrics.md](47-assistant-audit-cleanup-queue-metrics.md) | `implemented` | Cleanup governance queue metrics | `architect-saas`, `architect-browser-assistant` |
 | 48 | [48-assistant-audit-cleanup-queue-shortcuts.md](48-assistant-audit-cleanup-queue-shortcuts.md) | `implemented` | Cleanup governance queue shortcuts | `architect-saas`, `architect-browser-assistant` |
+| 49 | [49-assistant-audit-cleanup-row-chips.md](49-assistant-audit-cleanup-row-chips.md) | `implemented` | Cleanup governance queue row chips | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -149,13 +151,14 @@ Slice 48 added cleanup governance queue shortcuts.
 49. `Implement and verify 46 assistant audit cleanup governance queue grouping.`
 50. `Implement and verify 47 assistant audit cleanup queue metrics.`
 51. `Implement and verify 48 assistant audit cleanup queue shortcuts.`
+52. `Implement and verify 49 assistant audit cleanup row chips.`
 
 ## Next Goal Candidate
 
-`Add cleanup queue row chips so cleanup rows expose stale state, note count, reviewer count, and threshold without reading the full row body.`
+`Add cleanup queue density controls so admins can switch between detailed and compact queue row display.`
 
 Success criteria:
 
-1. Each cleanup coverage row shows compact metadata chips.
-2. Chips are read-only and derived from existing coverage row fields.
-3. The row-chip slice is documented in the next slice PRD.
+1. Admins can toggle cleanup queue rows between detailed and compact display.
+2. Compact display keeps actions and metadata chips visible while hiding secondary detail fields.
+3. The density-control slice is documented in the next slice PRD.
