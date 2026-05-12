@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 44 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1426-assistant-audit-cleanup-stale-unreviewed-shortcut.md) | PRD and roadmap updated |
-| Admin UI stale-unreviewed shortcut | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1426-assistant-audit-cleanup-stale-unreviewed-shortcut.md) | Browser verified shortcut sets preset and stale threshold |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | User guide and compact worklogs updated |
+| Slice 44 PRD and roadmap entry | implemented | architect-browser-assistant `eb56adb` | [browser worklog](../docs/worklogs/2026-05-12-1426-assistant-audit-cleanup-stale-unreviewed-shortcut.md) | PRD and roadmap updated |
+| Admin UI stale-unreviewed shortcut | implemented | architect-saas `81fe902` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1426-assistant-audit-cleanup-stale-unreviewed-shortcut.md) | Browser verified shortcut sets preset and stale threshold |
+| User guide and worklogs | implemented | architect-saas `81fe902`; architect-browser-assistant `eb56adb` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
