@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 41 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1416-assistant-audit-cleanup-stale-threshold-presets.md) | PRD and roadmap updated |
-| Admin UI stale threshold presets | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1416-assistant-audit-cleanup-stale-threshold-presets.md) | Browser verified 0/7/30 preset controls |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | User guide and compact worklogs updated |
+| Slice 41 PRD and roadmap entry | implemented | architect-browser-assistant `ae6d2c2` | [browser worklog](../docs/worklogs/2026-05-12-1416-assistant-audit-cleanup-stale-threshold-presets.md) | PRD and roadmap updated |
+| Admin UI stale threshold presets | implemented | architect-saas `085e86c` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1416-assistant-audit-cleanup-stale-threshold-presets.md) | Browser verified 0/7/30 preset controls |
+| User guide and worklogs | implemented | architect-saas `085e86c`; architect-browser-assistant `ae6d2c2` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
