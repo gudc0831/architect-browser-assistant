@@ -31,10 +31,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 33 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1338-assistant-audit-cleanup-coverage-json.md) | PRD and roadmap updated |
+| Slice 33 PRD and roadmap entry | implemented | architect-browser-assistant `4a295ec` | [browser worklog](../docs/worklogs/2026-05-12-1338-assistant-audit-cleanup-coverage-json.md) | PRD and roadmap updated |
 | Coverage JSON export API | implemented | architect-saas `554ea17` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1338-assistant-audit-cleanup-coverage-json.md) | API returned JSON attachment with warning, summary count, and reviewed row |
 | Admin UI export action | implemented | architect-saas `554ea17` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1338-assistant-audit-cleanup-coverage-json.md) | Browser verified `Export coverage JSON` link |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `554ea17`; architect-browser-assistant `4a295ec` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
