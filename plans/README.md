@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 70 implemented; next candidate is Knowledge candidate risk quick filters.`
+Current implementation goal (2026-05-12): `Slice 71 implemented; next candidate is Knowledge active candidate filter chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -57,6 +57,7 @@ Slice 67 added Knowledge guardrail summary chips.
 Slice 68 added Knowledge copy approval checklist action.
 Slice 69 added Knowledge review status banner.
 Slice 70 added Knowledge candidate row risk chips.
+Slice 71 added Knowledge candidate risk quick filters.
 
 ## Operating Rules
 
@@ -139,6 +140,7 @@ Slice 70 added Knowledge candidate row risk chips.
 | 68 | [68-knowledge-copy-approval-checklist.md](68-knowledge-copy-approval-checklist.md) | `implemented` | Knowledge copy approval checklist action | `architect-saas`, `architect-browser-assistant` |
 | 69 | [69-knowledge-review-status-banner.md](69-knowledge-review-status-banner.md) | `implemented` | Knowledge review status banner | `architect-saas`, `architect-browser-assistant` |
 | 70 | [70-knowledge-candidate-row-risk-chips.md](70-knowledge-candidate-row-risk-chips.md) | `implemented` | Knowledge candidate row risk chips | `architect-saas`, `architect-browser-assistant` |
+| 71 | [71-knowledge-candidate-risk-filters.md](71-knowledge-candidate-risk-filters.md) | `implemented` | Knowledge candidate risk quick filters | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -215,13 +217,14 @@ Slice 70 added Knowledge candidate row risk chips.
 71. `Implement and verify 68 Knowledge copy approval checklist action.`
 72. `Implement and verify 69 Knowledge review status banner.`
 73. `Implement and verify 70 Knowledge candidate row risk chips.`
+74. `Implement and verify 71 Knowledge candidate risk quick filters.`
 
 ## Next Goal Candidate
 
-`Add Knowledge candidate risk quick filters so admins can focus low-confidence or unreviewed candidates from the queue.`
+`Add Knowledge active candidate filter chips so admins can see the combined state, risk, and search scope before selecting a candidate.`
 
 Success criteria:
 
-1. Knowledge candidate queue exposes risk quick filters.
-2. Filters cover low-confidence and unreviewed candidate groups.
-3. The candidate-risk-filter slice is documented in the next slice PRD.
+1. Knowledge candidate queue shows active state/risk/search scope chips.
+2. Chips update as admins change quick filters or search.
+3. The active-filter-chip slice is documented in the next slice PRD.
