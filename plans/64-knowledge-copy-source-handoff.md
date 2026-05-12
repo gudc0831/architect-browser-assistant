@@ -26,8 +26,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 64 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1925-knowledge-copy-source-handoff.md) | PRD and roadmap updated |
-| Knowledge copy source handoff action | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1925-knowledge-copy-source-handoff.md) | Final batch verification pending |
+| Slice 64 PRD and roadmap entry | implemented | `602b98b` | [browser worklog](../docs/worklogs/2026-05-12-1925-knowledge-copy-source-handoff.md) | PRD and roadmap updated |
+| Knowledge copy source handoff action | implemented | `ae5d128` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1925-knowledge-copy-source-handoff.md) | Final batch verification pending |
 
 ## Verification Log
 
