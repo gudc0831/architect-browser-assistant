@@ -33,11 +33,11 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 27 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1146-assistant-audit-cleanup-detail-package.md) | PRD and roadmap updated |
+| Slice 27 PRD and roadmap entry | implemented | architect-browser-assistant `0fd5c08` | [browser worklog](../docs/worklogs/2026-05-12-1146-assistant-audit-cleanup-detail-package.md) | PRD and roadmap updated |
 | Cleanup detail API | implemented | architect-saas `f2ed4e4` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1146-assistant-audit-cleanup-detail-package.md) | API returned cleanup id, token, retention context, and counts |
 | Cleanup package export | implemented | architect-saas `f2ed4e4` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1146-assistant-audit-cleanup-detail-package.md) | Markdown export returned title, retention context, and raw metadata |
 | Admin UI cleanup detail | implemented | architect-saas `f2ed4e4` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1146-assistant-audit-cleanup-detail-package.md) | Browser verified review/export actions and detail panel |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `f2ed4e4`; architect-browser-assistant `0fd5c08` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
