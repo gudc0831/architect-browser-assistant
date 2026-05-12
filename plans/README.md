@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 60 implemented; next candidate is Knowledge clear search action.`
+Current implementation goal (2026-05-12): `Slice 61 implemented; next candidate is Knowledge reset draft action.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -47,6 +47,7 @@ Slice 57 added Knowledge draft freshness chips.
 Slice 58 added Knowledge draft approval summary chips.
 Slice 59 added Knowledge evidence-kind rollup chips.
 Slice 60 added Knowledge draft length counters.
+Slice 61 added Knowledge clear search action.
 
 ## Operating Rules
 
@@ -119,6 +120,7 @@ Slice 60 added Knowledge draft length counters.
 | 58 | [58-knowledge-draft-approval-summary.md](58-knowledge-draft-approval-summary.md) | `implemented` | Knowledge draft approval summary chips | `architect-saas`, `architect-browser-assistant` |
 | 59 | [59-knowledge-evidence-kind-rollup.md](59-knowledge-evidence-kind-rollup.md) | `implemented` | Knowledge evidence-kind rollup chips | `architect-saas`, `architect-browser-assistant` |
 | 60 | [60-knowledge-draft-length-counters.md](60-knowledge-draft-length-counters.md) | `implemented` | Knowledge draft length counters | `architect-saas`, `architect-browser-assistant` |
+| 61 | [61-knowledge-clear-search.md](61-knowledge-clear-search.md) | `implemented` | Knowledge clear search action | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -185,13 +187,14 @@ Slice 60 added Knowledge draft length counters.
 61. `Implement and verify 58 Knowledge draft approval summary chips.`
 62. `Implement and verify 59 Knowledge evidence-kind rollup chips.`
 63. `Implement and verify 60 Knowledge draft length counters.`
+64. `Implement and verify 61 Knowledge clear search action.`
 
 ## Next Goal Candidate
 
-`Add a Knowledge clear search action to reset candidate search without touching state filters.`
+`Add a Knowledge reset draft action so admins can restore the current WIKI draft fields from the selected candidate detail.`
 
 Success criteria:
 
-1. Knowledge Admin search field has a clear action.
-2. Clearing search preserves the active state filter.
-3. The clear-search slice is documented in the next slice PRD.
+1. Knowledge draft editor exposes a reset action.
+2. Reset restores title, summary, body, tags, scope, and rejection reason from the loaded candidate detail.
+3. The reset-draft slice is documented in the next slice PRD.
