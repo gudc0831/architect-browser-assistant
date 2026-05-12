@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 52 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1625-knowledge-candidate-quick-filters.md) | PRD and roadmap updated |
-| Knowledge Admin quick filters | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1625-knowledge-candidate-quick-filters.md) | Browser UI verified quick filter and select synchronization |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks completed |
+| Slice 52 PRD and roadmap entry | implemented | `architect-browser-assistant` `1a3499f` | [browser worklog](../docs/worklogs/2026-05-12-1625-knowledge-candidate-quick-filters.md) | PRD and roadmap updated |
+| Knowledge Admin quick filters | implemented | `architect-saas` `45f3f12` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1625-knowledge-candidate-quick-filters.md) | Browser UI verified quick filter and select synchronization |
+| User guide and worklogs | implemented | `architect-saas` `45f3f12`; `architect-browser-assistant` `1a3499f` | browser/SaaS worklogs | Static checks completed |
 
 ## Verification Log
 
