@@ -32,10 +32,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 32 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1324-assistant-audit-cleanup-coverage-dashboard.md) | PRD and roadmap updated |
+| Slice 32 PRD and roadmap entry | implemented | architect-browser-assistant `8112867` | [browser worklog](../docs/worklogs/2026-05-12-1324-assistant-audit-cleanup-coverage-dashboard.md) | PRD and roadmap updated |
 | Coverage JSON API | implemented | architect-saas `a5409e5` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1324-assistant-audit-cleanup-coverage-dashboard.md) | API returned reviewed row, note count, and reviewer ids |
 | Admin UI coverage cards | implemented | architect-saas `a5409e5` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1324-assistant-audit-cleanup-coverage-dashboard.md) | Browser verified reviewed coverage card, note count, and reviewers |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `a5409e5`; architect-browser-assistant `8112867` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
