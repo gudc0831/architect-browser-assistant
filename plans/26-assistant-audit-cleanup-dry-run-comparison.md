@@ -33,11 +33,11 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 26 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1128-assistant-audit-cleanup-comparison.md) | PRD and roadmap updated |
+| Slice 26 PRD and roadmap entry | implemented | `architect-browser-assistant` `4a26f87` | [browser worklog](../docs/worklogs/2026-05-12-1128-assistant-audit-cleanup-comparison.md) | PRD and roadmap updated |
 | Dry-run comparison API | implemented | `architect-saas` `dc6cc48` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1128-assistant-audit-cleanup-comparison.md) | API returned current token, 0 newly eligible, 0 previous deleted/skipped, 6 still protected |
 | Dry-run JSON export | implemented | `architect-saas` `dc6cc48` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1128-assistant-audit-cleanup-comparison.md) | JSON export returned read-only warning and comparison fields |
 | Admin UI comparison controls | implemented | `architect-saas` `dc6cc48` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1128-assistant-audit-cleanup-comparison.md) | Browser verified comparison input, result metrics, export link, and mobile layout |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | `architect-saas` `dc6cc48`; `architect-browser-assistant` `4a26f87` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
