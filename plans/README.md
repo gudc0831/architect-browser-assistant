@@ -1,11 +1,12 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 19 implemented; next candidate is assistant audit governance note capture.`
+Current implementation goal (2026-05-12): `Slice 20 implemented; next candidate is assistant audit evidence package export.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
 Slice 18 added a read-only CSV export for filtered admin assistant action audit records.
 Slice 19 added a read-only governance drill-down for individual assistant action audit records.
+Slice 20 added append-only governance review notes to the assistant action audit drill-down.
 
 ## Operating Rules
 
@@ -37,6 +38,7 @@ Slice 19 added a read-only governance drill-down for individual assistant action
 | 17 | [17-admin-action-audit-review.md](17-admin-action-audit-review.md) | `implemented` | Admin review surface for assistant action audits with filters and `/daily` task links | `architect-saas`, `architect-browser-assistant` |
 | 18 | [18-admin-action-audit-export.md](18-admin-action-audit-export.md) | `implemented` | Read-only CSV export for filtered admin assistant action audit review records | `architect-saas`, `architect-browser-assistant` |
 | 19 | [19-assistant-audit-governance-drill-down.md](19-assistant-audit-governance-drill-down.md) | `implemented` | Read-only per-record governance drill-down for assistant action audits | `architect-saas`, `architect-browser-assistant` |
+| 20 | [20-assistant-audit-governance-note-capture.md](20-assistant-audit-governance-note-capture.md) | `implemented` | Append-only governance notes in assistant action audit drill-down | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -62,13 +64,14 @@ Slice 19 added a read-only governance drill-down for individual assistant action
 20. `Implement and verify 17 admin-facing assistant action audit review surface with filters and task links.`
 21. `Implement and verify 18 admin assistant action audit CSV export for operational review.`
 22. `Implement and verify 19 assistant audit governance drill-down for operational review.`
+23. `Implement and verify 20 assistant audit governance note capture for operational review.`
 
 ## Next Goal Candidate
 
-`Add assistant audit governance note capture for operational review.`
+`Add assistant audit evidence package export for operational review.`
 
 Success criteria:
 
-1. Admin users can add append-only governance review notes to an assistant action audit drill-down.
-2. Notes store reviewer id, timestamp, category, and text without changing immutable audit event metadata.
-3. Notes are visible in the drill-down and exportable in a future evidence package.
+1. Admin users can export a per-record evidence package from an assistant action audit drill-down.
+2. The package includes action audit fields, assistant record summary, task snapshots, provenance, and append-only governance notes.
+3. The package remains read-only and does not mutate audit, task, assistant, or note records.
