@@ -32,9 +32,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 37 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1358-assistant-audit-cleanup-filter-handoff.md) | PRD and roadmap updated |
-| Admin UI filter handoff text/copy action | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1358-assistant-audit-cleanup-filter-handoff.md) | Browser verified copy action and rendered handoff string |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | User guide and compact worklogs updated |
+| Slice 37 PRD and roadmap entry | implemented | architect-browser-assistant `8bf666b` | [browser worklog](../docs/worklogs/2026-05-12-1358-assistant-audit-cleanup-filter-handoff.md) | PRD and roadmap updated |
+| Admin UI filter handoff text/copy action | implemented | architect-saas `e553e07` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1358-assistant-audit-cleanup-filter-handoff.md) | Browser verified copy action and rendered handoff string |
+| User guide and worklogs | implemented | architect-saas `e553e07`; architect-browser-assistant `8bf666b` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
