@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 51 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1610-knowledge-candidate-queue-counts.md) | PRD and roadmap updated |
-| Knowledge Admin queue counts | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1610-knowledge-candidate-queue-counts.md) | Browser UI verified state count labels render |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks completed |
+| Slice 51 PRD and roadmap entry | implemented | `architect-browser-assistant` `d6a4479` | [browser worklog](../docs/worklogs/2026-05-12-1610-knowledge-candidate-queue-counts.md) | PRD and roadmap updated |
+| Knowledge Admin queue counts | implemented | `architect-saas` `9742831` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1610-knowledge-candidate-queue-counts.md) | Browser UI verified state count labels render |
+| User guide and worklogs | implemented | `architect-saas` `9742831`; `architect-browser-assistant` `d6a4479` | browser/SaaS worklogs | Static checks completed |
 
 ## Verification Log
 
