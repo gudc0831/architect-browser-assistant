@@ -1,12 +1,13 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 20 implemented; next candidate is assistant audit evidence package export.`
+Current implementation goal (2026-05-12): `Slice 21 implemented; next candidate is filtered governance note export/reporting.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
 Slice 18 added a read-only CSV export for filtered admin assistant action audit records.
 Slice 19 added a read-only governance drill-down for individual assistant action audit records.
 Slice 20 added append-only governance review notes to the assistant action audit drill-down.
+Slice 21 added a read-only per-record Markdown evidence package export from the assistant action audit drill-down.
 
 ## Operating Rules
 
@@ -39,6 +40,7 @@ Slice 20 added append-only governance review notes to the assistant action audit
 | 18 | [18-admin-action-audit-export.md](18-admin-action-audit-export.md) | `implemented` | Read-only CSV export for filtered admin assistant action audit review records | `architect-saas`, `architect-browser-assistant` |
 | 19 | [19-assistant-audit-governance-drill-down.md](19-assistant-audit-governance-drill-down.md) | `implemented` | Read-only per-record governance drill-down for assistant action audits | `architect-saas`, `architect-browser-assistant` |
 | 20 | [20-assistant-audit-governance-note-capture.md](20-assistant-audit-governance-note-capture.md) | `implemented` | Append-only governance notes in assistant action audit drill-down | `architect-saas`, `architect-browser-assistant` |
+| 21 | [21-assistant-audit-evidence-package-export.md](21-assistant-audit-evidence-package-export.md) | `implemented` | Read-only per-record assistant action audit evidence package export | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -65,13 +67,14 @@ Slice 20 added append-only governance review notes to the assistant action audit
 21. `Implement and verify 18 admin assistant action audit CSV export for operational review.`
 22. `Implement and verify 19 assistant audit governance drill-down for operational review.`
 23. `Implement and verify 20 assistant audit governance note capture for operational review.`
+24. `Implement and verify 21 assistant audit evidence package export for operational review.`
 
 ## Next Goal Candidate
 
-`Add assistant audit evidence package export for operational review.`
+`Add filtered governance note export/reporting across multiple assistant action audits.`
 
 Success criteria:
 
-1. Admin users can export a per-record evidence package from an assistant action audit drill-down.
-2. The package includes action audit fields, assistant record summary, task snapshots, provenance, and append-only governance notes.
-3. The package remains read-only and does not mutate audit, task, assistant, or note records.
+1. Admin users can filter governance notes across assistant action audits by month, category, reviewer, task, and assistant record.
+2. The report links each note back to its action audit drill-down and `/daily` task detail.
+3. Export remains read-only and includes note category, reviewer, timestamp, source audit id, assistant record id, and task labels.
