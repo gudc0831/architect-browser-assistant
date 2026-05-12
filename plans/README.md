@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 93 implemented; next candidate is Knowledge dirty-draft reset warning.`
+Current implementation goal (2026-05-13): `Slice 94 implemented; next candidate is Knowledge dirty-draft approval guardrail.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -80,6 +80,7 @@ Slice 90 added Knowledge evidence filter handoff copy action.
 Slice 91 added Knowledge visible evidence summary.
 Slice 92 added Knowledge evidence empty-state guidance.
 Slice 93 added Knowledge draft dirty-state indicators.
+Slice 94 added Knowledge dirty-draft reset warning.
 
 ## Operating Rules
 
@@ -185,6 +186,7 @@ Slice 93 added Knowledge draft dirty-state indicators.
 | 91 | [91-knowledge-visible-evidence-summary.md](91-knowledge-visible-evidence-summary.md) | `implemented` | Knowledge visible evidence summary | `architect-saas`, `architect-browser-assistant` |
 | 92 | [92-knowledge-evidence-empty-state-guidance.md](92-knowledge-evidence-empty-state-guidance.md) | `implemented` | Knowledge evidence empty-state guidance | `architect-saas`, `architect-browser-assistant` |
 | 93 | [93-knowledge-draft-dirty-state-indicators.md](93-knowledge-draft-dirty-state-indicators.md) | `implemented` | Knowledge draft dirty-state indicators | `architect-saas`, `architect-browser-assistant` |
+| 94 | [94-knowledge-dirty-draft-reset-warning.md](94-knowledge-dirty-draft-reset-warning.md) | `implemented` | Knowledge dirty-draft reset warning | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -284,13 +286,14 @@ Slice 93 added Knowledge draft dirty-state indicators.
 94. `Implement and verify 91 Knowledge visible evidence summary.`
 95. `Implement and verify 92 Knowledge evidence empty-state guidance.`
 96. `Implement and verify 93 Knowledge draft dirty-state indicators.`
+97. `Implement and verify 94 Knowledge dirty-draft reset warning.`
 
 ## Next Goal Candidate
 
-`Add Knowledge dirty-draft reset warning so reviewers can see reset impact before restoring the selected candidate draft.`
+`Add Knowledge dirty-draft approval guardrail so approval notes mention when a reviewer is approving edited draft fields.`
 
 Success criteria:
 
-1. Reset area shows dirty-field count before reset.
-2. Reset warning clears when no draft fields changed.
-3. The dirty-draft-reset-warning slice is documented in the next slice PRD.
+1. Approval guardrails mention changed draft fields when present.
+2. Guardrail is ready when no fields changed.
+3. The dirty-draft-approval-guardrail slice is documented in the next slice PRD.
