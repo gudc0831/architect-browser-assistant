@@ -27,8 +27,8 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 68 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-2025-knowledge-copy-approval-checklist.md) | PRD and roadmap updated |
-| Knowledge copy approval checklist action | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-2025-knowledge-copy-approval-checklist.md) | Final batch verification pending |
+| Slice 68 PRD and roadmap entry | implemented | `0c6e6b6` | [browser worklog](../docs/worklogs/2026-05-12-2025-knowledge-copy-approval-checklist.md) | PRD and roadmap updated |
+| Knowledge copy approval checklist action | implemented | `379f41b` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-2025-knowledge-copy-approval-checklist.md) | Final batch verification pending |
 
 ## Verification Log
 
