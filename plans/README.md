@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 95 implemented; next candidate is Knowledge copy dirty-draft summary.`
+Current implementation goal (2026-05-13): `Slice 96 implemented; next candidate is Knowledge Markdown outline preview.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -82,6 +82,7 @@ Slice 92 added Knowledge evidence empty-state guidance.
 Slice 93 added Knowledge draft dirty-state indicators.
 Slice 94 added Knowledge dirty-draft reset warning.
 Slice 95 added Knowledge dirty-draft approval guardrail.
+Slice 96 added Knowledge copy dirty-draft summary action.
 
 ## Operating Rules
 
@@ -189,6 +190,7 @@ Slice 95 added Knowledge dirty-draft approval guardrail.
 | 93 | [93-knowledge-draft-dirty-state-indicators.md](93-knowledge-draft-dirty-state-indicators.md) | `implemented` | Knowledge draft dirty-state indicators | `architect-saas`, `architect-browser-assistant` |
 | 94 | [94-knowledge-dirty-draft-reset-warning.md](94-knowledge-dirty-draft-reset-warning.md) | `implemented` | Knowledge dirty-draft reset warning | `architect-saas`, `architect-browser-assistant` |
 | 95 | [95-knowledge-dirty-draft-approval-guardrail.md](95-knowledge-dirty-draft-approval-guardrail.md) | `implemented` | Knowledge dirty-draft approval guardrail | `architect-saas`, `architect-browser-assistant` |
+| 96 | [96-knowledge-copy-dirty-draft-summary.md](96-knowledge-copy-dirty-draft-summary.md) | `implemented` | Knowledge copy dirty-draft summary action | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -290,13 +292,14 @@ Slice 95 added Knowledge dirty-draft approval guardrail.
 96. `Implement and verify 93 Knowledge draft dirty-state indicators.`
 97. `Implement and verify 94 Knowledge dirty-draft reset warning.`
 98. `Implement and verify 95 Knowledge dirty-draft approval guardrail.`
+99. `Implement and verify 96 Knowledge copy dirty-draft summary action.`
 
 ## Next Goal Candidate
 
-`Add Knowledge copy dirty-draft summary so reviewers can copy changed-field context for handoff before approval.`
+`Add Knowledge Markdown outline preview so reviewers can inspect draft heading structure before approval.`
 
 Success criteria:
 
-1. Draft editor exposes a copy dirty-draft summary action.
-2. Copied summary includes changed field names and selected candidate context.
-3. The copy-dirty-draft-summary slice is documented in the next slice PRD.
+1. Draft editor exposes Markdown heading outline chips or rows.
+2. Outline derives from the current draft Markdown body.
+3. The markdown-outline slice is documented in the next slice PRD.
