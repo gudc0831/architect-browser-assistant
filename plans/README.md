@@ -1,9 +1,10 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-11): `Slice 17 implemented; next candidate is admin assistant audit export or governance drill-down.`
+Current implementation goal (2026-05-12): `Slice 18 implemented; next candidate is assistant audit governance drill-down.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
+Slice 18 added a read-only CSV export for filtered admin assistant action audit records.
 
 ## Operating Rules
 
@@ -33,6 +34,7 @@ Slice 17 added an admin-facing assistant action audit review surface with filter
 | 15 | [15-assistant-origin-audit-indicators.md](15-assistant-origin-audit-indicators.md) | `implemented` | Show assistant-origin task change provenance in task detail/history | `architect-saas`, `architect-browser-assistant` |
 | 16 | [16-structured-assistant-action-audit.md](16-structured-assistant-action-audit.md) | `implemented` | Persist structured assistant task-update and follow-up creation audit records | `architect-saas`, `architect-browser-assistant` |
 | 17 | [17-admin-action-audit-review.md](17-admin-action-audit-review.md) | `implemented` | Admin review surface for assistant action audits with filters and `/daily` task links | `architect-saas`, `architect-browser-assistant` |
+| 18 | [18-admin-action-audit-export.md](18-admin-action-audit-export.md) | `implemented` | Read-only CSV export for filtered admin assistant action audit review records | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -56,13 +58,14 @@ Slice 17 added an admin-facing assistant action audit review surface with filter
 18. `Implement and verify 15 assistant-origin audit indicators in task detail/history for approved assistant summary task changes.`
 19. `Implement and verify 16 structured assistant-action audit persistence for approved assistant task changes.`
 20. `Implement and verify 17 admin-facing assistant action audit review surface with filters and task links.`
+21. `Implement and verify 18 admin assistant action audit CSV export for operational review.`
 
 ## Next Goal Candidate
 
-`Add admin assistant action audit export or governance drill-down for operational review.`
+`Add assistant audit governance drill-down for operational review.`
 
 Success criteria:
 
-1. Admin users can export filtered assistant action audit records or open a richer per-record review view.
-2. Export/drill-down preserves task links, assistant record ids, actor ids, and summary metadata.
-3. The feature remains read-only for audit integrity.
+1. Admin users can open a richer per-record review view from an assistant action audit.
+2. The view links the audit event, assistant record, closure gate fields, task history/provenance, and `/daily` task detail.
+3. The feature remains read-only for audit integrity and does not mutate task or assistant records.
