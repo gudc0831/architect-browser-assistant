@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 57 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1740-knowledge-draft-freshness-chips.md) | PRD and roadmap updated |
-| Knowledge draft freshness chips | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1740-knowledge-draft-freshness-chips.md) | Browser UI verified freshness chips render |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks completed |
+| Slice 57 PRD and roadmap entry | implemented | `architect-browser-assistant` `7785d62` | [browser worklog](../docs/worklogs/2026-05-12-1740-knowledge-draft-freshness-chips.md) | PRD and roadmap updated |
+| Knowledge draft freshness chips | implemented | `architect-saas` `f542a5c` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1740-knowledge-draft-freshness-chips.md) | Browser UI verified freshness chips render |
+| User guide and worklogs | implemented | `architect-saas` `f542a5c`; `architect-browser-assistant` `7785d62` | browser/SaaS worklogs | Static checks completed |
 
 ## Verification Log
 
