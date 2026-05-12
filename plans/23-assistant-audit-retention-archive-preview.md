@@ -33,11 +33,11 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 23 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1050-assistant-audit-retention-preview.md) | PRD and roadmap updated |
+| Slice 23 PRD and roadmap entry | implemented | `architect-browser-assistant` `ff05f89` | [browser worklog](../docs/worklogs/2026-05-12-1050-assistant-audit-retention-preview.md) | PRD and roadmap updated |
 | Retention preview API | implemented | `architect-saas` `9ccf46b` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1050-assistant-audit-retention-preview.md) | API preview returned monthly eligible/protected counts |
 | Archive preview export API | implemented | `architect-saas` `9ccf46b` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1050-assistant-audit-retention-preview.md) | JSON export preserved raw metadata, source audit ids, assistant record ids, and note context |
 | Admin UI retention preview | implemented | `architect-saas` `9ccf46b` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1050-assistant-audit-retention-preview.md) | Browser verified desktop and mobile `/admin/assistant` retention preview |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | `architect-saas` `9ccf46b`; `architect-browser-assistant` `ff05f89` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
