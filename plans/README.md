@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 26 implemented; next candidate is cleanup detail drill-down and evidence package export.`
+Current implementation goal (2026-05-12): `Slice 27 implemented; next candidate is cleanup review notes.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -13,6 +13,7 @@ Slice 23 added read-only assistant audit retention preview and JSON archive prev
 Slice 24 added guarded assistant audit cleanup execution requiring a matching archive preview token and explicit confirmation.
 Slice 25 added assistant audit cleanup history reporting and CSV export.
 Slice 26 added read-only assistant audit cleanup dry-run comparison and JSON export.
+Slice 27 added assistant audit cleanup detail drill-down and Markdown evidence package export.
 
 ## Operating Rules
 
@@ -51,6 +52,7 @@ Slice 26 added read-only assistant audit cleanup dry-run comparison and JSON exp
 | 24 | [24-guarded-assistant-audit-cleanup-execution.md](24-guarded-assistant-audit-cleanup-execution.md) | `implemented` | Guarded assistant audit cleanup execution after matching preview token | `architect-saas`, `architect-browser-assistant` |
 | 25 | [25-assistant-audit-cleanup-history-reporting.md](25-assistant-audit-cleanup-history-reporting.md) | `implemented` | Assistant audit cleanup history reporting and CSV export | `architect-saas`, `architect-browser-assistant` |
 | 26 | [26-assistant-audit-cleanup-dry-run-comparison.md](26-assistant-audit-cleanup-dry-run-comparison.md) | `implemented` | Read-only cleanup dry-run comparison against current retention preview | `architect-saas`, `architect-browser-assistant` |
+| 27 | [27-assistant-audit-cleanup-detail-package.md](27-assistant-audit-cleanup-detail-package.md) | `implemented` | Cleanup detail drill-down and Markdown evidence package export | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -83,13 +85,14 @@ Slice 26 added read-only assistant audit cleanup dry-run comparison and JSON exp
 27. `Implement and verify 24 guarded assistant audit cleanup execution.`
 28. `Implement and verify 25 assistant audit cleanup history reporting and export.`
 29. `Implement and verify 26 assistant audit cleanup dry-run comparison.`
+30. `Implement and verify 27 assistant audit cleanup detail package export.`
 
 ## Next Goal Candidate
 
-`Add assistant audit cleanup detail drill-down and evidence package export for one cleanup run.`
+`Add assistant audit cleanup review notes so admins can append post-cleanup governance notes to a cleanup run.`
 
 Success criteria:
 
-1. Admin users can open one cleanup run and inspect its raw audit event, retention context, deleted/skipped ids, and counts.
-2. Admin users can export a read-only Markdown evidence package for one cleanup run.
-3. The drill-down does not depend on deleted source action/governance events still existing.
+1. Admin users can append category-based review notes to a cleanup run.
+2. Cleanup detail shows append-only cleanup review notes with reviewer and timestamp.
+3. Notes do not mutate cleanup metadata and are excluded from retention action/governance cleanup eligibility.
