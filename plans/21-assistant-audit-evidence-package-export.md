@@ -33,10 +33,10 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 21 PRD and roadmap entry | implemented | browser-assistant `64b0537` | [browser worklog](../docs/worklogs/2026-05-12-1015-assistant-audit-evidence-package-export.md) | Document and roadmap updated |
+| Slice 21 PRD and roadmap entry | implemented | browser-assistant `68f2251` | [browser worklog](../docs/worklogs/2026-05-12-1015-assistant-audit-evidence-package-export.md) | Document and roadmap updated |
 | Evidence package export API | implemented | architect-saas `393c308` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1015-assistant-audit-evidence-package-export.md) | API proof returned Markdown package with attachment header |
 | Drill-down export package UI | implemented | architect-saas `393c308` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1015-assistant-audit-evidence-package-export.md) | Browser proof confirmed `Export package` link in detail panel |
-| User guide and worklogs | implemented | architect-saas `393c308`, browser-assistant `64b0537` | SaaS and browser worklogs | `사용자 가이드.md`, PRD, roadmap, worklogs updated |
+| User guide and worklogs | implemented | architect-saas `393c308`, browser-assistant `68f2251` | SaaS and browser worklogs | `사용자 가이드.md`, PRD, roadmap, worklogs updated |
 
 ## Verification Log
 
