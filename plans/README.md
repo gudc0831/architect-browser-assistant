@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 79 implemented; next candidate is Knowledge candidate visible risk totals.`
+Current implementation goal (2026-05-12): `Slice 80 implemented; next candidate is Knowledge evidence priority rollup.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -66,6 +66,7 @@ Slice 76 added Knowledge show selected candidate action.
 Slice 77 added Knowledge candidate queue density controls.
 Slice 78 added Knowledge candidate filter handoff copy action.
 Slice 79 added Knowledge candidate risk totals.
+Slice 80 added Knowledge visible candidate risk totals.
 
 ## Operating Rules
 
@@ -157,6 +158,7 @@ Slice 79 added Knowledge candidate risk totals.
 | 77 | [77-knowledge-candidate-queue-density.md](77-knowledge-candidate-queue-density.md) | `implemented` | Knowledge candidate queue density controls | `architect-saas`, `architect-browser-assistant` |
 | 78 | [78-knowledge-candidate-filter-handoff.md](78-knowledge-candidate-filter-handoff.md) | `implemented` | Knowledge candidate filter handoff copy action | `architect-saas`, `architect-browser-assistant` |
 | 79 | [79-knowledge-candidate-risk-totals.md](79-knowledge-candidate-risk-totals.md) | `implemented` | Knowledge candidate risk totals | `architect-saas`, `architect-browser-assistant` |
+| 80 | [80-knowledge-visible-candidate-risk-totals.md](80-knowledge-visible-candidate-risk-totals.md) | `implemented` | Knowledge visible candidate risk totals | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -242,13 +244,14 @@ Slice 79 added Knowledge candidate risk totals.
 80. `Implement and verify 77 Knowledge candidate queue density controls.`
 81. `Implement and verify 78 Knowledge candidate filter handoff copy action.`
 82. `Implement and verify 79 Knowledge candidate risk totals.`
+83. `Implement and verify 80 Knowledge visible candidate risk totals.`
 
 ## Next Goal Candidate
 
-`Add Knowledge visible candidate risk totals so admins can compare filtered risk counts against overall counts.`
+`Add Knowledge evidence priority rollup so reviewers can see high/normal/low evidence weight before approving a draft.`
 
 Success criteria:
 
-1. Candidate queue exposes visible risk total chips.
-2. Visible totals cover low-confidence, unreviewed, and cleanup-approved candidates in the current filtered queue.
-3. The visible-risk-total slice is documented in the next slice PRD.
+1. Knowledge draft detail exposes evidence priority rollup chips.
+2. Rollup groups evidence by priority tier.
+3. The evidence-priority-rollup slice is documented in the next slice PRD.
