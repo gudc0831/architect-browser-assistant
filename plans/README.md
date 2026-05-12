@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 92 implemented; next candidate is Knowledge draft dirty-state indicators.`
+Current implementation goal (2026-05-13): `Slice 93 implemented; next candidate is Knowledge dirty-draft reset warning.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -79,6 +79,7 @@ Slice 89 added Knowledge clear evidence filters action.
 Slice 90 added Knowledge evidence filter handoff copy action.
 Slice 91 added Knowledge visible evidence summary.
 Slice 92 added Knowledge evidence empty-state guidance.
+Slice 93 added Knowledge draft dirty-state indicators.
 
 ## Operating Rules
 
@@ -183,6 +184,7 @@ Slice 92 added Knowledge evidence empty-state guidance.
 | 90 | [90-knowledge-evidence-filter-handoff.md](90-knowledge-evidence-filter-handoff.md) | `implemented` | Knowledge evidence filter handoff copy action | `architect-saas`, `architect-browser-assistant` |
 | 91 | [91-knowledge-visible-evidence-summary.md](91-knowledge-visible-evidence-summary.md) | `implemented` | Knowledge visible evidence summary | `architect-saas`, `architect-browser-assistant` |
 | 92 | [92-knowledge-evidence-empty-state-guidance.md](92-knowledge-evidence-empty-state-guidance.md) | `implemented` | Knowledge evidence empty-state guidance | `architect-saas`, `architect-browser-assistant` |
+| 93 | [93-knowledge-draft-dirty-state-indicators.md](93-knowledge-draft-dirty-state-indicators.md) | `implemented` | Knowledge draft dirty-state indicators | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -281,13 +283,14 @@ Slice 92 added Knowledge evidence empty-state guidance.
 93. `Implement and verify 90 Knowledge evidence filter handoff copy action.`
 94. `Implement and verify 91 Knowledge visible evidence summary.`
 95. `Implement and verify 92 Knowledge evidence empty-state guidance.`
+96. `Implement and verify 93 Knowledge draft dirty-state indicators.`
 
 ## Next Goal Candidate
 
-`Add Knowledge draft dirty-state indicators so reviewers can see edited fields before approving or resetting a draft.`
+`Add Knowledge dirty-draft reset warning so reviewers can see reset impact before restoring the selected candidate draft.`
 
 Success criteria:
 
-1. Draft editor exposes changed/unchanged field chips.
-2. Dirty state covers title, summary, body, tags, scope, and rejection reason.
-3. The draft-dirty-state slice is documented in the next slice PRD.
+1. Reset area shows dirty-field count before reset.
+2. Reset warning clears when no draft fields changed.
+3. The dirty-draft-reset-warning slice is documented in the next slice PRD.
