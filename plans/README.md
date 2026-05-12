@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 91 implemented; next candidate is Knowledge evidence empty-state guidance.`
+Current implementation goal (2026-05-13): `Slice 92 implemented; next candidate is Knowledge draft dirty-state indicators.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -78,6 +78,7 @@ Slice 88 added Knowledge active evidence filter chips.
 Slice 89 added Knowledge clear evidence filters action.
 Slice 90 added Knowledge evidence filter handoff copy action.
 Slice 91 added Knowledge visible evidence summary.
+Slice 92 added Knowledge evidence empty-state guidance.
 
 ## Operating Rules
 
@@ -181,6 +182,7 @@ Slice 91 added Knowledge visible evidence summary.
 | 89 | [89-knowledge-clear-evidence-filters.md](89-knowledge-clear-evidence-filters.md) | `implemented` | Knowledge clear evidence filters action | `architect-saas`, `architect-browser-assistant` |
 | 90 | [90-knowledge-evidence-filter-handoff.md](90-knowledge-evidence-filter-handoff.md) | `implemented` | Knowledge evidence filter handoff copy action | `architect-saas`, `architect-browser-assistant` |
 | 91 | [91-knowledge-visible-evidence-summary.md](91-knowledge-visible-evidence-summary.md) | `implemented` | Knowledge visible evidence summary | `architect-saas`, `architect-browser-assistant` |
+| 92 | [92-knowledge-evidence-empty-state-guidance.md](92-knowledge-evidence-empty-state-guidance.md) | `implemented` | Knowledge evidence empty-state guidance | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -278,13 +280,14 @@ Slice 91 added Knowledge visible evidence summary.
 92. `Implement and verify 89 Knowledge clear evidence filters action.`
 93. `Implement and verify 90 Knowledge evidence filter handoff copy action.`
 94. `Implement and verify 91 Knowledge visible evidence summary.`
+95. `Implement and verify 92 Knowledge evidence empty-state guidance.`
 
 ## Next Goal Candidate
 
-`Add Knowledge evidence empty-state guidance so reviewers understand when active filters hide all evidence rows.`
+`Add Knowledge draft dirty-state indicators so reviewers can see edited fields before approving or resetting a draft.`
 
 Success criteria:
 
-1. Evidence empty state names the active source and priority filters.
-2. Empty state suggests clearing evidence filters.
-3. The evidence-empty-state slice is documented in the next slice PRD.
+1. Draft editor exposes changed/unchanged field chips.
+2. Dirty state covers title, summary, body, tags, scope, and rejection reason.
+3. The draft-dirty-state slice is documented in the next slice PRD.
