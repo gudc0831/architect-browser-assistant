@@ -27,9 +27,9 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 54 PRD and roadmap entry | implemented | pending commit | [browser worklog](../docs/worklogs/2026-05-12-1655-knowledge-draft-readiness.md) | PRD and roadmap updated |
-| Knowledge draft readiness chips | implemented | pending commit | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1655-knowledge-draft-readiness.md) | Browser UI verified readiness chips render |
-| User guide and worklogs | implemented | pending commit | browser/SaaS worklogs | Static checks completed |
+| Slice 54 PRD and roadmap entry | implemented | `architect-browser-assistant` `112cc91` | [browser worklog](../docs/worklogs/2026-05-12-1655-knowledge-draft-readiness.md) | PRD and roadmap updated |
+| Knowledge draft readiness chips | implemented | `architect-saas` `35f2596` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1655-knowledge-draft-readiness.md) | Browser UI verified readiness chips render |
+| User guide and worklogs | implemented | `architect-saas` `35f2596`; `architect-browser-assistant` `112cc91` | browser/SaaS worklogs | Static checks completed |
 
 ## Verification Log
 
