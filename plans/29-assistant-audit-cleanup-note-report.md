@@ -34,11 +34,11 @@ Current implementation state: `implemented`
 
 | Item | Status | Commit | Worklog | Verification |
 | --- | --- | --- | --- | --- |
-| Slice 29 PRD and roadmap entry | implemented | pending browser-assistant commit | [browser worklog](../docs/worklogs/2026-05-12-1228-assistant-audit-cleanup-note-report.md) | PRD and roadmap updated |
+| Slice 29 PRD and roadmap entry | implemented | architect-browser-assistant `bafcd14` | [browser worklog](../docs/worklogs/2026-05-12-1228-assistant-audit-cleanup-note-report.md) | PRD and roadmap updated |
 | Cleanup note report API | implemented | architect-saas `c969bd5` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1228-assistant-audit-cleanup-note-report.md) | API returned filtered notes with cleanup id, token, and counts |
 | Cleanup note CSV export | implemented | architect-saas `c969bd5` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1228-assistant-audit-cleanup-note-report.md) | CSV returned note headers, cleanup context, and note text |
 | Admin UI cleanup note report | implemented | architect-saas `c969bd5` | [SaaS worklog](../../architect-saas/docs/worklogs/2026-05-12-1228-assistant-audit-cleanup-note-report.md) | Browser verified report cards, filters, export link, and cleanup actions |
-| User guide and worklogs | implemented | pending repo commits | browser/SaaS worklogs | User guide and compact worklogs updated |
+| User guide and worklogs | implemented | architect-saas `c969bd5`; architect-browser-assistant `bafcd14` | browser/SaaS worklogs | User guide and compact worklogs updated |
 
 ## Verification Log
 
