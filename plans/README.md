@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-12): `Slice 68 implemented; next candidate is Knowledge review status banner.`
+Current implementation goal (2026-05-12): `Slice 69 implemented; next candidate is Knowledge candidate row risk chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -55,6 +55,7 @@ Slice 65 added Knowledge preview density toggle.
 Slice 66 added Knowledge approval guardrail notes.
 Slice 67 added Knowledge guardrail summary chips.
 Slice 68 added Knowledge copy approval checklist action.
+Slice 69 added Knowledge review status banner.
 
 ## Operating Rules
 
@@ -135,6 +136,7 @@ Slice 68 added Knowledge copy approval checklist action.
 | 66 | [66-knowledge-approval-guardrail-notes.md](66-knowledge-approval-guardrail-notes.md) | `implemented` | Knowledge approval guardrail notes | `architect-saas`, `architect-browser-assistant` |
 | 67 | [67-knowledge-guardrail-summary-chips.md](67-knowledge-guardrail-summary-chips.md) | `implemented` | Knowledge guardrail summary chips | `architect-saas`, `architect-browser-assistant` |
 | 68 | [68-knowledge-copy-approval-checklist.md](68-knowledge-copy-approval-checklist.md) | `implemented` | Knowledge copy approval checklist action | `architect-saas`, `architect-browser-assistant` |
+| 69 | [69-knowledge-review-status-banner.md](69-knowledge-review-status-banner.md) | `implemented` | Knowledge review status banner | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -209,13 +211,14 @@ Slice 68 added Knowledge copy approval checklist action.
 69. `Implement and verify 66 Knowledge approval guardrail notes.`
 70. `Implement and verify 67 Knowledge guardrail summary chips.`
 71. `Implement and verify 68 Knowledge copy approval checklist action.`
+72. `Implement and verify 69 Knowledge review status banner.`
 
 ## Next Goal Candidate
 
-`Add a Knowledge review status banner so admins see one concise approval posture above the draft tools.`
+`Add Knowledge candidate row risk chips so admins can see warning count and confidence band before opening a candidate.`
 
 Success criteria:
 
-1. Knowledge draft editor shows a concise review status banner.
-2. Banner derives its state from warning count and readiness.
-3. The review-status-banner slice is documented in the next slice PRD.
+1. Candidate queue rows show compact risk chips.
+2. Chips include confidence band and reviewed/unreviewed state from list data.
+3. The candidate-row-risk slice is documented in the next slice PRD.
