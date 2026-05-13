@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 143-150 implemented; next candidate is Knowledge approved item visibility and search handoff.`
+Current implementation goal (2026-05-13): `Slices 151-200 implemented; next candidate is Knowledge export/sync readiness for approved WIKI entries.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -137,6 +137,56 @@ Slice 147 added Knowledge final review closeout summary.
 Slice 148 added Knowledge final review next action.
 Slice 149 added Knowledge copy final review closeout.
 Slice 150 added Knowledge closeout readiness handoff.
+Slice 151 added approved WIKI items API readback.
+Slice 152 added approved WIKI load state.
+Slice 153 added approved WIKI item counts.
+Slice 154 added approved WIKI scope counts.
+Slice 155 added approved WIKI source coverage.
+Slice 156 added approved WIKI tag index.
+Slice 157 added approved WIKI search.
+Slice 158 added approved WIKI scope filter.
+Slice 159 added approved WIKI tag filter.
+Slice 160 added approved WIKI source filter.
+Slice 161 added approved WIKI sort controls.
+Slice 162 added approved WIKI active filter chips.
+Slice 163 added approved WIKI clear filters.
+Slice 164 added approved WIKI refresh action.
+Slice 165 added approved WIKI visible list.
+Slice 166 added approved WIKI selection state.
+Slice 167 added approved WIKI row metadata.
+Slice 168 added approved WIKI empty state.
+Slice 169 added approved WIKI detail panel.
+Slice 170 added approved WIKI tag chips.
+Slice 171 added approved WIKI quality checks.
+Slice 172 added approved WIKI quality summary.
+Slice 173 added approved WIKI Markdown preview.
+Slice 174 added approved WIKI preview density.
+Slice 175 added copy approved WIKI Markdown.
+Slice 176 added copy approved item handoff.
+Slice 177 added copy approved search handoff.
+Slice 178 added approved WIKI source package.
+Slice 179 added copy approved source package.
+Slice 180 added copy approved index package.
+Slice 181 added approved WIKI source reference list.
+Slice 182 added approved WIKI unsourced warning.
+Slice 183 added approved WIKI lineage readback.
+Slice 184 added approved WIKI reuse handoff.
+Slice 185 added approved WIKI search result index.
+Slice 186 added approved WIKI retrieval tags.
+Slice 187 added approved WIKI source priority readback.
+Slice 188 added approved WIKI source URL readback.
+Slice 189 added approved WIKI body length check.
+Slice 190 added approved WIKI metadata quality check.
+Slice 191 added approved WIKI user guide.
+Slice 192 added approved WIKI SaaS worklog.
+Slice 193 added approved WIKI planning worklog.
+Slice 194 added approved WIKI API validation.
+Slice 195 added approved WIKI typecheck.
+Slice 196 added approved WIKI lint.
+Slice 197 added approved WIKI browser UI validation.
+Slice 198 added approved WIKI commit boundary.
+Slice 199 added approved WIKI next candidate.
+Slice 200 added approved WIKI closeout report.
 
 ## Operating Rules
 
@@ -299,6 +349,56 @@ Slice 150 added Knowledge closeout readiness handoff.
 | 148 | [148-knowledge-final-review-next-action.md](148-knowledge-final-review-next-action.md) | `implemented` | Knowledge final review next action | `architect-saas`, `architect-browser-assistant` |
 | 149 | [149-knowledge-copy-final-review-closeout.md](149-knowledge-copy-final-review-closeout.md) | `implemented` | Knowledge copy final review closeout | `architect-saas`, `architect-browser-assistant` |
 | 150 | [150-knowledge-closeout-readiness-handoff.md](150-knowledge-closeout-readiness-handoff.md) | `implemented` | Knowledge closeout readiness handoff | `architect-saas`, `architect-browser-assistant` |
+| 151 | [151-knowledge-approved-items-api-readback.md](151-knowledge-approved-items-api-readback.md) | `implemented` | Approved WIKI items API readback | `architect-saas`, `architect-browser-assistant` |
+| 152 | [152-knowledge-approved-items-load-state.md](152-knowledge-approved-items-load-state.md) | `implemented` | Approved WIKI load state | `architect-saas`, `architect-browser-assistant` |
+| 153 | [153-knowledge-approved-item-counts.md](153-knowledge-approved-item-counts.md) | `implemented` | Approved WIKI item counts | `architect-saas`, `architect-browser-assistant` |
+| 154 | [154-knowledge-approved-scope-counts.md](154-knowledge-approved-scope-counts.md) | `implemented` | Approved WIKI scope counts | `architect-saas`, `architect-browser-assistant` |
+| 155 | [155-knowledge-approved-source-coverage.md](155-knowledge-approved-source-coverage.md) | `implemented` | Approved WIKI source coverage | `architect-saas`, `architect-browser-assistant` |
+| 156 | [156-knowledge-approved-tag-index.md](156-knowledge-approved-tag-index.md) | `implemented` | Approved WIKI tag index | `architect-saas`, `architect-browser-assistant` |
+| 157 | [157-knowledge-approved-search.md](157-knowledge-approved-search.md) | `implemented` | Approved WIKI search | `architect-saas`, `architect-browser-assistant` |
+| 158 | [158-knowledge-approved-scope-filter.md](158-knowledge-approved-scope-filter.md) | `implemented` | Approved WIKI scope filter | `architect-saas`, `architect-browser-assistant` |
+| 159 | [159-knowledge-approved-tag-filter.md](159-knowledge-approved-tag-filter.md) | `implemented` | Approved WIKI tag filter | `architect-saas`, `architect-browser-assistant` |
+| 160 | [160-knowledge-approved-source-filter.md](160-knowledge-approved-source-filter.md) | `implemented` | Approved WIKI source filter | `architect-saas`, `architect-browser-assistant` |
+| 161 | [161-knowledge-approved-sort-controls.md](161-knowledge-approved-sort-controls.md) | `implemented` | Approved WIKI sort controls | `architect-saas`, `architect-browser-assistant` |
+| 162 | [162-knowledge-approved-active-filter-chips.md](162-knowledge-approved-active-filter-chips.md) | `implemented` | Approved WIKI active filter chips | `architect-saas`, `architect-browser-assistant` |
+| 163 | [163-knowledge-approved-clear-filters.md](163-knowledge-approved-clear-filters.md) | `implemented` | Approved WIKI clear filters | `architect-saas`, `architect-browser-assistant` |
+| 164 | [164-knowledge-approved-refresh-action.md](164-knowledge-approved-refresh-action.md) | `implemented` | Approved WIKI refresh action | `architect-saas`, `architect-browser-assistant` |
+| 165 | [165-knowledge-approved-visible-list.md](165-knowledge-approved-visible-list.md) | `implemented` | Approved WIKI visible list | `architect-saas`, `architect-browser-assistant` |
+| 166 | [166-knowledge-approved-selection-state.md](166-knowledge-approved-selection-state.md) | `implemented` | Approved WIKI selection state | `architect-saas`, `architect-browser-assistant` |
+| 167 | [167-knowledge-approved-row-metadata.md](167-knowledge-approved-row-metadata.md) | `implemented` | Approved WIKI row metadata | `architect-saas`, `architect-browser-assistant` |
+| 168 | [168-knowledge-approved-empty-state.md](168-knowledge-approved-empty-state.md) | `implemented` | Approved WIKI empty state | `architect-saas`, `architect-browser-assistant` |
+| 169 | [169-knowledge-approved-detail-panel.md](169-knowledge-approved-detail-panel.md) | `implemented` | Approved WIKI detail panel | `architect-saas`, `architect-browser-assistant` |
+| 170 | [170-knowledge-approved-tag-chips.md](170-knowledge-approved-tag-chips.md) | `implemented` | Approved WIKI tag chips | `architect-saas`, `architect-browser-assistant` |
+| 171 | [171-knowledge-approved-quality-checks.md](171-knowledge-approved-quality-checks.md) | `implemented` | Approved WIKI quality checks | `architect-saas`, `architect-browser-assistant` |
+| 172 | [172-knowledge-approved-quality-summary.md](172-knowledge-approved-quality-summary.md) | `implemented` | Approved WIKI quality summary | `architect-saas`, `architect-browser-assistant` |
+| 173 | [173-knowledge-approved-markdown-preview.md](173-knowledge-approved-markdown-preview.md) | `implemented` | Approved WIKI Markdown preview | `architect-saas`, `architect-browser-assistant` |
+| 174 | [174-knowledge-approved-preview-density.md](174-knowledge-approved-preview-density.md) | `implemented` | Approved WIKI preview density | `architect-saas`, `architect-browser-assistant` |
+| 175 | [175-knowledge-copy-approved-markdown.md](175-knowledge-copy-approved-markdown.md) | `implemented` | Copy approved WIKI Markdown | `architect-saas`, `architect-browser-assistant` |
+| 176 | [176-knowledge-copy-approved-item-handoff.md](176-knowledge-copy-approved-item-handoff.md) | `implemented` | Copy approved item handoff | `architect-saas`, `architect-browser-assistant` |
+| 177 | [177-knowledge-copy-approved-search-handoff.md](177-knowledge-copy-approved-search-handoff.md) | `implemented` | Copy approved search handoff | `architect-saas`, `architect-browser-assistant` |
+| 178 | [178-knowledge-approved-source-package.md](178-knowledge-approved-source-package.md) | `implemented` | Approved WIKI source package | `architect-saas`, `architect-browser-assistant` |
+| 179 | [179-knowledge-copy-approved-source-package.md](179-knowledge-copy-approved-source-package.md) | `implemented` | Copy approved source package | `architect-saas`, `architect-browser-assistant` |
+| 180 | [180-knowledge-copy-approved-index-package.md](180-knowledge-copy-approved-index-package.md) | `implemented` | Copy approved index package | `architect-saas`, `architect-browser-assistant` |
+| 181 | [181-knowledge-approved-source-reference-list.md](181-knowledge-approved-source-reference-list.md) | `implemented` | Approved WIKI source reference list | `architect-saas`, `architect-browser-assistant` |
+| 182 | [182-knowledge-approved-unsourced-warning.md](182-knowledge-approved-unsourced-warning.md) | `implemented` | Approved WIKI unsourced warning | `architect-saas`, `architect-browser-assistant` |
+| 183 | [183-knowledge-approved-lineage-readback.md](183-knowledge-approved-lineage-readback.md) | `implemented` | Approved WIKI lineage readback | `architect-saas`, `architect-browser-assistant` |
+| 184 | [184-knowledge-approved-reuse-handoff.md](184-knowledge-approved-reuse-handoff.md) | `implemented` | Approved WIKI reuse handoff | `architect-saas`, `architect-browser-assistant` |
+| 185 | [185-knowledge-approved-search-result-index.md](185-knowledge-approved-search-result-index.md) | `implemented` | Approved WIKI search result index | `architect-saas`, `architect-browser-assistant` |
+| 186 | [186-knowledge-approved-retrieval-tags.md](186-knowledge-approved-retrieval-tags.md) | `implemented` | Approved WIKI retrieval tags | `architect-saas`, `architect-browser-assistant` |
+| 187 | [187-knowledge-approved-source-priority-readback.md](187-knowledge-approved-source-priority-readback.md) | `implemented` | Approved WIKI source priority readback | `architect-saas`, `architect-browser-assistant` |
+| 188 | [188-knowledge-approved-source-url-readback.md](188-knowledge-approved-source-url-readback.md) | `implemented` | Approved WIKI source URL readback | `architect-saas`, `architect-browser-assistant` |
+| 189 | [189-knowledge-approved-body-length-check.md](189-knowledge-approved-body-length-check.md) | `implemented` | Approved WIKI body length check | `architect-saas`, `architect-browser-assistant` |
+| 190 | [190-knowledge-approved-metadata-quality-check.md](190-knowledge-approved-metadata-quality-check.md) | `implemented` | Approved WIKI metadata quality check | `architect-saas`, `architect-browser-assistant` |
+| 191 | [191-knowledge-approved-readback-user-guide.md](191-knowledge-approved-readback-user-guide.md) | `implemented` | Approved WIKI user guide | `architect-saas`, `architect-browser-assistant` |
+| 192 | [192-knowledge-approved-saas-worklog.md](192-knowledge-approved-saas-worklog.md) | `implemented` | Approved WIKI SaaS worklog | `architect-saas`, `architect-browser-assistant` |
+| 193 | [193-knowledge-approved-browser-worklog.md](193-knowledge-approved-browser-worklog.md) | `implemented` | Approved WIKI planning worklog | `architect-saas`, `architect-browser-assistant` |
+| 194 | [194-knowledge-approved-api-validation.md](194-knowledge-approved-api-validation.md) | `implemented` | Approved WIKI API validation | `architect-saas`, `architect-browser-assistant` |
+| 195 | [195-knowledge-approved-typecheck.md](195-knowledge-approved-typecheck.md) | `implemented` | Approved WIKI typecheck | `architect-saas`, `architect-browser-assistant` |
+| 196 | [196-knowledge-approved-lint.md](196-knowledge-approved-lint.md) | `implemented` | Approved WIKI lint | `architect-saas`, `architect-browser-assistant` |
+| 197 | [197-knowledge-approved-browser-ui-validation.md](197-knowledge-approved-browser-ui-validation.md) | `implemented` | Approved WIKI browser UI validation | `architect-saas`, `architect-browser-assistant` |
+| 198 | [198-knowledge-approved-commit-boundary.md](198-knowledge-approved-commit-boundary.md) | `implemented` | Approved WIKI commit boundary | `architect-saas`, `architect-browser-assistant` |
+| 199 | [199-knowledge-approved-next-candidate.md](199-knowledge-approved-next-candidate.md) | `implemented` | Approved WIKI next candidate | `architect-saas`, `architect-browser-assistant` |
+| 200 | [200-knowledge-approved-closeout-report.md](200-knowledge-approved-closeout-report.md) | `implemented` | Approved WIKI closeout report | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -455,13 +555,63 @@ Slice 150 added Knowledge closeout readiness handoff.
 151. `Implement and verify 148 Knowledge final review next action.`
 152. `Implement and verify 149 Knowledge copy final review closeout.`
 153. `Implement and verify 150 Knowledge closeout readiness handoff.`
+154. `Implement and verify 151 Approved WIKI items API readback.`
+155. `Implement and verify 152 Approved WIKI load state.`
+156. `Implement and verify 153 Approved WIKI item counts.`
+157. `Implement and verify 154 Approved WIKI scope counts.`
+158. `Implement and verify 155 Approved WIKI source coverage.`
+159. `Implement and verify 156 Approved WIKI tag index.`
+160. `Implement and verify 157 Approved WIKI search.`
+161. `Implement and verify 158 Approved WIKI scope filter.`
+162. `Implement and verify 159 Approved WIKI tag filter.`
+163. `Implement and verify 160 Approved WIKI source filter.`
+164. `Implement and verify 161 Approved WIKI sort controls.`
+165. `Implement and verify 162 Approved WIKI active filter chips.`
+166. `Implement and verify 163 Approved WIKI clear filters.`
+167. `Implement and verify 164 Approved WIKI refresh action.`
+168. `Implement and verify 165 Approved WIKI visible list.`
+169. `Implement and verify 166 Approved WIKI selection state.`
+170. `Implement and verify 167 Approved WIKI row metadata.`
+171. `Implement and verify 168 Approved WIKI empty state.`
+172. `Implement and verify 169 Approved WIKI detail panel.`
+173. `Implement and verify 170 Approved WIKI tag chips.`
+174. `Implement and verify 171 Approved WIKI quality checks.`
+175. `Implement and verify 172 Approved WIKI quality summary.`
+176. `Implement and verify 173 Approved WIKI Markdown preview.`
+177. `Implement and verify 174 Approved WIKI preview density.`
+178. `Implement and verify 175 Copy approved WIKI Markdown.`
+179. `Implement and verify 176 Copy approved item handoff.`
+180. `Implement and verify 177 Copy approved search handoff.`
+181. `Implement and verify 178 Approved WIKI source package.`
+182. `Implement and verify 179 Copy approved source package.`
+183. `Implement and verify 180 Copy approved index package.`
+184. `Implement and verify 181 Approved WIKI source reference list.`
+185. `Implement and verify 182 Approved WIKI unsourced warning.`
+186. `Implement and verify 183 Approved WIKI lineage readback.`
+187. `Implement and verify 184 Approved WIKI reuse handoff.`
+188. `Implement and verify 185 Approved WIKI search result index.`
+189. `Implement and verify 186 Approved WIKI retrieval tags.`
+190. `Implement and verify 187 Approved WIKI source priority readback.`
+191. `Implement and verify 188 Approved WIKI source URL readback.`
+192. `Implement and verify 189 Approved WIKI body length check.`
+193. `Implement and verify 190 Approved WIKI metadata quality check.`
+194. `Implement and verify 191 Approved WIKI user guide.`
+195. `Implement and verify 192 Approved WIKI SaaS worklog.`
+196. `Implement and verify 193 Approved WIKI planning worklog.`
+197. `Implement and verify 194 Approved WIKI API validation.`
+198. `Implement and verify 195 Approved WIKI typecheck.`
+199. `Implement and verify 196 Approved WIKI lint.`
+200. `Implement and verify 197 Approved WIKI browser UI validation.`
+201. `Implement and verify 198 Approved WIKI commit boundary.`
+202. `Implement and verify 199 Approved WIKI next candidate.`
+203. `Implement and verify 200 Approved WIKI closeout report.`
 
 ## Next Goal Candidate
 
-`Add Knowledge approved item visibility and search handoff so approved WIKI entries can be inspected after approval.`
+`Add Knowledge export/sync readiness for approved WIKI entries so reviewed knowledge can leave the admin readback surface as portable packages.`
 
 Success criteria:
 
-1. Approved WIKI entries have a readback surface with approval metadata.
-2. Admins can search or filter approved entries without using database internals.
-3. The next slice PRD captures approved-item readback scope before implementation.
+1. Approved WIKI entries can be exported as a stable JSON/Markdown package without changing `PLAN.md`.
+2. Export/sync readiness preserves source lineage, tags, scope, and quality status from the approved readback surface.
+3. The next slice PRD starts from approved-item readback rather than candidate review internals.
