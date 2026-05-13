@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 364 implemented; next candidate is provider live-write dry-run reconciliation package.`
+Current implementation goal (2026-05-13): `Slice 365 implemented; next candidate is Obsidian remote inventory import contract.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -351,6 +351,7 @@ Slice 361 recorded the next provider adapter candidate.
 Slice 362 added provider credential boundaries and a guarded portable archive execution adapter.
 Slice 363 added provider-specific secret metadata and a guarded Obsidian execution adapter.
 Slice 364 added server-side provider credential registry metadata and remote write readiness controls.
+Slice 365 added an Obsidian dry-run reconciliation package with planned Markdown paths and create intents.
 
 ## Operating Rules
 
@@ -1033,13 +1034,14 @@ Slice 364 added server-side provider credential registry metadata and remote wri
 365. `Implement and verify 362 Provider credential boundary and portable archive adapter.`
 366. `Implement and verify 363 Provider secret metadata and Obsidian adapter.`
 367. `Implement and verify 364 Provider credential registry readiness controls.`
+368. `Implement and verify 365 Obsidian reconciliation package.`
 
 ## Next Goal Candidate
 
-`Add a provider live-write dry-run reconciliation package for Obsidian before enabling any real vault mutation.`
+`Add a read-only Obsidian remote inventory import contract so reconciliation can distinguish create, update, delete, and noop before live writes.`
 
 Success criteria:
 
-1. Dry-run output lists the exact Markdown file paths, create/update/delete intent, and source item ids without writing to a vault.
-2. Reconciliation output can be copied and attached to an execution audit before live-write flags are introduced.
-3. Live provider mutation remains disabled unless a future slice adds an explicit deployment flag and rollback execution path.
+1. Admins can provide or load a sanitized remote inventory manifest without exposing file contents or credentials.
+2. Reconciliation compares approved WIKI paths against inventory ids/digests and produces create/update/delete/noop counts.
+3. Live provider mutation remains disabled until a future slice adds an explicit deployment flag and rollback execution path.
