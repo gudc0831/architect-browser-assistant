@@ -32,5 +32,15 @@ Add a Markdown outline preview to `/admin/knowledge`.
 
 ## Implementation Notes
 
-- SaaS commit: pending
-- Browser assistant planning commit: pending
+- Status: implemented
+- SaaS commit: `04d754d`
+- Browser assistant planning commit: `19f6649`
+
+## Verification Log
+
+- 2026-05-13: `npm run typecheck` passed in `architect-saas`.
+- 2026-05-13: `npm run lint` passed in `architect-saas` with 7 pre-existing task Hook warnings unrelated to Knowledge Admin.
+- 2026-05-13: `npm run typecheck` passed in `architect-browser-assistant`.
+- 2026-05-13: `npm run lint` passed in `architect-browser-assistant`.
+- 2026-05-13: `GET /api/admin/knowledge/candidates` returned 200.
+- 2026-05-13: Browser UI verification confirmed `Knowledge Markdown outline preview` updates after editing the draft Markdown body.

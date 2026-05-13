@@ -33,5 +33,15 @@ Add a copy Markdown outline action to `/admin/knowledge`.
 
 ## Implementation Notes
 
-- SaaS commit: pending
-- Browser assistant planning commit: pending
+- Status: implemented
+- SaaS commit: `cce2357`
+- Browser assistant planning commit: `9cb3f7b`
+
+## Verification Log
+
+- 2026-05-13: `npm run typecheck` passed in `architect-saas`.
+- 2026-05-13: `npm run lint` passed in `architect-saas` with 7 pre-existing task Hook warnings unrelated to Knowledge Admin.
+- 2026-05-13: `npm run typecheck` passed in `architect-browser-assistant`.
+- 2026-05-13: `npm run lint` passed in `architect-browser-assistant`.
+- 2026-05-13: `GET /api/admin/knowledge/candidates` returned 200.
+- 2026-05-13: Browser UI verification confirmed `Copy Markdown outline` is available in the draft editor.

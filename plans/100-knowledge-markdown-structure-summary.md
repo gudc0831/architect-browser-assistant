@@ -33,5 +33,15 @@ Add a Markdown structure summary to `/admin/knowledge`.
 
 ## Implementation Notes
 
-- SaaS commit: pending
-- Browser assistant planning commit: pending
+- Status: implemented
+- SaaS commit: `441ecca`
+- Browser assistant planning commit: `a410958`
+
+## Verification Log
+
+- 2026-05-13: `npm run typecheck` passed in `architect-saas`.
+- 2026-05-13: `npm run lint` passed in `architect-saas` with 7 pre-existing task Hook warnings unrelated to Knowledge Admin.
+- 2026-05-13: `npm run typecheck` passed in `architect-browser-assistant`.
+- 2026-05-13: `npm run lint` passed in `architect-browser-assistant`.
+- 2026-05-13: `GET /api/admin/knowledge/candidates` returned 200.
+- 2026-05-13: Browser UI verification confirmed the Markdown summary updates to headings 1, paragraphs 1, list items 1, and lines 3 after editing the draft body.

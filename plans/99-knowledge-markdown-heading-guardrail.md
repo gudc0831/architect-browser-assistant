@@ -32,5 +32,15 @@ Add a Markdown heading guardrail to `/admin/knowledge`.
 
 ## Implementation Notes
 
-- SaaS commit: pending
-- Browser assistant planning commit: pending
+- Status: implemented
+- SaaS commit: `e6458b9`
+- Browser assistant planning commit: `002f211`
+
+## Verification Log
+
+- 2026-05-13: `npm run typecheck` passed in `architect-saas`.
+- 2026-05-13: `npm run lint` passed in `architect-saas` with 7 pre-existing task Hook warnings unrelated to Knowledge Admin.
+- 2026-05-13: `npm run typecheck` passed in `architect-browser-assistant`.
+- 2026-05-13: `npm run lint` passed in `architect-browser-assistant`.
+- 2026-05-13: `GET /api/admin/knowledge/candidates` returned 200.
+- 2026-05-13: Browser UI verification confirmed the approval guardrail notes include the Markdown heading ready state after entering a heading.
