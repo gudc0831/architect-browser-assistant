@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 365 implemented; next candidate is Obsidian remote inventory import contract.`
+Current implementation goal (2026-05-13): `Slice 366 implemented; next candidate is guarded Obsidian live-write feature flag and rollback execution preflight.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -352,6 +352,7 @@ Slice 362 added provider credential boundaries and a guarded portable archive ex
 Slice 363 added provider-specific secret metadata and a guarded Obsidian execution adapter.
 Slice 364 added server-side provider credential registry metadata and remote write readiness controls.
 Slice 365 added an Obsidian dry-run reconciliation package with planned Markdown paths and create intents.
+Slice 366 added a sanitized read-only Obsidian inventory manifest contract and create/update/delete/noop reconciliation comparison.
 
 ## Operating Rules
 
@@ -1035,13 +1036,14 @@ Slice 365 added an Obsidian dry-run reconciliation package with planned Markdown
 366. `Implement and verify 363 Provider secret metadata and Obsidian adapter.`
 367. `Implement and verify 364 Provider credential registry readiness controls.`
 368. `Implement and verify 365 Obsidian reconciliation package.`
+369. `Implement and verify 366 Obsidian inventory import contract.`
 
 ## Next Goal Candidate
 
-`Add a read-only Obsidian remote inventory import contract so reconciliation can distinguish create, update, delete, and noop before live writes.`
+`Add a guarded Obsidian live-write feature flag and rollback execution preflight, disabled by default.`
 
 Success criteria:
 
-1. Admins can provide or load a sanitized remote inventory manifest without exposing file contents or credentials.
-2. Reconciliation compares approved WIKI paths against inventory ids/digests and produces create/update/delete/noop counts.
-3. Live provider mutation remains disabled until a future slice adds an explicit deployment flag and rollback execution path.
+1. Live Obsidian write execution remains disabled unless a deployment flag, provider-ready audit, fresh reconciliation package, and rollback plan are all present.
+2. The preflight records the exact create/update/delete operations that would be executed and the rollback artifact references needed before mutation.
+3. Default local and browser flows continue to produce dry-run audit artifacts only.
