@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 99 implemented; next candidate is Knowledge Markdown structure summary.`
+Current implementation goal (2026-05-13): `Slice 100 implemented; next candidate is Knowledge Markdown list guardrail.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -86,6 +86,7 @@ Slice 96 added Knowledge copy dirty-draft summary action.
 Slice 97 added Knowledge Markdown outline preview.
 Slice 98 added Knowledge copy Markdown outline action.
 Slice 99 added Knowledge Markdown heading guardrail.
+Slice 100 added Knowledge Markdown structure summary.
 
 ## Operating Rules
 
@@ -197,6 +198,7 @@ Slice 99 added Knowledge Markdown heading guardrail.
 | 97 | [97-knowledge-markdown-outline-preview.md](97-knowledge-markdown-outline-preview.md) | `implemented` | Knowledge Markdown outline preview | `architect-saas`, `architect-browser-assistant` |
 | 98 | [98-knowledge-copy-markdown-outline.md](98-knowledge-copy-markdown-outline.md) | `implemented` | Knowledge copy Markdown outline action | `architect-saas`, `architect-browser-assistant` |
 | 99 | [99-knowledge-markdown-heading-guardrail.md](99-knowledge-markdown-heading-guardrail.md) | `implemented` | Knowledge Markdown heading guardrail | `architect-saas`, `architect-browser-assistant` |
+| 100 | [100-knowledge-markdown-structure-summary.md](100-knowledge-markdown-structure-summary.md) | `implemented` | Knowledge Markdown structure summary | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -302,13 +304,14 @@ Slice 99 added Knowledge Markdown heading guardrail.
 100. `Implement and verify 97 Knowledge Markdown outline preview.`
 101. `Implement and verify 98 Knowledge copy Markdown outline action.`
 102. `Implement and verify 99 Knowledge Markdown heading guardrail.`
+103. `Implement and verify 100 Knowledge Markdown structure summary.`
 
 ## Next Goal Candidate
 
-`Add Knowledge Markdown structure summary so reviewers can see heading, paragraph, and list counts before approval.`
+`Add Knowledge Markdown list guardrail so approval notes warn when a draft has no list structure for action/context extraction.`
 
 Success criteria:
 
-1. Draft editor exposes Markdown structure summary chips.
-2. Summary includes heading, paragraph, and list item counts.
-3. The markdown-structure-summary slice is documented in the next slice PRD.
+1. Approval guardrails mention Markdown list coverage.
+2. Warning appears when a Markdown body exists but has no list items.
+3. The markdown-list-guardrail slice is documented in the next slice PRD.
