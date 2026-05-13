@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 102-105 implemented; next candidate is Knowledge tag coverage guardrail.`
+Current implementation goal (2026-05-13): `Slices 106-109 implemented; next candidate is Knowledge scope review guardrail.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -92,6 +92,10 @@ Slice 102 added Knowledge copy Markdown structure summary.
 Slice 103 added Knowledge Markdown WIKI link preview.
 Slice 104 added Knowledge Markdown WIKI link guardrail.
 Slice 105 added Knowledge copy WIKI link handoff.
+Slice 106 added Knowledge tag coverage guardrail.
+Slice 107 added Knowledge draft tag preview.
+Slice 108 added Knowledge copy draft tag handoff.
+Slice 109 added Knowledge duplicate tag guardrail.
 
 ## Operating Rules
 
@@ -209,6 +213,10 @@ Slice 105 added Knowledge copy WIKI link handoff.
 | 103 | [103-knowledge-markdown-wiki-link-preview.md](103-knowledge-markdown-wiki-link-preview.md) | `implemented` | Knowledge Markdown WIKI link preview | `architect-saas`, `architect-browser-assistant` |
 | 104 | [104-knowledge-markdown-wiki-link-guardrail.md](104-knowledge-markdown-wiki-link-guardrail.md) | `implemented` | Knowledge Markdown WIKI link guardrail | `architect-saas`, `architect-browser-assistant` |
 | 105 | [105-knowledge-copy-wiki-link-handoff.md](105-knowledge-copy-wiki-link-handoff.md) | `implemented` | Knowledge copy WIKI link handoff | `architect-saas`, `architect-browser-assistant` |
+| 106 | [106-knowledge-tag-coverage-guardrail.md](106-knowledge-tag-coverage-guardrail.md) | `implemented` | Knowledge tag coverage guardrail | `architect-saas`, `architect-browser-assistant` |
+| 107 | [107-knowledge-draft-tag-preview.md](107-knowledge-draft-tag-preview.md) | `implemented` | Knowledge draft tag preview | `architect-saas`, `architect-browser-assistant` |
+| 108 | [108-knowledge-copy-draft-tag-handoff.md](108-knowledge-copy-draft-tag-handoff.md) | `implemented` | Knowledge copy draft tag handoff | `architect-saas`, `architect-browser-assistant` |
+| 109 | [109-knowledge-duplicate-tag-guardrail.md](109-knowledge-duplicate-tag-guardrail.md) | `implemented` | Knowledge duplicate tag guardrail | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -320,13 +328,17 @@ Slice 105 added Knowledge copy WIKI link handoff.
 106. `Implement and verify 103 Knowledge Markdown WIKI link preview.`
 107. `Implement and verify 104 Knowledge Markdown WIKI link guardrail.`
 108. `Implement and verify 105 Knowledge copy WIKI link handoff.`
+109. `Implement and verify 106 Knowledge tag coverage guardrail.`
+110. `Implement and verify 107 Knowledge draft tag preview.`
+111. `Implement and verify 108 Knowledge copy draft tag handoff.`
+112. `Implement and verify 109 Knowledge duplicate tag guardrail.`
 
 ## Next Goal Candidate
 
-`Add Knowledge tag coverage guardrail so approval notes warn when a draft has too few tags for retrieval and WIKI grouping.`
+`Add Knowledge scope review guardrail so approval notes call out publication scope before approving organization/project knowledge.`
 
 Success criteria:
 
-1. Approval guardrails mention tag coverage.
-2. Warning appears when the draft has fewer than two tags.
-3. The tag-coverage-guardrail slice is documented in the next slice PRD.
+1. Approval guardrails mention publication scope.
+2. Warning appears for broad organization scope and ready state appears for narrower project/member scopes.
+3. The scope-review-guardrail slice is documented in the next slice PRD.
