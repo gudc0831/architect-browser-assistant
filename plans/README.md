@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 119-122 implemented; next candidate is Knowledge approval risk empty-state guidance.`
+Current implementation goal (2026-05-13): `Slices 123-126 implemented; next candidate is Knowledge approval decision note template.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -109,6 +109,10 @@ Slice 119 added Knowledge approval risk filter shortcuts.
 Slice 120 added Knowledge active risk filter chips.
 Slice 121 added Knowledge clear risk filter action.
 Slice 122 added Knowledge copy risk filter handoff.
+Slice 123 added Knowledge approval risk empty-state guidance.
+Slice 124 added Knowledge approval risk warning item previews.
+Slice 125 added Knowledge approval risk ready item previews.
+Slice 126 added Knowledge copy risk filter details.
 
 ## Operating Rules
 
@@ -243,6 +247,10 @@ Slice 122 added Knowledge copy risk filter handoff.
 | 120 | [120-knowledge-active-risk-filter-chips.md](120-knowledge-active-risk-filter-chips.md) | `implemented` | Knowledge active risk filter chips | `architect-saas`, `architect-browser-assistant` |
 | 121 | [121-knowledge-clear-risk-filter.md](121-knowledge-clear-risk-filter.md) | `implemented` | Knowledge clear risk filter action | `architect-saas`, `architect-browser-assistant` |
 | 122 | [122-knowledge-copy-risk-filter-handoff.md](122-knowledge-copy-risk-filter-handoff.md) | `implemented` | Knowledge copy risk filter handoff | `architect-saas`, `architect-browser-assistant` |
+| 123 | [123-knowledge-approval-risk-empty-state-guidance.md](123-knowledge-approval-risk-empty-state-guidance.md) | `implemented` | Knowledge approval risk empty-state guidance | `architect-saas`, `architect-browser-assistant` |
+| 124 | [124-knowledge-approval-risk-warning-item-preview.md](124-knowledge-approval-risk-warning-item-preview.md) | `implemented` | Knowledge approval risk warning item preview | `architect-saas`, `architect-browser-assistant` |
+| 125 | [125-knowledge-approval-risk-ready-item-preview.md](125-knowledge-approval-risk-ready-item-preview.md) | `implemented` | Knowledge approval risk ready item preview | `architect-saas`, `architect-browser-assistant` |
+| 126 | [126-knowledge-copy-risk-filter-details.md](126-knowledge-copy-risk-filter-details.md) | `implemented` | Knowledge copy risk filter details | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -371,13 +379,17 @@ Slice 122 added Knowledge copy risk filter handoff.
 123. `Implement and verify 120 Knowledge active risk filter chips.`
 124. `Implement and verify 121 Knowledge clear risk filter action.`
 125. `Implement and verify 122 Knowledge copy risk filter handoff.`
+126. `Implement and verify 123 Knowledge approval risk empty-state guidance.`
+127. `Implement and verify 124 Knowledge approval risk warning item preview.`
+128. `Implement and verify 125 Knowledge approval risk ready item preview.`
+129. `Implement and verify 126 Knowledge copy risk filter details.`
 
 ## Next Goal Candidate
 
-`Add Knowledge approval risk empty-state guidance so filtered risk details explain when a selected category has no warnings.`
+`Add Knowledge approval decision note template so admins can copy a final approve/reject decision context after reviewing risk groups.`
 
 Success criteria:
 
-1. Filtered risk detail shows a useful no-warning state for ready categories.
-2. Guidance names the active risk group.
-3. The approval-risk-empty-state-guidance slice is documented in the next slice PRD.
+1. The decision note template includes candidate, task, active scope, warnings, and ready checks.
+2. The template distinguishes approve-ready and rejection/blocker contexts.
+3. The next slice PRD captures the decision-note handoff scope before implementation.

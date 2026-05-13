@@ -1,0 +1,4 @@
+Req: Plan Slices 123-126 for Knowledge approval risk detail guidance.
+Diff: Added Slice 123-126 PRDs and roadmap entries for ready-category empty states, warning item previews, ready item previews, and detailed copy risk filter handoff; no browser extension code changed.
+Why: Continue the Knowledge Admin approval-risk review flow by making filtered risk details self-explanatory and handoff-ready.
+Verify/Time: 2026-05-13 10:08 KST; SaaS `npm run typecheck`; SaaS `npm run lint` with 7 pre-existing task Hook warnings; `GET /api/admin/knowledge/candidates` 200; Playwright browser UI verified ready-category empty guidance, warning previews, ready previews, copy risk filter details, and mobile layout; browser repo `npm run typecheck`; browser repo `npm run lint`. Known unrelated `/api/project/changes` returned 500 during page load.
