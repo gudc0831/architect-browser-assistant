@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 362 implemented; next candidate is provider-specific secret storage and the next guarded adapter.`
+Current implementation goal (2026-05-13): `Slice 363 implemented; next candidate is secret-manager backed provider execution readiness.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -349,6 +349,7 @@ Slice 359 updated user guidance for provider config and previews.
 Slice 360 verified provider config and preview behavior.
 Slice 361 recorded the next provider adapter candidate.
 Slice 362 added provider credential boundaries and a guarded portable archive execution adapter.
+Slice 363 added provider-specific secret metadata and a guarded Obsidian execution adapter.
 
 ## Operating Rules
 
@@ -1029,13 +1030,14 @@ Slice 362 added provider credential boundaries and a guarded portable archive ex
 363. `Implement and verify 360 Provider config validation.`
 364. `Implement and verify 361 Provider adapter next candidate.`
 365. `Implement and verify 362 Provider credential boundary and portable archive adapter.`
+366. `Implement and verify 363 Provider secret metadata and Obsidian adapter.`
 
 ## Next Goal Candidate
 
-`Add provider-specific secret storage integration and the next guarded provider adapter after portable archive execution audit records are stable.`
+`Add a secret-manager backed credential store and deployment-ready remote provider execution controls before enabling real Obsidian or Notion writes.`
 
 Success criteria:
 
-1. Secret material is stored server-side and only opaque references are visible in Admin UI/API responses.
-2. The next adapter keeps the provider preview audit id as the execution boundary.
-3. Remote provider writes require a fresh dry-run preview, provider confirmation, credential readiness, and admin audit record.
+1. Secret references resolve through a dedicated server-side store rather than UI-entered pointer strings alone.
+2. Remote provider writes keep the provider preview audit id, confirmation phrase, credential readiness, and admin execution audit as hard gates.
+3. Rollback or reconciliation metadata is recorded before enabling any live vault/page/index mutation.
