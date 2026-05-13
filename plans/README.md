@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 135-138 implemented; next candidate is Knowledge approval package copy.`
+Current implementation goal (2026-05-13): `Slices 139-142 implemented; next candidate is Knowledge approval package quality checks.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -125,6 +125,10 @@ Slice 135 added Knowledge approval submit blocker count.
 Slice 136 added Knowledge approval submit caution guidance.
 Slice 137 added Knowledge copy approval blockers.
 Slice 138 added Knowledge approval button warning context.
+Slice 139 added Knowledge approval package summary.
+Slice 140 added Knowledge copy approval package.
+Slice 141 added Knowledge approval package draft section.
+Slice 142 added Knowledge approval package evidence section.
 
 ## Operating Rules
 
@@ -275,6 +279,10 @@ Slice 138 added Knowledge approval button warning context.
 | 136 | [136-knowledge-approval-submit-caution-guidance.md](136-knowledge-approval-submit-caution-guidance.md) | `implemented` | Knowledge approval submit caution guidance | `architect-saas`, `architect-browser-assistant` |
 | 137 | [137-knowledge-copy-approval-blockers.md](137-knowledge-copy-approval-blockers.md) | `implemented` | Knowledge copy approval blockers | `architect-saas`, `architect-browser-assistant` |
 | 138 | [138-knowledge-approval-button-warning-context.md](138-knowledge-approval-button-warning-context.md) | `implemented` | Knowledge approval button warning context | `architect-saas`, `architect-browser-assistant` |
+| 139 | [139-knowledge-approval-package-summary.md](139-knowledge-approval-package-summary.md) | `implemented` | Knowledge approval package summary | `architect-saas`, `architect-browser-assistant` |
+| 140 | [140-knowledge-copy-approval-package.md](140-knowledge-copy-approval-package.md) | `implemented` | Knowledge copy approval package | `architect-saas`, `architect-browser-assistant` |
+| 141 | [141-knowledge-approval-package-draft-section.md](141-knowledge-approval-package-draft-section.md) | `implemented` | Knowledge approval package draft section | `architect-saas`, `architect-browser-assistant` |
+| 142 | [142-knowledge-approval-package-evidence-section.md](142-knowledge-approval-package-evidence-section.md) | `implemented` | Knowledge approval package evidence section | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -419,13 +427,17 @@ Slice 138 added Knowledge approval button warning context.
 139. `Implement and verify 136 Knowledge approval submit caution guidance.`
 140. `Implement and verify 137 Knowledge copy approval blockers.`
 141. `Implement and verify 138 Knowledge approval button warning context.`
+142. `Implement and verify 139 Knowledge approval package summary.`
+143. `Implement and verify 140 Knowledge copy approval package.`
+144. `Implement and verify 141 Knowledge approval package draft section.`
+145. `Implement and verify 142 Knowledge approval package evidence section.`
 
 ## Next Goal Candidate
 
-`Add Knowledge approval package copy so final reviewers can export draft, decision, blocker, and evidence context together.`
+`Add Knowledge approval package quality checks so reviewers can see whether package draft, blocker, and evidence sections are complete before handoff.`
 
 Success criteria:
 
-1. Approval package includes candidate, task, draft, decision status, blockers, and evidence counts.
-2. Package copy works from the final action area.
-3. The next slice PRD captures package scope before implementation.
+1. Package quality chips identify present/missing package sections.
+2. Quality status updates with draft/evidence state.
+3. The next slice PRD captures quality check behavior before implementation.
