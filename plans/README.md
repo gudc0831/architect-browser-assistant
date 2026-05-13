@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 369 implemented; next candidate is provider execution package review notes.`
+Current implementation goal (2026-05-13): `Slice 379 implemented; next candidate is provider execution package review digest quick filters and note-category chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -356,6 +356,16 @@ Slice 366 added a sanitized read-only Obsidian inventory manifest contract and c
 Slice 367 added a default-disabled Obsidian live-write feature flag and rollback preflight execution artifact.
 Slice 368 added immutable provider execution package export/download for preflight and rollback evidence review.
 Slice 369 added provider execution package retention metadata and review-history filtering.
+Slice 370 added append-only provider execution package review notes tied to execution ids and package digests.
+Slice 371 added a filtered provider execution package review-note report.
+Slice 372 added provider execution package review-note CSV export.
+Slice 373 added provider execution package review summary metrics.
+Slice 374 added provider execution package review coverage rows.
+Slice 375 added provider execution package review coverage presets.
+Slice 376 added stale-unreviewed provider execution package alerts.
+Slice 377 added provider execution package reviewer rollup quick filters.
+Slice 378 added a copyable provider execution package review handoff.
+Slice 379 added controlled provider execution package review filters for category, reviewer, stale threshold, coverage, and digest.
 
 ## Operating Rules
 
@@ -1043,13 +1053,23 @@ Slice 369 added provider execution package retention metadata and review-history
 370. `Implement and verify 367 Obsidian live-write preflight.`
 371. `Implement and verify 368 Provider execution package export.`
 372. `Implement and verify 369 Provider execution package review history.`
+373. `Implement and verify 370 Provider execution package review notes.`
+374. `Implement and verify 371 Provider execution package review note report.`
+375. `Implement and verify 372 Provider execution package review note CSV.`
+376. `Implement and verify 373 Provider execution package review summary.`
+377. `Implement and verify 374 Provider execution package review coverage.`
+378. `Implement and verify 375 Provider execution package review presets.`
+379. `Implement and verify 376 Provider execution package stale alerts.`
+380. `Implement and verify 377 Provider execution package reviewer rollup.`
+381. `Implement and verify 378 Provider execution package review handoff.`
+382. `Implement and verify 379 Provider execution package active review filters.`
 
 ## Next Goal Candidate
 
-`Add package review notes for provider execution evidence packages.`
+`Add provider execution package review digest quick filters and note-category chips.`
 
 Success criteria:
 
-1. Admins can add append-only review notes to provider execution evidence packages.
-2. Notes are tied to execution audit ids and package digests without changing package contents.
-3. Package review notes can be copied/exported with the package review context.
+1. Admins can click package digest values to narrow the review report without typing.
+2. Admins can click note-category summary chips to filter the report.
+3. Quick filters remain read-only and do not mutate provider execution packages or review notes.
