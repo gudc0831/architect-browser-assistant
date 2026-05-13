@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 106-109 implemented; next candidate is Knowledge scope review guardrail.`
+Current implementation goal (2026-05-13): `Slices 110-114 implemented; next candidate is Knowledge approval risk summary.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -96,6 +96,11 @@ Slice 106 added Knowledge tag coverage guardrail.
 Slice 107 added Knowledge draft tag preview.
 Slice 108 added Knowledge copy draft tag handoff.
 Slice 109 added Knowledge duplicate tag guardrail.
+Slice 110 added Knowledge scope review guardrail.
+Slice 111 added Knowledge publication scope preview.
+Slice 112 added Knowledge copy scope handoff.
+Slice 113 added Knowledge scope change guardrail.
+Slice 114 added Knowledge queue layout stability.
 
 ## Operating Rules
 
@@ -217,6 +222,11 @@ Slice 109 added Knowledge duplicate tag guardrail.
 | 107 | [107-knowledge-draft-tag-preview.md](107-knowledge-draft-tag-preview.md) | `implemented` | Knowledge draft tag preview | `architect-saas`, `architect-browser-assistant` |
 | 108 | [108-knowledge-copy-draft-tag-handoff.md](108-knowledge-copy-draft-tag-handoff.md) | `implemented` | Knowledge copy draft tag handoff | `architect-saas`, `architect-browser-assistant` |
 | 109 | [109-knowledge-duplicate-tag-guardrail.md](109-knowledge-duplicate-tag-guardrail.md) | `implemented` | Knowledge duplicate tag guardrail | `architect-saas`, `architect-browser-assistant` |
+| 110 | [110-knowledge-scope-review-guardrail.md](110-knowledge-scope-review-guardrail.md) | `implemented` | Knowledge scope review guardrail | `architect-saas`, `architect-browser-assistant` |
+| 111 | [111-knowledge-publication-scope-preview.md](111-knowledge-publication-scope-preview.md) | `implemented` | Knowledge publication scope preview | `architect-saas`, `architect-browser-assistant` |
+| 112 | [112-knowledge-copy-scope-handoff.md](112-knowledge-copy-scope-handoff.md) | `implemented` | Knowledge copy scope handoff | `architect-saas`, `architect-browser-assistant` |
+| 113 | [113-knowledge-scope-change-guardrail.md](113-knowledge-scope-change-guardrail.md) | `implemented` | Knowledge scope change guardrail | `architect-saas`, `architect-browser-assistant` |
+| 114 | [114-knowledge-queue-layout-stability.md](114-knowledge-queue-layout-stability.md) | `implemented` | Knowledge queue layout stability | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -332,13 +342,18 @@ Slice 109 added Knowledge duplicate tag guardrail.
 110. `Implement and verify 107 Knowledge draft tag preview.`
 111. `Implement and verify 108 Knowledge copy draft tag handoff.`
 112. `Implement and verify 109 Knowledge duplicate tag guardrail.`
+113. `Implement and verify 110 Knowledge scope review guardrail.`
+114. `Implement and verify 111 Knowledge publication scope preview.`
+115. `Implement and verify 112 Knowledge copy scope handoff.`
+116. `Implement and verify 113 Knowledge scope change guardrail.`
+117. `Implement and verify 114 Knowledge queue layout stability.`
 
 ## Next Goal Candidate
 
-`Add Knowledge scope review guardrail so approval notes call out publication scope before approving organization/project knowledge.`
+`Add Knowledge approval risk summary so reviewers can see consolidated warning categories before approval.`
 
 Success criteria:
 
-1. Approval guardrails mention publication scope.
-2. Warning appears for broad organization scope and ready state appears for narrower project/member scopes.
-3. The scope-review-guardrail slice is documented in the next slice PRD.
+1. `/admin/knowledge` shows a consolidated approval risk summary.
+2. Summary groups guardrail warnings by source/evidence, draft structure, metadata, and scope.
+3. The approval-risk-summary slice is documented in the next slice PRD.
