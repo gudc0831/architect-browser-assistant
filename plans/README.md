@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 379 implemented; next candidate is provider execution package review digest quick filters and note-category chips.`
+Current implementation goal (2026-05-13): `Slice 380 implemented; next candidate is provider execution package review filter reset chips for digest/category/reviewer shortcuts.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -366,6 +366,7 @@ Slice 376 added stale-unreviewed provider execution package alerts.
 Slice 377 added provider execution package reviewer rollup quick filters.
 Slice 378 added a copyable provider execution package review handoff.
 Slice 379 added controlled provider execution package review filters for category, reviewer, stale threshold, coverage, and digest.
+Slice 380 added provider execution package digest quick filters and note-category summary chips.
 
 ## Operating Rules
 
@@ -1063,13 +1064,14 @@ Slice 379 added controlled provider execution package review filters for categor
 380. `Implement and verify 377 Provider execution package reviewer rollup.`
 381. `Implement and verify 378 Provider execution package review handoff.`
 382. `Implement and verify 379 Provider execution package active review filters.`
+383. `Implement and verify 380 Provider execution package digest and category quick filters.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review digest quick filters and note-category chips.`
+`Add provider execution package review filter reset chips for digest/category/reviewer shortcuts.`
 
 Success criteria:
 
-1. Admins can click package digest values to narrow the review report without typing.
-2. Admins can click note-category summary chips to filter the report.
-3. Quick filters remain read-only and do not mutate provider execution packages or review notes.
+1. Admins can clear digest, note-category, and reviewer shortcut filters without manually editing each field.
+2. Reset chips remain read-only and only change controlled client-side filter state.
+3. Existing CSV export and copy handoff reflect the reset filter state.
