@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 131-134 implemented; next candidate is Knowledge approval submit guardrails.`
+Current implementation goal (2026-05-13): `Slices 135-138 implemented; next candidate is Knowledge approval package copy.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -121,6 +121,10 @@ Slice 131 added Knowledge rejection reason presets.
 Slice 132 added Knowledge apply rejection preset.
 Slice 133 added Knowledge rejection reason draft status.
 Slice 134 added Knowledge copy rejection reason.
+Slice 135 added Knowledge approval submit blocker count.
+Slice 136 added Knowledge approval submit caution guidance.
+Slice 137 added Knowledge copy approval blockers.
+Slice 138 added Knowledge approval button warning context.
 
 ## Operating Rules
 
@@ -267,6 +271,10 @@ Slice 134 added Knowledge copy rejection reason.
 | 132 | [132-knowledge-apply-rejection-preset.md](132-knowledge-apply-rejection-preset.md) | `implemented` | Knowledge apply rejection preset | `architect-saas`, `architect-browser-assistant` |
 | 133 | [133-knowledge-rejection-reason-draft-status.md](133-knowledge-rejection-reason-draft-status.md) | `implemented` | Knowledge rejection reason draft status | `architect-saas`, `architect-browser-assistant` |
 | 134 | [134-knowledge-copy-rejection-reason.md](134-knowledge-copy-rejection-reason.md) | `implemented` | Knowledge copy rejection reason | `architect-saas`, `architect-browser-assistant` |
+| 135 | [135-knowledge-approval-submit-blocker-count.md](135-knowledge-approval-submit-blocker-count.md) | `implemented` | Knowledge approval submit blocker count | `architect-saas`, `architect-browser-assistant` |
+| 136 | [136-knowledge-approval-submit-caution-guidance.md](136-knowledge-approval-submit-caution-guidance.md) | `implemented` | Knowledge approval submit caution guidance | `architect-saas`, `architect-browser-assistant` |
+| 137 | [137-knowledge-copy-approval-blockers.md](137-knowledge-copy-approval-blockers.md) | `implemented` | Knowledge copy approval blockers | `architect-saas`, `architect-browser-assistant` |
+| 138 | [138-knowledge-approval-button-warning-context.md](138-knowledge-approval-button-warning-context.md) | `implemented` | Knowledge approval button warning context | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -407,13 +415,17 @@ Slice 134 added Knowledge copy rejection reason.
 135. `Implement and verify 132 Knowledge apply rejection preset.`
 136. `Implement and verify 133 Knowledge rejection reason draft status.`
 137. `Implement and verify 134 Knowledge copy rejection reason.`
+138. `Implement and verify 135 Knowledge approval submit blocker count.`
+139. `Implement and verify 136 Knowledge approval submit caution guidance.`
+140. `Implement and verify 137 Knowledge copy approval blockers.`
+141. `Implement and verify 138 Knowledge approval button warning context.`
 
 ## Next Goal Candidate
 
-`Add Knowledge approval submit guardrails so final approval actions clearly show unresolved blockers before submission.`
+`Add Knowledge approval package copy so final reviewers can export draft, decision, blocker, and evidence context together.`
 
 Success criteria:
 
-1. Approval action area names unresolved blocker count.
-2. Approval button context explains caution when warnings remain.
-3. The next slice PRD captures submit guardrail behavior before implementation.
+1. Approval package includes candidate, task, draft, decision status, blockers, and evidence counts.
+2. Package copy works from the final action area.
+3. The next slice PRD captures package scope before implementation.
