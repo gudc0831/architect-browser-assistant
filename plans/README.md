@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 201-300 implemented; next candidate is Knowledge export history and external sync execution guardrails.`
+Current implementation goal (2026-05-13): `Slices 301-350 implemented; next candidate is persisted Knowledge export audit and provider-backed external sync.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -287,6 +287,56 @@ Slice 297 added approved WIKI browser clean tree.
 Slice 298 added approved WIKI SaaS clean tree.
 Slice 299 added approved WIKI export goal closeout.
 Slice 300 added approved WIKI export completion report.
+Slice 301 added an approved WIKI sync history model.
+Slice 302 added browser-side guarded sync history loading.
+Slice 303 added browser-side guarded sync history persistence.
+Slice 304 reused approved WIKI package filenames for export and sync history.
+Slice 305 added guarded sync dry-run warning generation.
+Slice 306 added the `SYNC_APPROVED_WIKI` confirmation phrase.
+Slice 307 added a readiness and confirmation gate for guarded sync.
+Slice 308 added a dry-run preview history action.
+Slice 309 added blocked guarded-sync history records.
+Slice 310 added simulated guarded-sync history records.
+Slice 311 added sync status feedback for dry-run, blocked, and simulated attempts.
+Slice 312 added guarded sync history count chips.
+Slice 313 added last-run status chips.
+Slice 314 added a local guarded sync history list.
+Slice 315 added package stats to guarded sync history rows.
+Slice 316 added readiness stats to guarded sync history rows.
+Slice 317 added target, format, and scope fields to copied sync history reports.
+Slice 318 added a copyable guarded sync history report.
+Slice 319 added a clear-local-history action.
+Slice 320 added explicit external-provider simulation guidance.
+Slice 321 added Obsidian JSON conversion warning guidance.
+Slice 322 linked unsourced item warnings into guarded sync dry-runs.
+Slice 323 linked export readiness blockers into guarded sync dry-runs.
+Slice 324 documented the no-server-write sync history decision.
+Slice 325 updated the user guide for guarded sync history.
+Slice 326 added a SaaS worklog for guarded sync history.
+Slice 327 added a planning worklog for guarded sync history.
+Slice 328 validated Knowledge admin API readback.
+Slice 329 validated SaaS typecheck.
+Slice 330 validated SaaS lint.
+Slice 331 validated Browser UI export panel rendering.
+Slice 332 validated Browser UI dry-run history creation.
+Slice 333 validated Browser UI confirmation gating.
+Slice 334 validated Browser UI guarded sync simulation.
+Slice 335 validated Browser UI copied history report availability.
+Slice 336 updated this roadmap with the implemented slice batch.
+Slice 337 left the next goal candidate for persisted audit and provider sync.
+Slice 338 kept `PLAN.md` unchanged as product direction.
+Slice 339 separated SaaS and browser-assistant commit boundaries.
+Slice 340 checked the SaaS working tree after implementation.
+Slice 341 checked the browser-assistant working tree after planning updates.
+Slice 342 closed the active goal after verification and commits.
+Slice 343 preserved approved WIKI readback API contracts.
+Slice 344 preserved browser-side export package generation.
+Slice 345 preserved source lineage metadata in sync history.
+Slice 346 preserved package readiness metadata in sync history.
+Slice 347 preserved target selection metadata in sync history.
+Slice 348 preserved local-only sync execution semantics.
+Slice 349 captured residual risk for server audit persistence.
+Slice 350 captured completion decisions for the next slice handoff.
 
 ## Operating Rules
 
@@ -905,13 +955,63 @@ Slice 300 added approved WIKI export completion report.
 301. `Implement and verify 298 Approved WIKI SaaS clean tree.`
 302. `Implement and verify 299 Approved WIKI export goal closeout.`
 303. `Implement and verify 300 Approved WIKI export completion report.`
+304. `Implement and verify 301 Approved WIKI sync history model.`
+305. `Implement and verify 302 Approved WIKI sync history load.`
+306. `Implement and verify 303 Approved WIKI sync history persistence.`
+307. `Implement and verify 304 Approved WIKI sync package filename reuse.`
+308. `Implement and verify 305 Approved WIKI sync dry-run warnings.`
+309. `Implement and verify 306 Approved WIKI sync confirmation phrase.`
+310. `Implement and verify 307 Approved WIKI guarded sync readiness gate.`
+311. `Implement and verify 308 Approved WIKI sync dry-run action.`
+312. `Implement and verify 309 Approved WIKI blocked sync history record.`
+313. `Implement and verify 310 Approved WIKI simulated sync history record.`
+314. `Implement and verify 311 Approved WIKI guarded sync status feedback.`
+315. `Implement and verify 312 Approved WIKI sync history count chip.`
+316. `Implement and verify 313 Approved WIKI last sync status chip.`
+317. `Implement and verify 314 Approved WIKI sync history list.`
+318. `Implement and verify 315 Approved WIKI sync history package stats.`
+319. `Implement and verify 316 Approved WIKI sync history readiness stats.`
+320. `Implement and verify 317 Approved WIKI sync history target fields.`
+321. `Implement and verify 318 Approved WIKI copy sync history report.`
+322. `Implement and verify 319 Approved WIKI clear local sync history.`
+323. `Implement and verify 320 Approved WIKI external target simulation note.`
+324. `Implement and verify 321 Approved WIKI Obsidian conversion warning.`
+325. `Implement and verify 322 Approved WIKI unsourced dry-run linkage.`
+326. `Implement and verify 323 Approved WIKI readiness dry-run linkage.`
+327. `Implement and verify 324 Approved WIKI sync no-server-write decision.`
+328. `Implement and verify 325 Approved WIKI guarded sync user guide.`
+329. `Implement and verify 326 Approved WIKI guarded sync SaaS worklog.`
+330. `Implement and verify 327 Approved WIKI guarded sync planning worklog.`
+331. `Implement and verify 328 Approved WIKI guarded sync API validation.`
+332. `Implement and verify 329 Approved WIKI guarded sync typecheck.`
+333. `Implement and verify 330 Approved WIKI guarded sync lint.`
+334. `Implement and verify 331 Approved WIKI guarded sync panel browser validation.`
+335. `Implement and verify 332 Approved WIKI guarded sync dry-run browser validation.`
+336. `Implement and verify 333 Approved WIKI guarded sync confirmation browser validation.`
+337. `Implement and verify 334 Approved WIKI guarded sync simulation browser validation.`
+338. `Implement and verify 335 Approved WIKI sync history report browser validation.`
+339. `Implement and verify 336 Approved WIKI guarded sync README update.`
+340. `Implement and verify 337 Approved WIKI persisted audit next candidate.`
+341. `Implement and verify 338 Approved WIKI guarded sync PLAN unchanged.`
+342. `Implement and verify 339 Approved WIKI guarded sync commit boundary.`
+343. `Implement and verify 340 Approved WIKI guarded sync SaaS clean tree.`
+344. `Implement and verify 341 Approved WIKI guarded sync browser clean tree.`
+345. `Implement and verify 342 Approved WIKI guarded sync goal closeout.`
+346. `Implement and verify 343 Approved WIKI readback API contract preservation.`
+347. `Implement and verify 344 Approved WIKI browser export preservation.`
+348. `Implement and verify 345 Approved WIKI sync source lineage preservation.`
+349. `Implement and verify 346 Approved WIKI sync readiness preservation.`
+350. `Implement and verify 347 Approved WIKI sync target preservation.`
+351. `Implement and verify 348 Approved WIKI local-only sync semantics.`
+352. `Implement and verify 349 Approved WIKI server audit residual risk.`
+353. `Implement and verify 350 Approved WIKI guarded sync completion report.`
 
 ## Next Goal Candidate
 
-`Add Knowledge export history and guarded external sync execution so portable packages can be audited before leaving the admin boundary.`
+`Add persisted Knowledge export audit and provider-backed external sync after guarded local sync history is stable.`
 
 Success criteria:
 
-1. Export package generation can write an audit/history record before any external sync is allowed.
-2. External sync execution is guarded by explicit target, confirmation, source lineage, and dry-run preview.
-3. The next slice PRD starts from browser-side export readiness and does not bypass admin approval metadata.
+1. Sync/export history is persisted server-side with admin audit events.
+2. External providers require dry-run preview, confirmation, and source lineage validation.
+3. Provider execution remains disabled unless target configuration and persisted audit records are present.
