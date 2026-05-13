@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 151-200 implemented; next candidate is Knowledge export/sync readiness for approved WIKI entries.`
+Current implementation goal (2026-05-13): `Slices 201-300 implemented; next candidate is Knowledge export history and external sync execution guardrails.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -187,6 +187,106 @@ Slice 197 added approved WIKI browser UI validation.
 Slice 198 added approved WIKI commit boundary.
 Slice 199 added approved WIKI next candidate.
 Slice 200 added approved WIKI closeout report.
+Slice 201 added approved WIKI export scope state.
+Slice 202 added approved WIKI export format state.
+Slice 203 added approved WIKI sync target profile.
+Slice 204 added approved WIKI export item selection.
+Slice 205 added approved WIKI export stats.
+Slice 206 added approved WIKI export file preview.
+Slice 207 added approved WIKI export readiness checks.
+Slice 208 added approved WIKI export readiness summary.
+Slice 209 added copy approved WIKI sync manifest.
+Slice 210 added copy approved WIKI export checklist.
+Slice 211 added download approved WIKI JSON package.
+Slice 212 added download approved WIKI Markdown package.
+Slice 213 added approved WIKI export filter scope.
+Slice 214 added approved WIKI export generated timestamp.
+Slice 215 added approved WIKI export stats payload.
+Slice 216 added approved WIKI export source lineage.
+Slice 217 added approved WIKI export tag and scope fields.
+Slice 218 added approved WIKI Markdown export sections.
+Slice 219 added approved WIKI Markdown source rows.
+Slice 220 added approved WIKI sync target guidance.
+Slice 221 added approved WIKI selected export scope.
+Slice 222 added approved WIKI visible export scope.
+Slice 223 added approved WIKI empty export disabled state.
+Slice 224 added approved WIKI export unsourced warning.
+Slice 225 added approved WIKI export tag coverage.
+Slice 226 added approved WIKI export body content check.
+Slice 227 added approved WIKI portable archive target.
+Slice 228 added approved WIKI Obsidian target.
+Slice 229 added approved WIKI Notion target.
+Slice 230 added approved WIKI assistant retrieval target.
+Slice 231 added approved WIKI export toolbar layout.
+Slice 232 added approved WIKI export mobile layout.
+Slice 233 added approved WIKI export download status.
+Slice 234 added approved WIKI export clipboard status.
+Slice 235 added approved WIKI sync manifest item list.
+Slice 236 added approved WIKI export checklist item list.
+Slice 237 added approved WIKI export stat chips.
+Slice 238 added approved WIKI selected export filename.
+Slice 239 added approved WIKI visible export filename.
+Slice 240 added approved WIKI JSON MIME download.
+Slice 241 added approved WIKI Markdown MIME download.
+Slice 242 added approved WIKI export URL cleanup.
+Slice 243 added approved WIKI export no server write.
+Slice 244 added approved WIKI export preserves readback API.
+Slice 245 added approved WIKI export user guide.
+Slice 246 added approved WIKI export SaaS worklog.
+Slice 247 added approved WIKI export planning worklog.
+Slice 248 added approved WIKI export API validation.
+Slice 249 added approved WIKI export typecheck.
+Slice 250 added approved WIKI export lint.
+Slice 251 added approved WIKI export panel browser validation.
+Slice 252 added approved WIKI sync target browser validation.
+Slice 253 added approved WIKI format browser validation.
+Slice 254 added approved WIKI scope browser validation.
+Slice 255 added approved WIKI manifest browser validation.
+Slice 256 added approved WIKI checklist browser validation.
+Slice 257 added approved WIKI download browser validation.
+Slice 258 added approved WIKI export decision record.
+Slice 259 added approved WIKI README goal update.
+Slice 260 added approved WIKI next candidate.
+Slice 261 added approved WIKI package type.
+Slice 262 added approved WIKI item id map.
+Slice 263 added approved WIKI approval metadata.
+Slice 264 added approved WIKI summary body pair.
+Slice 265 added approved WIKI source reference payload.
+Slice 266 added approved WIKI filter reproduction.
+Slice 267 added approved WIKI target labels.
+Slice 268 added approved WIKI format labels.
+Slice 269 added approved WIKI scope labels.
+Slice 270 added approved WIKI retrieval readiness.
+Slice 271 added approved WIKI Obsidian readiness.
+Slice 272 added approved WIKI Notion readiness.
+Slice 273 added approved WIKI archive readiness.
+Slice 274 added approved WIKI selected export empty guidance.
+Slice 275 added approved WIKI visible export empty guidance.
+Slice 276 added approved WIKI export readiness no mutation.
+Slice 277 added approved WIKI export status no API error.
+Slice 278 added approved WIKI filename target segment.
+Slice 279 added approved WIKI filename scope segment.
+Slice 280 added approved WIKI filename count segment.
+Slice 281 added approved WIKI manifest ready count.
+Slice 282 added approved WIKI checklist stats.
+Slice 283 added approved WIKI export UI grouping.
+Slice 284 added approved WIKI export quality inheritance.
+Slice 285 added approved WIKI export source count chip.
+Slice 286 added approved WIKI export tag count chip.
+Slice 287 added approved WIKI export body count chip.
+Slice 288 added approved WIKI export ready warning chip.
+Slice 289 added approved WIKI package reproducibility.
+Slice 290 added approved WIKI future sync boundary.
+Slice 291 added approved WIKI export roadmap summary.
+Slice 292 added approved WIKI plan file coverage.
+Slice 293 added approved WIKI export verification log.
+Slice 294 added approved WIKI export SaaS commit.
+Slice 295 added approved WIKI export planning commit.
+Slice 296 added approved WIKI PLAN unchanged.
+Slice 297 added approved WIKI browser clean tree.
+Slice 298 added approved WIKI SaaS clean tree.
+Slice 299 added approved WIKI export goal closeout.
+Slice 300 added approved WIKI export completion report.
 
 ## Operating Rules
 
@@ -399,6 +499,106 @@ Slice 200 added approved WIKI closeout report.
 | 198 | [198-knowledge-approved-commit-boundary.md](198-knowledge-approved-commit-boundary.md) | `implemented` | Approved WIKI commit boundary | `architect-saas`, `architect-browser-assistant` |
 | 199 | [199-knowledge-approved-next-candidate.md](199-knowledge-approved-next-candidate.md) | `implemented` | Approved WIKI next candidate | `architect-saas`, `architect-browser-assistant` |
 | 200 | [200-knowledge-approved-closeout-report.md](200-knowledge-approved-closeout-report.md) | `implemented` | Approved WIKI closeout report | `architect-saas`, `architect-browser-assistant` |
+| 201 | [201-knowledge-export-scope-state.md](201-knowledge-export-scope-state.md) | `implemented` | Approved WIKI export scope state | `architect-saas`, `architect-browser-assistant` |
+| 202 | [202-knowledge-export-format-state.md](202-knowledge-export-format-state.md) | `implemented` | Approved WIKI export format state | `architect-saas`, `architect-browser-assistant` |
+| 203 | [203-knowledge-sync-target-profile.md](203-knowledge-sync-target-profile.md) | `implemented` | Approved WIKI sync target profile | `architect-saas`, `architect-browser-assistant` |
+| 204 | [204-knowledge-export-item-selection.md](204-knowledge-export-item-selection.md) | `implemented` | Approved WIKI export item selection | `architect-saas`, `architect-browser-assistant` |
+| 205 | [205-knowledge-export-stats.md](205-knowledge-export-stats.md) | `implemented` | Approved WIKI export stats | `architect-saas`, `architect-browser-assistant` |
+| 206 | [206-knowledge-export-file-preview.md](206-knowledge-export-file-preview.md) | `implemented` | Approved WIKI export file preview | `architect-saas`, `architect-browser-assistant` |
+| 207 | [207-knowledge-export-readiness-checks.md](207-knowledge-export-readiness-checks.md) | `implemented` | Approved WIKI export readiness checks | `architect-saas`, `architect-browser-assistant` |
+| 208 | [208-knowledge-export-readiness-summary.md](208-knowledge-export-readiness-summary.md) | `implemented` | Approved WIKI export readiness summary | `architect-saas`, `architect-browser-assistant` |
+| 209 | [209-knowledge-copy-sync-manifest.md](209-knowledge-copy-sync-manifest.md) | `implemented` | Copy approved WIKI sync manifest | `architect-saas`, `architect-browser-assistant` |
+| 210 | [210-knowledge-copy-export-checklist.md](210-knowledge-copy-export-checklist.md) | `implemented` | Copy approved WIKI export checklist | `architect-saas`, `architect-browser-assistant` |
+| 211 | [211-knowledge-download-json-package.md](211-knowledge-download-json-package.md) | `implemented` | Download approved WIKI JSON package | `architect-saas`, `architect-browser-assistant` |
+| 212 | [212-knowledge-download-markdown-package.md](212-knowledge-download-markdown-package.md) | `implemented` | Download approved WIKI Markdown package | `architect-saas`, `architect-browser-assistant` |
+| 213 | [213-knowledge-export-filter-scope.md](213-knowledge-export-filter-scope.md) | `implemented` | Approved WIKI export filter scope | `architect-saas`, `architect-browser-assistant` |
+| 214 | [214-knowledge-export-generated-at.md](214-knowledge-export-generated-at.md) | `implemented` | Approved WIKI export generated timestamp | `architect-saas`, `architect-browser-assistant` |
+| 215 | [215-knowledge-export-stats-payload.md](215-knowledge-export-stats-payload.md) | `implemented` | Approved WIKI export stats payload | `architect-saas`, `architect-browser-assistant` |
+| 216 | [216-knowledge-export-source-lineage.md](216-knowledge-export-source-lineage.md) | `implemented` | Approved WIKI export source lineage | `architect-saas`, `architect-browser-assistant` |
+| 217 | [217-knowledge-export-tag-scope-fields.md](217-knowledge-export-tag-scope-fields.md) | `implemented` | Approved WIKI export tag and scope fields | `architect-saas`, `architect-browser-assistant` |
+| 218 | [218-knowledge-export-markdown-sections.md](218-knowledge-export-markdown-sections.md) | `implemented` | Approved WIKI Markdown export sections | `architect-saas`, `architect-browser-assistant` |
+| 219 | [219-knowledge-export-markdown-sources.md](219-knowledge-export-markdown-sources.md) | `implemented` | Approved WIKI Markdown source rows | `architect-saas`, `architect-browser-assistant` |
+| 220 | [220-knowledge-sync-target-guidance.md](220-knowledge-sync-target-guidance.md) | `implemented` | Approved WIKI sync target guidance | `architect-saas`, `architect-browser-assistant` |
+| 221 | [221-knowledge-export-selected-scope.md](221-knowledge-export-selected-scope.md) | `implemented` | Approved WIKI selected export scope | `architect-saas`, `architect-browser-assistant` |
+| 222 | [222-knowledge-export-visible-scope.md](222-knowledge-export-visible-scope.md) | `implemented` | Approved WIKI visible export scope | `architect-saas`, `architect-browser-assistant` |
+| 223 | [223-knowledge-export-disabled-empty.md](223-knowledge-export-disabled-empty.md) | `implemented` | Approved WIKI empty export disabled state | `architect-saas`, `architect-browser-assistant` |
+| 224 | [224-knowledge-export-unsourced-warning.md](224-knowledge-export-unsourced-warning.md) | `implemented` | Approved WIKI export unsourced warning | `architect-saas`, `architect-browser-assistant` |
+| 225 | [225-knowledge-export-tag-coverage.md](225-knowledge-export-tag-coverage.md) | `implemented` | Approved WIKI export tag coverage | `architect-saas`, `architect-browser-assistant` |
+| 226 | [226-knowledge-export-body-content-check.md](226-knowledge-export-body-content-check.md) | `implemented` | Approved WIKI export body content check | `architect-saas`, `architect-browser-assistant` |
+| 227 | [227-knowledge-sync-portable-archive.md](227-knowledge-sync-portable-archive.md) | `implemented` | Approved WIKI portable archive target | `architect-saas`, `architect-browser-assistant` |
+| 228 | [228-knowledge-sync-obsidian-target.md](228-knowledge-sync-obsidian-target.md) | `implemented` | Approved WIKI Obsidian target | `architect-saas`, `architect-browser-assistant` |
+| 229 | [229-knowledge-sync-notion-target.md](229-knowledge-sync-notion-target.md) | `implemented` | Approved WIKI Notion target | `architect-saas`, `architect-browser-assistant` |
+| 230 | [230-knowledge-sync-assistant-retrieval-target.md](230-knowledge-sync-assistant-retrieval-target.md) | `implemented` | Approved WIKI assistant retrieval target | `architect-saas`, `architect-browser-assistant` |
+| 231 | [231-knowledge-export-toolbar-layout.md](231-knowledge-export-toolbar-layout.md) | `implemented` | Approved WIKI export toolbar layout | `architect-saas`, `architect-browser-assistant` |
+| 232 | [232-knowledge-export-mobile-layout.md](232-knowledge-export-mobile-layout.md) | `implemented` | Approved WIKI export mobile layout | `architect-saas`, `architect-browser-assistant` |
+| 233 | [233-knowledge-export-download-status.md](233-knowledge-export-download-status.md) | `implemented` | Approved WIKI export download status | `architect-saas`, `architect-browser-assistant` |
+| 234 | [234-knowledge-export-clipboard-status.md](234-knowledge-export-clipboard-status.md) | `implemented` | Approved WIKI export clipboard status | `architect-saas`, `architect-browser-assistant` |
+| 235 | [235-knowledge-sync-manifest-item-list.md](235-knowledge-sync-manifest-item-list.md) | `implemented` | Approved WIKI sync manifest item list | `architect-saas`, `architect-browser-assistant` |
+| 236 | [236-knowledge-export-checklist-item-list.md](236-knowledge-export-checklist-item-list.md) | `implemented` | Approved WIKI export checklist item list | `architect-saas`, `architect-browser-assistant` |
+| 237 | [237-knowledge-export-stat-chips.md](237-knowledge-export-stat-chips.md) | `implemented` | Approved WIKI export stat chips | `architect-saas`, `architect-browser-assistant` |
+| 238 | [238-knowledge-export-selected-filename.md](238-knowledge-export-selected-filename.md) | `implemented` | Approved WIKI selected export filename | `architect-saas`, `architect-browser-assistant` |
+| 239 | [239-knowledge-export-visible-filename.md](239-knowledge-export-visible-filename.md) | `implemented` | Approved WIKI visible export filename | `architect-saas`, `architect-browser-assistant` |
+| 240 | [240-knowledge-export-json-mime.md](240-knowledge-export-json-mime.md) | `implemented` | Approved WIKI JSON MIME download | `architect-saas`, `architect-browser-assistant` |
+| 241 | [241-knowledge-export-markdown-mime.md](241-knowledge-export-markdown-mime.md) | `implemented` | Approved WIKI Markdown MIME download | `architect-saas`, `architect-browser-assistant` |
+| 242 | [242-knowledge-export-url-revoke.md](242-knowledge-export-url-revoke.md) | `implemented` | Approved WIKI export URL cleanup | `architect-saas`, `architect-browser-assistant` |
+| 243 | [243-knowledge-export-no-server-write.md](243-knowledge-export-no-server-write.md) | `implemented` | Approved WIKI export no server write | `architect-saas`, `architect-browser-assistant` |
+| 244 | [244-knowledge-export-preserve-readback-api.md](244-knowledge-export-preserve-readback-api.md) | `implemented` | Approved WIKI export preserves readback API | `architect-saas`, `architect-browser-assistant` |
+| 245 | [245-knowledge-export-user-guide.md](245-knowledge-export-user-guide.md) | `implemented` | Approved WIKI export user guide | `architect-saas`, `architect-browser-assistant` |
+| 246 | [246-knowledge-export-saas-worklog.md](246-knowledge-export-saas-worklog.md) | `implemented` | Approved WIKI export SaaS worklog | `architect-saas`, `architect-browser-assistant` |
+| 247 | [247-knowledge-export-browser-worklog.md](247-knowledge-export-browser-worklog.md) | `implemented` | Approved WIKI export planning worklog | `architect-saas`, `architect-browser-assistant` |
+| 248 | [248-knowledge-export-api-validation.md](248-knowledge-export-api-validation.md) | `implemented` | Approved WIKI export API validation | `architect-saas`, `architect-browser-assistant` |
+| 249 | [249-knowledge-export-typecheck.md](249-knowledge-export-typecheck.md) | `implemented` | Approved WIKI export typecheck | `architect-saas`, `architect-browser-assistant` |
+| 250 | [250-knowledge-export-lint.md](250-knowledge-export-lint.md) | `implemented` | Approved WIKI export lint | `architect-saas`, `architect-browser-assistant` |
+| 251 | [251-knowledge-export-browser-panel-validation.md](251-knowledge-export-browser-panel-validation.md) | `implemented` | Approved WIKI export panel browser validation | `architect-saas`, `architect-browser-assistant` |
+| 252 | [252-knowledge-export-browser-target-validation.md](252-knowledge-export-browser-target-validation.md) | `implemented` | Approved WIKI sync target browser validation | `architect-saas`, `architect-browser-assistant` |
+| 253 | [253-knowledge-export-browser-format-validation.md](253-knowledge-export-browser-format-validation.md) | `implemented` | Approved WIKI format browser validation | `architect-saas`, `architect-browser-assistant` |
+| 254 | [254-knowledge-export-browser-scope-validation.md](254-knowledge-export-browser-scope-validation.md) | `implemented` | Approved WIKI scope browser validation | `architect-saas`, `architect-browser-assistant` |
+| 255 | [255-knowledge-export-browser-manifest-validation.md](255-knowledge-export-browser-manifest-validation.md) | `implemented` | Approved WIKI manifest browser validation | `architect-saas`, `architect-browser-assistant` |
+| 256 | [256-knowledge-export-browser-checklist-validation.md](256-knowledge-export-browser-checklist-validation.md) | `implemented` | Approved WIKI checklist browser validation | `architect-saas`, `architect-browser-assistant` |
+| 257 | [257-knowledge-export-browser-download-validation.md](257-knowledge-export-browser-download-validation.md) | `implemented` | Approved WIKI download browser validation | `architect-saas`, `architect-browser-assistant` |
+| 258 | [258-knowledge-export-decision-record.md](258-knowledge-export-decision-record.md) | `implemented` | Approved WIKI export decision record | `architect-saas`, `architect-browser-assistant` |
+| 259 | [259-knowledge-export-readme-goal-update.md](259-knowledge-export-readme-goal-update.md) | `implemented` | Approved WIKI README goal update | `architect-saas`, `architect-browser-assistant` |
+| 260 | [260-knowledge-export-next-candidate.md](260-knowledge-export-next-candidate.md) | `implemented` | Approved WIKI next candidate | `architect-saas`, `architect-browser-assistant` |
+| 261 | [261-knowledge-export-package-type.md](261-knowledge-export-package-type.md) | `implemented` | Approved WIKI package type | `architect-saas`, `architect-browser-assistant` |
+| 262 | [262-knowledge-export-item-id-map.md](262-knowledge-export-item-id-map.md) | `implemented` | Approved WIKI item id map | `architect-saas`, `architect-browser-assistant` |
+| 263 | [263-knowledge-export-approval-metadata.md](263-knowledge-export-approval-metadata.md) | `implemented` | Approved WIKI approval metadata | `architect-saas`, `architect-browser-assistant` |
+| 264 | [264-knowledge-export-summary-body-pair.md](264-knowledge-export-summary-body-pair.md) | `implemented` | Approved WIKI summary body pair | `architect-saas`, `architect-browser-assistant` |
+| 265 | [265-knowledge-export-source-reference-payload.md](265-knowledge-export-source-reference-payload.md) | `implemented` | Approved WIKI source reference payload | `architect-saas`, `architect-browser-assistant` |
+| 266 | [266-knowledge-export-filter-reproduction.md](266-knowledge-export-filter-reproduction.md) | `implemented` | Approved WIKI filter reproduction | `architect-saas`, `architect-browser-assistant` |
+| 267 | [267-knowledge-export-target-labels.md](267-knowledge-export-target-labels.md) | `implemented` | Approved WIKI target labels | `architect-saas`, `architect-browser-assistant` |
+| 268 | [268-knowledge-export-format-labels.md](268-knowledge-export-format-labels.md) | `implemented` | Approved WIKI format labels | `architect-saas`, `architect-browser-assistant` |
+| 269 | [269-knowledge-export-scope-labels.md](269-knowledge-export-scope-labels.md) | `implemented` | Approved WIKI scope labels | `architect-saas`, `architect-browser-assistant` |
+| 270 | [270-knowledge-export-retrieval-readiness.md](270-knowledge-export-retrieval-readiness.md) | `implemented` | Approved WIKI retrieval readiness | `architect-saas`, `architect-browser-assistant` |
+| 271 | [271-knowledge-export-obsidian-readiness.md](271-knowledge-export-obsidian-readiness.md) | `implemented` | Approved WIKI Obsidian readiness | `architect-saas`, `architect-browser-assistant` |
+| 272 | [272-knowledge-export-notion-readiness.md](272-knowledge-export-notion-readiness.md) | `implemented` | Approved WIKI Notion readiness | `architect-saas`, `architect-browser-assistant` |
+| 273 | [273-knowledge-export-archive-readiness.md](273-knowledge-export-archive-readiness.md) | `implemented` | Approved WIKI archive readiness | `architect-saas`, `architect-browser-assistant` |
+| 274 | [274-knowledge-export-selected-empty-guidance.md](274-knowledge-export-selected-empty-guidance.md) | `implemented` | Approved WIKI selected export empty guidance | `architect-saas`, `architect-browser-assistant` |
+| 275 | [275-knowledge-export-visible-empty-guidance.md](275-knowledge-export-visible-empty-guidance.md) | `implemented` | Approved WIKI visible export empty guidance | `architect-saas`, `architect-browser-assistant` |
+| 276 | [276-knowledge-export-readiness-no-mutation.md](276-knowledge-export-readiness-no-mutation.md) | `implemented` | Approved WIKI export readiness no mutation | `architect-saas`, `architect-browser-assistant` |
+| 277 | [277-knowledge-export-status-no-api-error.md](277-knowledge-export-status-no-api-error.md) | `implemented` | Approved WIKI export status no API error | `architect-saas`, `architect-browser-assistant` |
+| 278 | [278-knowledge-export-download-filename-target.md](278-knowledge-export-download-filename-target.md) | `implemented` | Approved WIKI filename target segment | `architect-saas`, `architect-browser-assistant` |
+| 279 | [279-knowledge-export-download-filename-scope.md](279-knowledge-export-download-filename-scope.md) | `implemented` | Approved WIKI filename scope segment | `architect-saas`, `architect-browser-assistant` |
+| 280 | [280-knowledge-export-download-filename-count.md](280-knowledge-export-download-filename-count.md) | `implemented` | Approved WIKI filename count segment | `architect-saas`, `architect-browser-assistant` |
+| 281 | [281-knowledge-export-copy-manifest-ready-count.md](281-knowledge-export-copy-manifest-ready-count.md) | `implemented` | Approved WIKI manifest ready count | `architect-saas`, `architect-browser-assistant` |
+| 282 | [282-knowledge-export-copy-checklist-stats.md](282-knowledge-export-copy-checklist-stats.md) | `implemented` | Approved WIKI checklist stats | `architect-saas`, `architect-browser-assistant` |
+| 283 | [283-knowledge-export-ui-grouping.md](283-knowledge-export-ui-grouping.md) | `implemented` | Approved WIKI export UI grouping | `architect-saas`, `architect-browser-assistant` |
+| 284 | [284-knowledge-export-quality-inheritance.md](284-knowledge-export-quality-inheritance.md) | `implemented` | Approved WIKI export quality inheritance | `architect-saas`, `architect-browser-assistant` |
+| 285 | [285-knowledge-export-source-count-chip.md](285-knowledge-export-source-count-chip.md) | `implemented` | Approved WIKI export source count chip | `architect-saas`, `architect-browser-assistant` |
+| 286 | [286-knowledge-export-tag-count-chip.md](286-knowledge-export-tag-count-chip.md) | `implemented` | Approved WIKI export tag count chip | `architect-saas`, `architect-browser-assistant` |
+| 287 | [287-knowledge-export-body-count-chip.md](287-knowledge-export-body-count-chip.md) | `implemented` | Approved WIKI export body count chip | `architect-saas`, `architect-browser-assistant` |
+| 288 | [288-knowledge-export-ready-warning-chip.md](288-knowledge-export-ready-warning-chip.md) | `implemented` | Approved WIKI export ready warning chip | `architect-saas`, `architect-browser-assistant` |
+| 289 | [289-knowledge-export-package-reproducibility.md](289-knowledge-export-package-reproducibility.md) | `implemented` | Approved WIKI package reproducibility | `architect-saas`, `architect-browser-assistant` |
+| 290 | [290-knowledge-export-future-sync-boundary.md](290-knowledge-export-future-sync-boundary.md) | `implemented` | Approved WIKI future sync boundary | `architect-saas`, `architect-browser-assistant` |
+| 291 | [291-knowledge-export-roadmap-summary.md](291-knowledge-export-roadmap-summary.md) | `implemented` | Approved WIKI export roadmap summary | `architect-saas`, `architect-browser-assistant` |
+| 292 | [292-knowledge-export-plan-file-coverage.md](292-knowledge-export-plan-file-coverage.md) | `implemented` | Approved WIKI plan file coverage | `architect-saas`, `architect-browser-assistant` |
+| 293 | [293-knowledge-export-verification-log.md](293-knowledge-export-verification-log.md) | `implemented` | Approved WIKI export verification log | `architect-saas`, `architect-browser-assistant` |
+| 294 | [294-knowledge-export-commit-saas.md](294-knowledge-export-commit-saas.md) | `implemented` | Approved WIKI export SaaS commit | `architect-saas`, `architect-browser-assistant` |
+| 295 | [295-knowledge-export-commit-browser.md](295-knowledge-export-commit-browser.md) | `implemented` | Approved WIKI export planning commit | `architect-saas`, `architect-browser-assistant` |
+| 296 | [296-knowledge-export-plan-unchanged.md](296-knowledge-export-plan-unchanged.md) | `implemented` | Approved WIKI PLAN unchanged | `architect-saas`, `architect-browser-assistant` |
+| 297 | [297-knowledge-export-browser-clean-tree.md](297-knowledge-export-browser-clean-tree.md) | `implemented` | Approved WIKI browser clean tree | `architect-saas`, `architect-browser-assistant` |
+| 298 | [298-knowledge-export-saas-clean-tree.md](298-knowledge-export-saas-clean-tree.md) | `implemented` | Approved WIKI SaaS clean tree | `architect-saas`, `architect-browser-assistant` |
+| 299 | [299-knowledge-export-goal-closeout.md](299-knowledge-export-goal-closeout.md) | `implemented` | Approved WIKI export goal closeout | `architect-saas`, `architect-browser-assistant` |
+| 300 | [300-knowledge-export-completion-report.md](300-knowledge-export-completion-report.md) | `implemented` | Approved WIKI export completion report | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -605,13 +805,113 @@ Slice 200 added approved WIKI closeout report.
 201. `Implement and verify 198 Approved WIKI commit boundary.`
 202. `Implement and verify 199 Approved WIKI next candidate.`
 203. `Implement and verify 200 Approved WIKI closeout report.`
+204. `Implement and verify 201 Approved WIKI export scope state.`
+205. `Implement and verify 202 Approved WIKI export format state.`
+206. `Implement and verify 203 Approved WIKI sync target profile.`
+207. `Implement and verify 204 Approved WIKI export item selection.`
+208. `Implement and verify 205 Approved WIKI export stats.`
+209. `Implement and verify 206 Approved WIKI export file preview.`
+210. `Implement and verify 207 Approved WIKI export readiness checks.`
+211. `Implement and verify 208 Approved WIKI export readiness summary.`
+212. `Implement and verify 209 Copy approved WIKI sync manifest.`
+213. `Implement and verify 210 Copy approved WIKI export checklist.`
+214. `Implement and verify 211 Download approved WIKI JSON package.`
+215. `Implement and verify 212 Download approved WIKI Markdown package.`
+216. `Implement and verify 213 Approved WIKI export filter scope.`
+217. `Implement and verify 214 Approved WIKI export generated timestamp.`
+218. `Implement and verify 215 Approved WIKI export stats payload.`
+219. `Implement and verify 216 Approved WIKI export source lineage.`
+220. `Implement and verify 217 Approved WIKI export tag and scope fields.`
+221. `Implement and verify 218 Approved WIKI Markdown export sections.`
+222. `Implement and verify 219 Approved WIKI Markdown source rows.`
+223. `Implement and verify 220 Approved WIKI sync target guidance.`
+224. `Implement and verify 221 Approved WIKI selected export scope.`
+225. `Implement and verify 222 Approved WIKI visible export scope.`
+226. `Implement and verify 223 Approved WIKI empty export disabled state.`
+227. `Implement and verify 224 Approved WIKI export unsourced warning.`
+228. `Implement and verify 225 Approved WIKI export tag coverage.`
+229. `Implement and verify 226 Approved WIKI export body content check.`
+230. `Implement and verify 227 Approved WIKI portable archive target.`
+231. `Implement and verify 228 Approved WIKI Obsidian target.`
+232. `Implement and verify 229 Approved WIKI Notion target.`
+233. `Implement and verify 230 Approved WIKI assistant retrieval target.`
+234. `Implement and verify 231 Approved WIKI export toolbar layout.`
+235. `Implement and verify 232 Approved WIKI export mobile layout.`
+236. `Implement and verify 233 Approved WIKI export download status.`
+237. `Implement and verify 234 Approved WIKI export clipboard status.`
+238. `Implement and verify 235 Approved WIKI sync manifest item list.`
+239. `Implement and verify 236 Approved WIKI export checklist item list.`
+240. `Implement and verify 237 Approved WIKI export stat chips.`
+241. `Implement and verify 238 Approved WIKI selected export filename.`
+242. `Implement and verify 239 Approved WIKI visible export filename.`
+243. `Implement and verify 240 Approved WIKI JSON MIME download.`
+244. `Implement and verify 241 Approved WIKI Markdown MIME download.`
+245. `Implement and verify 242 Approved WIKI export URL cleanup.`
+246. `Implement and verify 243 Approved WIKI export no server write.`
+247. `Implement and verify 244 Approved WIKI export preserves readback API.`
+248. `Implement and verify 245 Approved WIKI export user guide.`
+249. `Implement and verify 246 Approved WIKI export SaaS worklog.`
+250. `Implement and verify 247 Approved WIKI export planning worklog.`
+251. `Implement and verify 248 Approved WIKI export API validation.`
+252. `Implement and verify 249 Approved WIKI export typecheck.`
+253. `Implement and verify 250 Approved WIKI export lint.`
+254. `Implement and verify 251 Approved WIKI export panel browser validation.`
+255. `Implement and verify 252 Approved WIKI sync target browser validation.`
+256. `Implement and verify 253 Approved WIKI format browser validation.`
+257. `Implement and verify 254 Approved WIKI scope browser validation.`
+258. `Implement and verify 255 Approved WIKI manifest browser validation.`
+259. `Implement and verify 256 Approved WIKI checklist browser validation.`
+260. `Implement and verify 257 Approved WIKI download browser validation.`
+261. `Implement and verify 258 Approved WIKI export decision record.`
+262. `Implement and verify 259 Approved WIKI README goal update.`
+263. `Implement and verify 260 Approved WIKI next candidate.`
+264. `Implement and verify 261 Approved WIKI package type.`
+265. `Implement and verify 262 Approved WIKI item id map.`
+266. `Implement and verify 263 Approved WIKI approval metadata.`
+267. `Implement and verify 264 Approved WIKI summary body pair.`
+268. `Implement and verify 265 Approved WIKI source reference payload.`
+269. `Implement and verify 266 Approved WIKI filter reproduction.`
+270. `Implement and verify 267 Approved WIKI target labels.`
+271. `Implement and verify 268 Approved WIKI format labels.`
+272. `Implement and verify 269 Approved WIKI scope labels.`
+273. `Implement and verify 270 Approved WIKI retrieval readiness.`
+274. `Implement and verify 271 Approved WIKI Obsidian readiness.`
+275. `Implement and verify 272 Approved WIKI Notion readiness.`
+276. `Implement and verify 273 Approved WIKI archive readiness.`
+277. `Implement and verify 274 Approved WIKI selected export empty guidance.`
+278. `Implement and verify 275 Approved WIKI visible export empty guidance.`
+279. `Implement and verify 276 Approved WIKI export readiness no mutation.`
+280. `Implement and verify 277 Approved WIKI export status no API error.`
+281. `Implement and verify 278 Approved WIKI filename target segment.`
+282. `Implement and verify 279 Approved WIKI filename scope segment.`
+283. `Implement and verify 280 Approved WIKI filename count segment.`
+284. `Implement and verify 281 Approved WIKI manifest ready count.`
+285. `Implement and verify 282 Approved WIKI checklist stats.`
+286. `Implement and verify 283 Approved WIKI export UI grouping.`
+287. `Implement and verify 284 Approved WIKI export quality inheritance.`
+288. `Implement and verify 285 Approved WIKI export source count chip.`
+289. `Implement and verify 286 Approved WIKI export tag count chip.`
+290. `Implement and verify 287 Approved WIKI export body count chip.`
+291. `Implement and verify 288 Approved WIKI export ready warning chip.`
+292. `Implement and verify 289 Approved WIKI package reproducibility.`
+293. `Implement and verify 290 Approved WIKI future sync boundary.`
+294. `Implement and verify 291 Approved WIKI export roadmap summary.`
+295. `Implement and verify 292 Approved WIKI plan file coverage.`
+296. `Implement and verify 293 Approved WIKI export verification log.`
+297. `Implement and verify 294 Approved WIKI export SaaS commit.`
+298. `Implement and verify 295 Approved WIKI export planning commit.`
+299. `Implement and verify 296 Approved WIKI PLAN unchanged.`
+300. `Implement and verify 297 Approved WIKI browser clean tree.`
+301. `Implement and verify 298 Approved WIKI SaaS clean tree.`
+302. `Implement and verify 299 Approved WIKI export goal closeout.`
+303. `Implement and verify 300 Approved WIKI export completion report.`
 
 ## Next Goal Candidate
 
-`Add Knowledge export/sync readiness for approved WIKI entries so reviewed knowledge can leave the admin readback surface as portable packages.`
+`Add Knowledge export history and guarded external sync execution so portable packages can be audited before leaving the admin boundary.`
 
 Success criteria:
 
-1. Approved WIKI entries can be exported as a stable JSON/Markdown package without changing `PLAN.md`.
-2. Export/sync readiness preserves source lineage, tags, scope, and quality status from the approved readback surface.
-3. The next slice PRD starts from approved-item readback rather than candidate review internals.
+1. Export package generation can write an audit/history record before any external sync is allowed.
+2. External sync execution is guarded by explicit target, confirmation, source lineage, and dry-run preview.
+3. The next slice PRD starts from browser-side export readiness and does not bypass admin approval metadata.
