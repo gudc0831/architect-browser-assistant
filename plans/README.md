@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 115-118 implemented; next candidate is Knowledge approval risk filter shortcuts.`
+Current implementation goal (2026-05-13): `Slices 119-122 implemented; next candidate is Knowledge approval risk empty-state guidance.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -105,6 +105,10 @@ Slice 115 added Knowledge approval risk summary.
 Slice 116 added Knowledge approval risk group details.
 Slice 117 added Knowledge copy approval risk summary.
 Slice 118 added Knowledge risk group count chip.
+Slice 119 added Knowledge approval risk filter shortcuts.
+Slice 120 added Knowledge active risk filter chips.
+Slice 121 added Knowledge clear risk filter action.
+Slice 122 added Knowledge copy risk filter handoff.
 
 ## Operating Rules
 
@@ -235,6 +239,10 @@ Slice 118 added Knowledge risk group count chip.
 | 116 | [116-knowledge-approval-risk-group-details.md](116-knowledge-approval-risk-group-details.md) | `implemented` | Knowledge approval risk group details | `architect-saas`, `architect-browser-assistant` |
 | 117 | [117-knowledge-copy-approval-risk-summary.md](117-knowledge-copy-approval-risk-summary.md) | `implemented` | Knowledge copy approval risk summary | `architect-saas`, `architect-browser-assistant` |
 | 118 | [118-knowledge-risk-group-count-chip.md](118-knowledge-risk-group-count-chip.md) | `implemented` | Knowledge risk group count chip | `architect-saas`, `architect-browser-assistant` |
+| 119 | [119-knowledge-approval-risk-filter-shortcuts.md](119-knowledge-approval-risk-filter-shortcuts.md) | `implemented` | Knowledge approval risk filter shortcuts | `architect-saas`, `architect-browser-assistant` |
+| 120 | [120-knowledge-active-risk-filter-chips.md](120-knowledge-active-risk-filter-chips.md) | `implemented` | Knowledge active risk filter chips | `architect-saas`, `architect-browser-assistant` |
+| 121 | [121-knowledge-clear-risk-filter.md](121-knowledge-clear-risk-filter.md) | `implemented` | Knowledge clear risk filter action | `architect-saas`, `architect-browser-assistant` |
+| 122 | [122-knowledge-copy-risk-filter-handoff.md](122-knowledge-copy-risk-filter-handoff.md) | `implemented` | Knowledge copy risk filter handoff | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -359,13 +367,17 @@ Slice 118 added Knowledge risk group count chip.
 119. `Implement and verify 116 Knowledge approval risk group details.`
 120. `Implement and verify 117 Knowledge copy approval risk summary.`
 121. `Implement and verify 118 Knowledge risk group count chip.`
+122. `Implement and verify 119 Knowledge approval risk filter shortcuts.`
+123. `Implement and verify 120 Knowledge active risk filter chips.`
+124. `Implement and verify 121 Knowledge clear risk filter action.`
+125. `Implement and verify 122 Knowledge copy risk filter handoff.`
 
 ## Next Goal Candidate
 
-`Add Knowledge approval risk filter shortcuts so reviewers can focus on candidates with scope, metadata, structure, evidence, or state warnings.`
+`Add Knowledge approval risk empty-state guidance so filtered risk details explain when a selected category has no warnings.`
 
 Success criteria:
 
-1. `/admin/knowledge` exposes risk category shortcut buttons.
-2. Selecting a shortcut filters or highlights the relevant approval risk group.
-3. The approval-risk-filter-shortcuts slice is documented in the next slice PRD.
+1. Filtered risk detail shows a useful no-warning state for ready categories.
+2. Guidance names the active risk group.
+3. The approval-risk-empty-state-guidance slice is documented in the next slice PRD.
