@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 301-350 implemented; next candidate is persisted Knowledge export audit and provider-backed external sync.`
+Current implementation goal (2026-05-13): `Slice 351 implemented; next candidate is provider target configuration and minimal provider adapters.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -337,6 +337,7 @@ Slice 347 preserved target selection metadata in sync history.
 Slice 348 preserved local-only sync execution semantics.
 Slice 349 captured residual risk for server audit persistence.
 Slice 350 captured completion decisions for the next slice handoff.
+Slice 351 added persisted Knowledge export audit records and provider-configuration guarded sync status.
 
 ## Operating Rules
 
@@ -1005,13 +1006,14 @@ Slice 350 captured completion decisions for the next slice handoff.
 351. `Implement and verify 348 Approved WIKI local-only sync semantics.`
 352. `Implement and verify 349 Approved WIKI server audit residual risk.`
 353. `Implement and verify 350 Approved WIKI guarded sync completion report.`
+354. `Implement and verify 351 Persisted Knowledge export audit.`
 
 ## Next Goal Candidate
 
-`Add persisted Knowledge export audit and provider-backed external sync after guarded local sync history is stable.`
+`Add provider target configuration and minimal provider adapters after persisted Knowledge export audit is stable.`
 
 Success criteria:
 
-1. Sync/export history is persisted server-side with admin audit events.
-2. External providers require dry-run preview, confirmation, and source lineage validation.
-3. Provider execution remains disabled unless target configuration and persisted audit records are present.
+1. Admins can configure which Knowledge sync targets are allowed for execution.
+2. Provider adapters use the persisted audit id as the execution boundary.
+3. External writes remain dry-run first and require explicit confirmation per provider target.
