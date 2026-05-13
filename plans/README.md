@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 363 implemented; next candidate is secret-manager backed provider execution readiness.`
+Current implementation goal (2026-05-13): `Slice 364 implemented; next candidate is provider live-write dry-run reconciliation package.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -350,6 +350,7 @@ Slice 360 verified provider config and preview behavior.
 Slice 361 recorded the next provider adapter candidate.
 Slice 362 added provider credential boundaries and a guarded portable archive execution adapter.
 Slice 363 added provider-specific secret metadata and a guarded Obsidian execution adapter.
+Slice 364 added server-side provider credential registry metadata and remote write readiness controls.
 
 ## Operating Rules
 
@@ -1031,13 +1032,14 @@ Slice 363 added provider-specific secret metadata and a guarded Obsidian executi
 364. `Implement and verify 361 Provider adapter next candidate.`
 365. `Implement and verify 362 Provider credential boundary and portable archive adapter.`
 366. `Implement and verify 363 Provider secret metadata and Obsidian adapter.`
+367. `Implement and verify 364 Provider credential registry readiness controls.`
 
 ## Next Goal Candidate
 
-`Add a secret-manager backed credential store and deployment-ready remote provider execution controls before enabling real Obsidian or Notion writes.`
+`Add a provider live-write dry-run reconciliation package for Obsidian before enabling any real vault mutation.`
 
 Success criteria:
 
-1. Secret references resolve through a dedicated server-side store rather than UI-entered pointer strings alone.
-2. Remote provider writes keep the provider preview audit id, confirmation phrase, credential readiness, and admin execution audit as hard gates.
-3. Rollback or reconciliation metadata is recorded before enabling any live vault/page/index mutation.
+1. Dry-run output lists the exact Markdown file paths, create/update/delete intent, and source item ids without writing to a vault.
+2. Reconciliation output can be copied and attached to an execution audit before live-write flags are introduced.
+3. Live provider mutation remains disabled unless a future slice adds an explicit deployment flag and rollback execution path.
