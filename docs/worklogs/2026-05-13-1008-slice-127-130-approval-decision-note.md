@@ -1,0 +1,4 @@
+Req: Plan Slices 127-130 for Knowledge approval decision note handoff.
+Diff: Added Slice 127-130 PRDs and roadmap entries for decision note context chips, copy decision note, blocker details, and ready summary; no browser extension code changed.
+Why: Continue the Knowledge Admin approval flow from risk review into a copyable final decision handoff.
+Verify/Time: 2026-05-13 10:15 KST; SaaS `npm run typecheck`; SaaS `npm run lint` with 7 pre-existing task Hook warnings; `GET /api/admin/knowledge/candidates` 200; Playwright browser UI verified decision note context chips, copy decision note output, blocker warnings, ready checks, risk group summary, and mobile layout; browser repo `npm run typecheck`; browser repo `npm run lint`. Known unrelated `/api/project/changes` returned 500 during page load.

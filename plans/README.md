@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 123-126 implemented; next candidate is Knowledge approval decision note template.`
+Current implementation goal (2026-05-13): `Slices 127-130 implemented; next candidate is Knowledge rejection reason presets.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -113,6 +113,10 @@ Slice 123 added Knowledge approval risk empty-state guidance.
 Slice 124 added Knowledge approval risk warning item previews.
 Slice 125 added Knowledge approval risk ready item previews.
 Slice 126 added Knowledge copy risk filter details.
+Slice 127 added Knowledge approval decision note context chips.
+Slice 128 added Knowledge copy approval decision note action.
+Slice 129 added Knowledge decision note blocker details.
+Slice 130 added Knowledge decision note ready summary.
 
 ## Operating Rules
 
@@ -251,6 +255,10 @@ Slice 126 added Knowledge copy risk filter details.
 | 124 | [124-knowledge-approval-risk-warning-item-preview.md](124-knowledge-approval-risk-warning-item-preview.md) | `implemented` | Knowledge approval risk warning item preview | `architect-saas`, `architect-browser-assistant` |
 | 125 | [125-knowledge-approval-risk-ready-item-preview.md](125-knowledge-approval-risk-ready-item-preview.md) | `implemented` | Knowledge approval risk ready item preview | `architect-saas`, `architect-browser-assistant` |
 | 126 | [126-knowledge-copy-risk-filter-details.md](126-knowledge-copy-risk-filter-details.md) | `implemented` | Knowledge copy risk filter details | `architect-saas`, `architect-browser-assistant` |
+| 127 | [127-knowledge-approval-decision-note-context.md](127-knowledge-approval-decision-note-context.md) | `implemented` | Knowledge approval decision note context chips | `architect-saas`, `architect-browser-assistant` |
+| 128 | [128-knowledge-copy-approval-decision-note.md](128-knowledge-copy-approval-decision-note.md) | `implemented` | Knowledge copy approval decision note | `architect-saas`, `architect-browser-assistant` |
+| 129 | [129-knowledge-decision-note-blocker-details.md](129-knowledge-decision-note-blocker-details.md) | `implemented` | Knowledge decision note blocker details | `architect-saas`, `architect-browser-assistant` |
+| 130 | [130-knowledge-decision-note-ready-summary.md](130-knowledge-decision-note-ready-summary.md) | `implemented` | Knowledge decision note ready summary | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -383,13 +391,17 @@ Slice 126 added Knowledge copy risk filter details.
 127. `Implement and verify 124 Knowledge approval risk warning item preview.`
 128. `Implement and verify 125 Knowledge approval risk ready item preview.`
 129. `Implement and verify 126 Knowledge copy risk filter details.`
+130. `Implement and verify 127 Knowledge approval decision note context chips.`
+131. `Implement and verify 128 Knowledge copy approval decision note.`
+132. `Implement and verify 129 Knowledge decision note blocker details.`
+133. `Implement and verify 130 Knowledge decision note ready summary.`
 
 ## Next Goal Candidate
 
-`Add Knowledge approval decision note template so admins can copy a final approve/reject decision context after reviewing risk groups.`
+`Add Knowledge rejection reason presets so blocker decision notes can become consistent rejection reasons.`
 
 Success criteria:
 
-1. The decision note template includes candidate, task, active scope, warnings, and ready checks.
-2. The template distinguishes approve-ready and rejection/blocker contexts.
-3. The next slice PRD captures the decision-note handoff scope before implementation.
+1. Rejection presets reflect active blocker categories.
+2. Selecting a preset fills or appends the rejection reason draft.
+3. The next slice PRD captures preset behavior before implementation.
