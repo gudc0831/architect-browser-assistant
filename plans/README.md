@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 96 implemented; next candidate is Knowledge Markdown outline preview.`
+Current implementation goal (2026-05-13): `Slice 97 implemented; next candidate is Knowledge copy Markdown outline action.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -83,6 +83,7 @@ Slice 93 added Knowledge draft dirty-state indicators.
 Slice 94 added Knowledge dirty-draft reset warning.
 Slice 95 added Knowledge dirty-draft approval guardrail.
 Slice 96 added Knowledge copy dirty-draft summary action.
+Slice 97 added Knowledge Markdown outline preview.
 
 ## Operating Rules
 
@@ -191,6 +192,7 @@ Slice 96 added Knowledge copy dirty-draft summary action.
 | 94 | [94-knowledge-dirty-draft-reset-warning.md](94-knowledge-dirty-draft-reset-warning.md) | `implemented` | Knowledge dirty-draft reset warning | `architect-saas`, `architect-browser-assistant` |
 | 95 | [95-knowledge-dirty-draft-approval-guardrail.md](95-knowledge-dirty-draft-approval-guardrail.md) | `implemented` | Knowledge dirty-draft approval guardrail | `architect-saas`, `architect-browser-assistant` |
 | 96 | [96-knowledge-copy-dirty-draft-summary.md](96-knowledge-copy-dirty-draft-summary.md) | `implemented` | Knowledge copy dirty-draft summary action | `architect-saas`, `architect-browser-assistant` |
+| 97 | [97-knowledge-markdown-outline-preview.md](97-knowledge-markdown-outline-preview.md) | `implemented` | Knowledge Markdown outline preview | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -293,13 +295,14 @@ Slice 96 added Knowledge copy dirty-draft summary action.
 97. `Implement and verify 94 Knowledge dirty-draft reset warning.`
 98. `Implement and verify 95 Knowledge dirty-draft approval guardrail.`
 99. `Implement and verify 96 Knowledge copy dirty-draft summary action.`
+100. `Implement and verify 97 Knowledge Markdown outline preview.`
 
 ## Next Goal Candidate
 
-`Add Knowledge Markdown outline preview so reviewers can inspect draft heading structure before approval.`
+`Add Knowledge copy Markdown outline action so reviewers can copy the draft heading structure for handoff.`
 
 Success criteria:
 
-1. Draft editor exposes Markdown heading outline chips or rows.
-2. Outline derives from the current draft Markdown body.
-3. The markdown-outline slice is documented in the next slice PRD.
+1. Draft editor exposes a copy Markdown outline action.
+2. Copied outline includes heading levels, line numbers, and selected candidate context.
+3. The copy-markdown-outline slice is documented in the next slice PRD.
