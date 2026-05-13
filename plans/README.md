@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 351 implemented; next candidate is provider target configuration and minimal provider adapters.`
+Current implementation goal (2026-05-13): `Slices 352-361 implemented; next candidate is provider credential boundaries and first external write adapter.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -338,6 +338,16 @@ Slice 348 preserved local-only sync execution semantics.
 Slice 349 captured residual risk for server audit persistence.
 Slice 350 captured completion decisions for the next slice handoff.
 Slice 351 added persisted Knowledge export audit records and provider-configuration guarded sync status.
+Slice 352 added provider target configuration APIs.
+Slice 353 added provider target configuration UI controls.
+Slice 354 added provider-ready audit status derived from target configuration.
+Slice 355 added provider preview adapter API.
+Slice 356 added provider preview UI.
+Slice 357 added copyable provider preview reports.
+Slice 358 added append-only provider config audit history.
+Slice 359 updated user guidance for provider config and previews.
+Slice 360 verified provider config and preview behavior.
+Slice 361 recorded the next provider adapter candidate.
 
 ## Operating Rules
 
@@ -1007,13 +1017,23 @@ Slice 351 added persisted Knowledge export audit records and provider-configurat
 352. `Implement and verify 349 Approved WIKI server audit residual risk.`
 353. `Implement and verify 350 Approved WIKI guarded sync completion report.`
 354. `Implement and verify 351 Persisted Knowledge export audit.`
+355. `Implement and verify 352 Provider target configuration.`
+356. `Implement and verify 353 Provider target config UI.`
+357. `Implement and verify 354 Provider-ready audit status.`
+358. `Implement and verify 355 Provider preview adapter API.`
+359. `Implement and verify 356 Provider preview UI.`
+360. `Implement and verify 357 Provider preview report.`
+361. `Implement and verify 358 Provider config audit history.`
+362. `Implement and verify 359 Provider config user guide.`
+363. `Implement and verify 360 Provider config validation.`
+364. `Implement and verify 361 Provider adapter next candidate.`
 
 ## Next Goal Candidate
 
-`Add provider target configuration and minimal provider adapters after persisted Knowledge export audit is stable.`
+`Add provider credential boundaries and the first real external write adapter after dry-run provider previews are stable.`
 
 Success criteria:
 
-1. Admins can configure which Knowledge sync targets are allowed for execution.
-2. Provider adapters use the persisted audit id as the execution boundary.
-3. External writes remain dry-run first and require explicit confirmation per provider target.
+1. Provider credentials are stored and scoped without exposing secrets to the browser.
+2. The first external write adapter uses a provider preview audit id as the execution boundary.
+3. External writes require a fresh dry-run preview, provider confirmation, and admin audit record.
