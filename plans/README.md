@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 367 implemented; next candidate is immutable provider execution package export.`
+Current implementation goal (2026-05-13): `Slice 368 implemented; next candidate is provider execution package review history.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -354,6 +354,7 @@ Slice 364 added server-side provider credential registry metadata and remote wri
 Slice 365 added an Obsidian dry-run reconciliation package with planned Markdown paths and create intents.
 Slice 366 added a sanitized read-only Obsidian inventory manifest contract and create/update/delete/noop reconciliation comparison.
 Slice 367 added a default-disabled Obsidian live-write feature flag and rollback preflight execution artifact.
+Slice 368 added immutable provider execution package export/download for preflight and rollback evidence review.
 
 ## Operating Rules
 
@@ -1039,13 +1040,14 @@ Slice 367 added a default-disabled Obsidian live-write feature flag and rollback
 368. `Implement and verify 365 Obsidian reconciliation package.`
 369. `Implement and verify 366 Obsidian inventory import contract.`
 370. `Implement and verify 367 Obsidian live-write preflight.`
+371. `Implement and verify 368 Provider execution package export.`
 
 ## Next Goal Candidate
 
-`Add immutable provider execution package export/download for preflight and rollback evidence review.`
+`Add provider execution package retention and review-history filtering for evidence package audits.`
 
 Success criteria:
 
-1. Admins can export a provider execution package that includes preview, reconciliation, preflight, rollback refs, warnings, and digest metadata.
-2. Package export is immutable/read-only and tied to an append-only execution audit id.
-3. Browser download/copy flows do not expose provider secrets or perform external writes.
+1. Admins can browse provider execution package history by target, status, artifact type, and package digest.
+2. The review surface shows package availability without regenerating or mutating execution records.
+3. Retention metadata distinguishes immutable evidence packages from local browser downloads.
