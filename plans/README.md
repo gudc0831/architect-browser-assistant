@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 352-361 implemented; next candidate is provider credential boundaries and first external write adapter.`
+Current implementation goal (2026-05-13): `Slice 362 implemented; next candidate is provider-specific secret storage and the next guarded adapter.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -348,6 +348,7 @@ Slice 358 added append-only provider config audit history.
 Slice 359 updated user guidance for provider config and previews.
 Slice 360 verified provider config and preview behavior.
 Slice 361 recorded the next provider adapter candidate.
+Slice 362 added provider credential boundaries and a guarded portable archive execution adapter.
 
 ## Operating Rules
 
@@ -1027,13 +1028,14 @@ Slice 361 recorded the next provider adapter candidate.
 362. `Implement and verify 359 Provider config user guide.`
 363. `Implement and verify 360 Provider config validation.`
 364. `Implement and verify 361 Provider adapter next candidate.`
+365. `Implement and verify 362 Provider credential boundary and portable archive adapter.`
 
 ## Next Goal Candidate
 
-`Add provider credential boundaries and the first real external write adapter after dry-run provider previews are stable.`
+`Add provider-specific secret storage integration and the next guarded provider adapter after portable archive execution audit records are stable.`
 
 Success criteria:
 
-1. Provider credentials are stored and scoped without exposing secrets to the browser.
-2. The first external write adapter uses a provider preview audit id as the execution boundary.
-3. External writes require a fresh dry-run preview, provider confirmation, and admin audit record.
+1. Secret material is stored server-side and only opaque references are visible in Admin UI/API responses.
+2. The next adapter keeps the provider preview audit id as the execution boundary.
+3. Remote provider writes require a fresh dry-run preview, provider confirmation, credential readiness, and admin audit record.
