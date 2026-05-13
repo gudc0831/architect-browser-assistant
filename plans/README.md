@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 139-142 implemented; next candidate is Knowledge approval package quality checks.`
+Current implementation goal (2026-05-13): `Slices 143-150 implemented; next candidate is Knowledge approved item visibility and search handoff.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -129,6 +129,14 @@ Slice 139 added Knowledge approval package summary.
 Slice 140 added Knowledge copy approval package.
 Slice 141 added Knowledge approval package draft section.
 Slice 142 added Knowledge approval package evidence section.
+Slice 143 added Knowledge approval package quality summary.
+Slice 144 added Knowledge package quality detail checks.
+Slice 145 added Knowledge copy package quality report.
+Slice 146 added Knowledge package quality missing guidance.
+Slice 147 added Knowledge final review closeout summary.
+Slice 148 added Knowledge final review next action.
+Slice 149 added Knowledge copy final review closeout.
+Slice 150 added Knowledge closeout readiness handoff.
 
 ## Operating Rules
 
@@ -283,6 +291,14 @@ Slice 142 added Knowledge approval package evidence section.
 | 140 | [140-knowledge-copy-approval-package.md](140-knowledge-copy-approval-package.md) | `implemented` | Knowledge copy approval package | `architect-saas`, `architect-browser-assistant` |
 | 141 | [141-knowledge-approval-package-draft-section.md](141-knowledge-approval-package-draft-section.md) | `implemented` | Knowledge approval package draft section | `architect-saas`, `architect-browser-assistant` |
 | 142 | [142-knowledge-approval-package-evidence-section.md](142-knowledge-approval-package-evidence-section.md) | `implemented` | Knowledge approval package evidence section | `architect-saas`, `architect-browser-assistant` |
+| 143 | [143-knowledge-approval-package-quality-summary.md](143-knowledge-approval-package-quality-summary.md) | `implemented` | Knowledge approval package quality summary | `architect-saas`, `architect-browser-assistant` |
+| 144 | [144-knowledge-package-quality-detail-checks.md](144-knowledge-package-quality-detail-checks.md) | `implemented` | Knowledge package quality detail checks | `architect-saas`, `architect-browser-assistant` |
+| 145 | [145-knowledge-copy-package-quality-report.md](145-knowledge-copy-package-quality-report.md) | `implemented` | Knowledge copy package quality report | `architect-saas`, `architect-browser-assistant` |
+| 146 | [146-knowledge-package-quality-missing-guidance.md](146-knowledge-package-quality-missing-guidance.md) | `implemented` | Knowledge package quality missing guidance | `architect-saas`, `architect-browser-assistant` |
+| 147 | [147-knowledge-final-review-closeout-summary.md](147-knowledge-final-review-closeout-summary.md) | `implemented` | Knowledge final review closeout summary | `architect-saas`, `architect-browser-assistant` |
+| 148 | [148-knowledge-final-review-next-action.md](148-knowledge-final-review-next-action.md) | `implemented` | Knowledge final review next action | `architect-saas`, `architect-browser-assistant` |
+| 149 | [149-knowledge-copy-final-review-closeout.md](149-knowledge-copy-final-review-closeout.md) | `implemented` | Knowledge copy final review closeout | `architect-saas`, `architect-browser-assistant` |
+| 150 | [150-knowledge-closeout-readiness-handoff.md](150-knowledge-closeout-readiness-handoff.md) | `implemented` | Knowledge closeout readiness handoff | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -431,13 +447,21 @@ Slice 142 added Knowledge approval package evidence section.
 143. `Implement and verify 140 Knowledge copy approval package.`
 144. `Implement and verify 141 Knowledge approval package draft section.`
 145. `Implement and verify 142 Knowledge approval package evidence section.`
+146. `Implement and verify 143 Knowledge approval package quality summary.`
+147. `Implement and verify 144 Knowledge package quality detail checks.`
+148. `Implement and verify 145 Knowledge copy package quality report.`
+149. `Implement and verify 146 Knowledge package quality missing guidance.`
+150. `Implement and verify 147 Knowledge final review closeout summary.`
+151. `Implement and verify 148 Knowledge final review next action.`
+152. `Implement and verify 149 Knowledge copy final review closeout.`
+153. `Implement and verify 150 Knowledge closeout readiness handoff.`
 
 ## Next Goal Candidate
 
-`Add Knowledge approval package quality checks so reviewers can see whether package draft, blocker, and evidence sections are complete before handoff.`
+`Add Knowledge approved item visibility and search handoff so approved WIKI entries can be inspected after approval.`
 
 Success criteria:
 
-1. Package quality chips identify present/missing package sections.
-2. Quality status updates with draft/evidence state.
-3. The next slice PRD captures quality check behavior before implementation.
+1. Approved WIKI entries have a readback surface with approval metadata.
+2. Admins can search or filter approved entries without using database internals.
+3. The next slice PRD captures approved-item readback scope before implementation.
