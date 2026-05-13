@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slices 127-130 implemented; next candidate is Knowledge rejection reason presets.`
+Current implementation goal (2026-05-13): `Slices 131-134 implemented; next candidate is Knowledge approval submit guardrails.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -117,6 +117,10 @@ Slice 127 added Knowledge approval decision note context chips.
 Slice 128 added Knowledge copy approval decision note action.
 Slice 129 added Knowledge decision note blocker details.
 Slice 130 added Knowledge decision note ready summary.
+Slice 131 added Knowledge rejection reason presets.
+Slice 132 added Knowledge apply rejection preset.
+Slice 133 added Knowledge rejection reason draft status.
+Slice 134 added Knowledge copy rejection reason.
 
 ## Operating Rules
 
@@ -259,6 +263,10 @@ Slice 130 added Knowledge decision note ready summary.
 | 128 | [128-knowledge-copy-approval-decision-note.md](128-knowledge-copy-approval-decision-note.md) | `implemented` | Knowledge copy approval decision note | `architect-saas`, `architect-browser-assistant` |
 | 129 | [129-knowledge-decision-note-blocker-details.md](129-knowledge-decision-note-blocker-details.md) | `implemented` | Knowledge decision note blocker details | `architect-saas`, `architect-browser-assistant` |
 | 130 | [130-knowledge-decision-note-ready-summary.md](130-knowledge-decision-note-ready-summary.md) | `implemented` | Knowledge decision note ready summary | `architect-saas`, `architect-browser-assistant` |
+| 131 | [131-knowledge-rejection-reason-presets.md](131-knowledge-rejection-reason-presets.md) | `implemented` | Knowledge rejection reason presets | `architect-saas`, `architect-browser-assistant` |
+| 132 | [132-knowledge-apply-rejection-preset.md](132-knowledge-apply-rejection-preset.md) | `implemented` | Knowledge apply rejection preset | `architect-saas`, `architect-browser-assistant` |
+| 133 | [133-knowledge-rejection-reason-draft-status.md](133-knowledge-rejection-reason-draft-status.md) | `implemented` | Knowledge rejection reason draft status | `architect-saas`, `architect-browser-assistant` |
+| 134 | [134-knowledge-copy-rejection-reason.md](134-knowledge-copy-rejection-reason.md) | `implemented` | Knowledge copy rejection reason | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -395,13 +403,17 @@ Slice 130 added Knowledge decision note ready summary.
 131. `Implement and verify 128 Knowledge copy approval decision note.`
 132. `Implement and verify 129 Knowledge decision note blocker details.`
 133. `Implement and verify 130 Knowledge decision note ready summary.`
+134. `Implement and verify 131 Knowledge rejection reason presets.`
+135. `Implement and verify 132 Knowledge apply rejection preset.`
+136. `Implement and verify 133 Knowledge rejection reason draft status.`
+137. `Implement and verify 134 Knowledge copy rejection reason.`
 
 ## Next Goal Candidate
 
-`Add Knowledge rejection reason presets so blocker decision notes can become consistent rejection reasons.`
+`Add Knowledge approval submit guardrails so final approval actions clearly show unresolved blockers before submission.`
 
 Success criteria:
 
-1. Rejection presets reflect active blocker categories.
-2. Selecting a preset fills or appends the rejection reason draft.
-3. The next slice PRD captures preset behavior before implementation.
+1. Approval action area names unresolved blocker count.
+2. Approval button context explains caution when warnings remain.
+3. The next slice PRD captures submit guardrail behavior before implementation.
