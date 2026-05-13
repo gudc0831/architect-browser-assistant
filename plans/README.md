@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-13): `Slice 101 implemented; next candidate is Copy Markdown structure summary.`
+Current implementation goal (2026-05-13): `Slices 102-105 implemented; next candidate is Knowledge tag coverage guardrail.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -88,6 +88,10 @@ Slice 98 added Knowledge copy Markdown outline action.
 Slice 99 added Knowledge Markdown heading guardrail.
 Slice 100 added Knowledge Markdown structure summary.
 Slice 101 added Knowledge Markdown list guardrail.
+Slice 102 added Knowledge copy Markdown structure summary.
+Slice 103 added Knowledge Markdown WIKI link preview.
+Slice 104 added Knowledge Markdown WIKI link guardrail.
+Slice 105 added Knowledge copy WIKI link handoff.
 
 ## Operating Rules
 
@@ -201,6 +205,10 @@ Slice 101 added Knowledge Markdown list guardrail.
 | 99 | [99-knowledge-markdown-heading-guardrail.md](99-knowledge-markdown-heading-guardrail.md) | `implemented` | Knowledge Markdown heading guardrail | `architect-saas`, `architect-browser-assistant` |
 | 100 | [100-knowledge-markdown-structure-summary.md](100-knowledge-markdown-structure-summary.md) | `implemented` | Knowledge Markdown structure summary | `architect-saas`, `architect-browser-assistant` |
 | 101 | [101-knowledge-markdown-list-guardrail.md](101-knowledge-markdown-list-guardrail.md) | `implemented` | Knowledge Markdown list guardrail | `architect-saas`, `architect-browser-assistant` |
+| 102 | [102-knowledge-copy-markdown-structure-summary.md](102-knowledge-copy-markdown-structure-summary.md) | `implemented` | Knowledge copy Markdown structure summary | `architect-saas`, `architect-browser-assistant` |
+| 103 | [103-knowledge-markdown-wiki-link-preview.md](103-knowledge-markdown-wiki-link-preview.md) | `implemented` | Knowledge Markdown WIKI link preview | `architect-saas`, `architect-browser-assistant` |
+| 104 | [104-knowledge-markdown-wiki-link-guardrail.md](104-knowledge-markdown-wiki-link-guardrail.md) | `implemented` | Knowledge Markdown WIKI link guardrail | `architect-saas`, `architect-browser-assistant` |
+| 105 | [105-knowledge-copy-wiki-link-handoff.md](105-knowledge-copy-wiki-link-handoff.md) | `implemented` | Knowledge copy WIKI link handoff | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -308,13 +316,17 @@ Slice 101 added Knowledge Markdown list guardrail.
 102. `Implement and verify 99 Knowledge Markdown heading guardrail.`
 103. `Implement and verify 100 Knowledge Markdown structure summary.`
 104. `Implement and verify 101 Knowledge Markdown list guardrail.`
+105. `Implement and verify 102 Knowledge copy Markdown structure summary.`
+106. `Implement and verify 103 Knowledge Markdown WIKI link preview.`
+107. `Implement and verify 104 Knowledge Markdown WIKI link guardrail.`
+108. `Implement and verify 105 Knowledge copy WIKI link handoff.`
 
 ## Next Goal Candidate
 
-`Add Copy Markdown structure summary so reviewers can copy heading, paragraph, list-item, and line counts with candidate/task context.`
+`Add Knowledge tag coverage guardrail so approval notes warn when a draft has too few tags for retrieval and WIKI grouping.`
 
 Success criteria:
 
-1. `/admin/knowledge` exposes `Copy Markdown structure summary`.
-2. Copied text includes candidate, task, and Markdown structure counts.
-3. The copy-markdown-structure-summary slice is documented in the next slice PRD.
+1. Approval guardrails mention tag coverage.
+2. Warning appears when the draft has fewer than two tags.
+3. The tag-coverage-guardrail slice is documented in the next slice PRD.
