@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 443 implemented; next candidate is provider execution package review coverage grouped queue container tooltip.`
+Current implementation goal (2026-05-14): `Slice 453 implemented; next candidate is provider execution package review coverage grouped queue hidden row count note.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -420,6 +420,16 @@ Slice 440 adds provider execution package review coverage summary download statu
 Slice 441 adds provider execution package review coverage summary copy status chip tooltip.
 Slice 442 adds provider execution package review coverage summary filename copy status chip tooltip.
 Slice 443 adds provider execution package review coverage queue density controls tooltip.
+Slice 444 adds provider execution package review coverage grouped queue container tooltip.
+Slice 445 adds provider execution package review coverage grouped queue empty-state tooltip.
+Slice 446 adds provider execution package review coverage grouped queue section tooltip.
+Slice 447 adds provider execution package review coverage grouped queue count tooltip.
+Slice 448 adds provider execution package review coverage grouped queue rows tooltip.
+Slice 449 adds provider execution package review coverage grouped queue row tooltip.
+Slice 450 adds provider execution package review coverage grouped queue row status tooltip.
+Slice 451 adds provider execution package review coverage grouped queue row filename tooltip.
+Slice 452 adds provider execution package review coverage grouped queue row chips tooltip.
+Slice 453 adds provider execution package review coverage grouped queue row focus digest tooltip.
 
 ## Operating Rules
 
@@ -1171,13 +1181,23 @@ Slice 443 adds provider execution package review coverage queue density controls
 434. `Implement and verify 441 Provider execution package review coverage summary copy status chip tooltip.`
 435. `Implement and verify 442 Provider execution package review coverage summary filename copy status chip tooltip.`
 436. `Implement and verify 443 Provider execution package review coverage queue density controls tooltip.`
+437. `Implement and verify 444 Provider execution package review coverage grouped queue container tooltip.`
+438. `Implement and verify 445 Provider execution package review coverage grouped queue empty-state tooltip.`
+439. `Implement and verify 446 Provider execution package review coverage grouped queue section tooltip.`
+440. `Implement and verify 447 Provider execution package review coverage grouped queue count tooltip.`
+441. `Implement and verify 448 Provider execution package review coverage grouped queue rows tooltip.`
+442. `Implement and verify 449 Provider execution package review coverage grouped queue row tooltip.`
+443. `Implement and verify 450 Provider execution package review coverage grouped queue row status tooltip.`
+444. `Implement and verify 451 Provider execution package review coverage grouped queue row filename tooltip.`
+445. `Implement and verify 452 Provider execution package review coverage grouped queue row chips tooltip.`
+446. `Implement and verify 453 Provider execution package review coverage grouped queue row focus digest tooltip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage grouped queue container tooltip.`
+`Add provider execution package review coverage grouped queue hidden row count note.`
 
 Success criteria:
 
-1. The grouped coverage queue container exposes a short tooltip/title explaining the grouped queues are visible review-state buckets under the active filters.
-2. Browser UI validation still finds the queue container and stale/unreviewed/reviewed sections.
-3. The tooltip remains read-only and does not mutate provider execution package review state.
+1. Grouped coverage queues with more than four visible rows expose a read-only hidden-row count note under the four-row preview.
+2. Browser UI validation confirms the hidden-row note on a queue with overflow and confirms empty queues do not show an overflow note.
+3. The note remains local/read-only and does not mutate provider execution package review state.
