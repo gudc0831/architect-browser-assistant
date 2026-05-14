@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 420 implemented; next candidate is provider execution package review coverage group summary reset confirmation freshness tooltip text.`
+Current implementation goal (2026-05-14): `Slice 421 implemented; next candidate is provider execution package review coverage group summary reset confirmation action order polish.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -397,6 +397,7 @@ Slice 417 adds provider execution package review coverage group summary reset co
 Slice 418 adds provider execution package review coverage group summary reset confirmation copy handoff.
 Slice 419 adds provider execution package review coverage group summary reset confirmation copied-at chip.
 Slice 420 adds provider execution package review coverage group summary reset confirmation freshness chip.
+Slice 421 adds provider execution package review coverage group summary reset confirmation freshness tooltip.
 
 ## Operating Rules
 
@@ -1125,13 +1126,14 @@ Slice 420 adds provider execution package review coverage group summary reset co
 411. `Implement and verify 418 Provider execution package review coverage group summary reset confirmation copy handoff.`
 412. `Implement and verify 419 Provider execution package review coverage group summary reset confirmation copied-at chip.`
 413. `Implement and verify 420 Provider execution package review coverage group summary reset confirmation freshness chip.`
+414. `Implement and verify 421 Provider execution package review coverage group summary reset confirmation freshness tooltip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary reset confirmation freshness tooltip text.`
+`Add provider execution package review coverage group summary reset confirmation action order polish.`
 
 Success criteria:
 
-1. The reset-confirmation freshness chip exposes a short tooltip/title explaining pending, refresh-needed, and current states.
-2. The tooltip remains visible to browser accessibility APIs without changing the report API shape.
-3. The tooltip stays local-only and does not mutate provider execution package review state.
+1. The local handoff buttons present reset confirmation copy before reset so the action order matches the status chips.
+2. Keyboard and Browser UI validation still finds copy, reset, download, and filename actions.
+3. The polish remains local-only and does not mutate provider execution package review state.
