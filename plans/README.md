@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 388 implemented; next candidate is provider execution package review coverage group summary copy.`
+Current implementation goal (2026-05-14): `Slice 389 implemented; next candidate is provider execution package review coverage group summary preview.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -375,6 +375,7 @@ Slice 385 added provider execution package review coverage queue grouping.
 Slice 386 added provider execution package review coverage group row chips.
 Slice 387 added provider execution package review coverage queue density controls.
 Slice 388 added provider execution package review coverage empty-state guidance.
+Slice 389 added provider execution package review coverage group summary copy.
 
 ## Operating Rules
 
@@ -1081,13 +1082,14 @@ Slice 388 added provider execution package review coverage empty-state guidance.
 389. `Implement and verify 386 Provider execution package review coverage group row chips.`
 390. `Implement and verify 387 Provider execution package review coverage queue density controls.`
 391. `Implement and verify 388 Provider execution package review coverage empty-state guidance.`
+392. `Implement and verify 389 Provider execution package review coverage group summary copy.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary copy.`
+`Add provider execution package review coverage group summary preview.`
 
 Success criteria:
 
-1. Admins can copy a compact grouped coverage summary containing active filters and stale/unreviewed/reviewed counts.
-2. The copied summary reflects the current filtered report without adding server persistence.
-3. The action remains read-only and does not mutate provider execution package review state.
+1. Admins can preview the compact grouped coverage summary before copying it.
+2. The preview reflects the current filtered report and matches the copy summary structure.
+3. The preview remains read-only and does not persist or mutate provider execution package review state.
