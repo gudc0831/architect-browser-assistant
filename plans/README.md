@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 397 implemented; next candidate is provider execution package review coverage group summary Markdown size chip.`
+Current implementation goal (2026-05-14): `Slice 398 implemented; next candidate is provider execution package review coverage group summary dominant queue chip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -384,6 +384,7 @@ Slice 394 adds provider execution package review coverage group summary download
 Slice 395 adds provider execution package review coverage group summary copy status chip.
 Slice 396 adds provider execution package review coverage group summary local action reset.
 Slice 397 adds provider execution package review coverage group summary generated-at chip.
+Slice 398 adds provider execution package review coverage group summary Markdown size chips.
 
 ## Operating Rules
 
@@ -1099,13 +1100,14 @@ Slice 397 adds provider execution package review coverage group summary generate
 398. `Implement and verify 395 Provider execution package review coverage group summary copy status chip.`
 399. `Implement and verify 396 Provider execution package review coverage group summary local action reset.`
 400. `Implement and verify 397 Provider execution package review coverage group summary generated-at chip.`
+401. `Implement and verify 398 Provider execution package review coverage group summary Markdown size chips.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary Markdown size chip.`
+`Add provider execution package review coverage group summary dominant queue chip.`
 
 Success criteria:
 
-1. The summary status area shows the compact Markdown summary line and character counts.
-2. Counts derive from the exact summary string used for copy/download/preview.
+1. The summary status area shows which coverage queue currently has the most visible packages.
+2. The chip derives from the grouped queue rows already shown on screen.
 3. The chip remains read-only and does not mutate provider execution package review state.
