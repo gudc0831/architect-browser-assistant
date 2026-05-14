@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 387 implemented; next candidate is provider execution package review coverage empty-state guidance.`
+Current implementation goal (2026-05-14): `Slice 388 implemented; next candidate is provider execution package review coverage group summary copy.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -374,6 +374,7 @@ Slice 384 added provider execution package review coverage group shortcuts.
 Slice 385 added provider execution package review coverage queue grouping.
 Slice 386 added provider execution package review coverage group row chips.
 Slice 387 added provider execution package review coverage queue density controls.
+Slice 388 added provider execution package review coverage empty-state guidance.
 
 ## Operating Rules
 
@@ -1079,13 +1080,14 @@ Slice 387 added provider execution package review coverage queue density control
 388. `Implement and verify 385 Provider execution package review coverage queue grouping.`
 389. `Implement and verify 386 Provider execution package review coverage group row chips.`
 390. `Implement and verify 387 Provider execution package review coverage queue density controls.`
+391. `Implement and verify 388 Provider execution package review coverage empty-state guidance.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage empty-state guidance.`
+`Add provider execution package review coverage group summary copy.`
 
 Success criteria:
 
-1. Empty stale, unreviewed, reviewed, and all-coverage states explain which active filters are narrowing the queue.
-2. Guidance preserves grouped queue layout across desktop and mobile widths.
-3. Guidance remains read-only and does not persist or mutate provider execution package review state.
+1. Admins can copy a compact grouped coverage summary containing active filters and stale/unreviewed/reviewed counts.
+2. The copied summary reflects the current filtered report without adding server persistence.
+3. The action remains read-only and does not mutate provider execution package review state.
