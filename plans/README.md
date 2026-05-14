@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 424 implemented; next candidate is provider execution package review coverage group summary local handoff action group copied-state reset note.`
+Current implementation goal (2026-05-14): `Slice 425 implemented; next candidate is provider execution package review coverage group summary reset explanation tooltip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -401,6 +401,7 @@ Slice 421 adds provider execution package review coverage group summary reset co
 Slice 422 polishes provider execution package review coverage group summary reset confirmation action order.
 Slice 423 labels provider execution package review coverage group summary local handoff actions separately from density controls.
 Slice 424 adds provider execution package review coverage summary local handoff action group tooltip.
+Slice 425 clarifies provider execution package review coverage summary copied-state reset note.
 
 ## Operating Rules
 
@@ -1133,13 +1134,14 @@ Slice 424 adds provider execution package review coverage summary local handoff 
 415. `Implement and verify 422 Provider execution package review coverage group summary reset confirmation action order.`
 416. `Implement and verify 423 Provider execution package review coverage summary local handoff action group label.`
 417. `Implement and verify 424 Provider execution package review coverage summary local handoff action group tooltip.`
+418. `Implement and verify 425 Provider execution package review coverage summary local handoff copied-state reset note.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary local handoff action group copied-state reset note.`
+`Add provider execution package review coverage group summary reset explanation tooltip.`
 
 Success criteria:
 
-1. `Reset summary status` documentation/status area makes clear it resets summary copy, filename copy, reset-confirmation copy, copied-at, and download status only.
-2. Browser UI validation still finds local handoff action group and reset status chips.
-3. The note remains local-only and does not mutate provider execution package review state.
+1. The reset explanation chip exposes a short tooltip/title repeating the browser-only reset boundary.
+2. Browser UI validation still finds the reset explanation chip and copied-at/freshness status chips.
+3. The tooltip remains local-only and does not mutate provider execution package review state.
