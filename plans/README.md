@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 414 implemented; next candidate is provider execution package review coverage group summary filename copy action.`
+Current implementation goal (2026-05-14): `Slice 415 implemented; next candidate is provider execution package review coverage group summary filename/download reset explanation chip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -391,6 +391,7 @@ Slice 401 adds provider execution package review coverage group summary review-n
 Slice 402 adds provider execution package review coverage group summary stale priority chip.
 Slice 403 adds provider execution package review coverage group summary local-only handoff chip.
 Slice 414 adds provider execution package review coverage group summary next download filename chip.
+Slice 415 adds provider execution package review coverage group summary filename copy action.
 
 ## Operating Rules
 
@@ -1113,13 +1114,14 @@ Slice 414 adds provider execution package review coverage group summary next dow
 405. `Implement and verify 402 Provider execution package review coverage group summary stale priority chip.`
 406. `Implement and verify 403 Provider execution package review coverage group summary local-only handoff chip.`
 407. `Implement and verify 414 Provider execution package review coverage group summary next download filename chip.`
+408. `Implement and verify 415 Provider execution package review coverage group summary filename copy action.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary filename copy action.`
+`Add provider execution package review coverage group summary filename/download reset explanation chip.`
 
 Success criteria:
 
-1. The summary status area provides a local action to copy the visible next download filename.
-2. The copied filename matches the next filename chip and the actual `Download group summary` Markdown filename.
-3. The action remains local-only and does not mutate provider execution package review state.
+1. The summary status area explains that `Reset summary status` clears local copy/download/filename-copy chips only.
+2. The explanation remains consistent after copying filename, copying summary, downloading summary, and resetting local status.
+3. The chip remains read-only and does not mutate provider execution package review state.
