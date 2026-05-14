@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 389 implemented; next candidate is provider execution package review coverage group summary preview.`
+Current implementation goal (2026-05-14): `Slice 390 implemented; next candidate is provider execution package review coverage group summary filter chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -376,6 +376,7 @@ Slice 386 added provider execution package review coverage group row chips.
 Slice 387 added provider execution package review coverage queue density controls.
 Slice 388 added provider execution package review coverage empty-state guidance.
 Slice 389 added provider execution package review coverage group summary copy.
+Slice 390 added provider execution package review coverage group summary preview.
 
 ## Operating Rules
 
@@ -1083,13 +1084,14 @@ Slice 389 added provider execution package review coverage group summary copy.
 390. `Implement and verify 387 Provider execution package review coverage queue density controls.`
 391. `Implement and verify 388 Provider execution package review coverage empty-state guidance.`
 392. `Implement and verify 389 Provider execution package review coverage group summary copy.`
+393. `Implement and verify 390 Provider execution package review coverage group summary preview.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary preview.`
+`Add provider execution package review coverage group summary filter chips.`
 
 Success criteria:
 
-1. Admins can preview the compact grouped coverage summary before copying it.
-2. The preview reflects the current filtered report and matches the copy summary structure.
-3. The preview remains read-only and does not persist or mutate provider execution package review state.
+1. The summary preview shows active filter chips for review-state, digest, reviewer, note-type, execution, and stale-days scope.
+2. Filter chips match the copied summary filter line and update with current filters.
+3. Chips remain read-only and do not persist or mutate provider execution package review state.
