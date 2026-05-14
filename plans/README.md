@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 402 implemented; next candidate is provider execution package review coverage group summary local-only handoff chip.`
+Current implementation goal (2026-05-14): `Slice 403 implemented; next candidate is provider execution package review coverage group summary next download filename chip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -389,6 +389,7 @@ Slice 399 adds provider execution package review coverage group summary dominant
 Slice 400 adds provider execution package review coverage group summary empty queue count chip.
 Slice 401 adds provider execution package review coverage group summary review-needed chip.
 Slice 402 adds provider execution package review coverage group summary stale priority chip.
+Slice 403 adds provider execution package review coverage group summary local-only handoff chip.
 
 ## Operating Rules
 
@@ -1109,13 +1110,14 @@ Slice 402 adds provider execution package review coverage group summary stale pr
 403. `Implement and verify 400 Provider execution package review coverage group summary empty queue count chip.`
 404. `Implement and verify 401 Provider execution package review coverage group summary review-needed chip.`
 405. `Implement and verify 402 Provider execution package review coverage group summary stale priority chip.`
+406. `Implement and verify 403 Provider execution package review coverage group summary local-only handoff chip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary local-only handoff chip.`
+`Add provider execution package review coverage group summary next download filename chip.`
 
 Success criteria:
 
-1. The summary status area clearly labels copy/download handoff as local-only and not server archived.
-2. The chip stays visible beside the summary handoff controls on desktop and mobile.
+1. The summary status area shows the filename that `Download group summary` will create before the download is clicked.
+2. The filename derives from the report generated date and matches the actual downloaded Markdown filename.
 3. The chip remains read-only and does not mutate provider execution package review state.
