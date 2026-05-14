@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 426 implemented; next candidate is provider execution package review coverage group summary reset confirmation copied-at tooltip.`
+Current implementation goal (2026-05-14): `Slice 427 implemented; next candidate is provider execution package review coverage group summary reset confirmation copy status tooltip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -403,6 +403,7 @@ Slice 423 labels provider execution package review coverage group summary local 
 Slice 424 adds provider execution package review coverage summary local handoff action group tooltip.
 Slice 425 clarifies provider execution package review coverage summary copied-state reset note.
 Slice 426 adds provider execution package review coverage summary reset explanation tooltip.
+Slice 427 adds provider execution package review coverage summary reset confirmation copied-at tooltip.
 
 ## Operating Rules
 
@@ -1137,13 +1138,14 @@ Slice 426 adds provider execution package review coverage summary reset explanat
 417. `Implement and verify 424 Provider execution package review coverage summary local handoff action group tooltip.`
 418. `Implement and verify 425 Provider execution package review coverage summary local handoff copied-state reset note.`
 419. `Implement and verify 426 Provider execution package review coverage summary reset explanation tooltip.`
+420. `Implement and verify 427 Provider execution package review coverage summary reset confirmation copied-at tooltip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary reset confirmation copied-at tooltip.`
+`Add provider execution package review coverage group summary reset confirmation copy status tooltip.`
 
 Success criteria:
 
-1. The reset confirmation copied-at chip exposes a short tooltip/title explaining pending and copied-at states.
-2. Browser UI validation still finds the copied-at chip and reset confirmation freshness chip.
+1. The reset confirmation copy status chip exposes a short tooltip/title explaining pending and copied text states.
+2. Browser UI validation still finds the copy status chip and copied-at/freshness chips.
 3. The tooltip remains local-only and does not mutate provider execution package review state.
