@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 419 implemented; next candidate is provider execution package review coverage group summary reset confirmation stale-copy warning chip.`
+Current implementation goal (2026-05-14): `Slice 420 implemented; next candidate is provider execution package review coverage group summary reset confirmation freshness tooltip text.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -396,6 +396,7 @@ Slice 416 adds provider execution package review coverage group summary reset ex
 Slice 417 adds provider execution package review coverage group summary reset confirmation chip.
 Slice 418 adds provider execution package review coverage group summary reset confirmation copy handoff.
 Slice 419 adds provider execution package review coverage group summary reset confirmation copied-at chip.
+Slice 420 adds provider execution package review coverage group summary reset confirmation freshness chip.
 
 ## Operating Rules
 
@@ -1123,13 +1124,14 @@ Slice 419 adds provider execution package review coverage group summary reset co
 410. `Implement and verify 417 Provider execution package review coverage group summary reset confirmation chip.`
 411. `Implement and verify 418 Provider execution package review coverage group summary reset confirmation copy handoff.`
 412. `Implement and verify 419 Provider execution package review coverage group summary reset confirmation copied-at chip.`
+413. `Implement and verify 420 Provider execution package review coverage group summary reset confirmation freshness chip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary reset confirmation stale-copy warning chip.`
+`Add provider execution package review coverage group summary reset confirmation freshness tooltip text.`
 
 Success criteria:
 
-1. If copied reset-confirmation text is older than the visible local reset confirmation, the summary status area warns that the copy is stale.
-2. The warning returns to pending/clear state after copying the latest reset confirmation.
-3. The warning remains local-only and does not mutate provider execution package review state.
+1. The reset-confirmation freshness chip exposes a short tooltip/title explaining pending, refresh-needed, and current states.
+2. The tooltip remains visible to browser accessibility APIs without changing the report API shape.
+3. The tooltip stays local-only and does not mutate provider execution package review state.
