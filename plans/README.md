@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 432 implemented; next candidate is provider execution package review coverage group summary dominant queue chip tooltip.`
+Current implementation goal (2026-05-14): `Slice 433 implemented; next candidate is provider execution package review coverage group summary empty queue count chip tooltip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -409,6 +409,7 @@ Slice 429 adds provider execution package review coverage summary reset confirma
 Slice 430 adds provider execution package review coverage summary generated-at chip tooltip.
 Slice 431 adds provider execution package review coverage summary next filename chip tooltip.
 Slice 432 adds provider execution package review coverage summary Markdown size chip tooltip.
+Slice 433 adds provider execution package review coverage summary dominant queue chip tooltip.
 
 ## Operating Rules
 
@@ -1149,13 +1150,14 @@ Slice 432 adds provider execution package review coverage summary Markdown size 
 423. `Implement and verify 430 Provider execution package review coverage summary generated-at chip tooltip.`
 424. `Implement and verify 431 Provider execution package review coverage summary next filename chip tooltip.`
 425. `Implement and verify 432 Provider execution package review coverage summary Markdown size chip tooltip.`
+426. `Implement and verify 433 Provider execution package review coverage summary dominant queue chip tooltip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary dominant queue chip tooltip.`
+`Add provider execution package review coverage group summary empty queue count chip tooltip.`
 
 Success criteria:
 
-1. The dominant queue chip exposes a short tooltip/title explaining it identifies the currently largest visible coverage queue.
-2. Browser UI validation still finds the dominant queue chip and grouped coverage queue sections.
+1. The empty queue count chip exposes a short tooltip/title explaining it counts visible coverage queues with no packages under the active filters.
+2. Browser UI validation still finds the empty queue count chip and grouped coverage queue sections.
 3. The tooltip remains read-only and does not mutate provider execution package review state.
