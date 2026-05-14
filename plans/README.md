@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 386 implemented; next candidate is provider execution package review coverage queue density controls.`
+Current implementation goal (2026-05-14): `Slice 387 implemented; next candidate is provider execution package review coverage empty-state guidance.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -373,6 +373,7 @@ Slice 383 added provider execution package review coverage queue group totals fo
 Slice 384 added provider execution package review coverage group shortcuts.
 Slice 385 added provider execution package review coverage queue grouping.
 Slice 386 added provider execution package review coverage group row chips.
+Slice 387 added provider execution package review coverage queue density controls.
 
 ## Operating Rules
 
@@ -1077,13 +1078,14 @@ Slice 386 added provider execution package review coverage group row chips.
 387. `Implement and verify 384 Provider execution package review coverage group shortcuts.`
 388. `Implement and verify 385 Provider execution package review coverage queue grouping.`
 389. `Implement and verify 386 Provider execution package review coverage group row chips.`
+390. `Implement and verify 387 Provider execution package review coverage queue density controls.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage queue density controls.`
+`Add provider execution package review coverage empty-state guidance.`
 
 Success criteria:
 
-1. Admins can switch grouped provider execution package coverage queues between comfortable and compact density.
-2. Density affects only the grouped queue presentation and preserves active filters plus digest focus actions.
-3. The control remains local and read-only without persisting or mutating provider execution package review state.
+1. Empty stale, unreviewed, reviewed, and all-coverage states explain which active filters are narrowing the queue.
+2. Guidance preserves grouped queue layout across desktop and mobile widths.
+3. Guidance remains read-only and does not persist or mutate provider execution package review state.
