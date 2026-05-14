@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 385 implemented; next candidate is provider execution package review coverage group row chips.`
+Current implementation goal (2026-05-14): `Slice 386 implemented; next candidate is provider execution package review coverage queue density controls.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -372,6 +372,7 @@ Slice 382 added a read-only active provider execution package review handoff pre
 Slice 383 added provider execution package review coverage queue group totals for the active filtered scope.
 Slice 384 added provider execution package review coverage group shortcuts.
 Slice 385 added provider execution package review coverage queue grouping.
+Slice 386 added provider execution package review coverage group row chips.
 
 ## Operating Rules
 
@@ -1075,13 +1076,14 @@ Slice 385 added provider execution package review coverage queue grouping.
 386. `Implement and verify 383 Provider execution package review coverage group totals.`
 387. `Implement and verify 384 Provider execution package review coverage group shortcuts.`
 388. `Implement and verify 385 Provider execution package review coverage queue grouping.`
+389. `Implement and verify 386 Provider execution package review coverage group row chips.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group row chips.`
+`Add provider execution package review coverage queue density controls.`
 
 Success criteria:
 
-1. Coverage rows show compact row chips for review state, note count, stale threshold, and target.
-2. Chips stay consistent inside stale, unreviewed, and reviewed groups across desktop and mobile widths.
-3. Chips remain read-only and do not persist or mutate provider execution package review state.
+1. Admins can switch grouped provider execution package coverage queues between comfortable and compact density.
+2. Density affects only the grouped queue presentation and preserves active filters plus digest focus actions.
+3. The control remains local and read-only without persisting or mutating provider execution package review state.
