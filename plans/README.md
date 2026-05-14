@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 391 implemented; next candidate is provider execution package review coverage group summary count chips.`
+Current implementation goal (2026-05-14): `Slice 392 implemented; next candidate is provider execution package review coverage group summary Markdown download.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -378,6 +378,7 @@ Slice 388 added provider execution package review coverage empty-state guidance.
 Slice 389 added provider execution package review coverage group summary copy.
 Slice 390 added provider execution package review coverage group summary preview.
 Slice 391 added provider execution package review coverage group summary filter chips.
+Slice 392 added provider execution package review coverage group summary count chips.
 
 ## Operating Rules
 
@@ -1087,13 +1088,14 @@ Slice 391 added provider execution package review coverage group summary filter 
 392. `Implement and verify 389 Provider execution package review coverage group summary copy.`
 393. `Implement and verify 390 Provider execution package review coverage group summary preview.`
 394. `Implement and verify 391 Provider execution package review coverage group summary filter chips.`
+395. `Implement and verify 392 Provider execution package review coverage group summary count chips.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary count chips.`
+`Add provider execution package review coverage group summary Markdown download.`
 
 Success criteria:
 
-1. The summary preview shows compact count chips for visible packages, reviewed, unreviewed, stale, and visible notes.
-2. Count chips match the copied summary counts and update with current filters.
-3. Chips remain read-only and do not persist or mutate provider execution package review state.
+1. Admins can download the same compact grouped coverage summary Markdown shown in the preview.
+2. The downloaded filename reflects provider execution package coverage summary context.
+3. The action remains client-side and read-only without persisting or mutating provider execution package review state.
