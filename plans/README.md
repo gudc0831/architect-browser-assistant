@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 390 implemented; next candidate is provider execution package review coverage group summary filter chips.`
+Current implementation goal (2026-05-14): `Slice 391 implemented; next candidate is provider execution package review coverage group summary count chips.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -377,6 +377,7 @@ Slice 387 added provider execution package review coverage queue density control
 Slice 388 added provider execution package review coverage empty-state guidance.
 Slice 389 added provider execution package review coverage group summary copy.
 Slice 390 added provider execution package review coverage group summary preview.
+Slice 391 added provider execution package review coverage group summary filter chips.
 
 ## Operating Rules
 
@@ -1085,13 +1086,14 @@ Slice 390 added provider execution package review coverage group summary preview
 391. `Implement and verify 388 Provider execution package review coverage empty-state guidance.`
 392. `Implement and verify 389 Provider execution package review coverage group summary copy.`
 393. `Implement and verify 390 Provider execution package review coverage group summary preview.`
+394. `Implement and verify 391 Provider execution package review coverage group summary filter chips.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary filter chips.`
+`Add provider execution package review coverage group summary count chips.`
 
 Success criteria:
 
-1. The summary preview shows active filter chips for review-state, digest, reviewer, note-type, execution, and stale-days scope.
-2. Filter chips match the copied summary filter line and update with current filters.
+1. The summary preview shows compact count chips for visible packages, reviewed, unreviewed, stale, and visible notes.
+2. Count chips match the copied summary counts and update with current filters.
 3. Chips remain read-only and do not persist or mutate provider execution package review state.
