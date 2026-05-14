@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 400 implemented; next candidate is provider execution package review coverage group summary review-needed chip.`
+Current implementation goal (2026-05-14): `Slice 401 implemented; next candidate is provider execution package review coverage group summary stale priority chip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -387,6 +387,7 @@ Slice 397 adds provider execution package review coverage group summary generate
 Slice 398 adds provider execution package review coverage group summary Markdown size chips.
 Slice 399 adds provider execution package review coverage group summary dominant queue chip.
 Slice 400 adds provider execution package review coverage group summary empty queue count chip.
+Slice 401 adds provider execution package review coverage group summary review-needed chip.
 
 ## Operating Rules
 
@@ -1105,13 +1106,14 @@ Slice 400 adds provider execution package review coverage group summary empty qu
 401. `Implement and verify 398 Provider execution package review coverage group summary Markdown size chips.`
 402. `Implement and verify 399 Provider execution package review coverage group summary dominant queue chip.`
 403. `Implement and verify 400 Provider execution package review coverage group summary empty queue count chip.`
+404. `Implement and verify 401 Provider execution package review coverage group summary review-needed chip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary review-needed chip.`
+`Add provider execution package review coverage group summary stale priority chip.`
 
 Success criteria:
 
-1. The summary status area shows the number of visible packages still needing review.
-2. The chip derives from the coverage group totals already used by the summary preview.
+1. The summary status area shows whether stale unreviewed packages require priority review.
+2. The chip derives from the stale count and active stale threshold already used by the report.
 3. The chip remains read-only and does not mutate provider execution package review state.
