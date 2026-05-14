@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 428 implemented; next candidate is provider execution package review coverage group summary reset confirmation chip tooltip.`
+Current implementation goal (2026-05-14): `Slice 429 implemented; next candidate is provider execution package review coverage group summary generated-at chip tooltip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -405,6 +405,7 @@ Slice 425 clarifies provider execution package review coverage summary copied-st
 Slice 426 adds provider execution package review coverage summary reset explanation tooltip.
 Slice 427 adds provider execution package review coverage summary reset confirmation copied-at tooltip.
 Slice 428 adds provider execution package review coverage summary reset confirmation copy status tooltip.
+Slice 429 adds provider execution package review coverage summary reset confirmation chip tooltip.
 
 ## Operating Rules
 
@@ -1141,13 +1142,14 @@ Slice 428 adds provider execution package review coverage summary reset confirma
 419. `Implement and verify 426 Provider execution package review coverage summary reset explanation tooltip.`
 420. `Implement and verify 427 Provider execution package review coverage summary reset confirmation copied-at tooltip.`
 421. `Implement and verify 428 Provider execution package review coverage summary reset confirmation copy status tooltip.`
+422. `Implement and verify 429 Provider execution package review coverage summary reset confirmation chip tooltip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary reset confirmation chip tooltip.`
+`Add provider execution package review coverage group summary generated-at chip tooltip.`
 
 Success criteria:
 
-1. The reset confirmation chip exposes a short tooltip/title explaining pending and last-local-reset states.
-2. Browser UI validation still finds the reset confirmation chip and copy/copy-time status chips.
-3. The tooltip remains local-only and does not mutate provider execution package review state.
+1. The generated-at chip exposes a short tooltip/title explaining it is the report timestamp used by visible preview and handoff actions.
+2. Browser UI validation still finds the generated-at chip and summary preview.
+3. The tooltip remains read-only and does not mutate provider execution package review state.
