@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 382 implemented; next candidate is provider execution package review coverage queue group totals.`
+Current implementation goal (2026-05-14): `Slice 383 implemented; next candidate is provider execution package review coverage group shortcuts.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -369,6 +369,7 @@ Slice 379 added controlled provider execution package review filters for categor
 Slice 380 added provider execution package digest quick filters and note-category summary chips.
 Slice 381 added provider execution package review reset chips for digest, note-category, and reviewer shortcut filters.
 Slice 382 added a read-only active provider execution package review handoff preview before copy.
+Slice 383 added provider execution package review coverage queue group totals for the active filtered scope.
 
 ## Operating Rules
 
@@ -1069,13 +1070,14 @@ Slice 382 added a read-only active provider execution package review handoff pre
 383. `Implement and verify 380 Provider execution package digest and category quick filters.`
 384. `Implement and verify 381 Provider execution package review filter reset chips.`
 385. `Implement and verify 382 Provider execution package review handoff preview.`
+386. `Implement and verify 383 Provider execution package review coverage group totals.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage queue group totals.`
+`Add provider execution package review coverage group shortcuts.`
 
 Success criteria:
 
-1. Admins can see reviewed, unreviewed, and stale coverage group totals beside the package review coverage rows.
-2. Totals update with the active coverage preset, reviewer, note-category, digest, and stale-days filters.
-3. Group totals remain read-only and do not persist or mutate provider execution package review state.
+1. Admins can click reviewed, unreviewed, and stale group shortcuts from the coverage totals.
+2. Shortcuts update the existing review-state filter without changing digest, reviewer, note-type, or stale-days filters.
+3. Shortcuts remain read-only and do not persist or mutate provider execution package review state.
