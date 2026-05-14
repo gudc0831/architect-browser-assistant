@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 421 implemented; next candidate is provider execution package review coverage group summary reset confirmation action order polish.`
+Current implementation goal (2026-05-14): `Slice 422 implemented; next candidate is provider execution package review coverage group summary reset confirmation action grouping label.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -398,6 +398,7 @@ Slice 418 adds provider execution package review coverage group summary reset co
 Slice 419 adds provider execution package review coverage group summary reset confirmation copied-at chip.
 Slice 420 adds provider execution package review coverage group summary reset confirmation freshness chip.
 Slice 421 adds provider execution package review coverage group summary reset confirmation freshness tooltip.
+Slice 422 polishes provider execution package review coverage group summary reset confirmation action order.
 
 ## Operating Rules
 
@@ -1127,13 +1128,14 @@ Slice 421 adds provider execution package review coverage group summary reset co
 412. `Implement and verify 419 Provider execution package review coverage group summary reset confirmation copied-at chip.`
 413. `Implement and verify 420 Provider execution package review coverage group summary reset confirmation freshness chip.`
 414. `Implement and verify 421 Provider execution package review coverage group summary reset confirmation freshness tooltip.`
+415. `Implement and verify 422 Provider execution package review coverage group summary reset confirmation action order.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary reset confirmation action order polish.`
+`Add provider execution package review coverage group summary reset confirmation action grouping label.`
 
 Success criteria:
 
-1. The local handoff buttons present reset confirmation copy before reset so the action order matches the status chips.
-2. Keyboard and Browser UI validation still finds copy, reset, download, and filename actions.
-3. The polish remains local-only and does not mutate provider execution package review state.
+1. The local handoff action row has an accessible label that distinguishes summary copy/download actions from reset-confirmation handoff actions.
+2. Browser UI validation still finds the labeled action group and all existing actions.
+3. The label remains local-only and does not mutate provider execution package review state.
