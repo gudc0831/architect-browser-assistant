@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 416 implemented; next candidate is provider execution package review coverage group summary status reset confirmation chip.`
+Current implementation goal (2026-05-14): `Slice 417 implemented; next candidate is provider execution package review coverage group summary reset confirmation copy handoff.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -393,6 +393,7 @@ Slice 403 adds provider execution package review coverage group summary local-on
 Slice 414 adds provider execution package review coverage group summary next download filename chip.
 Slice 415 adds provider execution package review coverage group summary filename copy action.
 Slice 416 adds provider execution package review coverage group summary reset explanation chip.
+Slice 417 adds provider execution package review coverage group summary reset confirmation chip.
 
 ## Operating Rules
 
@@ -1117,13 +1118,14 @@ Slice 416 adds provider execution package review coverage group summary reset ex
 407. `Implement and verify 414 Provider execution package review coverage group summary next download filename chip.`
 408. `Implement and verify 415 Provider execution package review coverage group summary filename copy action.`
 409. `Implement and verify 416 Provider execution package review coverage group summary reset explanation chip.`
+410. `Implement and verify 417 Provider execution package review coverage group summary reset confirmation chip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary status reset confirmation chip.`
+`Add provider execution package review coverage group summary reset confirmation copy handoff.`
 
 Success criteria:
 
-1. After `Reset summary status`, the summary status area shows a local reset confirmation chip.
-2. The confirmation distinguishes local status reset from provider execution package review mutations.
-3. The confirmation remains local-only and does not mutate provider execution package review state.
+1. The summary status area provides a local action to copy the latest reset confirmation text.
+2. Copied reset confirmation includes the local reset timestamp when reset has run and a pending state before reset.
+3. The action remains local-only and does not mutate provider execution package review state.
