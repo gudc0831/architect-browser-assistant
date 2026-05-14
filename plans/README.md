@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 394 implemented; next candidate is provider execution package review coverage group summary copy status chip.`
+Current implementation goal (2026-05-14): `Slice 395 implemented; next candidate is provider execution package review coverage group summary local action reset.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -381,6 +381,7 @@ Slice 391 added provider execution package review coverage group summary filter 
 Slice 392 added provider execution package review coverage group summary count chips.
 Slice 393 adds provider execution package review coverage group summary Markdown download.
 Slice 394 adds provider execution package review coverage group summary download status chip.
+Slice 395 adds provider execution package review coverage group summary copy status chip.
 
 ## Operating Rules
 
@@ -1093,13 +1094,14 @@ Slice 394 adds provider execution package review coverage group summary download
 395. `Implement and verify 392 Provider execution package review coverage group summary count chips.`
 396. `Implement and verify 393 Provider execution package review coverage group summary Markdown download.`
 397. `Implement and verify 394 Provider execution package review coverage group summary download status chip.`
+398. `Implement and verify 395 Provider execution package review coverage group summary copy status chip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary copy status chip.`
+`Add provider execution package review coverage group summary local action reset.`
 
 Success criteria:
 
-1. The summary controls show whether the compact group summary has been copied in the current browser session.
-2. The chip remains local and read-only without implying server archive persistence.
-3. Copy status updates without mutating provider execution package review state.
+1. Reviewers can reset local copy/download status chips without changing filters or review data.
+2. Reset returns local handoff status chips to pending states.
+3. Reset remains client-side and does not mutate provider execution package review state.
