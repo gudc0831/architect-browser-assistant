@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 434 implemented; next candidate is provider execution package review coverage group summary review-needed chip tooltip.`
+Current implementation goal (2026-05-14): `Slice 443 implemented; next candidate is provider execution package review coverage grouped queue container tooltip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -411,6 +411,15 @@ Slice 431 adds provider execution package review coverage summary next filename 
 Slice 432 adds provider execution package review coverage summary Markdown size chip tooltip.
 Slice 433 adds provider execution package review coverage summary dominant queue chip tooltip.
 Slice 434 adds provider execution package review coverage summary empty queue count chip tooltip.
+Slice 435 adds provider execution package review coverage summary review-needed chip tooltip.
+Slice 436 adds provider execution package review coverage summary stale priority chip tooltip.
+Slice 437 adds provider execution package review coverage summary local-only handoff chip tooltip.
+Slice 438 adds provider execution package review coverage summary filter chips tooltip.
+Slice 439 adds provider execution package review coverage summary count chips tooltip.
+Slice 440 adds provider execution package review coverage summary download status chip tooltip.
+Slice 441 adds provider execution package review coverage summary copy status chip tooltip.
+Slice 442 adds provider execution package review coverage summary filename copy status chip tooltip.
+Slice 443 adds provider execution package review coverage queue density controls tooltip.
 
 ## Operating Rules
 
@@ -1153,13 +1162,22 @@ Slice 434 adds provider execution package review coverage summary empty queue co
 425. `Implement and verify 432 Provider execution package review coverage summary Markdown size chip tooltip.`
 426. `Implement and verify 433 Provider execution package review coverage summary dominant queue chip tooltip.`
 427. `Implement and verify 434 Provider execution package review coverage summary empty queue count chip tooltip.`
+428. `Implement and verify 435 Provider execution package review coverage summary review-needed chip tooltip.`
+429. `Implement and verify 436 Provider execution package review coverage summary stale priority chip tooltip.`
+430. `Implement and verify 437 Provider execution package review coverage summary local-only handoff chip tooltip.`
+431. `Implement and verify 438 Provider execution package review coverage summary filter chips tooltip.`
+432. `Implement and verify 439 Provider execution package review coverage summary count chips tooltip.`
+433. `Implement and verify 440 Provider execution package review coverage summary download status chip tooltip.`
+434. `Implement and verify 441 Provider execution package review coverage summary copy status chip tooltip.`
+435. `Implement and verify 442 Provider execution package review coverage summary filename copy status chip tooltip.`
+436. `Implement and verify 443 Provider execution package review coverage queue density controls tooltip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary review-needed chip tooltip.`
+`Add provider execution package review coverage grouped queue container tooltip.`
 
 Success criteria:
 
-1. The review-needed chip exposes a short tooltip/title explaining it counts visible provider execution packages with no matching review note.
-2. Browser UI validation still finds the review-needed chip and grouped coverage queue sections.
+1. The grouped coverage queue container exposes a short tooltip/title explaining the grouped queues are visible review-state buckets under the active filters.
+2. Browser UI validation still finds the queue container and stale/unreviewed/reviewed sections.
 3. The tooltip remains read-only and does not mutate provider execution package review state.
