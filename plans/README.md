@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 429 implemented; next candidate is provider execution package review coverage group summary generated-at chip tooltip.`
+Current implementation goal (2026-05-14): `Slice 430 implemented; next candidate is provider execution package review coverage group summary next filename chip tooltip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -406,6 +406,7 @@ Slice 426 adds provider execution package review coverage summary reset explanat
 Slice 427 adds provider execution package review coverage summary reset confirmation copied-at tooltip.
 Slice 428 adds provider execution package review coverage summary reset confirmation copy status tooltip.
 Slice 429 adds provider execution package review coverage summary reset confirmation chip tooltip.
+Slice 430 adds provider execution package review coverage summary generated-at chip tooltip.
 
 ## Operating Rules
 
@@ -1143,13 +1144,14 @@ Slice 429 adds provider execution package review coverage summary reset confirma
 420. `Implement and verify 427 Provider execution package review coverage summary reset confirmation copied-at tooltip.`
 421. `Implement and verify 428 Provider execution package review coverage summary reset confirmation copy status tooltip.`
 422. `Implement and verify 429 Provider execution package review coverage summary reset confirmation chip tooltip.`
+423. `Implement and verify 430 Provider execution package review coverage summary generated-at chip tooltip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary generated-at chip tooltip.`
+`Add provider execution package review coverage group summary next filename chip tooltip.`
 
 Success criteria:
 
-1. The generated-at chip exposes a short tooltip/title explaining it is the report timestamp used by visible preview and handoff actions.
-2. Browser UI validation still finds the generated-at chip and summary preview.
-3. The tooltip remains read-only and does not mutate provider execution package review state.
+1. The next filename chip exposes a short tooltip/title explaining it is the Markdown filename used by copy filename and download handoffs.
+2. Browser UI validation still finds the next filename chip and copy filename action.
+3. The tooltip remains local-only/read-only and does not mutate provider execution package review state.
