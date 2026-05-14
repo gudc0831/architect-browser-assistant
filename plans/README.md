@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 418 implemented; next candidate is provider execution package review coverage group summary reset confirmation copied-at chip.`
+Current implementation goal (2026-05-14): `Slice 419 implemented; next candidate is provider execution package review coverage group summary reset confirmation stale-copy warning chip.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -395,6 +395,7 @@ Slice 415 adds provider execution package review coverage group summary filename
 Slice 416 adds provider execution package review coverage group summary reset explanation chip.
 Slice 417 adds provider execution package review coverage group summary reset confirmation chip.
 Slice 418 adds provider execution package review coverage group summary reset confirmation copy handoff.
+Slice 419 adds provider execution package review coverage group summary reset confirmation copied-at chip.
 
 ## Operating Rules
 
@@ -1121,13 +1122,14 @@ Slice 418 adds provider execution package review coverage group summary reset co
 409. `Implement and verify 416 Provider execution package review coverage group summary reset explanation chip.`
 410. `Implement and verify 417 Provider execution package review coverage group summary reset confirmation chip.`
 411. `Implement and verify 418 Provider execution package review coverage group summary reset confirmation copy handoff.`
+412. `Implement and verify 419 Provider execution package review coverage group summary reset confirmation copied-at chip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary reset confirmation copied-at chip.`
+`Add provider execution package review coverage group summary reset confirmation stale-copy warning chip.`
 
 Success criteria:
 
-1. After `Copy reset confirmation`, the summary status area shows when the reset confirmation was copied locally.
-2. The copied-at chip resets when `Reset summary status` creates a new local reset timestamp.
-3. The chip remains local-only and does not mutate provider execution package review state.
+1. If copied reset-confirmation text is older than the visible local reset confirmation, the summary status area warns that the copy is stale.
+2. The warning returns to pending/clear state after copying the latest reset confirmation.
+3. The warning remains local-only and does not mutate provider execution package review state.
