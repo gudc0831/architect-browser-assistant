@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 423 implemented; next candidate is provider execution package review coverage group summary local handoff action group tooltip.`
+Current implementation goal (2026-05-14): `Slice 424 implemented; next candidate is provider execution package review coverage group summary local handoff action group copied-state reset note.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -400,6 +400,7 @@ Slice 420 adds provider execution package review coverage group summary reset co
 Slice 421 adds provider execution package review coverage group summary reset confirmation freshness tooltip.
 Slice 422 polishes provider execution package review coverage group summary reset confirmation action order.
 Slice 423 labels provider execution package review coverage group summary local handoff actions separately from density controls.
+Slice 424 adds provider execution package review coverage summary local handoff action group tooltip.
 
 ## Operating Rules
 
@@ -1131,13 +1132,14 @@ Slice 423 labels provider execution package review coverage group summary local 
 414. `Implement and verify 421 Provider execution package review coverage group summary reset confirmation freshness tooltip.`
 415. `Implement and verify 422 Provider execution package review coverage group summary reset confirmation action order.`
 416. `Implement and verify 423 Provider execution package review coverage summary local handoff action group label.`
+417. `Implement and verify 424 Provider execution package review coverage summary local handoff action group tooltip.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage group summary local handoff action group tooltip.`
+`Add provider execution package review coverage group summary local handoff action group copied-state reset note.`
 
 Success criteria:
 
-1. The labeled local handoff action group exposes a short tooltip/title explaining that the actions are local copy/download/reset handoffs.
-2. Browser UI validation still finds the tooltip and all existing actions.
-3. The tooltip remains local-only and does not mutate provider execution package review state.
+1. `Reset summary status` documentation/status area makes clear it resets summary copy, filename copy, reset-confirmation copy, copied-at, and download status only.
+2. Browser UI validation still finds local handoff action group and reset status chips.
+3. The note remains local-only and does not mutate provider execution package review state.
