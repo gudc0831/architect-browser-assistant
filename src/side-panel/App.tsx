@@ -26,6 +26,11 @@ type ActiveTabSource = {
 
 type RuntimeMode = "mock" | "local-chatgpt-codex";
 
+type SavedRecordConfidence = {
+  score: number;
+  reason: string;
+};
+
 const externalSourceOptions: Array<{ value: ExternalEvidenceSourceType; label: string }> = [
   { value: "web_page", label: "Web page" },
   { value: "skill_output", label: "Skill output" },
@@ -43,6 +48,7 @@ export function App() {
   const [evidence, setEvidence] = useState<AssistantEvidence[]>([]);
   const [output, setOutput] = useState<AssistantRuntimeOutput | null>(null);
   const [recordId, setRecordId] = useState<string | null>(null);
+  const [savedConfidence, setSavedConfidence] = useState<SavedRecordConfidence | null>(null);
   const [summaryStatus, setSummaryStatus] = useState<string>("");
   const [externalAllowed, setExternalAllowed] = useState(false);
   const [externalSourceType, setExternalSourceType] = useState<ExternalEvidenceSourceType>("web_page");
@@ -103,6 +109,8 @@ export function App() {
   async function handleRuntimeModeChange(nextMode: RuntimeMode) {
     setRuntimeMode(nextMode);
     setOutput(null);
+    setRecordId(null);
+    setSavedConfidence(null);
     setSummaryStatus("");
     await writeSafeSetting("runtimeMode", nextMode);
     await refreshRuntimeStatus();
@@ -118,6 +126,9 @@ export function App() {
       const result = await retrieveEvidence({ taskId: panelState.task.taskId, question });
       setTaskContext(result.taskContext);
       setEvidence(result.evidence);
+      setOutput(null);
+      setRecordId(null);
+      setSavedConfidence(null);
       setPanelState({ state: "ready", task: panelState.task });
     } catch (error) {
       setPanelState({ state: "error", message: error instanceof Error ? error.message : "SaaS retrieval failed" });
@@ -131,6 +142,8 @@ export function App() {
 
     const runtime = await createAssistantRuntime();
     setSummaryStatus("Generating answer...");
+    setRecordId(null);
+    setSavedConfidence(null);
     try {
       const generated = await runtime.generateAnswer({ question, taskContext, evidence });
       setOutput(generated);
@@ -144,7 +157,8 @@ export function App() {
         draftSummary: generated.draftSummary,
       });
       setRecordId(saved.id);
-      setSummaryStatus(`Saved record with confidence ${saved.confidenceScore}%`);
+      setSavedConfidence({ score: saved.confidenceScore, reason: saved.confidenceReason });
+      setSummaryStatus("Answer saved. Review confidence and draft summary before closing the task.");
     } catch (error) {
       setSummaryStatus(error instanceof Error ? error.message : "Answer generation failed");
     }
@@ -357,6 +371,12 @@ export function App() {
         <section className="answer-block">
           <h2>Answer</h2>
           <p>{output.answer}</p>
+          {savedConfidence ? (
+            <aside className="confidence-block" aria-label="Assistant confidence">
+              <strong>Confidence {savedConfidence.score}%</strong>
+              <p>{savedConfidence.reason}</p>
+            </aside>
+          ) : null}
           {output.draftSummary ? (
             <div className="summary-editor">
               <h2>Work Summary</h2>

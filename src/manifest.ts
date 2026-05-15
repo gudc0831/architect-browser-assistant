@@ -1,6 +1,6 @@
 import type { ManifestV3Export } from "@crxjs/vite-plugin";
 
-const saasOrigin = "http://localhost:3000/*";
+const saasOrigin = `${normalizeSaasOrigin(process.env.ARCHITECT_SAAS_ORIGIN) || "http://localhost:3000"}/*`;
 
 export const manifest: ManifestV3Export = {
   manifest_version: 3,
@@ -27,3 +27,20 @@ export const manifest: ManifestV3Export = {
     default_title: "Architect Assistant",
   },
 };
+
+function normalizeSaasOrigin(value: string | undefined) {
+  const raw = value?.trim();
+  if (!raw) {
+    return "";
+  }
+
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return "";
+    }
+    return url.origin;
+  } catch {
+    return "";
+  }
+}

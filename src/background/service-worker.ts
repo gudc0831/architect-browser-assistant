@@ -5,6 +5,7 @@ import {
   type NativeBridgeRequest,
   type NativeBridgeResponse,
 } from "../runtime/native-bridge-contract";
+import type { BrowserCaptureExtensionMessage } from "../runtime/browser-capture-contract";
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch((error) => {
@@ -18,6 +19,15 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       .then(sendResponse)
       .catch((error) => {
         sendResponse({ ok: false, error: error instanceof Error ? error.message : "Local runtime failed" });
+      });
+    return true;
+  }
+
+  if (isBrowserCaptureMessage(message)) {
+    handleBrowserCaptureMessage(message)
+      .then(sendResponse)
+      .catch((error) => {
+        sendResponse({ ok: false, error: error instanceof Error ? error.message : "Browser capture failed" });
       });
     return true;
   }
@@ -82,6 +92,35 @@ function isLocalRuntimeMessage(message: unknown): message is LocalRuntimeExtensi
     type === "architect:local-runtime-capabilities" ||
     type === "architect:local-runtime-generate"
   );
+}
+
+function isBrowserCaptureMessage(message: unknown): message is BrowserCaptureExtensionMessage {
+  if (!message || typeof message !== "object") {
+    return false;
+  }
+
+  return (message as { type?: unknown }).type === "architect:capture-visible-tab";
+}
+
+async function handleBrowserCaptureMessage(message: BrowserCaptureExtensionMessage) {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab?.url || !isHttpUrl(tab.url) || typeof tab.windowId !== "number") {
+    return { ok: false, error: "Active tab is not a capturable http(s) page." };
+  }
+
+  const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, { format: "png" });
+  return {
+    ok: true,
+    data: {
+      dataUrl,
+      title: tab.title?.trim() || "Browser capture",
+      url: tab.url,
+      capturedAt: new Date().toISOString(),
+      region: message.input.region,
+      pixelRegion: message.input.pixelRegion,
+      viewport: message.input.viewport,
+    },
+  };
 }
 
 async function handleLocalRuntimeMessage(message: LocalRuntimeExtensionMessage) {

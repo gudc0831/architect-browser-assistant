@@ -1,0 +1,4 @@
+Req: Continue the next remaining Architect slice after review clearance by tracking Slice 470 legal-source governance admin UI.
+Diff: Added `plans/470-legal-source-governance-admin-ui.md` and updated the roadmap for the new read-only Knowledge admin governance panel. Browser extension code was not changed.
+Why: Slice planning must keep SaaS implementation and browser-assistant roadmap/worklog artifacts paired for cross-repo Architect work.
+Verify/Time: 2026-05-15 13:15 KST; planning document created. SaaS `npm run typecheck`, `npm run lint`, `npm run regulation:governance:validate`, `NEXT_DIST_DIR=.next-build npm run build`, and direct `getRegulationGovernanceReport()` check passed. Local `next start` HTTP check confirmed `/admin/knowledge` redirects to login and the unauthenticated governance API returns 401. Browser assistant `npm run release:check` passed with expected local-origin/signing metadata warnings only.

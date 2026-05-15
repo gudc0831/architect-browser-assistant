@@ -20,7 +20,9 @@
 | `/daily` PC 팝업 파일 근거 입력 UI | 구현 완료 | SaaS `1dea2d0` | SaaS worklog | in-app browser `/daily` 검증 |
 | assistant retrieval `project_document` evidence 연결 | 구현 완료 | SaaS `1dea2d0` | SaaS worklog | 파일 근거 저장 후 assistant 답변 반영 확인 |
 | OCR/image 미확인 근거 confidence 제한 | 구현 완료 | SaaS `1dea2d0` | SaaS worklog | typecheck/build, 코드 검토 |
-| 자동 PDF/DOCX/XLSX/OCR 추출기 | 후속 slice | - | - | 03 first slice 비범위 |
+| TXT/CSV/XLSX/DOCX/텍스트 PDF 자동 텍스트 추출기 | 구현 완료 | uncommitted | `docs/worklogs/2026-05-14-1710-file-auto-text-extraction.md` | SaaS `npm run typecheck`, `npm run lint` 통과 |
+| 프로젝트 전체 분석 완료 문서 retrieval ranking | 구현 완료 | uncommitted | `docs/worklogs/2026-05-14-1735-project-document-retrieval-ranking.md` | SaaS `npm run typecheck`, `npm run lint` 통과 |
+| 스캔 PDF/이미지 OCR 자동 추출기 | 후속 slice | - | - | provider/parser 결정 필요 |
 
 ## 사용자 문제
 
@@ -85,6 +87,8 @@ Implement file analysis metadata storage and assistant evidence retrieval for th
 | 2026-05-08 | Prisma client 생성 | `npm run db:generate` 통과 |
 | 2026-05-08 | TypeScript 검증 | `npm run typecheck` 통과 |
 | 2026-05-08 | ESLint 검증 | `npm run lint` 통과. 기존 react-hooks warning 7개만 남음 |
+| 2026-05-14 | 자동 텍스트 추출기 검증 | SaaS `npm run typecheck`, `npm run lint` 통과. TXT/CSV/XLSX/DOCX/텍스트 PDF 자동 추출 경로 구현 |
+| 2026-05-14 | 프로젝트 문서 retrieval 검증 | SaaS `npm run typecheck`, `npm run lint`, `npm run build` 통과. 현재 task 밖의 분석 완료 파일도 `project_document` 후보로 ranking |
 | 2026-05-08 | Production build | `npm run build` 통과. 기존 data-guard broad pattern warning 2개만 남음 |
 | 2026-05-08 | Browser 검증 | in-app browser `http://localhost:3000/daily`에서 AS-001 task 선택, `AI 검토` 팝업 열기, `250910.jpg` 파일 근거 저장, assistant 답변 반영 확인 |
 
@@ -113,8 +117,18 @@ Browser assistant 구현 내용:
 
 ## 후속 Slice 후보
 
-1. 텍스트 파일/TXT/CSV 직접 추출 및 자동 저장
-2. PDF/DOCX/XLSX 서버 추출기 추가
-3. 이미지 OCR provider 연동
-4. Chrome extension 캡처 영역 분석
-5. 사용자 확인/반려 UI와 confidence 승격
+1. 이미지 OCR provider 연동
+2. Chrome extension 캡처 영역 분석
+3. 사용자 확인/반려 UI와 confidence 승격
+4. Postgres text/vector/hybrid retrieval 품질 개선
+5. 법규/기준 문서 seed import와 검색 품질 평가 세트
+
+## 2026-05-14 Follow-up Status
+
+- Slice 454 implemented TXT/CSV/XLSX/DOCX/text-PDF auto extraction.
+- Slice 461 implemented Postgres text-hybrid retrieval for project document evidence.
+- Slice 462 implemented OCR provider contract, user-reviewed OCR text, selected image-region metadata, and `/daily` OCR/region controls.
+- Slice 463 implemented Browser Assistant selected-region capture handoff into SaaS `image_region` controls.
+- Slice 465 implemented selected-region crop artifact persistence, crop OCR input routing, and `pdftoppm` scanned-PDF rasterization before Tesseract.
+
+Remaining image-analysis risk: runtime dependency packaging for Tesseract/Poppler, crop preview/download UI, and provider confidence calibration are still follow-up hardening items.

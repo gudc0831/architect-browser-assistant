@@ -23,6 +23,8 @@
 | 중앙 공식 지식 최소 저장 구조 | foundation 구현 | SaaS `26f58f0` | SaaS worklog | assistant record `metadata.approvedKnowledgeItem`에 retrieval-ready WIKI draft 저장 |
 | `/admin/knowledge` UI | foundation 구현 | SaaS `26f58f0` | SaaS worklog | 후보 목록, 상세, WIKI draft 편집, 승인/반려 footer 확인 |
 | 감사/검토 이력 | foundation 구현 | SaaS `26f58f0` | SaaS worklog | `metadata.knowledgeReview`에 reviewer/status/reviewedAt/rejectionReason 저장 |
+| 승인 WIKI assistant retrieval 연결 | 구현 완료 | uncommitted | SaaS `docs/worklogs/2026-05-14-1710-approved-wiki-retrieval.md` | SaaS `npm run typecheck`, `npm run lint` 통과 |
+| Knowledge admin 전용 guard | 구현 완료 | uncommitted | SaaS `docs/worklogs/2026-05-14-1710-knowledge-admin-guard.md` | SaaS `npm run typecheck`, `npm run lint` 통과 |
 
 ## Verification Log
 
@@ -30,6 +32,7 @@
 | --- | --- | --- |
 | 2026-05-07 | PRD 작성 | 01 slice의 `candidateState: candidate` metadata를 02 slice의 입력으로 명확히 연결함 |
 | 2026-05-07 | 02 foundation 구현 검증 | SaaS `npm run typecheck`, `npm run lint`, `npm run build` 통과. Browser-use로 `/admin/knowledge` 후보 상세 로딩과 `WIKI 지식 승인` 확인. Console error/warn 없음 |
+| 2026-05-14 | 승인 WIKI retrieval 및 Knowledge guard 검증 | SaaS `npm run typecheck`, `npm run lint`, `npm run build` 통과. `/api/admin/knowledge/**` raw `requireRole` 직접 사용 없음 |
 
 ## Problem Statement
 
@@ -244,6 +247,6 @@ Manual browser flow:
 
 남은 제한 사항:
 
-- Knowledge admin 권한은 MVP에서 기존 global admin으로 임시 매핑했다.
+- Knowledge admin 권한은 MVP에서 기존 global admin으로 임시 매핑했다. 2026-05-14 후속 slice에서 이 매핑을 `requireKnowledgeAdmin` guard로 코드에 명시했다.
 - 승인된 지식은 아직 별도 knowledge table이 아니라 assistant record metadata에 저장된다.
 - 자동 중복 병합, 관련 WIKI 링크 제안, 사용자용 WIKI 화면은 후속 구현이다.

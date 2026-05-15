@@ -1,7 +1,10 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-15): `Slice 468 implemented: crop artifact preview/download UI for persisted image-region file evidence.`
+Current implementation goal (2026-05-15): `Slice 472 implemented: dry-run file-analysis embedding backfill plan.`
 
+Slice 472 adds a read-only `file-analysis:embedding:plan` SaaS command that reports `file_analysis_chunks` embedding coverage, provider/dimension blockers, fixture fallback, and future backfill batch estimates without provider calls or DB mutation.
+Slice 471 adds append-only Knowledge admin acknowledgement records for the legal-source governance package, including package digest, reviewer note, latest-review summary, and API/UI persistence.
+Slice 470 adds a read-only Knowledge admin legal-source governance panel backed by the offline regulation seed and governance manifest validation.
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
 Slice 18 added a read-only CSV export for filtered admin assistant action audit records.
@@ -1215,10 +1218,14 @@ Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence
 459. `Implement and verify 466 File analysis chunk vector rerank.`
 460. `Implement and verify 467 Legal source governance refresh.`
 461. `Implement and verify 468 Crop artifact preview/download UI.`
+462. `Implement and verify 469 Review clearance for current code review findings.`
+463. `Implement and verify 470 Legal source governance admin UI.`
+464. `Implement and verify 471 Legal source governance acknowledgement records.`
+465. `Implement and verify 472 File analysis embedding backfill plan.`
 
 ## Next Goal Candidate
 
-`Add admin governance UI for legal-source refresh, create an embedding provider/backfill plan for file_analysis_chunks, or add crop artifact retention/delete controls.`
+`After the file-analysis embedding backfill plan, add crop artifact retention/delete controls, add source-by-source legal-source governance review workflow, or implement an embedding execution worker once provider/DB credentials are approved.`
 
 Success criteria:
 
@@ -1238,3 +1245,7 @@ Success criteria:
 14. Project document retrieval has a dedicated Postgres chunk table with FTS now and pgvector-ready rerank when embeddings are populated.
 15. Regulation seed packages have an offline governance manifest and refresh validation gate for official source coverage, Knowledge admin promotion blocking, and scheduled review dates.
 16. Persisted image-region crop artifacts can be previewed and downloaded from the `/daily` file evidence controls without exposing storage object paths to the browser.
+17. The current code review findings are cleared: SaaS hook lint and Turbopack build warnings are gone, admin `sortOrder` rejects unsafe values, and Browser Assistant rejects malformed page-origin generate payloads before runtime forwarding.
+18. Knowledge admins can inspect legal-source governance refresh status, production-import blocking context, validation messages, and source checklists from `/admin/knowledge` without running the CLI validator.
+19. Knowledge admins can persist append-only legal-source governance acknowledgement records tied to the current package digest and reviewer note from `/admin/knowledge`.
+20. Operators can run a read-only file-analysis embedding backfill plan that reports chunk coverage, provider/dimension blockers, and future batch estimates before any provider call or database mutation.

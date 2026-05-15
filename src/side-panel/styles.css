@@ -132,6 +132,7 @@ textarea {
 .evidence-list,
 .answer-block,
 .external-evidence-block,
+.confidence-block,
 .summary-editor {
   display: grid;
   gap: 10px;
@@ -140,6 +141,7 @@ textarea {
 .evidence-item,
 .answer-block,
 .external-evidence-block,
+.confidence-block,
 .summary-editor {
   border: 1px solid #d4dad2;
   border-radius: 8px;
@@ -228,6 +230,16 @@ select {
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
+}
+
+.confidence-block {
+  border-color: #becac2;
+  background: #f8faf8;
+}
+
+.confidence-block strong {
+  color: #244f42;
+  font-size: 13px;
 }
 
 .error-text {

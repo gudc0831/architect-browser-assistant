@@ -48,6 +48,38 @@ Development checks:
 
 ```powershell
 cd D:\architect-workspace\architect-browser-assistant
+npm run release:check
+```
+
+The release gate runs typecheck, lint, unit tests, production build, release readiness validation, and native-host self-test. Run it before treating any build as a public MVP candidate.
+
+The readiness validator checks MV3 manifest shape, scoped permissions, SaaS origin alignment, native-host template/installer guardrails, generated native-host manifest shape, and production signing metadata warnings.
+
+Production SaaS origin packaging:
+
+```powershell
+$env:ARCHITECT_SAAS_ORIGIN="https://your-saas-origin.example"
+npm run build
+```
+
+`ARCHITECT_SAAS_ORIGIN` controls the MV3 `host_permissions` and content-script `matches` entries at build time. If it is unset or invalid, the manifest falls back to `http://localhost:3000/*` for local development.
+
+Production release readiness:
+
+```powershell
+$env:ARCHITECT_SAAS_ORIGIN="https://your-saas-origin.example"
+npm run build
+$env:ARCHITECT_CHROME_EXTENSION_ID="<chrome-extension-id>"
+$env:ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT="<native-host signing subject>"
+$env:ARCHITECT_RELEASE_OWNER="<release owner>"
+npm run release:readiness:production
+```
+
+The production readiness command does not upload to Chrome Web Store or sign an installer. It blocks promotion when production origin, extension id, signing subject, or release owner metadata is missing.
+
+Focused development checks:
+
+```powershell
 npm run native-host:self-test
 npm run build
 ```

@@ -27,7 +27,7 @@
 | real local ChatGPT/Codex runtime path | 미구현 | - | - | runtime discovery 후 별도 구현 필요 |
 | MockAssistantRuntime | foundation 구현 | Browser `2872dd5` | `docs/worklogs/2026-05-07-1559-task-assistant-core-loop.md` | `npm run test` |
 | assistant 답변/근거 자동 저장 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | `npm run typecheck`, `npm run build` |
-| 신뢰도/출처 표시 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | side panel build, SaaS confidence reason |
+| 신뢰도/출처 표시 | 구현/테스트 보강 | Browser `2872dd5`, current browser work | SaaS/browser worklogs, `docs/worklogs/2026-05-15-0920-side-panel-confidence-display.md` | side panel confidence UI test, `npm run release:check` |
 | 작업 기록 정리 초안 저장 | foundation 구현 | Browser `2872dd5`, SaaS `6702f16` | SaaS/browser worklogs | `/api/assistant/summaries`, side panel approve/defer flow |
 | Knowledge admin 후보 큐 최소 연결 | 부분 구현 | SaaS `6702f16` | SaaS worklog | `candidateState: candidate`; Admin WIKI UI는 후속 slice |
 | `/daily` task-reactive PC assistant panel | 구현/검증 완료 | SaaS `cc0b915` | Browser `docs/worklogs/2026-05-07-1657-task-reactive-assistant-plan.md`, SaaS `docs/worklogs/2026-05-07-1657-daily-task-assistant-panel.md` | Browser-use로 `/daily` task 선택, panel open, retrieve/generate/save, summary approve 검증 |
@@ -43,6 +43,7 @@
 | 2026-05-07 | 제품 방향 전환 반영 | `/assistant-test`는 개발 harness로 유지하고, 실제 UX goal은 `/daily` task 클릭에 반응하는 PC 전용 assistant panel로 구체화함 |
 | 2026-05-07 | `/daily` task-reactive panel 검증 | `npm run typecheck`, `npm run lint`, `npm run build` 통과. Browser-use로 `AI 검토 001`에서 근거 조회, 의견 저장, 작업 기록 승인까지 확인함 |
 | 2026-05-08 | Goal 1 closeout | 병렬 에이전트가 browser-assistant와 SaaS closeout 상태를 읽기 전용으로 점검했다. SaaS는 추가 blocker 없음. 01 문서와 roadmap 상태를 implemented로 정리한다. |
+| 2026-05-15 | side panel confidence 표시 보강 | saved assistant record의 `confidenceScore`와 `confidenceReason`을 Answer 영역에 표시하고 React regression test를 추가했다. `npm run typecheck`, `npm run lint`, `npm run release:check` 통과. |
 
 ## Implementation Notes
 

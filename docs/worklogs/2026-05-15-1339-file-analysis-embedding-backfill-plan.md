@@ -1,0 +1,4 @@
+Req: Continue the next roadmap candidate after Slice 471 by progressing the `file_analysis_chunks` embedding provider/backfill plan.
+Diff: Added `plans/472-file-analysis-embedding-backfill-plan.md` and updated the roadmap for a dry-run embedding backfill planning surface. Browser extension code was not changed.
+Why: Slice 466 made the chunk table pgvector-ready, but embedding provider/backfill execution still needed a safe plan that reports blockers before any provider calls or DB mutation.
+Verify/Time: 2026-05-15 13:41 KST; SaaS `npm run file-analysis:embedding:plan -- --sample-limit 2`, `npm run file-analysis:embedding:plan -- --json --sample-limit 0`, `npm run typecheck`, `npm run lint`, `npm run retrieval:hybrid:validate`, and `NEXT_DIST_DIR=.next-build npm run build` passed. Browser assistant standalone `npm run test` and rerun `npm run release:check` passed after an initial Vitest `/@fs/D:/...` sandbox path failure.
