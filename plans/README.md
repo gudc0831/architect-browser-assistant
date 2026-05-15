@@ -1,7 +1,8 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-15): `Slice 472 implemented: dry-run file-analysis embedding backfill plan.`
+Current implementation goal (2026-05-15): `Slice 473 implemented: crop artifact retention/delete controls.`
 
+Slice 473 adds a narrow editor-only crop artifact delete control that preserves the file-analysis evidence while removing the persisted crop image reference.
 Slice 472 adds a read-only `file-analysis:embedding:plan` SaaS command that reports `file_analysis_chunks` embedding coverage, provider/dimension blockers, fixture fallback, and future backfill batch estimates without provider calls or DB mutation.
 Slice 471 adds append-only Knowledge admin acknowledgement records for the legal-source governance package, including package digest, reviewer note, latest-review summary, and API/UI persistence.
 Slice 470 adds a read-only Knowledge admin legal-source governance panel backed by the offline regulation seed and governance manifest validation.
@@ -1222,10 +1223,11 @@ Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence
 463. `Implement and verify 470 Legal source governance admin UI.`
 464. `Implement and verify 471 Legal source governance acknowledgement records.`
 465. `Implement and verify 472 File analysis embedding backfill plan.`
+466. `Implement and verify 473 Crop artifact retention/delete controls.`
 
 ## Next Goal Candidate
 
-`After the file-analysis embedding backfill plan, add crop artifact retention/delete controls, add source-by-source legal-source governance review workflow, or implement an embedding execution worker once provider/DB credentials are approved.`
+`After crop artifact retention/delete controls, add a source-by-source legal-source governance review workflow, implement an embedding execution worker once provider/DB credentials are approved, or add an admin chunk inspection/retrieval debug view.`
 
 Success criteria:
 
@@ -1249,3 +1251,4 @@ Success criteria:
 18. Knowledge admins can inspect legal-source governance refresh status, production-import blocking context, validation messages, and source checklists from `/admin/knowledge` without running the CLI validator.
 19. Knowledge admins can persist append-only legal-source governance acknowledgement records tied to the current package digest and reviewer note from `/admin/knowledge`.
 20. Operators can run a read-only file-analysis embedding backfill plan that reports chunk coverage, provider/dimension blockers, and future batch estimates before any provider call or database mutation.
+21. `/daily` users can remove a persisted selected-region crop artifact without deleting the surrounding file-analysis evidence.
