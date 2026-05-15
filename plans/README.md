@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-14): `Slice 453 implemented; next candidate is provider execution package review coverage grouped queue hidden row count note.`
+Current implementation goal (2026-05-15): `Slice 468 implemented: crop artifact preview/download UI for persisted image-region file evidence.`
 
 Slice 16 moved assistant-origin task-change provenance from text-marker-only detection to structured assistant action audit records while preserving the text marker fallback for older data.
 Slice 17 added an admin-facing assistant action audit review surface with filters and `/daily` task-detail links.
@@ -430,6 +430,15 @@ Slice 450 adds provider execution package review coverage grouped queue row stat
 Slice 451 adds provider execution package review coverage grouped queue row filename tooltip.
 Slice 452 adds provider execution package review coverage grouped queue row chips tooltip.
 Slice 453 adds provider execution package review coverage grouped queue row focus digest tooltip.
+Slice 454 adds automatic TXT/CSV/XLSX/DOCX/text-PDF file text extraction into task file analysis evidence and resets the roadmap toward core MVP gap closure.
+Slice 455 adds the Browser Assistant release gate script and CI workflow for typecheck, lint, tests, build, and native-host self-test.
+Slice 456 connects approved WIKI metadata to assistant retrieval as `central_knowledge` evidence.
+Slice 457 separates Knowledge admin authorization into an explicit SaaS guard while preserving the MVP global-admin mapping.
+Slice 458 extends assistant retrieval to project-wide file analysis evidence so uploaded 기준/법규-like project documents can be ranked beyond the current task attachment list.
+Slice 459 lets extension packages use a production SaaS origin through `ARCHITECT_SAAS_ORIGIN` while preserving localhost fallback for development.
+Slice 460 adds a local regulation seed/import contract, dry-run validation, fixed evaluation questions, and first assistant retrieval connection for `regulation` evidence.
+Slice 461 adds Postgres FTS + lexical rerank for approved WIKI and project document retrieval, with the 460 regulation fixture reused as a hybrid quality baseline.
+Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence storage, optional Tesseract CLI gate, and `/daily` OCR/region controls.
 
 ## Operating Rules
 
@@ -1191,13 +1200,41 @@ Slice 453 adds provider execution package review coverage grouped queue row focu
 444. `Implement and verify 451 Provider execution package review coverage grouped queue row filename tooltip.`
 445. `Implement and verify 452 Provider execution package review coverage grouped queue row chips tooltip.`
 446. `Implement and verify 453 Provider execution package review coverage grouped queue row focus digest tooltip.`
+447. `Implement and verify 454 File auto text extraction for TXT, CSV, XLSX, DOCX, and text PDF.`
+448. `Implement and verify 455 MVP release readiness gate.`
+449. `Implement and verify 456 Approved WIKI retrieval as central_knowledge evidence.`
+450. `Implement and verify 457 Knowledge admin RBAC guard mapping.`
+451. `Implement and verify 458 Project document retrieval ranking.`
+452. `Implement and verify 459 Production SaaS origin packaging.`
+453. `Implement and verify 460 Regulation knowledge foundation.`
+454. `Implement and verify 461 Postgres hybrid retrieval indexing.`
+455. `Implement and verify 462 OCR provider and image region analysis.`
+456. `Implement and verify 463 Browser selected-region capture handoff.`
+457. `Implement and verify 464 Release signing readiness gate.`
+458. `Implement and verify 465 PDF raster and crop OCR.`
+459. `Implement and verify 466 File analysis chunk vector rerank.`
+460. `Implement and verify 467 Legal source governance refresh.`
+461. `Implement and verify 468 Crop artifact preview/download UI.`
 
 ## Next Goal Candidate
 
-`Add provider execution package review coverage grouped queue hidden row count note.`
+`Add admin governance UI for legal-source refresh, create an embedding provider/backfill plan for file_analysis_chunks, or add crop artifact retention/delete controls.`
 
 Success criteria:
 
-1. Grouped coverage queues with more than four visible rows expose a read-only hidden-row count note under the four-row preview.
-2. Browser UI validation confirms the hidden-row note on a queue with overflow and confirms empty queues do not show an overflow note.
-3. The note remains local/read-only and does not mutate provider execution package review state.
+1. TXT/CSV/XLSX/DOCX/text-PDF uploads can be auto-extracted from `/daily` assistant file evidence controls.
+2. Extracted text is saved as `project_document` evidence with unverified confidence.
+3. Approved WIKI items can appear in assistant retrieval as `central_knowledge` evidence.
+4. Knowledge admin routes use an explicit guard mapped to existing SaaS RBAC.
+5. Project-wide file analysis can appear in assistant retrieval as `project_document` evidence.
+6. Browser Assistant release candidates run `npm run release:check` locally and in CI.
+7. Extension packages can target production SaaS origin via `ARCHITECT_SAAS_ORIGIN`.
+8. Local regulation seed questions return `regulation` evidence without network calls.
+9. Postgres cloud retrieval uses FTS + deterministic lexical rerank for approved WIKI and project document evidence, with a fixed 6-query quality baseline.
+10. OCR and selected image-region evidence can be saved as `project_document` file analysis, with provider metadata and low-confidence review status.
+11. The extension can capture a user-selected browser region and hand normalized coordinates into SaaS `image_region` file evidence controls.
+12. Public release candidates run an automated readiness validator for MV3 manifest scope, SaaS origin alignment, native-host installer/template guardrails, and production signing metadata.
+13. Selected browser regions are persisted as crop artifacts and can be sent to OCR; scanned PDF OCR can rasterize a selected page through `pdftoppm` before Tesseract.
+14. Project document retrieval has a dedicated Postgres chunk table with FTS now and pgvector-ready rerank when embeddings are populated.
+15. Regulation seed packages have an offline governance manifest and refresh validation gate for official source coverage, Knowledge admin promotion blocking, and scheduled review dates.
+16. Persisted image-region crop artifacts can be previewed and downloaded from the `/daily` file evidence controls without exposing storage object paths to the browser.
