@@ -75,7 +75,13 @@ $env:ARCHITECT_RELEASE_OWNER="<release owner>"
 npm run release:readiness:production
 ```
 
-The production readiness command does not upload to Chrome Web Store or sign an installer. It blocks promotion when production origin, extension id, signing subject, or release owner metadata is missing.
+The production readiness command does not upload to Chrome Web Store or sign an installer. It blocks promotion when production origin, extension id, signing subject, release owner, Web Store publisher, or native-host install-root metadata is missing.
+
+```powershell
+$env:ARCHITECT_CHROME_WEB_STORE_PUBLISHER="<publisher account or group>"
+$env:ARCHITECT_NATIVE_HOST_INSTALL_ROOT="$env:LOCALAPPDATA\ArchitectBrowserAssistant\native-host"
+npm run release:build:production
+```
 
 Focused development checks:
 
@@ -93,6 +99,14 @@ Windows unpacked extension setup:
 
 ```powershell
 npm run native-host:install:windows -- -ExtensionId <chrome-extension-id>
+```
+
+For a production-style local install check, install the native host into a stable directory and verify that Chrome is not pointed at the repo checkout:
+
+```powershell
+npm run native-host:install:windows -- -ExtensionId <chrome-extension-id> -InstallRoot "$env:LOCALAPPDATA\ArchitectBrowserAssistant\native-host"
+npm run native-host:verify-production-install -- --extension-id <chrome-extension-id> --install-root "$env:LOCALAPPDATA\ArchitectBrowserAssistant\native-host" --json
+npm run extension:verify-chrome-profile -- --extension-id <chrome-extension-id> --require-webstore --json --strict
 ```
 
 The installer writes a launcher with absolute `node.exe` and Codex CLI paths. Use the default real-mode install for `/daily` Local Codex generation; `-Mock` is only for smoke tests.

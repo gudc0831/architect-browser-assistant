@@ -4,6 +4,8 @@ param(
 
   [string]$RepoRoot = "",
 
+  [string]$InstallRoot = "",
+
   [string]$NodePath = "node.exe",
 
   [string]$CodexCliPath = "",
@@ -32,12 +34,24 @@ if ([string]::IsNullOrWhiteSpace($RepoRoot)) {
 
 $hostName = "com.architect.browser_assistant.codex_bridge"
 $nativeHostDir = Join-Path $RepoRoot "native-host"
-$hostScriptPath = Join-Path $nativeHostDir "codex-bridge-host.mjs"
-$launcherPath = Join-Path $nativeHostDir "architect-codex-bridge.cmd"
-$manifestPath = Join-Path $nativeHostDir "$hostName.json"
+$sourceHostScriptPath = Join-Path $nativeHostDir "codex-bridge-host.mjs"
 
-if (-not (Test-Path -LiteralPath $hostScriptPath)) {
-  throw "Native host script not found: $hostScriptPath"
+if ([string]::IsNullOrWhiteSpace($InstallRoot)) {
+  $runtimeNativeHostDir = $nativeHostDir
+} else {
+  $runtimeNativeHostDir = (New-Item -ItemType Directory -Path $InstallRoot -Force).FullName
+}
+
+$hostScriptPath = Join-Path $runtimeNativeHostDir "codex-bridge-host.mjs"
+$launcherPath = Join-Path $runtimeNativeHostDir "architect-codex-bridge.cmd"
+$manifestPath = Join-Path $runtimeNativeHostDir "$hostName.json"
+
+if (-not (Test-Path -LiteralPath $sourceHostScriptPath)) {
+  throw "Native host script not found: $sourceHostScriptPath"
+}
+
+if ($sourceHostScriptPath -ne $hostScriptPath) {
+  Copy-Item -LiteralPath $sourceHostScriptPath -Destination $hostScriptPath -Force
 }
 
 if ($ExtensionId -notmatch "^[a-p]{32}$") {

@@ -13,12 +13,13 @@ const EXTENSION_ID_PATTERN = /^[a-p]{32}$/;
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..");
+const options = parseArgs(process.argv.slice(2));
 const nativeHostDir = path.join(repoRoot, "native-host");
-const hostManifestPath = path.join(nativeHostDir, `${HOST_NAME}.json`);
-const launcherPath = path.join(nativeHostDir, "architect-codex-bridge.cmd");
+const runtimeNativeHostDir = options.installRoot ? path.resolve(options.installRoot) : nativeHostDir;
+const hostManifestPath = path.join(runtimeNativeHostDir, `${HOST_NAME}.json`);
+const launcherPath = path.join(runtimeNativeHostDir, "architect-codex-bridge.cmd");
 const distManifestPath = path.join(repoRoot, "dist", "manifest.json");
 
-const options = parseArgs(process.argv.slice(2));
 const checks = [];
 
 try {
@@ -98,6 +99,21 @@ async function verifyHostManifest() {
     { manifestPath: hostManifestPath, expectedExtensionId, allowedOrigins },
   );
 
+  if (options.productionInstall) {
+    const manifestOutsideRepo = !path.resolve(hostManifestPath).startsWith(path.resolve(repoRoot));
+    const installRootMatches = options.installRoot
+      ? path.resolve(hostManifestPath).startsWith(path.resolve(options.installRoot))
+      : true;
+    addCheck(
+      "production-install-manifest-path",
+      "Production native host manifest path",
+      manifestOutsideRepo && installRootMatches ? "pass" : "fail",
+      manifestOutsideRepo
+        ? `Native host manifest is outside the repo checkout: ${hostManifestPath}.`
+        : "Production install should register a stable install-root manifest, not the repo-local native-host manifest.",
+    );
+  }
+
   if (options.extensionId && manifestExtensionId && options.extensionId !== manifestExtensionId) {
     addCheck(
       "extension-id-match",
@@ -126,6 +142,18 @@ async function verifyLauncher(manifest) {
   }
 
   const launcherText = await readFile(expected, "utf8");
+  if (options.productionInstall) {
+    const launcherOutsideRepo = !path.resolve(expected).startsWith(path.resolve(repoRoot));
+    const installRootMatches = options.installRoot ? path.resolve(expected).startsWith(path.resolve(options.installRoot)) : true;
+    addCheck(
+      "production-install-launcher-path",
+      "Production native host launcher path",
+      launcherOutsideRepo && installRootMatches ? "pass" : "fail",
+      launcherOutsideRepo
+        ? `Native host launcher is outside the repo checkout: ${expected}.`
+        : "Production install should use a stable install-root launcher, not the repo-local launcher.",
+    );
+  }
   const mockEnabled = /\bARCHITECT_CODEX_BRIDGE_MOCK=1\b/.test(launcherText);
   addCheck(
     "launcher-mode",
@@ -347,6 +375,8 @@ function parseArgs(args) {
     strict: false,
     skipRegistry: false,
     mockOnly: false,
+    productionInstall: false,
+    installRoot: null,
   };
 
   for (let index = 0; index < args.length; index += 1) {
@@ -370,6 +400,15 @@ function parseArgs(args) {
     }
     if (arg === "--mock-only") {
       parsed.mockOnly = true;
+      continue;
+    }
+    if (arg === "--production-install") {
+      parsed.productionInstall = true;
+      continue;
+    }
+    if (arg === "--install-root") {
+      parsed.installRoot = args[index + 1] ?? null;
+      index += 1;
       continue;
     }
   }

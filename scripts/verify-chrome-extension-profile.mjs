@@ -64,15 +64,18 @@ async function verifyChromeProfile() {
     }
   }
 
+  const webstoreMatches = matches.filter((match) => match.fromWebstore === true);
   return {
-    ok: matches.length > 0,
+    ok: options.requireWebstore ? webstoreMatches.length > 0 : matches.length > 0,
     extensionId: options.extensionId,
     chromeUserDataDir,
     profilesChecked: profiles.map((profile) => profile.name),
     matches,
     errors,
     recommendation:
-      matches.length > 0
+      options.requireWebstore && webstoreMatches.length === 0
+        ? "Install the published Chrome Web Store extension in the Chrome profile used for /daily."
+        : matches.length > 0
         ? "Reload the matched unpacked extension profile and refresh /daily."
         : "Load the rebuilt dist folder as an unpacked extension in the Chrome profile used for /daily, then register native host with that extension id if it differs.",
   };
@@ -123,7 +126,7 @@ function printReport(report) {
   console.log("Result: found");
   for (const match of report.matches) {
     console.log(
-      `- ${match.profile} / ${match.file}: ${match.manifestName ?? "<unknown>"} ${match.manifestVersion ?? ""} ${match.path ?? ""}`.trim(),
+      `- ${match.profile} / ${match.file}: ${match.manifestName ?? "<unknown>"} ${match.manifestVersion ?? ""} ${match.fromWebstore ? "webstore" : "unpacked"} ${match.path ?? ""}`.trim(),
     );
   }
 }
@@ -134,6 +137,7 @@ function parseArgs(args) {
     extensionId: DEFAULT_EXTENSION_ID,
     json: false,
     strict: false,
+    requireWebstore: false,
   };
 
   for (let index = 0; index < args.length; index += 1) {
@@ -154,6 +158,10 @@ function parseArgs(args) {
     }
     if (arg === "--strict") {
       parsed.strict = true;
+      continue;
+    }
+    if (arg === "--require-webstore") {
+      parsed.requireWebstore = true;
       continue;
     }
   }

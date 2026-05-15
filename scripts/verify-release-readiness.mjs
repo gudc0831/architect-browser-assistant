@@ -61,6 +61,24 @@ function verifyPackageScripts(packageJson) {
       ? "`npm run release:readiness:production` is available for signed production promotion."
       : "Add a production-specific readiness script that enforces production origin and signing metadata.",
   );
+
+  addCheck(
+    "production-build-script",
+    "Production build script",
+    typeof scripts["release:build:production"] === "string" ? "pass" : "fail",
+    typeof scripts["release:build:production"] === "string"
+      ? "`npm run release:build:production` builds and validates the production package."
+      : "Add a production package build command that runs build plus production readiness.",
+  );
+
+  addCheck(
+    "native-host-production-install-verifier",
+    "Native host production install verifier",
+    typeof scripts["native-host:verify-production-install"] === "string" ? "pass" : "fail",
+    typeof scripts["native-host:verify-production-install"] === "string"
+      ? "Production native-host install verification command is available."
+      : "Add a production native-host install verifier command.",
+  );
 }
 
 async function verifyDistManifest() {
@@ -186,14 +204,15 @@ async function verifyNativeHostFiles() {
     const installerOk =
       installer.includes("^[a-p]{32}$") &&
       installer.includes("NativeMessagingHosts") &&
-      installer.includes("ARCHITECT_CODEX_CLI_PATH");
+      installer.includes("ARCHITECT_CODEX_CLI_PATH") &&
+      installer.includes("InstallRoot");
     addCheck(
       "native-host-installer",
       "Native host installer guardrails",
       installerOk ? "pass" : "fail",
       installerOk
-        ? "Installer validates Chrome extension id, writes HKCU native host registration, and pins Codex CLI path."
-        : "Installer must validate extension id, register HKCU native host, and pin Codex CLI path.",
+        ? "Installer validates Chrome extension id, writes HKCU native host registration, pins Codex CLI path, and supports stable install roots."
+        : "Installer must validate extension id, register HKCU native host, pin Codex CLI path, and support a production install root.",
     );
   }
 
@@ -226,6 +245,8 @@ function verifyProductionSigningMetadata() {
   const extensionId = options.extensionId || process.env.ARCHITECT_CHROME_EXTENSION_ID || "";
   const signingSubject = process.env.ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT || "";
   const releaseOwner = process.env.ARCHITECT_RELEASE_OWNER || "";
+  const webStorePublisher = process.env.ARCHITECT_CHROME_WEB_STORE_PUBLISHER || "";
+  const nativeHostInstallRoot = process.env.ARCHITECT_NATIVE_HOST_INSTALL_ROOT || "";
   const missing = [];
 
   if (!EXTENSION_ID_PATTERN.test(extensionId)) {
@@ -237,14 +258,29 @@ function verifyProductionSigningMetadata() {
   if (!releaseOwner.trim()) {
     missing.push("ARCHITECT_RELEASE_OWNER");
   }
+  if (!webStorePublisher.trim()) {
+    missing.push("ARCHITECT_CHROME_WEB_STORE_PUBLISHER");
+  }
+  if (!nativeHostInstallRoot.trim()) {
+    missing.push("ARCHITECT_NATIVE_HOST_INSTALL_ROOT");
+  }
 
   addCheck(
     "production-signing-metadata",
     "Production signing metadata",
     missing.length === 0 ? "pass" : options.production ? "fail" : "warn",
     missing.length === 0
-      ? "Production extension id, native-host signing subject, and release owner are configured."
+      ? "Production extension id, native-host signing subject, release owner, Web Store publisher, and install root are configured."
       : `Missing production signing metadata: ${missing.join(", ")}.`,
+  );
+
+  addCheck(
+    "web-store-upload-boundary",
+    "Chrome Web Store upload boundary",
+    options.production && webStorePublisher.trim() ? "pass" : "warn",
+    options.production && webStorePublisher.trim()
+      ? "Web Store publisher metadata is present; this validator still does not upload packages."
+      : "Chrome Web Store upload is intentionally outside this validator; configure publisher metadata before promotion.",
   );
 }
 

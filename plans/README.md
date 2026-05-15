@@ -1,7 +1,15 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-15): `Slice 474 implemented: source-by-source legal-source governance review workflow.`
+Current implementation goal (2026-05-15): `Umbrella operational gaps implemented through Slice 482; runtime provider/store operations, DB chunk-schema backfill, authenticated UI signoff, and release promotion remain blocked where credentials, schema, login, or approval are missing.`
 
+Slice 482 records umbrella operational validation and blocked runtime conditions.
+Slice 481 adds explicit Knowledge admin capability schema/API while preserving the global-admin backfill mapping.
+Slice 480 strengthens production extension packaging, signing, Web Store metadata, and native-host install-root readiness validation.
+Slice 479 adds a dry-run Approved WIKI external sync worker report that separates server audit/preflight from future external writes.
+Slice 478 adds legal-source production import preflight gates without enabling crawling or production import.
+Slice 477 adds regulation source-review coverage filters and CSV export, including latest review, reviewer, and package digest.
+Slice 476 adds a read-only Knowledge admin chunk inspection and retrieval debug view for `file_analysis_chunks`.
+Slice 475 adds a guarded embedding execution worker for `file_analysis_chunks.embedding`.
 Slice 474 adds append-only source review records and source-row review controls for the offline legal-source governance package.
 Slice 473 adds a narrow editor-only crop artifact delete control that preserves the file-analysis evidence while removing the persisted crop image reference.
 Slice 472 adds a read-only `file-analysis:embedding:plan` SaaS command that reports `file_analysis_chunks` embedding coverage, provider/dimension blockers, fixture fallback, and future backfill batch estimates without provider calls or DB mutation.
@@ -756,6 +764,14 @@ Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence
 | 298 | [298-knowledge-export-saas-clean-tree.md](298-knowledge-export-saas-clean-tree.md) | `implemented` | Approved WIKI SaaS clean tree | `architect-saas`, `architect-browser-assistant` |
 | 299 | [299-knowledge-export-goal-closeout.md](299-knowledge-export-goal-closeout.md) | `implemented` | Approved WIKI export goal closeout | `architect-saas`, `architect-browser-assistant` |
 | 300 | [300-knowledge-export-completion-report.md](300-knowledge-export-completion-report.md) | `implemented` | Approved WIKI export completion report | `architect-saas`, `architect-browser-assistant` |
+| 475 | [475-embedding-execution-worker.md](475-embedding-execution-worker.md) | `implemented` | Guarded embedding execution worker for `file_analysis_chunks.embedding` | `architect-saas` |
+| 476 | [476-admin-chunk-retrieval-debug.md](476-admin-chunk-retrieval-debug.md) | `implemented` | Read-only chunk coverage and retrieval debug surface | `architect-saas` |
+| 477 | [477-source-review-coverage-export.md](477-source-review-coverage-export.md) | `implemented` | Legal-source source-review coverage filters and CSV export | `architect-saas` |
+| 478 | [478-legal-source-production-preflight.md](478-legal-source-production-preflight.md) | `implemented` | Production legal-source import preflight gates without crawling/importing | `architect-saas` |
+| 479 | [479-approved-wiki-sync-worker-prep.md](479-approved-wiki-sync-worker-prep.md) | `implemented` | Dry-run Approved WIKI external sync worker report | `architect-saas` |
+| 480 | [480-production-extension-packaging-readiness.md](480-production-extension-packaging-readiness.md) | `implemented` | Production extension packaging and native-host install readiness | `architect-browser-assistant` |
+| 481 | [481-knowledge-admin-capability-migration.md](481-knowledge-admin-capability-migration.md) | `implemented` | Explicit Knowledge admin capability schema/API with global-admin backfill | `architect-saas` |
+| 482 | [482-operational-validation-closeout.md](482-operational-validation-closeout.md) | `implemented` | Umbrella operational validation and blocked runtime conditions | `architect-saas`, `architect-browser-assistant` |
 
 ## Completed Goal Log
 
@@ -1226,10 +1242,18 @@ Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence
 465. `Implement and verify 472 File analysis embedding backfill plan.`
 466. `Implement and verify 473 Crop artifact retention/delete controls.`
 467. `Implement and verify 474 Source-by-source legal-source governance review workflow.`
+468. `Implement and verify 475 Embedding execution worker.`
+469. `Implement and verify 476 Admin chunk retrieval debug.`
+470. `Implement and verify 477 Source-review coverage export.`
+471. `Implement and verify 478 Legal-source production preflight.`
+472. `Implement and verify 479 Approved WIKI sync worker preparation.`
+473. `Implement and verify 480 Production extension packaging readiness.`
+474. `Implement and verify 481 Knowledge admin capability migration.`
+475. `Implement and verify 482 Operational validation closeout.`
 
 ## Next Goal Candidate
 
-`After source-by-source legal-source governance review workflow, implement an embedding execution worker once provider/DB credentials are approved, add an admin chunk inspection/retrieval debug view, or add source-review coverage export and stale-source-review filters.`
+`After the umbrella operational gap pass, complete credentialed production operations: approve embedding provider/DB write execution, run authenticated Knowledge admin browser validation in the target environment, configure legal-source production approvals, and perform production Web Store/native-host release signing outside the repo.`
 
 Success criteria:
 
@@ -1255,3 +1279,10 @@ Success criteria:
 20. Operators can run a read-only file-analysis embedding backfill plan that reports chunk coverage, provider/dimension blockers, and future batch estimates before any provider call or database mutation.
 21. `/daily` users can remove a persisted selected-region crop artifact without deleting the surrounding file-analysis evidence.
 22. Knowledge admins can record source-by-source legal-source governance reviews with review state, note, reviewer, and latest-review coverage in `/admin/knowledge`.
+23. Operators can run a guarded embedding worker that dry-runs safely and blocks mutation without provider, DB, dimensions, and write-audit approval.
+24. Knowledge admins can inspect file-analysis chunk coverage, missing embeddings, and FTS/vector readiness from `/admin/knowledge`.
+25. Knowledge admins can export legal-source source-review coverage CSV with reviewed, unreviewed, and stale filters.
+26. Legal-source production import has a preflight gate that blocks without official-source review, acknowledgement, document approval, and operational approval.
+27. Approved WIKI external sync has a dry-run worker report that separates server audit/preflight from future external provider writes.
+28. Browser Assistant production packaging has explicit Web Store metadata, install-root, and production native-host verifier checks without uploading to the store.
+29. Knowledge admin access exposes an explicit capability schema/API while preserving the global-admin backfill mapping.
