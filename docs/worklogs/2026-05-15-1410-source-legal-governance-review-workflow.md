@@ -1,0 +1,4 @@
+Req: Continue with the next roadmap candidate after Slice 473 by implementing Slice 474 source-by-source legal-source governance review workflow.
+Diff: Added the Slice 474 plan for source review records, Knowledge admin source-row workflow, verification expectations, residual risks, and next candidates. Updated the roadmap once implementation verification is complete.
+Why: Package-level legal-source acknowledgement does not capture per-source follow-up or blocking context.
+Verify/Time: 2026-05-15 14:12 KST; `architect-saas` passed `npm run typecheck`, `npm run lint`, `npm run regulation:governance:validate`, `NEXT_DIST_DIR=.next-build npm run build`, direct governance report check, and unauthenticated source review GET/POST returned 401; `architect-browser-assistant` passed `npm run release:check`.
