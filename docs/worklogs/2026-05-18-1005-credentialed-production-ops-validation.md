@@ -31,3 +31,7 @@ Req: Verify the native-host production install boundary for Slice 482.
 Diff: Added native-host production install verifier evidence to the Slice 482 closeout; no runtime code changed.
 Why: Production readiness also depends on a stable native-host install root, not only a built extension manifest and repo-local launcher.
 Verify/Time: 2026-05-18 11:58 KST; `npm run native-host:verify-production-install -- --json` reports 10 pass, 1 warn, 2 fail. The current HKCU native-host manifest and launcher are repo-local under `native-host`; real launcher mode, absolute Node path, pinned Codex path, registry, and launcher self-test pass, while production install-root manifest/launcher checks fail and Codex CLI status warns with `spawn EPERM`.
+Req: Prepare but do not execute production native-host stable install-root registration.
+Diff: Recorded the exact persistent native-host install-root action that still requires explicit operator approval; no registry or install-root change was made.
+Why: Updating HKCU Chrome NativeMessagingHosts and copying the native host to a stable user-local install root is a security-relevant persistent browser/system configuration change, so it cannot be performed from the goal continuation alone.
+Verify/Time: 2026-05-18 12:00 KST; prepared command would use extension id `ianebfgjhjklildppcocmbmifedapooj` and install root `%LOCALAPPDATA%\Architect\BrowserAssistant\native-host`; execution was not performed pending explicit approval.
