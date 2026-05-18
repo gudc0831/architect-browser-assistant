@@ -108,6 +108,7 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | Continuation stale idle cleanup on 2026-05-18 11:49 KST | terminated 2 `postgres`/`Supavisor` idle sessions created by current checks; final aggregate left 1 newly-created target idle inspection connection at 12s age |
 | Production-origin build on 2026-05-18 11:53 KST | sandboxed Vite build failed with a Windows absolute-path emitted asset error; the same `ARCHITECT_SAAS_ORIGIN=https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app npm run build` passed outside the sandbox |
 | `npm run release:readiness:production -- --json --strict` after production-origin build | narrowed to 15 pass, 1 warn, 1 fail; host permissions and content-script matches now use the Vercel branch alias, leaving only missing production signing/Web Store/native-host install-root metadata |
+| `npm run native-host:verify-production-install -- --json` on 2026-05-18 11:58 KST | blocked for production install: 10 pass, 1 warn, 2 fail. The current HKCU manifest/launcher are repo-local under `native-host`; production requires a stable install-root manifest and launcher. Real launcher mode, absolute Node path, pinned Codex path, registry, and launcher self-test pass; Codex CLI status warns with `spawn EPERM`. |
 
 ## Blocked Operations
 
