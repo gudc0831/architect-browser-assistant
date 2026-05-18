@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-15): `Umbrella operational gaps implemented through Slice 482; runtime provider/store operations, DB chunk-schema backfill, authenticated UI signoff, and release promotion remain blocked where credentials, schema, login, or approval are missing.`
+Current implementation goal (2026-05-18): `Umbrella operational gaps implemented through Slice 482; credentialed production operations were rechecked with an operator OAuth session and remain blocked by pending cloud DB migrations, missing file-analysis chunk table/backfill, missing embedding provider/write-audit approval, authenticated route server errors, and missing production release metadata.`
 
 Slice 482 records umbrella operational validation and blocked runtime conditions.
 Slice 481 adds explicit Knowledge admin capability schema/API while preserving the global-admin backfill mapping.
