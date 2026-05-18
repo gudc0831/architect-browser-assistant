@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { PassThrough } from "node:stream";
-import { buildCodexPrompt, handleRequest, parseCodexJsonlOutput, readNativeMessage } from "./codex-bridge-host.mjs";
+import {
+  buildCodexPrompt,
+  buildSpawnInvocation,
+  handleRequest,
+  parseCodexJsonlOutput,
+  readNativeMessage,
+} from "./codex-bridge-host.mjs";
 
 const input = {
   question: "Check closure risk",
@@ -59,6 +65,23 @@ describe("codex native host", () => {
 
     expect(response.ok).toBe(true);
     expect(response.output.answer).toContain("Local Codex bridge mock response");
+  });
+
+  it("runs Windows PowerShell wrappers through powershell.exe", () => {
+    const invocation = buildSpawnInvocation("C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.ps1", ["exec", "--help"], "win32");
+
+    expect(invocation).toEqual({
+      command: "powershell.exe",
+      args: [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.ps1",
+        "exec",
+        "--help",
+      ],
+    });
   });
 
   it("reads one framed native message without waiting for stdin to close", async () => {

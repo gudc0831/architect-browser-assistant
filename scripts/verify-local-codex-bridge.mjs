@@ -21,6 +21,7 @@ const launcherPath = path.join(runtimeNativeHostDir, "architect-codex-bridge.cmd
 const distManifestPath = path.join(repoRoot, "dist", "manifest.json");
 
 const checks = [];
+let launcherCodexCliPath = "";
 
 try {
   await verify();
@@ -177,6 +178,7 @@ async function verifyLauncher(manifest) {
   );
 
   const codexCliPath = extractLauncherEnvValue(launcherText, "ARCHITECT_CODEX_CLI_PATH");
+  launcherCodexCliPath = codexCliPath || "";
   const codexCliPathUsesWindowsApps = Boolean(codexCliPath && /\\Program Files\\WindowsApps\\/i.test(codexCliPath));
   addCheck(
     "launcher-codex-path",
@@ -262,7 +264,11 @@ async function verifyNativeHostMock() {
 
 async function verifyCodexCliStatus() {
   const previousMock = process.env.ARCHITECT_CODEX_BRIDGE_MOCK;
+  const previousCodexCliPath = process.env.ARCHITECT_CODEX_CLI_PATH;
   delete process.env.ARCHITECT_CODEX_BRIDGE_MOCK;
+  if (launcherCodexCliPath) {
+    process.env.ARCHITECT_CODEX_CLI_PATH = launcherCodexCliPath;
+  }
   try {
     const response = await handleRequest({ type: "status", requestId: "verify-real-status" });
     const available = Boolean(response.ok && response.status?.available);
@@ -275,6 +281,11 @@ async function verifyCodexCliStatus() {
   } finally {
     if (previousMock !== undefined) {
       process.env.ARCHITECT_CODEX_BRIDGE_MOCK = previousMock;
+    }
+    if (previousCodexCliPath === undefined) {
+      delete process.env.ARCHITECT_CODEX_CLI_PATH;
+    } else {
+      process.env.ARCHITECT_CODEX_CLI_PATH = previousCodexCliPath;
     }
   }
 }

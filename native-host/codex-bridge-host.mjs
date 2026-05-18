@@ -245,7 +245,8 @@ function getCodexTimeoutMs() {
 
 function spawnAndCollect(command, args, stdinText, timeoutMs) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args, {
+    const invocation = buildSpawnInvocation(command, args);
+    const child = spawn(invocation.command, invocation.args, {
       cwd: process.env.ARCHITECT_CODEX_WORKDIR || process.cwd(),
       env: process.env,
       shell: false,
@@ -260,7 +261,7 @@ function spawnAndCollect(command, args, stdinText, timeoutMs) {
       if (!settled) {
         settled = true;
         child.kill();
-        reject(new Error(`Command timed out after ${timeoutMs}ms: ${command} ${args.join(" ")}`));
+        reject(new Error(`Command timed out after ${timeoutMs}ms: ${invocation.command} ${invocation.args.join(" ")}`));
       }
     }, timeoutMs);
 
@@ -287,11 +288,22 @@ function spawnAndCollect(command, args, stdinText, timeoutMs) {
         return;
       }
 
-      reject(new Error(err || `Command exited with code ${code}: ${command} ${args.join(" ")}`));
+      reject(new Error(err || `Command exited with code ${code}: ${invocation.command} ${invocation.args.join(" ")}`));
     });
 
     child.stdin.end(stdinText);
   });
+}
+
+export function buildSpawnInvocation(command, args, platform = process.platform) {
+  if (platform === "win32" && /\.ps1$/i.test(command)) {
+    return {
+      command: "powershell.exe",
+      args: ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", command, ...args],
+    };
+  }
+
+  return { command, args };
 }
 
 export function buildCodexPrompt(input) {
