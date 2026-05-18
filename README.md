@@ -72,16 +72,12 @@ npm run build
 $env:ARCHITECT_CHROME_EXTENSION_ID="<chrome-extension-id>"
 $env:ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT="<native-host signing subject>"
 $env:ARCHITECT_RELEASE_OWNER="<release owner>"
+$env:ARCHITECT_CHROME_WEB_STORE_PUBLISHER="<publisher account or group>"
+$env:ARCHITECT_NATIVE_HOST_INSTALL_ROOT="$env:LOCALAPPDATA\Architect\BrowserAssistant\native-host"
 npm run release:readiness:production
 ```
 
 The production readiness command does not upload to Chrome Web Store or sign an installer. It blocks promotion when production origin, extension id, signing subject, release owner, Web Store publisher, or native-host install-root metadata is missing.
-
-```powershell
-$env:ARCHITECT_CHROME_WEB_STORE_PUBLISHER="<publisher account or group>"
-$env:ARCHITECT_NATIVE_HOST_INSTALL_ROOT="$env:LOCALAPPDATA\ArchitectBrowserAssistant\native-host"
-npm run release:build:production
-```
 
 Focused development checks:
 
@@ -104,8 +100,8 @@ npm run native-host:install:windows -- -ExtensionId <chrome-extension-id>
 For a production-style local install check, install the native host into a stable directory and verify that Chrome is not pointed at the repo checkout:
 
 ```powershell
-npm run native-host:install:windows -- -ExtensionId <chrome-extension-id> -InstallRoot "$env:LOCALAPPDATA\ArchitectBrowserAssistant\native-host"
-npm run native-host:verify-production-install -- --extension-id <chrome-extension-id> --install-root "$env:LOCALAPPDATA\ArchitectBrowserAssistant\native-host" --json
+npm run native-host:install:windows -- -ExtensionId <chrome-extension-id> -InstallRoot "$env:LOCALAPPDATA\Architect\BrowserAssistant\native-host"
+npm run native-host:verify-production-install -- --extension-id <chrome-extension-id> --install-root "$env:LOCALAPPDATA\Architect\BrowserAssistant\native-host" --json
 npm run extension:verify-chrome-profile -- --extension-id <chrome-extension-id> --require-webstore --json --strict
 ```
 

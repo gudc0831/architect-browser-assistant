@@ -55,3 +55,7 @@ Req: Add a requirement-by-requirement completion audit for the active Slice 482 
 Diff: Added `Completion Audit` to the Slice 482 closeout with current proof and completion state for DB migration/backfill, embedding plan/worker, authenticated browser validation, production readiness, docs/worklogs, and goal closure.
 Why: The active goal must not be marked complete unless every original requirement is proven; the audit makes the remaining approval-gated blockers explicit.
 Verify/Time: 2026-05-18 12:12 KST; document-only update. No commands were executed because the audit summarizes already-recorded evidence and missing approvals.
+Req: Align approval-gated env/setup examples with the Slice 482 closeout.
+Diff: Updated the browser-assistant README production metadata and stable install-root examples to use the same `%LOCALAPPDATA%\Architect\BrowserAssistant\native-host` path as the approval packet.
+Why: The remaining production install-root step is approval-gated, so public setup docs should point to the exact path used by the verifier and closeout evidence.
+Verify/Time: 2026-05-18 12:14 KST; document/example-only update. No secret, registry, or install-root mutation was performed.
