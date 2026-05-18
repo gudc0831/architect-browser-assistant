@@ -122,6 +122,7 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | Current DB/deployment/plan/readiness recheck on 2026-05-18 12:35-12:36 KST | Env presence check still shows embedding provider/key/write-audit and production metadata absent. Supabase MCP read-only SQL still reports `file_analysis_chunks=0`, `assistant_audit_events=0`, `vector=0.8.0`, and all four target migrations finished; `postgres`/`Supavisor` remains at 1 idle session with no target-class saturation. Vercel MCP still lists latest deployment `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` as `READY` on Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`. Escalated `npm run file-analysis:embedding:plan -- --json --sample-limit 0` reaches the configured DB with `totalChunks=0`, `missingEmbeddings=0`, and provider disabled. Production readiness with the Vercel origin and observed extension id remains 15 pass, 1 warn, 1 fail for missing real signing/Web Store/install-root metadata. |
 | Current env-file and worker recheck on 2026-05-18 12:39-12:40 KST | Process env and `architect-saas/.env.local` both lack `ARCHITECT_FILE_EMBEDDING_PROVIDER`, `ARCHITECT_FILE_EMBEDDING_API_KEY`, `OPENAI_API_KEY`, `ARCHITECT_FILE_EMBEDDING_WRITE_AUDIT`, and production release metadata keys; `architect-browser-assistant` has no `.env*` files. Supabase MCP still confirms `file_analysis_chunks=0` and migrations finished; latest Vercel deployment remains `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` / Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`. Escalated worker dry-run selects/updates `0` chunks and remains blocked by provider/key. Escalated execute path exits `1` with provider/key/write-audit blockers, selected/updated `0`, and no provider call or DB mutation evidence. |
 | Approved embedding/native-host closeout on 2026-05-18 12:45-12:47 KST | Operator approval supplied embedding provider/key/write-audit, production metadata, and native-host install-root/registry scope. OpenAI Platform connector created encrypted API key `architect-saas Codex`; helper wrote `OPENAI_API_KEY` to ignored `architect-saas/.env.local` without printing the key, then non-secret `ARCHITECT_FILE_EMBEDDING_PROVIDER=openai` and write-audit phrase were added. Escalated embedding plan now reports provider `openai`, key configured, configured DB available, `totalChunks=0`, `missingEmbeddings=0`, blockers `[]`; dry-run is `dry_run` with no provider call/mutation; execute with `--write-audit ALLOW_FILE_ANALYSIS_EMBEDDING_WRITE` accepts write audit and exits `0` with selected/updated `0`, no provider call, and no DB mutation because no chunks exist. Native host was copied to `%LOCALAPPDATA%\Architect\BrowserAssistant\native-host` and HKCU Chrome NativeMessagingHosts was updated for extension `ianebfgjhjklildppcocmbmifedapooj`; escalated production install verifier passes at 12 pass, 1 warn, 0 fail. Production readiness with real SaaS origin, observed extension id, and real install root now fails only for missing actual `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`, `ARCHITECT_RELEASE_OWNER`, and `ARCHITECT_CHROME_WEB_STORE_PUBLISHER`; current-user code-signing cert store and repo metadata did not provide those values. |
+| Owner/publisher metadata recheck on 2026-05-18 13:25 KST | Operator supplied `ARCHITECT_RELEASE_OWNER=gudc0831` and `ARCHITECT_CHROME_WEB_STORE_PUBLISHER=gudc083111@gmail.com`, and confirmed no code-signing certificate is available yet. With real SaaS origin, observed extension id, install root, owner, and publisher, `npm run release:readiness:production -- --json --strict --extension-id ianebfgjhjklildppcocmbmifedapooj` narrows to 16 pass, 0 warn, 1 fail. The only remaining failure is `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`. |
 
 ## Completion Audit
 
@@ -131,22 +132,22 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | `file-analysis:embedding:plan -- --json --sample-limit 0` | Escalated command reaches the configured DB with provider `openai`, key configured, `totalChunks=0`, `missingEmbeddings=0`, and blockers `[]`. | proven_complete_for_current_data |
 | Embedding worker dry-run/blocked/execute path after provider/key/write-audit approval | Dry-run is `dry_run` with selected/updated `0` and no provider call/mutation. Execute with the approved write-audit flag exits `0`, accepts write audit, and selected/updated `0` because there are no missing chunks. | proven_complete_for_current_data |
 | Operator `/admin/knowledge` and `/daily` browser validation | Authenticated Chrome validation passed on the Vercel branch alias; latest deployment is `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` / Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`. | proven_complete |
-| Production release readiness | Production SaaS origin, observed extension id, and stable native-host install root are verified. Native-host production install verifier passes at 12 pass, 1 warn, 0 fail. `release:readiness:production` still fails only because real signing subject, release owner, and Chrome Web Store publisher values are not present. | blocked_by_missing_real_signing_owner_publisher |
+| Production release readiness | Production SaaS origin, observed extension id, stable native-host install root, release owner, and Chrome Web Store publisher are verified. Native-host production install verifier passes at 12 pass, 1 warn, 0 fail. `release:readiness:production` now reports 16 pass, 0 warn, 1 fail because no code-signing certificate/subject is available. | blocked_by_missing_code_signing_subject |
 | Sub-slice document and worklog evidence | This document, `plans/README.md`, and paired worklogs record each current proof and blocker. | proven_current_but_final_hashes_change_until_blockers_close |
-| Goal completion | DB, embedding provider/write-audit, operator browser validation, and native-host install-root are proven for current data. Real production signing subject, release owner, and Chrome Web Store publisher values are still missing, so `update_goal complete` must not be called. | not_complete |
+| Goal completion | DB, embedding provider/write-audit, operator browser validation, native-host install-root, release owner, and Chrome Web Store publisher are proven for current data. The code-signing certificate subject is still missing, so `update_goal complete` must not be called. | not_complete |
 
 ## Commit / Deployment State
 
 | Repo or deployment | Current state |
 | --- | --- |
-| `architect-saas` local HEAD | `b955e85f36b44358a19248639834b9e78dde43ed` on `codex/multi-user-transition`; working tree only has the pre-existing untracked `.codex-run/`. |
-| `architect-saas` upstream | `origin/codex/multi-user-transition` is `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`; local branch is ahead by 3 documentation/env-example commits. |
+| `architect-saas` local HEAD | `712f8ee28a6323df055d5761f50edca5c35d34bb` on `codex/multi-user-transition`; working tree only has the pre-existing untracked `.codex-run/`. |
+| `architect-saas` upstream | `origin/codex/multi-user-transition` is `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`; local branch is ahead by 4 documentation/env-example commits. |
 | Vercel branch alias deployment | `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` is `READY` and serves Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`; authenticated browser proof is tied to this deployed SHA. |
-| `architect-browser-assistant` local HEAD tracking | Documentation-only closeout commits advance this value during the audit; use `git rev-parse HEAD` after the final documentation commit for the authoritative hash reported to the operator. Before the 12:25 continuation refresh, local HEAD was `5688a37923b1aa22716a7b52c31a12336fcde619` on `codex/task-assistant-core-loop`; branch has no upstream configured and the working tree was clean. |
+| `architect-browser-assistant` local HEAD tracking | Documentation-only closeout commits advance this value during the audit; use `git rev-parse HEAD` after the final documentation commit for the authoritative hash reported to the operator. Branch is `codex/task-assistant-core-loop` with no upstream configured. |
 
 ## Blocked Operations
 
-Provider-backed embedding gates are now configured in ignored `architect-saas/.env.local`, but the current migrated cloud DB has no `files` or `file_analysis_chunks` rows, so there is no backfill payload to process and no provider call is made. `/admin/knowledge` and `/daily` authenticated UI signoff passed after the `architect-saas` pool cap default-1 patch was pushed and deployed to Vercel. Native-host stable install-root and HKCU registry verification now pass in the operator context. Production legal-source import, external remote sync writes, Web Store upload, signed native-host installer release, and full production readiness remain blocked until actual production signing subject, release owner, and Chrome Web Store publisher values are supplied.
+Provider-backed embedding gates are now configured in ignored `architect-saas/.env.local`, but the current migrated cloud DB has no `files` or `file_analysis_chunks` rows, so there is no backfill payload to process and no provider call is made. `/admin/knowledge` and `/daily` authenticated UI signoff passed after the `architect-saas` pool cap default-1 patch was pushed and deployed to Vercel. Native-host stable install-root and HKCU registry verification now pass in the operator context. Production legal-source import, external remote sync writes, Web Store upload, signed native-host installer release, and full production readiness remain blocked until an actual code-signing certificate subject is supplied.
 
 ## Approval Packets
 
@@ -186,13 +187,13 @@ npm run native-host:verify-production-install -- --json --install-root "$env:LOC
 
 ### Production Release Metadata
 
-Required real metadata:
-- `ARCHITECT_CHROME_EXTENSION_ID=ianebfgjhjklildppcocmbmifedapooj` or `--extension-id ianebfgjhjklildppcocmbmifedapooj`.
-- `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`.
-- `ARCHITECT_RELEASE_OWNER`.
-- `ARCHITECT_CHROME_WEB_STORE_PUBLISHER`.
-- `ARCHITECT_NATIVE_HOST_INSTALL_ROOT`.
-- `ARCHITECT_SAAS_ORIGIN=https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app`.
+Required real metadata status:
+- Supplied: `ARCHITECT_CHROME_EXTENSION_ID=ianebfgjhjklildppcocmbmifedapooj` or `--extension-id ianebfgjhjklildppcocmbmifedapooj`.
+- Missing: `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`.
+- Supplied: `ARCHITECT_RELEASE_OWNER=gudc0831`.
+- Supplied: `ARCHITECT_CHROME_WEB_STORE_PUBLISHER=gudc083111@gmail.com`.
+- Supplied: `ARCHITECT_NATIVE_HOST_INSTALL_ROOT=%LOCALAPPDATA%\Architect\BrowserAssistant\native-host`.
+- Supplied: `ARCHITECT_SAAS_ORIGIN=https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app`.
 
 Verification sequence in `architect-browser-assistant`:
 
