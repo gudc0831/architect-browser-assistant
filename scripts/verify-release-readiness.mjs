@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const EXTENSION_ID_PATTERN = /^[a-p]{32}$/;
 const HOST_NAME = "com.architect.browser_assistant.codex_bridge";
+const UNSIGNED_NATIVE_HOST_WAIVER_VALUE = "ALLOW_UNSIGNED_NATIVE_HOST_WITHOUT_CODE_SIGNING_CERT";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..");
@@ -247,12 +248,16 @@ function verifyProductionSigningMetadata() {
   const releaseOwner = process.env.ARCHITECT_RELEASE_OWNER || "";
   const webStorePublisher = process.env.ARCHITECT_CHROME_WEB_STORE_PUBLISHER || "";
   const nativeHostInstallRoot = process.env.ARCHITECT_NATIVE_HOST_INSTALL_ROOT || "";
+  const hasSigningSubject = Boolean(signingSubject.trim());
+  const hasUnsignedNativeHostWaiver =
+    options.allowUnsignedNativeHost ||
+    process.env.ARCHITECT_NATIVE_HOST_SIGNING_WAIVER === UNSIGNED_NATIVE_HOST_WAIVER_VALUE;
   const missing = [];
 
   if (!EXTENSION_ID_PATTERN.test(extensionId)) {
     missing.push("ARCHITECT_CHROME_EXTENSION_ID or --extension-id");
   }
-  if (!signingSubject.trim()) {
+  if (!hasSigningSubject && !hasUnsignedNativeHostWaiver) {
     missing.push("ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT");
   }
   if (!releaseOwner.trim()) {
@@ -265,14 +270,16 @@ function verifyProductionSigningMetadata() {
     missing.push("ARCHITECT_NATIVE_HOST_INSTALL_ROOT");
   }
 
-  addCheck(
-    "production-signing-metadata",
-    "Production signing metadata",
-    missing.length === 0 ? "pass" : options.production ? "fail" : "warn",
-    missing.length === 0
-      ? "Production extension id, native-host signing subject, release owner, Web Store publisher, and install root are configured."
-      : `Missing production signing metadata: ${missing.join(", ")}.`,
-  );
+  const signingMetadataStatus =
+    missing.length > 0 ? (options.production ? "fail" : "warn") : hasSigningSubject ? "pass" : "warn";
+  const signingMetadataDetail =
+    missing.length > 0
+      ? `Missing production signing metadata: ${missing.join(", ")}.`
+      : hasSigningSubject
+        ? "Production extension id, native-host signing subject, release owner, Web Store publisher, and install root are configured."
+        : "Production extension id, release owner, Web Store publisher, and install root are configured; native-host code signing is explicitly waived for this unsigned interim path.";
+
+  addCheck("production-signing-metadata", "Production signing metadata", signingMetadataStatus, signingMetadataDetail);
 
   addCheck(
     "web-store-upload-boundary",
@@ -327,6 +334,7 @@ function printReport(report) {
 function parseArgs(args) {
   const parsed = {
     extensionId: "",
+    allowUnsignedNativeHost: false,
     json: false,
     production: false,
     strict: false,
@@ -341,6 +349,10 @@ function parseArgs(args) {
     }
     if (arg === "--json") {
       parsed.json = true;
+      continue;
+    }
+    if (arg === "--allow-unsigned-native-host") {
+      parsed.allowUnsignedNativeHost = true;
       continue;
     }
     if (arg === "--production") {

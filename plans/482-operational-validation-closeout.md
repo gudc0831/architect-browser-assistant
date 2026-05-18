@@ -2,7 +2,7 @@
 
 Status: `implemented`
 
-Credentialed production operations status (2026-05-18 KST): `blocked_with_reason`
+Credentialed production operations status (2026-05-18 KST): `closed_with_unsigned_native_host_waiver`
 
 ## Scope
 
@@ -124,6 +124,7 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | Approved embedding/native-host closeout on 2026-05-18 12:45-12:47 KST | Operator approval supplied embedding provider/key/write-audit, production metadata, and native-host install-root/registry scope. OpenAI Platform connector created encrypted API key `architect-saas Codex`; helper wrote `OPENAI_API_KEY` to ignored `architect-saas/.env.local` without printing the key, then non-secret `ARCHITECT_FILE_EMBEDDING_PROVIDER=openai` and write-audit phrase were added. Escalated embedding plan now reports provider `openai`, key configured, configured DB available, `totalChunks=0`, `missingEmbeddings=0`, blockers `[]`; dry-run is `dry_run` with no provider call/mutation; execute with `--write-audit ALLOW_FILE_ANALYSIS_EMBEDDING_WRITE` accepts write audit and exits `0` with selected/updated `0`, no provider call, and no DB mutation because no chunks exist. Native host was copied to `%LOCALAPPDATA%\Architect\BrowserAssistant\native-host` and HKCU Chrome NativeMessagingHosts was updated for extension `ianebfgjhjklildppcocmbmifedapooj`; escalated production install verifier passes at 12 pass, 1 warn, 0 fail. Production readiness with real SaaS origin, observed extension id, and real install root now fails only for missing actual `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`, `ARCHITECT_RELEASE_OWNER`, and `ARCHITECT_CHROME_WEB_STORE_PUBLISHER`; current-user code-signing cert store and repo metadata did not provide those values. |
 | Owner/publisher metadata recheck on 2026-05-18 13:25 KST | Operator supplied `ARCHITECT_RELEASE_OWNER=gudc0831` and `ARCHITECT_CHROME_WEB_STORE_PUBLISHER=gudc083111@gmail.com`, and confirmed no code-signing certificate is available yet. With real SaaS origin, observed extension id, install root, owner, and publisher, `npm run release:readiness:production -- --json --strict --extension-id ianebfgjhjklildppcocmbmifedapooj` narrows to 16 pass, 0 warn, 1 fail. The only remaining failure is `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`. |
 | Code-signing subject continuation recheck on 2026-05-18 13:32 KST | Operator-context `Cert:\CurrentUser\My -CodeSigningCert` inspection returns no current-user code-signing certificate rows. Re-running `npm run release:readiness:production -- --json --strict --extension-id ianebfgjhjklildppcocmbmifedapooj` with the real SaaS origin, extension id, install root, release owner, and Web Store publisher still reports 16 pass, 0 warn, 1 fail. The only failure remains `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`. |
+| Unsigned native-host waiver closeout on 2026-05-18 13:42 KST | Operator directed the closeout to proceed without a code-signing certificate and with the supplied release owner/Web Store publisher metadata. The verifier now requires an explicit `--allow-unsigned-native-host` waiver for this interim path; default production readiness still fails without `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`. With the waiver, real SaaS origin, observed extension id, stable install root, `ARCHITECT_RELEASE_OWNER=gudc0831`, and `ARCHITECT_CHROME_WEB_STORE_PUBLISHER=gudc083111@gmail.com`, `npm run release:readiness:production -- --json --strict --extension-id ianebfgjhjklildppcocmbmifedapooj --allow-unsigned-native-host` exits `0` with 16 pass, 1 warn, 0 fail. |
 
 ## Completion Audit
 
@@ -133,9 +134,9 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | `file-analysis:embedding:plan -- --json --sample-limit 0` | Escalated command reaches the configured DB with provider `openai`, key configured, `totalChunks=0`, `missingEmbeddings=0`, and blockers `[]`. | proven_complete_for_current_data |
 | Embedding worker dry-run/blocked/execute path after provider/key/write-audit approval | Dry-run is `dry_run` with selected/updated `0` and no provider call/mutation. Execute with the approved write-audit flag exits `0`, accepts write audit, and selected/updated `0` because there are no missing chunks. | proven_complete_for_current_data |
 | Operator `/admin/knowledge` and `/daily` browser validation | Authenticated Chrome validation passed on the Vercel branch alias; latest deployment is `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` / Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`. | proven_complete |
-| Production release readiness | Production SaaS origin, observed extension id, stable native-host install root, release owner, and Chrome Web Store publisher are verified. Native-host production install verifier passes at 12 pass, 1 warn, 0 fail. `release:readiness:production` now reports 16 pass, 0 warn, 1 fail because no code-signing certificate/subject is available. | blocked_by_missing_code_signing_subject |
-| Sub-slice document and worklog evidence | This document, `plans/README.md`, and paired worklogs record each current proof and blocker. | proven_current_but_final_hashes_change_until_blockers_close |
-| Goal completion | DB, embedding provider/write-audit, operator browser validation, native-host install-root, release owner, and Chrome Web Store publisher are proven for current data. The code-signing certificate subject is still missing, so `update_goal complete` must not be called. | not_complete |
+| Production release readiness | Production SaaS origin, observed extension id, stable native-host install root, release owner, and Chrome Web Store publisher are verified. Native-host production install verifier passes at 12 pass, 1 warn, 0 fail. Default signed production readiness still fails without `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`; the operator-approved unsigned interim path requires `--allow-unsigned-native-host` and passes at 16 pass, 1 warn, 0 fail. | proven_with_unsigned_native_host_waiver |
+| Sub-slice document and worklog evidence | This document, `plans/README.md`, and paired worklogs record each current proof, the unsigned native-host waiver, and the deferred signed-release boundary. | proven_current |
+| Goal completion | DB, embedding provider/write-audit, operator browser validation, native-host install-root, release owner, Chrome Web Store publisher, and the operator-approved unsigned native-host waiver path are proven for current data. This does not claim signed native-host release completion; code-signing certificate acquisition remains deferred outside this closeout. | complete_for_operator_approved_scope |
 
 ## Commit / Deployment State
 
@@ -148,7 +149,7 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 
 ## Blocked Operations
 
-Provider-backed embedding gates are now configured in ignored `architect-saas/.env.local`, but the current migrated cloud DB has no `files` or `file_analysis_chunks` rows, so there is no backfill payload to process and no provider call is made. `/admin/knowledge` and `/daily` authenticated UI signoff passed after the `architect-saas` pool cap default-1 patch was pushed and deployed to Vercel. Native-host stable install-root and HKCU registry verification now pass in the operator context. Production legal-source import, external remote sync writes, Web Store upload, signed native-host installer release, and full production readiness remain blocked until an actual code-signing certificate subject is supplied.
+Provider-backed embedding gates are now configured in ignored `architect-saas/.env.local`, but the current migrated cloud DB has no `files` or `file_analysis_chunks` rows, so there is no backfill payload to process and no provider call is made. `/admin/knowledge` and `/daily` authenticated UI signoff passed after the `architect-saas` pool cap default-1 patch was pushed and deployed to Vercel. Native-host stable install-root and HKCU registry verification now pass in the operator context. Production legal-source import, external remote sync writes, Web Store upload, and signed native-host installer release remain outside this closeout. Full signed-native-host readiness still requires an actual code-signing certificate subject; the current operator-approved closeout uses the explicit unsigned native-host waiver.
 
 ## Approval Packets
 
@@ -190,7 +191,8 @@ npm run native-host:verify-production-install -- --json --install-root "$env:LOC
 
 Required real metadata status:
 - Supplied: `ARCHITECT_CHROME_EXTENSION_ID=ianebfgjhjklildppcocmbmifedapooj` or `--extension-id ianebfgjhjklildppcocmbmifedapooj`.
-- Missing: `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`.
+- Deferred by operator: `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`.
+- Required for unsigned interim closeout: `--allow-unsigned-native-host`.
 - Supplied: `ARCHITECT_RELEASE_OWNER=gudc0831`.
 - Supplied: `ARCHITECT_CHROME_WEB_STORE_PUBLISHER=gudc083111@gmail.com`.
 - Supplied: `ARCHITECT_NATIVE_HOST_INSTALL_ROOT=%LOCALAPPDATA%\Architect\BrowserAssistant\native-host`.

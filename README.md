@@ -79,6 +79,14 @@ npm run release:readiness:production
 
 The production readiness command does not upload to Chrome Web Store or sign an installer. It blocks promotion when production origin, extension id, signing subject, release owner, Web Store publisher, or native-host install-root metadata is missing.
 
+If the operator explicitly approves an interim unsigned native-host path because no code-signing certificate exists yet, keep the owner, publisher, extension id, SaaS origin, and install-root metadata configured and run:
+
+```powershell
+npm run release:readiness:production -- --allow-unsigned-native-host
+```
+
+That waiver turns only the missing native-host signing subject into a warning. It does not sign an installer and does not remove the need for a real code-signing certificate before a signed native-host release.
+
 Focused development checks:
 
 ```powershell
