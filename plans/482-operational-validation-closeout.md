@@ -127,6 +127,15 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | Sub-slice document and worklog evidence | This document, `plans/README.md`, and paired worklogs record each current proof and blocker. | proven_current_but_final_hashes_change_until_blockers_close |
 | Goal completion | Required external approvals/metadata are still missing, so `update_goal complete` must not be called. | not_complete |
 
+## Commit / Deployment State
+
+| Repo or deployment | Current state |
+| --- | --- |
+| `architect-saas` local HEAD | `b955e85f36b44358a19248639834b9e78dde43ed` on `codex/multi-user-transition`; working tree only has the pre-existing untracked `.codex-run/`. |
+| `architect-saas` upstream | `origin/codex/multi-user-transition` is `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`; local branch is ahead by 3 documentation/env-example commits. |
+| Vercel branch alias deployment | `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` is `READY` and serves Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`; authenticated browser proof is tied to this deployed SHA. |
+| `architect-browser-assistant` local HEAD | `713c3196813beebfb503bdd43ea3b47fd1d7cccd` on `codex/task-assistant-core-loop`; branch has no upstream configured and the working tree is clean. |
+
 ## Blocked Operations
 
 Provider-backed embedding mutation remains blocked until embedding provider credentials and write-audit approval are supplied; the current migrated cloud DB has no `files` or `file_analysis_chunks` rows, so there is no backfill payload to process. `/admin/knowledge` and `/daily` authenticated UI signoff passed after the `architect-saas` pool cap default-1 patch was pushed and deployed to Vercel. Production legal-source import, external remote sync writes, Web Store upload, signed native-host installer release, and production readiness remain blocked until production signing/Web Store/native-host install-root metadata, explicit native-host install-root approval, and external approvals are supplied.

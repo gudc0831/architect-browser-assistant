@@ -59,3 +59,7 @@ Req: Align approval-gated env/setup examples with the Slice 482 closeout.
 Diff: Updated the browser-assistant README production metadata and stable install-root examples to use the same `%LOCALAPPDATA%\Architect\BrowserAssistant\native-host` path as the approval packet.
 Why: The remaining production install-root step is approval-gated, so public setup docs should point to the exact path used by the verifier and closeout evidence.
 Verify/Time: 2026-05-18 12:14 KST; document/example-only update. No secret, registry, or install-root mutation was performed.
+Req: Record local commit versus deployed SHA state for the Slice 482 closeout.
+Diff: Added `Commit / Deployment State` to the Slice 482 closeout, separating SaaS local HEAD, SaaS upstream/deployed SHA, Vercel deployment, and browser-assistant local HEAD.
+Why: The active goal reports repo-specific commit hashes, but the authenticated Vercel proof is tied to deployed SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c` while local SaaS documentation/env-example commits are ahead of upstream.
+Verify/Time: 2026-05-18 12:20 KST; `architect-saas` local HEAD `b955e85f36b44358a19248639834b9e78dde43ed` is ahead of `origin/codex/multi-user-transition` by 3, Vercel `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` serves SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`, and `architect-browser-assistant` local HEAD is `713c3196813beebfb503bdd43ea3b47fd1d7cccd` with no upstream.
