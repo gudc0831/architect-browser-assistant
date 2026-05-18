@@ -35,3 +35,7 @@ Req: Prepare but do not execute production native-host stable install-root regis
 Diff: Recorded the exact persistent native-host install-root action that still requires explicit operator approval; no registry or install-root change was made.
 Why: Updating HKCU Chrome NativeMessagingHosts and copying the native host to a stable user-local install root is a security-relevant persistent browser/system configuration change, so it cannot be performed from the goal continuation alone.
 Verify/Time: 2026-05-18 12:00 KST; prepared command would use extension id `ianebfgjhjklildppcocmbmifedapooj` and install root `%LOCALAPPDATA%\Architect\BrowserAssistant\native-host`; execution was not performed pending explicit approval.
+Req: Confirm current Vercel project/deployment metadata through the connected Vercel account.
+Diff: Added external Vercel project/deployment evidence to the Slice 482 closeout; no runtime code changed.
+Why: The branch alias browser proof should be tied to the currently visible Vercel deployment, not only local git or browser state.
+Verify/Time: 2026-05-18 12:03 KST; Vercel MCP lists team `chois-projects-7b2948cf`, project `architect-start2` / `prj_wsYMFyT93yGhR2IYDPkb8J674G5b`, latest deployment `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` as READY with source `git`, branch alias `architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app`, and Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`; local `.vercel/project.json` and Vercel CLI were absent, so deployment env metadata was not inspectable locally.
