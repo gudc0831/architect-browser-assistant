@@ -11,3 +11,7 @@ Req: Refresh Slice 482 evidence after the SaaS pool cap default was tightened.
 Diff: Updated Slice 482 evidence and next-candidate text to require push/deploy of the `architect-saas` pool default-1 patch before `/daily` can be revalidated on the branch alias.
 Why: Vercel inspection shows the branch alias still serves `dpl_GQF8SCe4Q2oemZtkommTMCw9Kh9X` / Git SHA `9ec451b60a4cc003ec84aa02920b1a781a6850cc`, so local SaaS commits are not yet in the authenticated browser target.
 Verify/Time: 2026-05-18 11:19-11:24 KST; escalated SaaS `npm run data:doctor`, embedding plan, chunk debug, worker dry-run, and worker execute-path validations all reached the configured DB; `npm run release:readiness:production -- --json --strict` still fails intentionally with 13 pass, 1 warn, 3 fail for localhost origin and missing production metadata.
+Req: Record post-deploy authenticated browser validation for Slice 482.
+Diff: Updated Slice 482 docs and roadmap next-candidate text after the `architect-saas` pool cap default-1 patch was pushed and deployed.
+Why: `/daily` could only be signed off after the new Vercel deployment served SHA `6820a5aa88154c01129ffa4eb4706d0759bfbecf` instead of the stale `9ec451b` deployment.
+Verify/Time: 2026-05-18 11:30-11:34 KST; Vercel `dpl_13w2ff8V7JGQaGUKwU1gzEeBvV4R` is READY; authenticated Chrome validates `/admin/knowledge` and `/daily`; final `pg_stat_activity` shows `postgres`/`Supavisor` at 1 idle session; production readiness remains blocked only by localhost origin and missing production metadata.

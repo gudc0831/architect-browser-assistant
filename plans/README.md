@@ -1253,7 +1253,7 @@ Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence
 
 ## Next Goal Candidate
 
-`After the umbrella operational gap pass, complete credentialed production operations: push/deploy and revalidate the architect-saas Prisma/pg pool cap default-1 patch for /daily loading, supply embedding provider/key/write-audit approval, configure production SaaS origin/signing metadata, rerun release:readiness:production, configure legal-source production approvals, and perform production Web Store/native-host release signing outside the repo.`
+`After the umbrella operational gap pass, complete credentialed production operations: supply embedding provider/key/write-audit approval, configure production SaaS origin/signing metadata, rerun release:readiness:production, configure legal-source production approvals, and perform production Web Store/native-host release signing outside the repo.`
 
 Success criteria:
 
