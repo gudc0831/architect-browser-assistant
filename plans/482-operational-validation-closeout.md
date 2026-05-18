@@ -99,6 +99,13 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | Vercel deployment `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` on 2026-05-18 | READY; branch alias serves Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c` |
 | Authenticated `/daily` on `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` | passed after 15s; renders PostgreSQL-backed project `밀양부북`, empty daily grid, export button, quick-create controls, task detail panel, and no console error/warn entries |
 | Final Supabase MCP stale idle cleanup on 2026-05-18 | terminated 3 pre-validation and 2 post-validation `postgres`/`Supavisor` idle sessions; final aggregate shows 1 newly-created target idle inspection connection at 12s age, with system/admin/postgREST sessions untouched |
+| Continuation env gate check on 2026-05-18 11:47 KST | embedding provider/key/write-audit envs are absent; production signing metadata envs are absent |
+| Continuation Supabase SQL check on 2026-05-18 11:49 KST | `file_analysis_chunks` exists, `file_analysis_chunks=0`, `assistant_audit_events=0`, `vector=0.8.0`, and all four target migrations are `finished=true` |
+| Escalated `npm run file-analysis:embedding:plan -- --json --sample-limit 0` on 2026-05-18 11:47 KST | configured DB available; `totalChunks=0`, `missingEmbeddings=0`; blocked only by provider disabled |
+| Escalated `npm run file-analysis:embedding:worker -- --json --sample-limit 0` on 2026-05-18 11:47 KST | dry-run blocked by missing provider/key; selected `0`, updated `0`, no provider call or DB mutation |
+| Escalated `npm run file-analysis:embedding:worker -- --execute --json --sample-limit 0` on 2026-05-18 11:48 KST | exits `1` as designed with provider/key/write-audit blockers; selected `0`, updated `0` |
+| `npm run release:readiness:production -- --json --strict` on 2026-05-18 11:47 KST | still blocked: 13 pass, 1 warn, 3 fail for localhost manifest origin and missing production metadata |
+| Continuation stale idle cleanup on 2026-05-18 11:49 KST | terminated 2 `postgres`/`Supavisor` idle sessions created by current checks; final aggregate left 1 newly-created target idle inspection connection at 12s age |
 
 ## Blocked Operations
 
