@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-18): `Umbrella operational gaps implemented through Slice 482; the operator-approved cloud DB migration was applied with backup cloud-2026-05-18T01-38-24-479Z-b28340f1, file_analysis_chunks/vector are now present with zero chunk rows, and /admin/knowledge authenticates successfully. Credentialed production operations still remain blocked by missing embedding provider/write-audit approval, /daily workspace loading, and missing production SaaS origin/signing metadata. The cloud data guard now treats unknown row counts conservatively as non-empty.`
+Current implementation goal (2026-05-18): `Umbrella operational gaps implemented through Slice 482; the operator-approved cloud DB migration was applied with backup cloud-2026-05-18T01-38-24-479Z-b28340f1, file_analysis_chunks/vector are now present with zero chunk rows, and /admin/knowledge authenticates successfully. Credentialed production operations still remain blocked by missing embedding provider/write-audit approval, /daily workspace loading with Supabase session pool saturation observed, and missing production SaaS origin/signing metadata. The cloud data guard now treats unknown row counts conservatively as non-empty.`
 
 Slice 482 records umbrella operational validation and blocked runtime conditions.
 Slice 481 adds explicit Knowledge admin capability schema/API while preserving the global-admin backfill mapping.
@@ -1253,7 +1253,7 @@ Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence
 
 ## Next Goal Candidate
 
-`After the umbrella operational gap pass, complete credentialed production operations: supply embedding provider/key/write-audit approval, investigate why /daily remains at workspace loading despite the migrated DB and authenticated session, configure production SaaS origin/signing metadata, rerun release:readiness:production, configure legal-source production approvals, and perform production Web Store/native-host release signing outside the repo.`
+`After the umbrella operational gap pass, complete credentialed production operations: approve or otherwise resolve stale idle Supavisor/Postgres session cleanup for /daily loading, supply embedding provider/key/write-audit approval, configure production SaaS origin/signing metadata, rerun release:readiness:production, configure legal-source production approvals, and perform production Web Store/native-host release signing outside the repo.`
 
 Success criteria:
 
