@@ -91,3 +91,7 @@ Req: Refresh commit/deployment state after the owner/publisher metadata gate.
 Diff: Updated the Slice 482 commit/deployment state table with the current `architect-saas` local and upstream hashes, and changed the production metadata packet from a generic needed-values list to supplied/missing status; no runtime code changed.
 Why: The closeout should not leave stale repo-state or metadata-packet evidence after the final metadata gate moved.
 Verify/Time: 2026-05-18 13:25 KST; `architect-saas` local HEAD is `712f8ee28a6323df055d5761f50edca5c35d34bb`, upstream remains `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`, the local branch is ahead by 4 with only pre-existing `.codex-run/` untracked, and the final `architect-browser-assistant` hash is reported after this documentation commit.
+Req: Recheck the final production code-signing subject blocker.
+Diff: Added a Slice 482 continuation recheck row for the operator certificate store and production readiness result; no runtime code changed.
+Why: The active goal persists, but completion is still not proven until a real native-host code-signing certificate subject exists.
+Verify/Time: 2026-05-18 13:32 KST; operator-context `Cert:\CurrentUser\My -CodeSigningCert` inspection returned no current-user code-signing certificate rows, and production readiness with real SaaS origin, observed extension id, install root, release owner, and Web Store publisher remains 16 pass, 0 warn, 1 fail with only `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT` missing.
