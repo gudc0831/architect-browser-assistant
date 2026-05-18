@@ -32,6 +32,8 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | Supabase stale idle session cleanup | temporary_only | Supabase MCP cleanup terminated stale `postgres`/`Supavisor` idle sessions. An authenticated `/daily` reload then refilled the current deployment's pool back to 15 idle sessions, so the durable blocker is app runtime pool exhaustion on the deployed Git SHA. `architect-saas` now caps Prisma/pg pool usage to default 1 pending redeploy and revalidation; after final cleanup/observation the target class was non-saturated. |
 | Operator browser validation redeploy recheck | passed | New deployment `dpl_13w2ff8V7JGQaGUKwU1gzEeBvV4R` / Git SHA `6820a5aa88154c01129ffa4eb4706d0759bfbecf` is `READY`; authenticated Chrome validation confirms `/admin/knowledge` renders the Knowledge Admin shell and `/daily` renders the PostgreSQL-backed workspace for project `밀양부북`, empty daily grid, export button, quick-create controls, and task detail panel. |
 | Supabase idle session redeploy recheck | resolved_for_current_validation | After the new deployment validation tabs were closed, final `pg_stat_activity` aggregate shows `postgres`/`Supavisor` at 1 idle session and no target-class saturation. |
+| Latest branch alias validation | passed | Docs/worklog deployment `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` / Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c` is `READY`; authenticated Chrome `/daily` validation reached the main workspace after 15s with project `밀양부북`, `로그아웃`, PostgreSQL/Supabase connection copy, empty daily grid, export button, quick-create controls, task detail panel, and no console error/warn entries. |
+| Latest stale idle cleanup | resolved_for_current_validation | Supabase MCP first terminated 3 `postgres`/`Supavisor` idle sessions, then after browser validation terminated 2 more. Final aggregate left only 1 newly-created `postgres`/`Supavisor` idle inspection connection at 12s age; Supabase system/admin/postgREST sessions were left untouched. |
 | Production release readiness | blocked_with_reason | `npm run build` passes in `architect-browser-assistant`; `npm run release:readiness:production -- --json --strict` at 2026-05-18 KST still reports 13 pass, 1 warn, 3 fail: localhost origin in host/content-script patterns and missing production signing metadata. |
 
 ## Verification Log
@@ -94,6 +96,9 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | Authenticated `/admin/knowledge` on `dpl_13w2ff8V7JGQaGUKwU1gzEeBvV4R` | passed; Knowledge Admin shell renders with candidate filters and empty counts |
 | Authenticated `/daily` on `dpl_13w2ff8V7JGQaGUKwU1gzEeBvV4R` | passed after initial load; renders PostgreSQL-backed project `밀양부북`, empty daily grid, export button, quick-create controls, and task detail panel |
 | Final Supabase MCP `pg_stat_activity` after validation tab close | `postgres`/`Supavisor` target class at 1 idle session; no target-class saturation |
+| Vercel deployment `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` on 2026-05-18 | READY; branch alias serves Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c` |
+| Authenticated `/daily` on `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` | passed after 15s; renders PostgreSQL-backed project `밀양부북`, empty daily grid, export button, quick-create controls, task detail panel, and no console error/warn entries |
+| Final Supabase MCP stale idle cleanup on 2026-05-18 | terminated 3 pre-validation and 2 post-validation `postgres`/`Supavisor` idle sessions; final aggregate shows 1 newly-created target idle inspection connection at 12s age, with system/admin/postgREST sessions untouched |
 
 ## Blocked Operations
 
