@@ -1,6 +1,6 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-18): `Umbrella operational gaps implemented through Slice 482; credentialed production operations were rechecked with an operator OAuth session and remain blocked by pending cloud DB migrations, missing file-analysis chunk table/backfill, missing embedding provider/write-audit approval, authenticated route server errors, and missing production release metadata.`
+Current implementation goal (2026-05-18): `Umbrella operational gaps implemented through Slice 482; credentialed production operations were rechecked with an operator Chrome session and remain blocked by pending cloud DB migrations, missing file-analysis chunk table/backfill, missing embedding provider/write-audit approval, /admin/knowledge production server error digest 1826282582, /daily workspace loading, and missing production release metadata. The cloud data guard row-count readout was hardened and now reports the non-empty DB correctly.`
 
 Slice 482 records umbrella operational validation and blocked runtime conditions.
 Slice 481 adds explicit Knowledge admin capability schema/API while preserving the global-admin backfill mapping.
@@ -1253,7 +1253,7 @@ Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence
 
 ## Next Goal Candidate
 
-`After the umbrella operational gap pass, complete credentialed production operations: approve embedding provider/DB write execution, run authenticated Knowledge admin browser validation in the target environment, configure legal-source production approvals, and perform production Web Store/native-host release signing outside the repo.`
+`After the umbrella operational gap pass, complete credentialed production operations: explicitly approve guarded DB migration on the non-empty configured cloud DB after backup cloud-2026-05-18T01-21-14-268Z-98d94b0d, approve embedding provider/write-audit execution, rerun authenticated Knowledge admin and Daily browser validation on the target deployment, configure legal-source production approvals, and perform production Web Store/native-host release signing outside the repo.`
 
 Success criteria:
 
