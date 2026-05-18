@@ -118,3 +118,56 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 ## Blocked Operations
 
 Provider-backed embedding mutation remains blocked until embedding provider credentials and write-audit approval are supplied; the current migrated cloud DB has no `files` or `file_analysis_chunks` rows, so there is no backfill payload to process. `/admin/knowledge` and `/daily` authenticated UI signoff passed after the `architect-saas` pool cap default-1 patch was pushed and deployed to Vercel. Production legal-source import, external remote sync writes, Web Store upload, signed native-host installer release, and production readiness remain blocked until production signing/Web Store/native-host install-root metadata, explicit native-host install-root approval, and external approvals are supplied.
+
+## Approval Packets
+
+These commands are the remaining operator-approved steps. Do not run them without explicit approval because they either use secrets, mutate the configured cloud DB, or persist browser/system native-host configuration.
+
+### Embedding Worker
+
+Required approval/input:
+- OpenAI embedding key in `OPENAI_API_KEY` or `ARCHITECT_FILE_EMBEDDING_API_KEY`.
+- `ARCHITECT_FILE_EMBEDDING_PROVIDER=openai`.
+- `ARCHITECT_FILE_EMBEDDING_WRITE_AUDIT=ALLOW_FILE_ANALYSIS_EMBEDDING_WRITE`.
+- Execute command must include `--write-audit ALLOW_FILE_ANALYSIS_EMBEDDING_WRITE`.
+
+Verification sequence in `architect-saas`:
+
+```powershell
+npm run file-analysis:embedding:plan -- --json --sample-limit 0
+npm run file-analysis:embedding:worker -- --json --sample-limit 0
+npm run file-analysis:embedding:worker -- --execute --json --sample-limit 0 --write-audit ALLOW_FILE_ANALYSIS_EMBEDDING_WRITE
+```
+
+Expected current payload note: the configured cloud DB currently has `file_analysis_chunks=0`, so even after provider/write-audit approval the execute path should select/update `0` chunks unless new file-analysis chunks are created first.
+
+### Native-Host Production Install Root
+
+Required approval/input:
+- Explicit approval to copy the native host to `%LOCALAPPDATA%\Architect\BrowserAssistant\native-host`.
+- Explicit approval to update `HKCU\Software\Google\Chrome\NativeMessagingHosts\com.architect.browser_assistant.codex_bridge`.
+- Production extension id: `ianebfgjhjklildppcocmbmifedapooj`.
+
+Execution and verification in `architect-browser-assistant`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/install-native-host-windows.ps1 -ExtensionId ianebfgjhjklildppcocmbmifedapooj -InstallRoot "$env:LOCALAPPDATA\Architect\BrowserAssistant\native-host"
+npm run native-host:verify-production-install -- --json --install-root "$env:LOCALAPPDATA\Architect\BrowserAssistant\native-host"
+```
+
+### Production Release Metadata
+
+Required real metadata:
+- `ARCHITECT_CHROME_EXTENSION_ID=ianebfgjhjklildppcocmbmifedapooj` or `--extension-id ianebfgjhjklildppcocmbmifedapooj`.
+- `ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT`.
+- `ARCHITECT_RELEASE_OWNER`.
+- `ARCHITECT_CHROME_WEB_STORE_PUBLISHER`.
+- `ARCHITECT_NATIVE_HOST_INSTALL_ROOT`.
+- `ARCHITECT_SAAS_ORIGIN=https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app`.
+
+Verification sequence in `architect-browser-assistant`:
+
+```powershell
+npm run build
+npm run release:readiness:production -- --json --strict --extension-id ianebfgjhjklildppcocmbmifedapooj
+```

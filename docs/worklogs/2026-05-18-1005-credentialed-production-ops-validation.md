@@ -47,3 +47,7 @@ Req: Prove the release readiness validator contract with synthetic non-persisten
 Diff: Added a clearly marked synthetic metadata preflight row to the Slice 482 closeout; no production metadata was stored and no install-root/registry mutation was made.
 Why: The actual blocker should stay external approval/metadata, but the validator contract should be proven so future operators know that real metadata values are sufficient for the script-level release gate.
 Verify/Time: 2026-05-18 12:09 KST; one PowerShell process set synthetic signing subject, release owner, Web Store publisher, and install root env values, then ran `npm run release:readiness:production -- --json --strict --extension-id ianebfgjhjklildppcocmbmifedapooj`; result was 17 pass, 0 warn, 0 fail. This does not count as production approval and does not satisfy `native-host:verify-production-install`.
+Req: Add explicit approval packets for the remaining Slice 482 blockers.
+Diff: Added `Approval Packets` to the Slice 482 closeout with the embedding worker, native-host stable install-root, and production release metadata command sequences.
+Why: The remaining work is approval-gated; the closeout should make the exact post-approval commands clear without performing secret use, DB mutation, or persistent browser/system configuration changes prematurely.
+Verify/Time: 2026-05-18 12:11 KST; document-only update. Commands were not executed because approval/key/real metadata are still absent.
