@@ -115,6 +115,18 @@ Collect operational validation for the umbrella goal and track blocked runtime c
 | Planned install-root verifier on 2026-05-18 12:05 KST | `npm run native-host:verify-production-install -- --json --install-root %LOCALAPPDATA%\Architect\BrowserAssistant\native-host` reports 3 pass, 1 warn, 3 fail: planned manifest and launcher are absent, and HKCU registry still points to the repo-local `native-host` manifest. This confirms the pending install-root action has not been performed. |
 | Synthetic metadata release validator contract on 2026-05-18 12:09 KST | non-persistent PowerShell env values for signing subject, release owner, Web Store publisher, and install root plus `--extension-id ianebfgjhjklildppcocmbmifedapooj` make `npm run release:readiness:production -- --json --strict` pass at 17 pass, 0 warn, 0 fail. This is only a validator contract proof with synthetic metadata; it is not production approval and does not satisfy the native-host install-root verifier. |
 
+## Completion Audit
+
+| Requirement | Current proof | Completion state |
+| --- | --- | --- |
+| Configured DB migration/backfill applied | Supabase SQL confirms `file_analysis_chunks` exists, `vector=0.8.0`, and all four target migrations are `finished=true`; cloud DB currently has `file_analysis_chunks=0`, so there is no backfill payload. | proven_complete_for_current_data |
+| `file-analysis:embedding:plan -- --json --sample-limit 0` | Escalated command reaches the configured DB, reports `totalChunks=0`, `missingEmbeddings=0`, and provider disabled. | proven_as_blocked_plan |
+| Embedding worker dry-run/blocked/execute path after provider/key/write-audit approval | Dry-run and execute guards are proven, but real provider/key/write-audit approval is absent. Execute currently exits `1` before mutation. | blocked_by_missing_secret_and_write_audit |
+| Operator `/admin/knowledge` and `/daily` browser validation | Authenticated Chrome validation passed on the Vercel branch alias; latest deployment is `dpl_AzRwrXszCfyFjkDqNz3zUiPXabj6` / Git SHA `93db8345e164b7ecdc9ff87b35b6dca2e44c915c`. | proven_complete |
+| Production release readiness | Production SaaS origin build removes localhost origin failures; synthetic metadata proves the validator contract can pass. Real signing/Web Store/install-root metadata and stable native-host install root are still absent. | blocked_by_real_metadata_and_install_root |
+| Sub-slice document and worklog evidence | This document, `plans/README.md`, and paired worklogs record each current proof and blocker. | proven_current_but_final_hashes_change_until_blockers_close |
+| Goal completion | Required external approvals/metadata are still missing, so `update_goal complete` must not be called. | not_complete |
+
 ## Blocked Operations
 
 Provider-backed embedding mutation remains blocked until embedding provider credentials and write-audit approval are supplied; the current migrated cloud DB has no `files` or `file_analysis_chunks` rows, so there is no backfill payload to process. `/admin/knowledge` and `/daily` authenticated UI signoff passed after the `architect-saas` pool cap default-1 patch was pushed and deployed to Vercel. Production legal-source import, external remote sync writes, Web Store upload, signed native-host installer release, and production readiness remain blocked until production signing/Web Store/native-host install-root metadata, explicit native-host install-root approval, and external approvals are supplied.
