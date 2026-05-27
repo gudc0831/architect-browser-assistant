@@ -96,6 +96,16 @@ npm run release:readiness:production -- --allow-unsigned-native-host
 
 That waiver turns only the missing native-host signing subject into a warning. It does not sign an installer and does not remove the need for a real code-signing certificate before a signed native-host release.
 
+Production promotion dry-run packet:
+
+```powershell
+$env:ARCHITECT_SAAS_ORIGIN="https://your-saas-origin.example"
+npm run build
+npm run release:promotion:dry-run -- --json --strict --extension-id <chrome-extension-id>
+```
+
+`release:promotion:dry-run` emits a non-secret operator packet with the built `dist` artifact fingerprint, production readiness result, blocking metadata gaps, manual approval dependencies, and follow-up commands. It does not upload to Chrome Web Store, sign binaries, issue certificates, or write native-host registry entries. If the operator has explicitly approved the unsigned native-host interim path, pass `--allow-unsigned-native-host` here as well so the dry-run packet matches the readiness command.
+
 Focused development checks:
 
 ```powershell
