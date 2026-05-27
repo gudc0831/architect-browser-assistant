@@ -178,8 +178,17 @@ async function verifyNativeHostFiles() {
   addCheck(
     "native-host-files",
     "Native host files",
-    [hostScriptPath, launcherPath, templatePath, installerPath].every((filePath) => existsSync(filePath)) ? "pass" : "fail",
-    "Native host script, launcher, manifest template, and Windows installer must be present.",
+    [hostScriptPath, templatePath, installerPath].every((filePath) => existsSync(filePath)) ? "pass" : "fail",
+    "Native host script, manifest template, and Windows installer must be present.",
+  );
+
+  addCheck(
+    "repo-local-native-host-launcher",
+    "Repo-local native host launcher",
+    existsSync(launcherPath) ? "pass" : "warn",
+    existsSync(launcherPath)
+      ? "Repo-local native host launcher is present."
+      : "Repo-local launcher is absent. The Windows installer generates an environment-specific launcher for a specific extension id and install root.",
   );
 
   if (existsSync(templatePath)) {

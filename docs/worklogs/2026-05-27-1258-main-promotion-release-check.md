@@ -1,0 +1,4 @@
+Req: Promote `codex/task-assistant-core-loop` to `main` and continue remaining readiness work from main.
+Diff: Fast-forwarded `main` to the task-assistant implementation branch, pushed `origin/main`, and corrected the local release readiness gate so the generated repo-local native-host launcher is a warning instead of a required source file.
+Why: The task assistant implementation branch is now the approved mainline. `npm run release:check` exposed that the validator required `native-host/architect-codex-bridge.cmd` even though `.gitignore` intentionally treats that launcher as installer-generated machine-specific output.
+Verify/Time: `git fetch origin`; `git merge --ff-only codex/task-assistant-core-loop`; `git push origin main`; `npm run release:check` initially failed only on missing native-host launcher before this fix | 2026-05-27 12:58 KST

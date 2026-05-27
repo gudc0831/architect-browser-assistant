@@ -23,6 +23,7 @@ Strengthen Chrome Web Store, signing, installer, and native-host production-read
 | `npm run typecheck` in `architect-browser-assistant` | passed |
 | `npm run release:readiness -- --json --strict` | passed with 13 pass, 4 expected local-production warnings, 0 fail |
 | `npm run release:readiness:production -- --json --strict` | failed intentionally with production blockers for localhost origin patterns and missing Web Store/signing/install-root metadata |
+| 2026-05-27 `npm run release:check` after main promotion | initially failed only because the repo-local generated native-host launcher was missing; validator now treats that ignored installer output as a warning while still requiring source script, manifest template, and installer |
 
 ## Blocked Operations
 
