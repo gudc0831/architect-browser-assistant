@@ -101,10 +101,11 @@ Production promotion dry-run packet:
 ```powershell
 $env:ARCHITECT_SAAS_ORIGIN="https://your-saas-origin.example"
 npm run build
+npm run release:package -- --json --strict --production
 npm run release:promotion:dry-run -- --json --strict --extension-id <chrome-extension-id>
 ```
 
-`release:promotion:dry-run` emits a non-secret operator packet with the built `dist` artifact fingerprint, production readiness result, blocking metadata gaps, manual approval dependencies, and follow-up commands. It does not upload to Chrome Web Store, sign binaries, issue certificates, or write native-host registry entries. If the operator has explicitly approved the unsigned native-host interim path, pass `--allow-unsigned-native-host` here as well so the dry-run packet matches the readiness command.
+`release:package` creates the Chrome Web Store upload ZIP from the current `dist` folder under ignored `release/` output. It validates MV3 basics and, with `--production`, rejects localhost manifest origins. `release:promotion:dry-run` emits a non-secret operator packet with the built `dist` artifact fingerprint, production readiness result, blocking metadata gaps, manual approval dependencies, and follow-up commands. Neither command uploads to Chrome Web Store, signs binaries, issues certificates, generates native-host launchers/manifests, or writes native-host registry entries. If the operator has explicitly approved the unsigned native-host interim path, pass `--allow-unsigned-native-host` to the dry-run as well so the packet matches the readiness command.
 
 Focused development checks:
 

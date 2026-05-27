@@ -13,6 +13,7 @@ Bundle the remaining pre-promotion checks that can run without Chrome Web Store 
 | Promotion dry-run script | implemented | `architect-browser-assistant` | `npm run release:promotion:dry-run` produces a non-secret operator packet. |
 | Artifact fingerprint | implemented | `architect-browser-assistant` | The packet hashes the current `dist` file set and reports manifest SaaS origin alignment. |
 | Metadata dependency split | implemented | `architect-browser-assistant` | The packet separates blocking production metadata from manual approval dependencies. |
+| Package command handoff | implemented | `architect-browser-assistant` | Slice 484 adds `release:package`; the dry-run packet includes it in follow-up commands. |
 | Test coverage | implemented | `architect-browser-assistant` | Node tests cover signed, unsigned-waiver, and missing-metadata classifications. |
 | Operator docs | implemented | `architect-browser-assistant` | README documents the dry-run sequence and non-mutating boundary. |
 

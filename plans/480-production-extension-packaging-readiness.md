@@ -16,6 +16,7 @@ Strengthen Chrome Web Store, signing, installer, and native-host production-read
 | Production install verifier | implemented | `architect-browser-assistant` | `npm run native-host:verify-production-install` checks repo-local path avoidance. |
 | Web Store profile guard | implemented | `architect-browser-assistant` | Chrome profile verifier supports `--require-webstore`. |
 | Promotion dry-run packet | implemented | `architect-browser-assistant` | Slice 483 adds `npm run release:promotion:dry-run` for artifact fingerprint, readiness, and external-dependency review without mutating external systems. |
+| Web Store ZIP packaging | implemented | `architect-browser-assistant` | Slice 484 adds deterministic `npm run release:package` output under ignored `release/`. |
 
 ## Verification Log
 

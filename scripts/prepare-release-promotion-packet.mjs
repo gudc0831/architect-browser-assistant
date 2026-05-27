@@ -191,6 +191,7 @@ export function buildCommandSet(metadata) {
 
   return {
     productionBuild: `$env:ARCHITECT_SAAS_ORIGIN="${saasOrigin}"\nnpm run build`,
+    releasePackage: "npm run release:package -- --json --strict --production",
     productionReadiness: `npm run release:readiness:production -- --json --strict --extension-id ${extensionId}${unsignedWaiverFlag}`,
     promotionDryRun: `npm run release:promotion:dry-run -- --json --strict --extension-id ${extensionId}${unsignedWaiverFlag}`,
     nativeHostProductionVerify: `npm run native-host:verify-production-install -- --json --extension-id ${extensionId} --install-root "${installRoot}"`,

@@ -1,0 +1,4 @@
+Req: Continue production readiness hardening by adding the missing Chrome Web Store upload artifact boundary without performing upload, signing, native-host generation, or registry changes.
+Diff: Added `npm run release:package`, a deterministic local ZIP packager for the current `dist` artifact; ignored generated `release/` output; added package-extension Node tests; and wired the promotion dry-run packet to hand off the package command.
+Why: Promotion review needs a reproducible upload ZIP and SHA-256 report before manual Chrome Web Store upload approval, while generated artifacts must stay out of source control.
+Verify/Time: `npm test` passed; synthetic production-origin build plus `npm run release:package -- --json --strict --production` generated an ignored ZIP with 7 files and a SHA-256 report; `npm run release:promotion:dry-run -- --json` includes `releasePackage`; `npm run release:check` passed | 2026-05-27 13:57 KST
