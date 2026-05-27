@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
 import { PassThrough } from "node:stream";
 import {
   buildCodexPrompt,
@@ -34,9 +35,9 @@ describe("codex native host", () => {
   it("builds a bounded Codex prompt from task context and evidence", () => {
     const prompt = buildCodexPrompt(input);
 
-    expect(prompt).toContain("Permit evidence review");
-    expect(prompt).toContain("Evidence is incomplete.");
-    expect(prompt).toContain("Return only valid JSON");
+    assert.match(prompt, /Permit evidence review/);
+    assert.match(prompt, /Evidence is incomplete\./);
+    assert.match(prompt, /Return only valid JSON/);
   });
 
   it("extracts the last agent message from Codex JSONL", () => {
@@ -48,29 +49,35 @@ describe("codex native host", () => {
       ].join("\n"),
     );
 
-    expect(output).toBe("final");
+    assert.equal(output, "final");
   });
 
   it("returns a mock generated response for protocol self tests", async () => {
     const previous = process.env.ARCHITECT_CODEX_BRIDGE_MOCK;
     process.env.ARCHITECT_CODEX_BRIDGE_MOCK = "1";
 
-    const response = await handleRequest({ type: "generate", requestId: "test", payload: input });
+    try {
+      const response = await handleRequest({ type: "generate", requestId: "test", payload: input });
 
-    if (previous === undefined) {
-      delete process.env.ARCHITECT_CODEX_BRIDGE_MOCK;
-    } else {
-      process.env.ARCHITECT_CODEX_BRIDGE_MOCK = previous;
+      assert.equal(response.ok, true);
+      assert.match(response.output.answer, /Local Codex bridge mock response/);
+    } finally {
+      if (previous === undefined) {
+        delete process.env.ARCHITECT_CODEX_BRIDGE_MOCK;
+      } else {
+        process.env.ARCHITECT_CODEX_BRIDGE_MOCK = previous;
+      }
     }
-
-    expect(response.ok).toBe(true);
-    expect(response.output.answer).toContain("Local Codex bridge mock response");
   });
 
   it("runs Windows PowerShell wrappers through powershell.exe", () => {
-    const invocation = buildSpawnInvocation("C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.ps1", ["exec", "--help"], "win32");
+    const invocation = buildSpawnInvocation(
+      "C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.ps1",
+      ["exec", "--help"],
+      "win32",
+    );
 
-    expect(invocation).toEqual({
+    assert.deepEqual(invocation, {
       command: "powershell.exe",
       args: [
         "-NoProfile",
@@ -94,6 +101,7 @@ describe("codex native host", () => {
     stream.write(header);
     stream.write(payload);
 
-    await expect(pendingMessage).resolves.toEqual({ type: "status", requestId: "framed-status" });
+    const message = await pendingMessage;
+    assert.deepEqual(message, { type: "status", requestId: "framed-status" });
   });
 });

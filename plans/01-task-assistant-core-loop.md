@@ -44,6 +44,7 @@
 | 2026-05-07 | `/daily` task-reactive panel 검증 | `npm run typecheck`, `npm run lint`, `npm run build` 통과. Browser-use로 `AI 검토 001`에서 근거 조회, 의견 저장, 작업 기록 승인까지 확인함 |
 | 2026-05-08 | Goal 1 closeout | 병렬 에이전트가 browser-assistant와 SaaS closeout 상태를 읽기 전용으로 점검했다. SaaS는 추가 blocker 없음. 01 문서와 roadmap 상태를 implemented로 정리한다. |
 | 2026-05-15 | side panel confidence 표시 보강 | saved assistant record의 `confidenceScore`와 `confidenceReason`을 Answer 영역에 표시하고 React regression test를 추가했다. `npm run typecheck`, `npm run lint`, `npm run release:check` 통과. |
+| 2026-05-27 | contract-first continuation recheck | `architect - start2/docs/assistant-extension-contract.md`와 SaaS assistant route/use-case/type 구현을 읽기 전용으로 확인했다. Browser `codex/task-assistant-core-loop`에서 native-host test runner를 Node built-in test로 분리했고 `npm run typecheck`, `npm test`, `npm run lint`, `npm run build`가 통과했다. |
 
 ## Implementation Notes
 

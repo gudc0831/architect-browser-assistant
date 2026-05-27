@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run && node --test native-host/codex-bridge-host.node-test.mjs",
     "lint": "eslint . --ext .ts,.tsx",
     "release:check": "npm run typecheck && npm run lint && npm run test && npm run build && npm run release:readiness -- --strict && npm run native-host:self-test",
     "release:build:production": "npm run build && npm run release:readiness:production",
