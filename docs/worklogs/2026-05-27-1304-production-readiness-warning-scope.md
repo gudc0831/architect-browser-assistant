@@ -1,0 +1,4 @@
+Req: Review remaining production readiness warnings on `main`, separate local/dev warnings from production promotion blockers, and keep generated native-host launcher/manifest out of source control.
+Diff: Added `warningSummary`, per-warning `scope`, and per-warning `resolution` metadata to the readiness validator; documented the warning policy, production env inputs, and external operator steps in README and plan notes.
+Why: Local `release:check` should stay green while localhost packaging and machine-specific generated native-host files remain expected warnings; real promotion still depends on production SaaS origin, Chrome extension id, Web Store publisher, signing metadata, install root, and manual upload approval.
+Verify/Time: `npm run release:readiness -- --json --strict` passed with 12 pass, 6 warn, 0 fail (`local-dev`: 4, `production-promotion`: 2); `npm run release:check` passed | 2026-05-27 13:04 KST

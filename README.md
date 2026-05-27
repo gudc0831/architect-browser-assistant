@@ -53,7 +53,16 @@ npm run release:check
 
 The release gate runs typecheck, lint, unit tests, production build, release readiness validation, and native-host self-test. Run it before treating any build as a public MVP candidate.
 
-The readiness validator checks MV3 manifest shape, scoped permissions, SaaS origin alignment, native-host template/installer guardrails, generated native-host manifest shape, and production signing metadata warnings.
+The readiness validator checks MV3 manifest shape, scoped permissions, SaaS origin alignment, native-host template/installer guardrails, generated native-host manifest shape, and production signing metadata warnings. JSON output includes `warningSummary` plus per-warning `scope` and `resolution` fields so local development warnings can be separated from production promotion blockers.
+
+Current warning policy:
+
+| Readiness check | Scope | Local action | Production action |
+| --- | --- | --- | --- |
+| `host-permissions`, `content-script-matches` | `local-dev` when `http://localhost:3000/*` is built | Keep as a warning for local builds. | Set `ARCHITECT_SAAS_ORIGIN` to the exact production SaaS origin and rebuild. |
+| `repo-local-native-host-launcher`, `generated-native-host-manifest` | `local-dev` | Keep as warnings; these are generated per machine/extension id and must not be committed. | Generate with the Windows installer only after the Chrome extension id and install root are known. |
+| `production-signing-metadata` | `production-promotion` | No local secret or certificate is required. | Provide extension id, release owner, Web Store publisher, native-host install root, and signing subject or an explicit unsigned waiver. |
+| `web-store-upload-boundary` | `production-promotion` or `manual-release` | No upload is performed by local validation. | Upload to Chrome Web Store outside this validator after package checks pass and operator approval is recorded. |
 
 Production SaaS origin packaging:
 
@@ -74,10 +83,10 @@ $env:ARCHITECT_NATIVE_HOST_SIGNING_SUBJECT="<native-host signing subject>"
 $env:ARCHITECT_RELEASE_OWNER="<release owner>"
 $env:ARCHITECT_CHROME_WEB_STORE_PUBLISHER="<publisher account or group>"
 $env:ARCHITECT_NATIVE_HOST_INSTALL_ROOT="$env:LOCALAPPDATA\Architect\BrowserAssistant\native-host"
-npm run release:readiness:production
+npm run release:readiness:production -- --json --extension-id <chrome-extension-id>
 ```
 
-The production readiness command does not upload to Chrome Web Store or sign an installer. It blocks promotion when production origin, extension id, signing subject, release owner, Web Store publisher, or native-host install-root metadata is missing.
+The production readiness command runs strict production validation. It does not upload to Chrome Web Store, sign an installer, issue a code-signing certificate, or change a user's registry. It blocks promotion when production origin, extension id, signing subject, release owner, Web Store publisher, or native-host install-root metadata is missing.
 
 If the operator explicitly approves an interim unsigned native-host path because no code-signing certificate exists yet, keep the owner, publisher, extension id, SaaS origin, and install-root metadata configured and run:
 

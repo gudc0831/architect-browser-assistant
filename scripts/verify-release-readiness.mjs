@@ -17,7 +17,13 @@ const checks = [];
 try {
   await verifyReleaseReadiness();
   const summary = summarize(checks);
-  const report = { ok: summary.fail === 0, mode: options.production ? "production" : "local", summary, checks };
+  const report = {
+    ok: summary.fail === 0,
+    mode: options.production ? "production" : "local",
+    summary,
+    warningSummary: summarizeWarnings(checks),
+    checks,
+  };
   if (options.json) {
     console.log(JSON.stringify(report, null, 2));
   } else {
@@ -165,7 +171,13 @@ function verifyUrlPatterns(id, label, patterns) {
     detail = `Local development origin is in use: ${local.join(", ")}. Run production readiness with ARCHITECT_SAAS_ORIGIN set before publishing.`;
   }
 
-  addCheck(id, label, status, detail);
+  addCheck(id, label, status, detail, {
+    scope: local.length > 0 && !options.production ? "local-dev" : "production-promotion",
+    resolution:
+      local.length > 0
+        ? "Set ARCHITECT_SAAS_ORIGIN to the production SaaS origin and rebuild before production readiness."
+        : "Keep URL patterns limited to one exact SaaS HTTP(S) origin.",
+  });
 }
 
 async function verifyNativeHostFiles() {
@@ -189,6 +201,10 @@ async function verifyNativeHostFiles() {
     existsSync(launcherPath)
       ? "Repo-local native host launcher is present."
       : "Repo-local launcher is absent. The Windows installer generates an environment-specific launcher for a specific extension id and install root.",
+    {
+      scope: "local-dev",
+      resolution: "Do not commit this generated launcher. Run the native-host installer for a specific extension id/install root when needed.",
+    },
   );
 
   if (existsSync(templatePath)) {
@@ -232,6 +248,10 @@ async function verifyNativeHostFiles() {
       "Generated native host manifest",
       "warn",
       "Generated native host manifest is absent. It is created by the Windows installer for a specific extension id.",
+      {
+        scope: "local-dev",
+        resolution: "Do not commit this generated manifest. Run native-host install/verify steps after the extension id is known.",
+      },
     );
     return;
   }
@@ -288,7 +308,15 @@ function verifyProductionSigningMetadata() {
         ? "Production extension id, native-host signing subject, release owner, Web Store publisher, and install root are configured."
         : "Production extension id, release owner, Web Store publisher, and install root are configured; native-host code signing is explicitly waived for this unsigned interim path.";
 
-  addCheck("production-signing-metadata", "Production signing metadata", signingMetadataStatus, signingMetadataDetail);
+  addCheck("production-signing-metadata", "Production signing metadata", signingMetadataStatus, signingMetadataDetail, {
+    scope: "production-promotion",
+    resolution:
+      missing.length > 0
+        ? "Set production metadata env vars, pass --extension-id, and provide either a signing subject or an explicit unsigned-native-host waiver."
+        : hasSigningSubject
+          ? "Keep production metadata configured for signed promotion."
+          : "Replace the unsigned waiver with a real code-signing subject before signed native-host release.",
+  });
 
   addCheck(
     "web-store-upload-boundary",
@@ -297,6 +325,10 @@ function verifyProductionSigningMetadata() {
     options.production && webStorePublisher.trim()
       ? "Web Store publisher metadata is present; this validator still does not upload packages."
       : "Chrome Web Store upload is intentionally outside this validator; configure publisher metadata before promotion.",
+    {
+      scope: options.production && webStorePublisher.trim() ? "manual-release" : "production-promotion",
+      resolution: "Perform Chrome Web Store upload outside this validator after metadata and package checks pass.",
+    },
   );
 }
 
@@ -320,8 +352,8 @@ function sameSet(left, right) {
   return left.length === right.length && left.every((item) => right.includes(item));
 }
 
-function addCheck(id, label, status, detail) {
-  checks.push({ id, label, status, detail });
+function addCheck(id, label, status, detail, metadata = {}) {
+  checks.push({ id, label, status, detail, ...metadata });
 }
 
 function summarize(items) {
@@ -332,10 +364,24 @@ function summarize(items) {
   };
 }
 
+function summarizeWarnings(items) {
+  return items
+    .filter((item) => item.status === "warn")
+    .reduce((summary, item) => {
+      const scope = item.scope || "unspecified";
+      summary[scope] = (summary[scope] ?? 0) + 1;
+      return summary;
+    }, {});
+}
+
 function printReport(report) {
   console.log(`Architect Browser Assistant release readiness (${report.mode})`);
   for (const item of report.checks) {
-    console.log(`[${item.status.toUpperCase()}] ${item.label}: ${item.detail}`);
+    const scope = item.scope ? ` / ${item.scope}` : "";
+    console.log(`[${item.status.toUpperCase()}${scope}] ${item.label}: ${item.detail}`);
+    if (item.status !== "pass" && item.resolution) {
+      console.log(`  Resolution: ${item.resolution}`);
+    }
   }
   console.log(`Summary: ${report.summary.pass} pass, ${report.summary.warn} warn, ${report.summary.fail} fail`);
 }
