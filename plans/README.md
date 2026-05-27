@@ -1,7 +1,8 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-27): `Browser Assistant main now has production promotion dry-run and Chrome Web Store ZIP packaging support. Slice 484 adds deterministic local-only release packaging into ignored release/ output with production manifest guards, while Slice 483 keeps the non-mutating operator packet for artifact/readiness/dependency review. Neither path uploads to Chrome Web Store, signs binaries, issues certificates, generates native-host launchers/manifests, or changes HKCU registry. Local release:check remains the required green gate.`
+Current implementation goal (2026-05-27): `Browser Assistant main now has a side-panel readability pass on top of production promotion dry-run and Chrome Web Store ZIP packaging support. Slice 485 improves the diagnostic side panel with clearer status chips, task context, action hierarchy, evidence scanning, and separated answer/summary output without changing runtime, SaaS, native-host, or packaging contracts. Local release:check remains the required green gate.`
 
+Slice 485 improves the Chrome side-panel readability without changing assistant behavior.
 Slice 484 adds deterministic Chrome Web Store ZIP packaging for the current `dist` artifact.
 Slice 483 adds the production promotion dry-run packet for non-secret artifact/readiness/operator dependency review.
 Slice 482 records umbrella operational validation and blocked runtime conditions.

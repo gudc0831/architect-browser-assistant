@@ -226,6 +226,10 @@ export function App() {
 
   const taskTitle =
     taskContext?.title || (panelState.state === "ready" ? panelState.task.title : "") || "No task selected";
+  const taskId = taskContext?.taskId || (panelState.state === "ready" ? panelState.task.taskId : "");
+  const runtimeReady = Boolean(runtimeStatus?.available);
+  const runtimeLabel = runtimeMode === "local-chatgpt-codex" ? "Local Codex" : "Mock";
+  const taskStateLabel = taskId ? "Task selected" : "No task";
 
   return (
     <main className="panel-shell">
@@ -233,15 +237,22 @@ export function App() {
         <div>
           <p className="eyebrow">Architect Assistant</p>
           <h1>{taskTitle}</h1>
+          {taskId ? <p className="task-meta">{taskId}</p> : null}
         </div>
         <button type="button" className="icon-button" title="Refresh task context" onClick={refreshTaskContext}>
-          ↻
+          Refresh
         </button>
       </header>
 
       <section className="status-strip">
-        <div>
-          <span>{runtimeStatus?.available ? "Runtime ready" : "Runtime unavailable"}</span>
+        <div className="status-copy">
+          <div className="chip-row" aria-label="Assistant status">
+            <span className={`status-chip ${runtimeReady ? "status-chip--ready" : "status-chip--blocked"}`}>
+              {runtimeReady ? "Runtime ready" : "Runtime unavailable"}
+            </span>
+            <span className="status-chip">{runtimeLabel}</span>
+            <span className="status-chip">{taskStateLabel}</span>
+          </div>
           {runtimeStatus?.reason ? <small>{runtimeStatus.reason}</small> : null}
         </div>
         <label className="mode-select">
@@ -259,26 +270,42 @@ export function App() {
       {panelState.state === "error" ? <p className="error-text">{panelState.message}</p> : null}
       {panelState.state === "loading" ? <p className="muted">Loading {panelState.label}...</p> : null}
 
-      <section className="composer">
+      <section className="composer panel-section">
+        <div className="section-heading">
+          <div>
+            <h2>Ask</h2>
+            <p>Retrieve task evidence, then generate a review note.</p>
+          </div>
+        </div>
         <textarea
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
-          placeholder="이 task에 대해 검토할 질문을 입력하세요."
+          placeholder="Ask what should be checked before closing this task."
         />
         <div className="button-row">
-          <button type="button" onClick={handleRetrieve} disabled={panelState.state !== "ready" || !question.trim()}>
+          <button
+            type="button"
+            className="button-secondary"
+            onClick={handleRetrieve}
+            disabled={panelState.state !== "ready" || !question.trim()}
+          >
             Retrieve
           </button>
-          <button type="button" onClick={handleGenerateAndSave} disabled={!canGenerate}>
+          <button type="button" className="button-primary" onClick={handleGenerateAndSave} disabled={!canGenerate}>
             Generate
           </button>
         </div>
       </section>
 
-      <section className="external-evidence-block">
+      <section className="external-evidence-block panel-section">
         <div className="section-heading">
-          <h2>External Evidence</h2>
-          <span>{externalAllowed ? "user approved" : "off"}</span>
+          <div>
+            <h2>External Evidence</h2>
+            <p>Add a short, approved source excerpt to the selected task.</p>
+          </div>
+          <span className={`status-chip ${externalAllowed ? "status-chip--ready" : ""}`}>
+            {externalAllowed ? "User approved" : "Off"}
+          </span>
         </div>
         <label className="check-row">
           <input
@@ -338,18 +365,27 @@ export function App() {
           placeholder="Paste the short evidence excerpt or summarized skill output. Do not paste private pages or full documents."
         />
         <div className="button-row">
-          <button type="button" onClick={handleCaptureActiveTab} disabled={!externalAllowed}>
+          <button type="button" className="button-secondary" onClick={handleCaptureActiveTab} disabled={!externalAllowed}>
             Capture tab
           </button>
-          <button type="button" onClick={handleSaveExternalEvidence} disabled={!canSaveExternalEvidence}>
+          <button type="button" className="button-primary" onClick={handleSaveExternalEvidence} disabled={!canSaveExternalEvidence}>
             Save evidence
           </button>
         </div>
         {externalStatus ? <p className="muted">{externalStatus}</p> : null}
       </section>
 
-      <section className="evidence-list">
-        <h2>Evidence</h2>
+      <section className="evidence-list panel-section">
+        <div className="section-heading">
+          <div>
+            <h2>Evidence</h2>
+            <p>
+              {evidence.length > 0
+                ? `${evidence.length} source${evidence.length === 1 ? "" : "s"} loaded`
+                : "No sources loaded"}
+            </p>
+          </div>
+        </div>
         {evidence.length === 0 ? <p className="muted">Retrieved SaaS evidence will appear here.</p> : null}
         {evidence.map((item) => (
           <article key={item.id} className="evidence-item">
@@ -368,9 +404,11 @@ export function App() {
       </section>
 
       {output ? (
-        <section className="answer-block">
-          <h2>Answer</h2>
-          <p>{output.answer}</p>
+        <section className="answer-stack">
+          <article className="answer-block panel-section">
+            <h2>Answer</h2>
+            <p>{output.answer}</p>
+          </article>
           {savedConfidence ? (
             <aside className="confidence-block" aria-label="Assistant confidence">
               <strong>Confidence {savedConfidence.score}%</strong>
@@ -383,10 +421,10 @@ export function App() {
               <p>{output.draftSummary.conclusion}</p>
               <small>{output.draftSummary.scope}</small>
               <div className="button-row">
-                <button type="button" onClick={() => handleSaveSummary("approved")}>
+                <button type="button" className="button-primary" onClick={() => handleSaveSummary("approved")}>
                   Approve
                 </button>
-                <button type="button" onClick={() => handleSaveSummary("deferred")}>
+                <button type="button" className="button-secondary" onClick={() => handleSaveSummary("deferred")}>
                   Later
                 </button>
               </div>
