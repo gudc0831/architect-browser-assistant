@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run && node --test native-host/codex-bridge-host.node-test.mjs scripts/prepare-release-promotion-packet.node-test.mjs scripts/package-extension.node-test.mjs",
+    "test": "vitest run && node --test native-host/codex-bridge-host.node-test.mjs scripts/prepare-release-promotion-packet.node-test.mjs scripts/package-extension.node-test.mjs scripts/verify-official-law-task-flow.node-test.mjs",
     "lint": "eslint . --ext .ts,.tsx",
     "release:check": "npm run typecheck && npm run lint && npm run test && npm run build && npm run release:readiness -- --strict && npm run native-host:self-test",
     "release:build:production": "npm run build && npm run release:readiness:production",
@@ -41,5 +41,10 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "jsdom": "^27.3.0",
     "vitest": "^4.0.16"
+  },
+  "overrides": {
+    "@crxjs/vite-plugin": {
+      "rollup": "^4.60.3"
+    }
   }
 }

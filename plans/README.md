@@ -1,7 +1,8 @@
 # Slice Roadmap
 
-Current implementation goal (2026-05-27): `Browser Assistant main now has a side-panel readability pass on top of production promotion dry-run and Chrome Web Store ZIP packaging support. Slice 485 improves the diagnostic side panel with clearer status chips, task context, action hierarchy, evidence scanning, and separated answer/summary output without changing runtime, SaaS, native-host, or packaging contracts. Local release:check remains the required green gate.`
+Current implementation goal (2026-05-28): `Browser Assistant verifies retrieved regulation evidence against the official National Law Information Center Open API before legal task generation, records law/article/API checkedAt/basis metadata, and blocks or warns with retry paths when official source verification is incomplete.`
 
+Slice 486 adds browser-side official law API task verification for retrieved regulation evidence.
 Slice 485 improves the Chrome side-panel readability without changing assistant behavior.
 Slice 484 adds deterministic Chrome Web Store ZIP packaging for the current `dist` artifact.
 Slice 483 adds the production promotion dry-run packet for non-secret artifact/readiness/operator dependency review.
@@ -775,6 +776,7 @@ Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence
 | 480 | [480-production-extension-packaging-readiness.md](480-production-extension-packaging-readiness.md) | `implemented` | Production extension packaging and native-host install readiness | `architect-browser-assistant` |
 | 481 | [481-knowledge-admin-capability-migration.md](481-knowledge-admin-capability-migration.md) | `implemented` | Explicit Knowledge admin capability schema/API with global-admin backfill | `architect-saas` |
 | 482 | [482-operational-validation-closeout.md](482-operational-validation-closeout.md) | `implemented` | Umbrella operational validation and blocked runtime conditions | `architect-saas`, `architect-browser-assistant` |
+| 486 | [486-official-law-api-task-verification.md](486-official-law-api-task-verification.md) | `implemented` | Browser-side official law API source verification for legal task results | `architect-browser-assistant` |
 
 ## Completed Goal Log
 

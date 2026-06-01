@@ -7,6 +7,10 @@ import type {
   BrowserCaptureRegion,
   BrowserCaptureViewport,
 } from "../runtime/browser-capture-contract";
+import type {
+  OfficialLawVerificationExtensionData,
+  OfficialLawVerificationExtensionMessage,
+} from "../runtime/legal-verification-contract";
 import type { LocalRuntimeExtensionMessage, LocalRuntimeExtensionResponse } from "../runtime/native-bridge-contract";
 
 type PageLocalRuntimeRequest = {
@@ -21,7 +25,10 @@ type PageLocalRuntimeResponse = {
   requestId: string;
 } & LocalRuntimeExtensionResponse<unknown | BrowserCapturePayload>;
 
-type ExtensionBackgroundMessage = LocalRuntimeExtensionMessage | BrowserCaptureExtensionMessage;
+type ExtensionBackgroundMessage =
+  | LocalRuntimeExtensionMessage
+  | BrowserCaptureExtensionMessage
+  | OfficialLawVerificationExtensionMessage;
 
 const assistantEvidenceKinds = new Set<AssistantEvidenceKind>([
   "central_knowledge",
@@ -91,7 +98,18 @@ async function handlePageLocalRuntimeRequest(request: PageLocalRuntimeRequest) {
       return;
     }
 
-    const response = await sendBackgroundMessage(message);
+    const checkedMessage =
+      message.type === "architect:local-runtime-generate" ? await withOfficialLawVerification(message) : message;
+    if (isBridgeFailure(checkedMessage)) {
+      postPageLocalRuntimeResponse({
+        type: "architect:page-local-runtime-response",
+        requestId,
+        ...checkedMessage,
+      });
+      return;
+    }
+
+    const response = await sendBackgroundMessage(checkedMessage);
     postPageLocalRuntimeResponse({
       type: "architect:page-local-runtime-response",
       requestId,
@@ -105,6 +123,42 @@ async function handlePageLocalRuntimeRequest(request: PageLocalRuntimeRequest) {
       error: error instanceof Error ? error.message : "Browser capture failed.",
     });
   }
+}
+
+async function withOfficialLawVerification(
+  message: Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }>,
+): Promise<Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }> | { ok: false; error: string }> {
+  const response = await sendBackgroundMessage({
+    type: "architect:verify-official-law-evidence",
+    input: message.input,
+  });
+
+  if (!response.ok) {
+    return { ok: false, error: response.error };
+  }
+
+  if (!isOfficialLawVerificationData(response.data)) {
+    return { ok: false, error: "Official law source verification returned an invalid response." };
+  }
+
+  if (response.data.report.status === "failed") {
+    return {
+      ok: false,
+      error: [
+        "Official law source verification failed.",
+        ...response.data.report.failures,
+        ...response.data.report.retry.map((item) => `Retry: ${item}`),
+      ].join(" "),
+    };
+  }
+
+  return {
+    ...message,
+    input: {
+      ...message.input,
+      evidence: response.data.evidence,
+    },
+  };
 }
 
 function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeRequest {
@@ -217,7 +271,44 @@ function normalizeEvidence(value: unknown): AssistantRuntimeInput["evidence"][nu
     ...(normalizeOptionalText(evidence.sourceUrl, 500) ? { sourceUrl: normalizeOptionalText(evidence.sourceUrl, 500) } : {}),
     ...(normalizeOptionalText(evidence.recordId, 120) ? { recordId: normalizeOptionalText(evidence.recordId, 120) } : {}),
     ...(Number.isFinite(Number(evidence.confidenceWeight)) ? { confidenceWeight: Number(evidence.confidenceWeight) } : {}),
+    ...(normalizeOptionalText(evidence.officialSourceName, 120)
+      ? { officialSourceName: normalizeOptionalText(evidence.officialSourceName, 120) }
+      : {}),
+    ...(normalizeOptionalText(evidence.lawName, 200) ? { lawName: normalizeOptionalText(evidence.lawName, 200) } : {}),
+    ...(normalizeOptionalText(evidence.articleLabel, 80)
+      ? { articleLabel: normalizeOptionalText(evidence.articleLabel, 80) }
+      : {}),
+    ...(normalizeOptionalText(evidence.articleNumber, 20)
+      ? { articleNumber: normalizeOptionalText(evidence.articleNumber, 20) }
+      : {}),
+    ...(normalizeOptionalText(evidence.effectiveDate, 40)
+      ? { effectiveDate: normalizeOptionalText(evidence.effectiveDate, 40) }
+      : {}),
+    ...(normalizeOptionalText(evidence.checkedAt, 80) ? { checkedAt: normalizeOptionalText(evidence.checkedAt, 80) } : {}),
+    ...(normalizeOptionalText(evidence.apiSourceUrl, 500)
+      ? { apiSourceUrl: normalizeOptionalText(evidence.apiSourceUrl, 500) }
+      : {}),
+    ...(isVerificationStatus(evidence.verificationStatus)
+      ? { verificationStatus: evidence.verificationStatus }
+      : {}),
   };
+}
+
+function isBridgeFailure(value: unknown): value is { ok: false; error: string } {
+  return Boolean(value && typeof value === "object" && (value as { ok?: unknown }).ok === false);
+}
+
+function isOfficialLawVerificationData(value: unknown): value is OfficialLawVerificationExtensionData {
+  return Boolean(
+    value &&
+      typeof value === "object" &&
+      Array.isArray((value as OfficialLawVerificationExtensionData).evidence) &&
+      typeof (value as OfficialLawVerificationExtensionData).report?.status === "string",
+  );
+}
+
+function isVerificationStatus(value: unknown): value is NonNullable<AssistantRuntimeInput["evidence"][number]["verificationStatus"]> {
+  return value === "verified" || value === "needs_review" || value === "failed";
 }
 
 function normalizeRequiredText(value: unknown, maxLength: number) {

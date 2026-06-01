@@ -14,6 +14,14 @@ export type AssistantEvidence = {
   sourceUrl?: string;
   recordId?: string;
   confidenceWeight?: number;
+  officialSourceName?: string;
+  lawName?: string;
+  articleLabel?: string;
+  articleNumber?: string;
+  effectiveDate?: string;
+  checkedAt?: string;
+  apiSourceUrl?: string;
+  verificationStatus?: "verified" | "needs_review" | "failed";
 };
 
 export type AssistantTaskContext = {
@@ -69,4 +77,34 @@ export type ExternalEvidenceRecord = {
 export type SaveExternalEvidenceResponse = {
   externalEvidence: ExternalEvidenceRecord;
   evidence: AssistantEvidence;
+};
+
+export type TaskResultVerificationStatus = "not_required" | "verified" | "needs_review" | "failed";
+
+export type TaskResultVerificationLaw = {
+  lawName: string;
+  articleLabel?: string;
+  articleNumber?: string;
+  effectiveDate?: string;
+  sourceUrl?: string;
+  apiSourceUrl: string;
+  checkedAt: string;
+  basisExcerpt: string;
+};
+
+export type TaskResultVerificationApiSource = {
+  name: string;
+  url: string;
+  checkedAt: string;
+  status: "verified" | "not_found" | "api_error" | "missing_query";
+};
+
+export type TaskResultVerification = {
+  status: TaskResultVerificationStatus;
+  checkedAt: string;
+  laws: TaskResultVerificationLaw[];
+  apiSources: TaskResultVerificationApiSource[];
+  basis: string[];
+  failures: string[];
+  retry: string[];
 };

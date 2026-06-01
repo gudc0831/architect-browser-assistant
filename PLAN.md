@@ -879,3 +879,236 @@ Verify/Time: 실행한 검증과 작업 시간 또는 완료 시각
 - side panel과 Admin WIKI UI/UX
 - 감사 로그 보관 기간
 - 후속 SaaS API 모드 비용 모델
+
+## 32. 공식 법규 + 운영지식 기반 task 검토 상세 계획
+
+작성일: 2026-05-29
+
+이 섹션은 "task 작성 -> 관련 법규 추천 -> 체크리스트 제시 -> 경고와 근거 표시 -> 사용자 수정 -> 승인형 운영지식 축적" MVP를 다음 작업자가 이어서 구현할 수 있도록 현재 구현 상태와 남은 설계를 정리한다.
+
+### 32.1 사용자 의도와 목표 흐름
+
+목표 흐름:
+
+```text
+사용자가 task 등록
+  -> AI 검토 요청
+  -> SaaS가 task, approved WIKI, 관리자 등록 DB, 프로젝트 문서, 같은 프로젝트 task, 공식 법규 API evidence를 수집
+  -> 사용자 연결 LLM 실행 경로가 evidence bundle을 근거로 답변/체크리스트/경고/wikiCandidateDraft 생성
+  -> 공식 법규 API 확인 실패 또는 필수 source 누락 시 저장과 WIKI 후보 생성을 중단
+  -> assistant record와 후보 초안 저장
+  -> 사용자는 task 기록용 요약을 수정/승인
+  -> Knowledge admin만 WIKI 후보를 승인/수정 후 승인/보류/삭제
+  -> approved WIKI만 이후 central_knowledge evidence로 retrieval에 재사용
+```
+
+권한 경계:
+
+- 일반 사용자와 LLM은 assistant record와 WIKI 후보 초안까지만 만들 수 있다.
+- WIKI 등록, 승인, 수정 후 승인, 보류, 삭제는 Knowledge admin 권한으로만 수행한다.
+- approved WIKI가 되기 전의 후보 record는 `central_knowledge`로 재사용하지 않는다.
+
+### 32.2 현재 구현 판정
+
+현재 구현과 일치하는 부분:
+
+- `architect-saas` retrieval은 현재 task, 관련 project task, task 파일 분석, project 파일 분석, 이전 assistant record, user-approved external evidence, approved WIKI, regulation seed를 evidence로 묶는다.
+- approved WIKI만 `central_knowledge`로 재사용하는 경계가 있다.
+- Knowledge admin 전용 candidate review/approve API 경계가 있다.
+- `architect-browser-assistant`에는 국가법령정보센터 Open API 기반 법규명/조항 확인, API URL, 조회 시점, 판단 근거 기록, 실패 시 저장 차단 로직이 있다.
+- manual verifier는 verified assistant record/WIKI 후보 생성까지만 수행하고 WIKI approval은 시도하지 않는다.
+
+아직 목표와 차이가 있는 부분:
+
+- 공식 법규 검증은 browser/local bridge 중심이다. 배포 환경에서는 법규 API `OC`가 등록 도메인/IP와 결합되므로 SaaS 서버가 검증을 오케스트레이션해야 한다.
+- "각 사용자의 로그인된 GPT가 담당"이라는 요구는 실행 정책으로 더 구체화해야 한다. 서버가 사용자의 ChatGPT 로그인 세션을 직접 사용할 수 없으므로 local extension/native runtime, 사용자별 provider 연결, BYOK, 조직 SaaS API 모드 중 하나를 명시해야 한다.
+- 체크리스트, 경고, 법규 추천, 후보 생성 사유가 아직 구조화된 schema로 고정되어 있지 않다.
+- 관리자 등록 DB의 대량 import와 AURI 같은 기본 WIKI seed corpus 수집/검토 파이프라인은 아직 구현되지 않았다.
+- 법규 API 근거와 관리자 DB/프로젝트 task 근거 사이의 충돌 탐지, 중요도 산정, 후보 승격 기준은 아직 별도 정책/테스트가 필요하다.
+
+### 32.3 find-skills 검토 결과
+
+사용자 요청에 따라 `find-skills` 지침을 확인했다. Skills leaderboard도 확인했으며, 이 작업에는 이미 설치된 다음 스킬이 충분하다.
+
+- `find-skills`: 필요한 skill 후보를 확인하고 외부 skill 설치 여부를 판단한다.
+- `superpowers:writing-plans`: 다음 작업자가 바로 수행할 수 있는 상세 구현 계획을 작성한다.
+- `verification-before-completion`: 완료 주장 전 검증 명령과 결과를 남기는 기준으로 사용한다.
+- 후속 구현 단계에서는 `superpowers:executing-plans` 또는 `superpowers:subagent-driven-development`를 사용한다.
+
+외부 skill은 설치하지 않는다. 현재 필요한 것은 새 skill 기능이 아니라 기존 `architect-saas`/`architect-browser-assistant` 경계 안에서 서버 오케스트레이션, ingestion, retrieval, 검증 schema를 구현하는 일이다.
+
+### 32.4 구현 전 확인 질문
+
+다음 항목은 구현자가 작업 시작 전 사용자 또는 제품 책임자에게 확인해야 한다.
+
+1. LLM 실행 주체를 무엇으로 확정할 것인가?
+   - 기본안: local extension/native runtime이 사용자 로컬 Codex/ChatGPT 연결을 사용한다.
+   - 대안: 사용자별 provider credential/BYOK를 SaaS에 연결한다.
+   - 후속안: 조직 단위 SaaS API 모드를 관리자가 켠다.
+
+2. 국가법령정보센터 Open API `OC`는 어디에 보관할 것인가?
+   - 권장안: production SaaS 서버의 secret/credential registry에 저장하고 서버 도메인/IP를 등록한다.
+   - 금지안: 일반 사용자 브라우저 storage나 client bundle에 노출한다.
+
+3. 관리자 등록 DB의 source of truth는 무엇인가?
+   - 권장안: SaaS DB + object storage + file analysis/chunk index.
+   - 로컬 개발안: `LOCAL_DATA_ROOT`의 JSON metadata와 uploads는 개발 fixture로만 사용한다.
+
+4. AURI 보고서와 기본 법규/실무 기준은 approved WIKI로 바로 넣을 것인가, 후보로 넣을 것인가?
+   - 권장안: raw source로 import하고, page/section 근거가 붙은 WIKI 후보를 생성한 뒤 Knowledge admin 승인 후 approved WIKI로 승격한다.
+
+5. 사용자가 수정/승인하는 범위와 Knowledge admin이 승인하는 범위를 어디서 나눌 것인가?
+   - 권장안: 사용자는 task summary와 project record를 승인한다. Knowledge admin은 조직 WIKI 승격만 승인한다.
+
+6. 체크리스트와 경고의 최소 schema를 무엇으로 할 것인가?
+   - 권장안: `checklistItems[]`, `warnings[]`, `lawCitations[]`, `evidenceConflicts[]`, `wikiCandidateDraft`.
+
+### 32.5 목표 아키텍처
+
+SaaS 서버에 task review orchestrator를 둔다.
+
+```text
+POST /api/assistant/task-review
+  -> auth/project membership 검증
+  -> task context load
+  -> retrieval evidence load
+     - approved WIKI
+     - admin corpus/project documents
+     - current task
+     - related project tasks
+     - previous assistant records
+     - user-approved external evidence
+     - regulation seed
+  -> official law verification
+     - law locator extraction
+     - law.go.kr lawSearch/lawService 호출
+     - OC redaction
+     - law/article/effectiveDate/apiUrl/checkedAt/basisExcerpt 기록
+  -> evidence bundle normalization
+  -> user-bound LLM execution
+  -> structured result validation
+  -> assistant record 저장
+  -> wiki candidate draft 저장
+  -> task summary draft 저장
+```
+
+핵심 모듈 책임:
+
+- `TaskReviewOrchestrator`: 전체 flow와 failure policy를 조율한다.
+- `OfficialLawVerifier`: 국가법령정보센터 API 호출, 응답 normalization, 오류/재시도 사유 기록.
+- `EvidenceBundleBuilder`: task/project/admin DB/approved WIKI/법규 evidence를 같은 schema로 묶고 우선순위와 confidence weight를 부여.
+- `UserBoundLlmExecutor`: local runtime, user provider, organization SaaS API mode 중 실제 활성화된 실행 경로만 호출.
+- `StructuredReviewValidator`: 답변이 공식 API 응답과 evidence id를 참조하는지 검증.
+- `WikiCandidatePolicy`: 후보 생성 여부, 후보 제목/요약/태그/근거/리스크를 산정하되 approve는 호출하지 않는다.
+
+### 32.6 데이터 ingestion 계획
+
+로컬 개발:
+
+- 기존 문서대로 metadata는 `LOCAL_DATA_ROOT` 또는 `D:\architect-start-data\data\*.json`에 저장된다.
+- 파일 binary를 uploads 폴더에 직접 넣는 것만으로 retrieval 대상이 되지 않는다.
+- SaaS UI/API로 file record를 만들고, extracted text 또는 summary가 포함된 file analysis를 저장해야 assistant retrieval에 잡힌다.
+
+배포 환경:
+
+- 사용자는 SaaS upload/API를 통해 문서를 등록한다.
+- binary는 cloud object storage, metadata와 extracted text/chunk는 production DB/index에 저장한다.
+- assistant는 서버 DB/index에서 데이터를 불러와 법규 API 결과와 함께 LLM에 전달한다.
+- 관리자 DB는 "폴더 경로"가 아니라 server-side import job의 source로 취급한다. 예: object storage prefix, admin upload batch, signed import manifest.
+
+AURI/기본 WIKI seed:
+
+- AURI PDF는 raw source로 import한다.
+- PDF text extraction 후 page/section 기준으로 chunk를 만든다.
+- 각 chunk에는 `sourceUrl`, `documentTitle`, `page`, `section`, `capturedAt`, `reviewState`를 남긴다.
+- LLM은 chunk를 바탕으로 checklist 후보와 WIKI 후보를 만들 수 있지만, approved WIKI 등록은 Knowledge admin 승인 후에만 가능하다.
+
+### 32.7 구현 단계
+
+Phase 1: 서버 공식 법규 verifier 이식
+
+- `architect-browser-assistant/src/legal/official-law-api.ts`의 검증 로직을 SaaS에서 재사용 가능하게 port 또는 shared package화한다.
+- SaaS 서버 secret에서 `LAW_OPEN_DATA_OC`를 읽고, API URL에는 OC를 redaction해서 저장한다.
+- 법규 API authentication/domain 오류는 `blocked`로 처리하고 assistant record/WIKI candidate 저장을 막는다.
+
+Phase 2: task review structured output schema
+
+- review result schema를 정의한다.
+- 최소 필드: `answerMarkdown`, `lawCitations`, `checklistItems`, `warnings`, `evidenceConflicts`, `confidence`, `wikiCandidateDraft`, `failure`.
+- 모든 `lawCitations`는 official API result id/API URL/checkedAt을 가져야 한다.
+- 모든 checklist/warning은 최소 하나 이상의 evidence id를 참조해야 한다.
+
+Phase 3: SaaS task review API
+
+- `POST /api/assistant/task-review`를 추가한다.
+- 기존 `/api/assistant/retrieve`를 내부에서 재사용하고, 공식 법규 verifier를 서버에서 호출한다.
+- LLM 실행 경로가 없으면 retrieval + law verification preview만 반환하고 generation은 차단한다.
+
+Phase 4: user-bound LLM execution policy
+
+- local extension mode: SaaS가 evidence bundle을 반환하고 browser assistant가 사용자 local runtime에 전달한다.
+- user provider mode: 사용자가 연결한 provider credential이 있을 때만 서버가 호출한다.
+- organization SaaS API mode: 관리자가 활성화한 경우에만 서버 provider를 호출한다.
+- 실행 모드와 credential boundary를 assistant record metadata에 남긴다.
+
+Phase 5: WIKI candidate policy
+
+- AI가 `wikiCandidateDraft`를 만들 수 있게 하되, candidate state만 저장한다.
+- 후보에는 source coverage, law citations, conflicting evidence, confidence reason, suggested scope를 포함한다.
+- approve/reject/hold/delete는 Knowledge admin UI/API만 수행한다.
+
+Phase 6: admin corpus ingestion
+
+- admin upload batch 또는 import manifest를 추가한다.
+- AURI PDF와 기본 실무 기준 자료를 raw source로 등록한다.
+- extraction/chunking/indexing 후 후보 생성 preview를 제공한다.
+- production import 전 source review coverage와 Knowledge admin acknowledgement를 요구한다.
+
+### 32.8 MVP 검증 시나리오
+
+필수 수동 검증:
+
+1. 일반 사용자가 "공동주택 단지내 도로 경사도 검토" task를 생성한다.
+2. AI 검토를 요청한다.
+3. 서버가 task, 관련 task, approved WIKI, admin corpus, project document, regulation evidence를 조회한다.
+4. 서버가 국가법령정보센터 API에서 법규명, 조항, API URL, 조회 시점, 판단 근거를 확인한다.
+5. 유효한 OC가 없으면 assistant record와 WIKI candidate 저장 없이 blocked 응답을 반환한다.
+6. 유효한 OC가 있으면 structured answer/checklist/warnings/wikiCandidateDraft를 생성한다.
+7. assistant record와 WIKI candidate가 저장된다.
+8. 새 후보는 retrieval에서 `central_knowledge`로 나오지 않는다.
+9. Knowledge admin이 후보를 승인한다.
+10. 승인 후 `/api/admin/knowledge/items`와 `/api/assistant/retrieve`에서 approved WIKI evidence가 검색된다.
+
+필수 자동 검증:
+
+- 공식 법규 verifier 성공/실패/timeout/auth error/OC redaction 테스트.
+- task review API가 verification failed 상태에서 record/candidate write를 하지 않는 테스트.
+- task review API가 candidate 생성 후 approve API를 호출하지 않는 테스트.
+- non-admin 사용자가 candidate approve/reject/hold/delete를 호출할 수 없는 테스트.
+- approved WIKI만 `central_knowledge`로 retrieval되는 테스트.
+- checklist/warnings가 evidence id 없는 상태로 저장되지 않는 validation 테스트.
+
+### 32.9 다음 작업자용 지시 프롬프트
+
+```text
+현재 repo는 D:\architect-workspace\architect-browser-assistant이고, SaaS repo는 D:\architect-workspace\architect-saas입니다.
+
+목표:
+PLAN.md section 32를 기준으로 "공식 법규 API + 관리자 등록 DB + 프로젝트 task evidence 기반 task review orchestrator"를 구현하십시오. WIKI 승인은 자동화하지 말고 Knowledge admin 전용 UI/API만 사용하십시오.
+
+작업 순서:
+1. PLAN.md section 32, README.md의 Official Law Source Verification, plans/486-official-law-api-task-verification.md, docs/worklogs/2026-05-28-1735-official-law-api-task-verification.md, docs/worklogs/2026-05-29-0952-task-review-orchestration-planning.md를 먼저 읽으십시오.
+2. architect-saas의 retrieveAssistantEvidence, assistant records, knowledge candidate approve/reject route, knowledge-guards를 확인하십시오.
+3. 서버-side OfficialLawVerifier 설계를 시작하십시오. browser-side verifier를 그대로 client secret 경계에 두지 말고 SaaS server secret LAW_OPEN_DATA_OC를 사용하는 구조로 옮기십시오.
+4. POST /api/assistant/task-review의 최소 vertical slice를 설계하십시오. 유효한 OC가 없거나 공식 API 검증이 실패하면 assistant record와 WIKI candidate 저장을 중단해야 합니다.
+5. structured review schema(answerMarkdown, lawCitations, checklistItems, warnings, evidenceConflicts, confidence, wikiCandidateDraft)를 추가하십시오.
+6. candidate creation은 허용하되 WIKI approve는 호출하지 마십시오. 승인/수정 후 승인/보류/삭제는 Knowledge admin만 할 수 있어야 합니다.
+7. admin corpus ingestion은 우선 설계와 테스트 fixture로 시작하십시오. AURI PDF는 raw source 후보로 취급하고 approved WIKI로 바로 넣지 마십시오.
+8. 테스트는 실패 차단, OC redaction, non-admin approve 차단, approved WIKI retrieval 재조회, 후보 미승인 상태의 central_knowledge 제외를 반드시 포함하십시오.
+
+주의:
+- 사용자의 ChatGPT/Codex credential을 SaaS나 extension storage에 저장하지 마십시오.
+- law.go.kr OC 값을 client에 노출하지 마십시오.
+- mock 법규 답변으로 성공 처리하지 마십시오.
+- 법규 API 원문 근거 없이 법규 검토 record/WIKI candidate를 저장하지 마십시오.
+```

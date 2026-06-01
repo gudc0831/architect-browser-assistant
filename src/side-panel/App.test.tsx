@@ -122,7 +122,7 @@ describe("App", () => {
     await act(async () => {
       root?.render(<App />);
     });
-    await waitFor(() => rootElement?.textContent?.includes("Runtime ready") === true);
+    await waitFor(() => rootElement?.textContent?.includes("실행 가능") === true);
 
     await act(async () => {
       const textarea = rootElement?.querySelector("textarea");
@@ -131,19 +131,19 @@ describe("App", () => {
       }
       setTextareaValue(textarea, "검토해줘");
     });
-    await waitFor(() => getButton("Retrieve").disabled === false);
+    await waitFor(() => getButton("근거 불러오기").disabled === false);
 
     await act(async () => {
-      getButton("Retrieve").click();
+      getButton("근거 불러오기").click();
     });
     await waitFor(() => rootElement?.textContent?.includes("Approved WIKI guidance") === true);
 
     await act(async () => {
-      getButton("Generate").click();
+      getButton("검토안 생성").click();
     });
     await waitFor(() => rootElement?.textContent?.includes("검토 답변입니다.") === true);
 
-    expect(rootElement?.textContent).toContain("Confidence 76%");
+    expect(rootElement?.textContent).toContain("신뢰도 76%");
     expect(rootElement?.textContent).toContain("Central knowledge matched, but regulation evidence is still missing.");
   });
 

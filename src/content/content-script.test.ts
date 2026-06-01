@@ -151,6 +151,126 @@ describe("content script local runtime page bridge", () => {
     });
     expect(sendMessage).not.toHaveBeenCalled();
   });
+
+  it("verifies official law sources before forwarding page generate requests", async () => {
+    const sendMessage = stubChromeRuntime((message) => {
+      if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {
+        return {
+          ok: true,
+          data: {
+            report: {
+              status: "verified",
+              checkedAt: "2026-05-28T00:00:00.000Z",
+              provider: {
+                name: "국가법령정보센터",
+                docsUrl: "https://open.law.go.kr/LSO/openApi/guideList.do",
+              },
+              locators: [],
+              sources: [],
+              failures: [],
+              retry: [],
+            },
+            evidence: [
+              {
+                id: "official-law:building-act:004900",
+                kind: "regulation",
+                priority: 0,
+                title: "건축법 제49조 원문 확인",
+                excerpt: "국가법령정보센터 Open API 확인",
+                officialSourceName: "국가법령정보센터",
+                lawName: "건축법",
+                articleLabel: "제49조",
+                checkedAt: "2026-05-28T00:00:00.000Z",
+                apiSourceUrl: "https://www.law.go.kr/DRF/lawService.do?target=eflaw&type=JSON&ID=123&JO=004900",
+                verificationStatus: "verified",
+              },
+            ],
+          },
+        };
+      }
+
+      return {
+        ok: true,
+        data: {
+          answer: "verified local answer",
+          draftSummary: {
+            conclusion: "verified",
+            tags: ["assistant"],
+            scope: "ARCH-1",
+          },
+        },
+      };
+    });
+
+    await import("./content-script");
+
+    const response = waitForBridgeResponse("request-generate");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-local-runtime-request",
+          requestId: "request-generate",
+          command: "generate",
+          input: {
+            question: "건축법 제49조 기준 검토",
+            taskContext: {
+              taskId: "task-1",
+              projectId: "project-1",
+              title: "피난 검토",
+              description: "피난시설 검토",
+              status: "in_review",
+              issueId: "ARCH-1",
+              projectName: "Architect",
+            },
+            evidence: [
+              {
+                id: "reg-1",
+                kind: "regulation",
+                priority: 2,
+                title: "건축법 제49조",
+                excerpt: "피난시설",
+              },
+            ],
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-local-runtime-response",
+      requestId: "request-generate",
+      ok: true,
+      data: {
+        answer: "verified local answer",
+      },
+    });
+
+    expect(sendMessage).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "architect:verify-official-law-evidence" }),
+      expect.any(Function),
+    );
+
+    const generateCall = sendMessage.mock.calls.find(
+      ([message]) => (message as { type?: string }).type === "architect:local-runtime-generate",
+    );
+    expect(generateCall?.[0]).toEqual(
+      expect.objectContaining({
+        type: "architect:local-runtime-generate",
+        input: expect.objectContaining({
+          evidence: [
+            expect.objectContaining({
+              officialSourceName: "국가법령정보센터",
+              lawName: "건축법",
+              articleLabel: "제49조",
+              verificationStatus: "verified",
+            }),
+          ],
+        }),
+      }),
+    );
+  });
 });
 
 function waitForBridgeResponse(requestId: string) {

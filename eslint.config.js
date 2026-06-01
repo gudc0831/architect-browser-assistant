@@ -4,7 +4,7 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
-    ignores: ["dist/**", "node_modules/**"],
+    ignores: ["dist/**", "node_modules/**", ".agents/**"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -42,6 +42,7 @@ export default [
         console: "readonly",
         process: "readonly",
         setTimeout: "readonly",
+        URL: "readonly",
       },
     },
     rules: {

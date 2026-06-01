@@ -11,5 +11,6 @@ describe("assertSafeKey", () => {
   it("allows non-sensitive extension settings", () => {
     expect(() => assertSafeKey("saasBaseUrl")).not.toThrow();
     expect(() => assertSafeKey("runtimeMode")).not.toThrow();
+    expect(() => assertSafeKey("lawOpenDataOc")).not.toThrow();
   });
 });

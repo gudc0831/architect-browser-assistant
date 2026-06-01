@@ -44,6 +44,39 @@ The bridge path is intentionally narrow:
 - The native host runs `codex exec - --json --sandbox read-only --skip-git-repo-check` with the selected task context, question, and evidence.
 - No ChatGPT, Codex, OpenAI, or SaaS secret is stored in extension storage.
 
+## Official Law Source Verification
+
+When retrieved evidence includes `regulation` sources, the side panel and the `/daily` in-page Local Codex bridge verify the law/article against the official National Law Information Center Open API before generation:
+
+- Search: `https://www.law.go.kr/DRF/lawSearch.do?target=eflaw&type=JSON`
+- Article body: `https://www.law.go.kr/DRF/lawService.do?target=eflaw&type=JSON`
+- API guide: `https://open.law.go.kr/LSO/openApi/guideList.do`
+
+The saved answer appends a deterministic `출처 검증 기록` section with law name, article, API source, checked time, and basis excerpt. If the official API call fails or the law/article locator is missing, the side panel shows the failure reason and retry path. Legal generation is blocked when required official law source verification fails.
+
+The extension host permission is limited to the SaaS origin plus `https://www.law.go.kr/*`; no content script runs on the law site. The optional Open API `OC` value can be stored as `lawOpenDataOc`; local development falls back to the official guide's `test` sample value.
+
+Manual task-flow verification:
+
+```powershell
+cd D:\architect-workspace\architect-browser-assistant
+& <path-to-tsx.cmd> scripts\verify-official-law-task-flow.mjs --origin http://localhost:3000 --task-id <task-id> --oc <law-open-data-oc>
+```
+
+The script uses the same verifier module as the extension flow. It retrieves SaaS evidence, calls the National Law Information Center Open API, and saves an assistant record as a WIKI candidate when verification succeeds. It does not approve WIKI items; WIKI approval is a Knowledge admin/user action in the SaaS UI/API. If the official API returns an authentication/domain registration error or no verified law article, the script exits with `status: "blocked"` and skips record/candidate writes.
+
+Assistant retrieval data sources:
+
+- `task`: current task text plus related project tasks.
+- `project_document`: uploaded task/project files after text extraction or manual analysis is saved.
+- `central_knowledge`: approved WIKI items only. Assistant records are candidates until a Knowledge admin approves them.
+- `web_or_skill`: user-approved external evidence saved through the assistant external-evidence API.
+- `regulation`: bundled regulation seed package plus browser-side official law API verification for legal tasks.
+
+For local development, the SaaS local backend stores JSON metadata under `LOCAL_DATA_ROOT` or `D:\architect-start-data` by default: `data\tasks.json`, `data\files.json`, `data\assistant-records.json`, and uploaded binaries under `uploads\projects\<projectId>\tasks\<taskId>\...`. Do not rely on dropping files into the upload folder alone; retrieval only sees files that were committed through the SaaS file APIs/UI and have usable analysis metadata. To make a document searchable by the assistant, upload it to the relevant task, then save file analysis with extracted text or a summary. Use `verificationState: "user_confirmed"` when a user has checked the extracted text.
+
+For production users, use the cloud backend/storage path instead of local folders. The same retrieval contract applies: project membership gates task/file access, Knowledge admin gates WIKI approval, and only approved WIKI items are reused as central knowledge.
+
 Development checks:
 
 ```powershell

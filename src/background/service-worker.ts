@@ -6,6 +6,14 @@ import {
   type NativeBridgeResponse,
 } from "../runtime/native-bridge-contract";
 import type { BrowserCaptureExtensionMessage } from "../runtime/browser-capture-contract";
+import {
+  officialLawSourceToEvidence,
+  verifyOfficialLawEvidence,
+} from "../legal/official-law-api";
+import type {
+  OfficialLawVerificationExtensionData,
+  OfficialLawVerificationExtensionMessage,
+} from "../runtime/legal-verification-contract";
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch((error) => {
@@ -28,6 +36,18 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       .then(sendResponse)
       .catch((error) => {
         sendResponse({ ok: false, error: error instanceof Error ? error.message : "Browser capture failed" });
+      });
+    return true;
+  }
+
+  if (isOfficialLawVerificationMessage(message)) {
+    handleOfficialLawVerificationMessage(message)
+      .then(sendResponse)
+      .catch((error) => {
+        sendResponse({
+          ok: false,
+          error: error instanceof Error ? error.message : "Official law source verification failed",
+        });
       });
     return true;
   }
@@ -102,6 +122,14 @@ function isBrowserCaptureMessage(message: unknown): message is BrowserCaptureExt
   return (message as { type?: unknown }).type === "architect:capture-visible-tab";
 }
 
+function isOfficialLawVerificationMessage(message: unknown): message is OfficialLawVerificationExtensionMessage {
+  if (!message || typeof message !== "object") {
+    return false;
+  }
+
+  return (message as { type?: unknown }).type === "architect:verify-official-law-evidence";
+}
+
 async function handleBrowserCaptureMessage(message: BrowserCaptureExtensionMessage) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab?.url || !isHttpUrl(tab.url) || typeof tab.windowId !== "number") {
@@ -119,6 +147,26 @@ async function handleBrowserCaptureMessage(message: BrowserCaptureExtensionMessa
       region: message.input.region,
       pixelRegion: message.input.pixelRegion,
       viewport: message.input.viewport,
+    },
+  };
+}
+
+async function handleOfficialLawVerificationMessage(
+  message: OfficialLawVerificationExtensionMessage,
+): Promise<{ ok: true; data: OfficialLawVerificationExtensionData }> {
+  const report = await verifyOfficialLawEvidence({
+    question: message.input.question,
+    evidence: message.input.evidence,
+  });
+  const verifiedEvidence = report.sources
+    .map(officialLawSourceToEvidence)
+    .filter((item): item is OfficialLawVerificationExtensionData["evidence"][number] => Boolean(item));
+
+  return {
+    ok: true,
+    data: {
+      report,
+      evidence: [...verifiedEvidence, ...message.input.evidence],
     },
   };
 }

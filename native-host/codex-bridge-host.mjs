@@ -315,10 +315,11 @@ export function buildCodexPrompt(input) {
     .slice(0, 12)
     .map((item, index) => {
       const source = item.sourceUrl ? `\nsourceUrl: ${trimText(item.sourceUrl, 500)}` : "";
+      const verification = buildEvidenceVerificationBlock(item);
       return [
         `[${index + 1}] ${trimText(item.title || "Untitled evidence", 200)}`,
         `kind: ${trimText(item.kind || "unknown", 80)}`,
-        `excerpt: ${trimText(item.excerpt || "", 1800)}${source}`,
+        `excerpt: ${trimText(item.excerpt || "", 1800)}${source}${verification}`,
       ].join("\n");
     })
     .join("\n\n");
@@ -326,6 +327,7 @@ export function buildCodexPrompt(input) {
   return [
     "You are Architect Browser Assistant, a task-centered assistant for architecture and construction work.",
     "Use only the provided task context and evidence. If evidence is insufficient, say what should be checked next.",
+    "For legal/regulation review, rely only on regulation evidence that records an official source, API URL, and checkedAt timestamp. If that verified evidence is missing, say the legal source verification is missing.",
     "Do not present legal or permit conclusions as final determinations.",
     "Answer in Korean if the user's question is Korean; otherwise answer in the user's language.",
     "Return only valid JSON with this exact shape:",
@@ -352,6 +354,33 @@ export function buildCodexPrompt(input) {
     "Evidence:",
     evidenceBlock || "No evidence was provided.",
   ].join("\n");
+}
+
+function buildEvidenceVerificationBlock(item) {
+  const rows = [];
+  if (item.officialSourceName) {
+    rows.push(`officialSourceName: ${trimText(item.officialSourceName, 120)}`);
+  }
+  if (item.lawName) {
+    rows.push(`lawName: ${trimText(item.lawName, 200)}`);
+  }
+  if (item.articleLabel) {
+    rows.push(`article: ${trimText(item.articleLabel, 80)}`);
+  }
+  if (item.effectiveDate) {
+    rows.push(`effectiveDate: ${trimText(item.effectiveDate, 80)}`);
+  }
+  if (item.checkedAt) {
+    rows.push(`checkedAt: ${trimText(item.checkedAt, 80)}`);
+  }
+  if (item.apiSourceUrl) {
+    rows.push(`apiSourceUrl: ${trimText(item.apiSourceUrl, 500)}`);
+  }
+  if (item.verificationStatus) {
+    rows.push(`verificationStatus: ${trimText(item.verificationStatus, 80)}`);
+  }
+
+  return rows.length > 0 ? `\n${rows.join("\n")}` : "";
 }
 
 export function parseCodexJsonlOutput(stdoutText) {
