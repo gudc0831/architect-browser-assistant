@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
@@ -250,6 +251,7 @@ function spawnAndCollect(command, args, stdinText, timeoutMs) {
       cwd: process.env.ARCHITECT_CODEX_WORKDIR || process.cwd(),
       env: process.env,
       shell: false,
+      windowsVerbatimArguments: invocation.windowsVerbatimArguments === true,
       windowsHide: true,
       stdio: ["pipe", "pipe", "pipe"],
     });
@@ -295,15 +297,44 @@ function spawnAndCollect(command, args, stdinText, timeoutMs) {
   });
 }
 
-export function buildSpawnInvocation(command, args, platform = process.platform) {
+export function buildSpawnInvocation(command, args, platform = process.platform, fileExists = existsSync) {
   if (platform === "win32" && /\.ps1$/i.test(command)) {
+    const cmdSibling = command.replace(/\.ps1$/i, ".cmd");
+    if (fileExists(cmdSibling)) {
+      return buildWindowsCmdInvocation(cmdSibling, args);
+    }
+
     return {
       command: "powershell.exe",
-      args: ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", command, ...args],
+      args: ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", buildPowerShellInvocation(command, args)],
     };
   }
 
+  if (platform === "win32" && /\.(?:cmd|bat)$/i.test(command)) {
+    return buildWindowsCmdInvocation(command, args);
+  }
+
   return { command, args };
+}
+
+function buildWindowsCmdInvocation(command, args) {
+  return {
+    command: process.env.ComSpec || "cmd.exe",
+    args: ["/d", "/c", ["call", quoteWindowsCmdArg(command), ...args.map(quoteWindowsCmdArg)].join(" ")],
+    windowsVerbatimArguments: true,
+  };
+}
+
+function quoteWindowsCmdArg(value) {
+  return `"${String(value).replace(/(["^&|<>])/g, "^$1")}"`;
+}
+
+function buildPowerShellInvocation(command, args) {
+  return ["&", quotePowerShellArg(command), ...args.map(quotePowerShellArg)].join(" ");
+}
+
+function quotePowerShellArg(value) {
+  return `'${String(value).replace(/'/g, "''")}'`;
 }
 
 export function buildCodexPrompt(input) {

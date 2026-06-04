@@ -71,24 +71,40 @@ describe("codex native host", () => {
     }
   });
 
-  it("runs Windows PowerShell wrappers through powershell.exe", () => {
+  it("runs Windows npm PowerShell wrappers through the sibling cmd wrapper", () => {
     const invocation = buildSpawnInvocation(
       "C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.ps1",
-      ["exec", "--help"],
+      ["exec", "-", "--json"],
+      "win32",
+      (candidate) => candidate === "C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.cmd",
+    );
+
+    assert.deepEqual(invocation, {
+      command: process.env.ComSpec || "cmd.exe",
+      args: [
+        "/d",
+        "/c",
+        'call "C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.cmd" "exec" "-" "--json"',
+      ],
+      windowsVerbatimArguments: true,
+    });
+  });
+
+  it("runs Windows cmd wrappers through cmd.exe", () => {
+    const invocation = buildSpawnInvocation(
+      "C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.cmd",
+      ["exec", "-", "--json"],
       "win32",
     );
 
     assert.deepEqual(invocation, {
-      command: "powershell.exe",
+      command: process.env.ComSpec || "cmd.exe",
       args: [
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.ps1",
-        "exec",
-        "--help",
+        "/d",
+        "/c",
+        'call "C:\\Users\\hcchoi\\AppData\\Roaming\\npm\\codex.cmd" "exec" "-" "--json"',
       ],
+      windowsVerbatimArguments: true,
     });
   });
 

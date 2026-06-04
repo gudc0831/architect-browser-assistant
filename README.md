@@ -166,7 +166,7 @@ npm run native-host:verify-production-install -- --extension-id <chrome-extensio
 npm run extension:verify-chrome-profile -- --extension-id <chrome-extension-id> --require-webstore --json --strict
 ```
 
-The installer writes a launcher with absolute `node.exe` and Codex CLI paths. Windows npm `codex.ps1` wrappers are supported by the native host through `powershell.exe -File`, so the launcher can pin the user-context Codex wrapper instead of falling back to the WindowsApps executable. Use the default real-mode install for `/daily` Local Codex generation; `-Mock` is only for smoke tests.
+The installer writes a launcher with absolute `node.exe` and Codex CLI paths. Windows npm `codex.ps1` wrappers are supported by resolving the sibling `codex.cmd` wrapper when available, so stdin prompts such as `codex exec -` are passed correctly instead of being parsed as PowerShell parameters. Use the default real-mode install for `/daily` Local Codex generation; `-Mock` is only for smoke tests.
 
 For a bridge smoke test without invoking the real Codex CLI, add `-Mock`:
 
