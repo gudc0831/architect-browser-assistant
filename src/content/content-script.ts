@@ -11,13 +11,19 @@ import type {
   OfficialLawVerificationExtensionData,
   OfficialLawVerificationExtensionMessage,
 } from "../runtime/legal-verification-contract";
-import type { LocalRuntimeExtensionMessage, LocalRuntimeExtensionResponse } from "../runtime/native-bridge-contract";
+import {
+  normalizeCodexOptions,
+  normalizeUsageRangeDays,
+  type LocalRuntimeExtensionMessage,
+  type LocalRuntimeExtensionResponse,
+} from "../runtime/native-bridge-contract";
 
 type PageLocalRuntimeRequest = {
   type: "architect:page-local-runtime-request";
   requestId?: unknown;
   command?: unknown;
   input?: unknown;
+  codexOptions?: unknown;
 };
 
 type PageLocalRuntimeResponse = {
@@ -208,6 +214,7 @@ function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeReq
     message.type === "architect:page-local-runtime-request" &&
     typeof message.requestId === "string" &&
     (message.command === "status" ||
+      message.command === "usage-summary" ||
       message.command === "generate" ||
       message.command === "select-region" ||
       message.command === "verify-official-law")
@@ -215,8 +222,20 @@ function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeReq
 }
 
 function toExtensionRuntimeMessage(request: PageLocalRuntimeRequest): LocalRuntimeExtensionMessage | null {
+  const codexOptions = normalizeCodexOptions(request.codexOptions);
   if (request.command === "status") {
-    return { type: "architect:local-runtime-status" };
+    return { type: "architect:local-runtime-status", ...(codexOptions ? { codexOptions } : {}) };
+  }
+
+  if (request.command === "usage-summary") {
+    const rangeDays = normalizeUsageRangeDays(
+      request.input && typeof request.input === "object" ? (request.input as { rangeDays?: unknown }).rangeDays : undefined,
+    );
+    return {
+      type: "architect:local-runtime-usage-summary",
+      ...(typeof rangeDays === "number" ? { rangeDays } : {}),
+      ...(codexOptions ? { codexOptions } : {}),
+    };
   }
 
   if (request.command === "generate") {
@@ -228,6 +247,7 @@ function toExtensionRuntimeMessage(request: PageLocalRuntimeRequest): LocalRunti
     return {
       type: "architect:local-runtime-generate",
       input,
+      ...(codexOptions ? { codexOptions } : {}),
     };
   }
 

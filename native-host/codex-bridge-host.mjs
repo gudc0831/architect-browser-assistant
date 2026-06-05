@@ -1,12 +1,22 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
+import { readFile, readdir, stat } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 const CAPABILITIES = ["codex-exec", "grounded-answer", "draft-work-summary", "read-only-sandbox"];
+const BRIDGE_SCHEMA_VERSION = 2;
 const MAX_HOST_RESPONSE_BYTES = 1024 * 1024;
 const DEFAULT_CODEX_TIMEOUT_MS = 120_000;
+const USAGE_SUMMARY_MAX_FILES = 200;
+const USAGE_SUMMARY_MAX_DIRECTORIES = 80;
+const USAGE_SUMMARY_MAX_FILE_BYTES = 512 * 1024;
+const USAGE_SUMMARY_MAX_TOTAL_BYTES = 10 * 1024 * 1024;
+const REASONING_EFFORTS = new Set(["minimal", "low", "medium", "high"]);
+const SERVICE_TIERS = new Set(["auto", "default", "priority"]);
 const isLittleEndian = new Uint8Array(new Uint32Array([1]).buffer)[0] === 1;
 
 async function main() {
@@ -45,8 +55,8 @@ async function main() {
     const request = await readNativeMessage();
     const response = await handleRequest(request);
     writeNativeMessage(response);
-  } catch (error) {
-    writeNativeMessage(errorResponse("host_error", error instanceof Error ? error.message : "Native host failed"));
+  } catch {
+    writeNativeMessage(errorResponse("host_error", "Native host failed."));
   }
 }
 
@@ -64,6 +74,8 @@ export async function handleRequest(request) {
           available: true,
           mode: "local-chatgpt-codex",
           reason: "Native host mock mode is enabled.",
+          bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
+          ...withCodexOptions(request.codexOptions),
         },
       };
     }
@@ -76,6 +88,8 @@ export async function handleRequest(request) {
         available: status.available,
         mode: "local-chatgpt-codex",
         reason: status.reason,
+        bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
+        ...withCodexOptions(request.codexOptions),
       },
     };
   }
@@ -85,6 +99,14 @@ export async function handleRequest(request) {
       ok: true,
       requestId: request.requestId,
       capabilities: CAPABILITIES,
+    };
+  }
+
+  if (request.type === "usageSummary") {
+    return {
+      ok: true,
+      requestId: request.requestId,
+      usageSummary: await buildUsageSummary(request),
     };
   }
 
@@ -101,15 +123,23 @@ export async function handleRequest(request) {
       };
     }
 
-    const output = await runCodexExec(request.payload);
-    return {
-      ok: true,
-      requestId: request.requestId,
-      output,
-    };
+    try {
+      const output = await runCodexExec(request.payload, request.codexOptions);
+      return {
+        ok: true,
+        requestId: request.requestId,
+        output,
+      };
+    } catch {
+      return errorResponse(
+        "codex_exec_failed",
+        "Local Codex generation failed. Run the local verifier for details.",
+        request.requestId,
+      );
+    }
   }
 
-  return errorResponse("unknown_request_type", `Unsupported native bridge request: ${String(request.type)}`, request.requestId);
+  return errorResponse("unknown_request_type", "Unsupported native bridge request type.", request.requestId);
 }
 
 export async function readNativeMessage(input = process.stdin) {
@@ -216,23 +246,32 @@ async function checkCodexCli() {
       available: true,
       reason: "Codex CLI responded to `codex exec --help`.",
     };
-  } catch (error) {
+  } catch {
     return {
       available: false,
-      reason:
-        error instanceof Error
-          ? `Codex CLI is unavailable: ${error.message}`
-          : "Codex CLI is unavailable.",
+      reason: "Codex CLI is unavailable. Run the local verifier for details.",
     };
   }
 }
 
-async function runCodexExec(input) {
+async function runCodexExec(input, codexOptions) {
   const prompt = buildCodexPrompt(input);
-  const args = ["exec", "-", "--json", "--sandbox", "read-only", "--skip-git-repo-check"];
+  const args = buildCodexExecArgs(codexOptions);
   const result = await spawnAndCollect(getCodexCommand(), args, prompt, getCodexTimeoutMs());
   const finalText = parseCodexJsonlOutput(result.stdout);
   return parseAssistantOutput(finalText, input);
+}
+
+export function buildCodexExecArgs(codexOptions) {
+  const options = normalizeCodexOptions(codexOptions);
+  const args = ["exec", "-", "--json", "--sandbox", "read-only", "--skip-git-repo-check"];
+  if (options.model) {
+    args.push("--model", options.model);
+  }
+  if (options.reasoningEffort) {
+    args.push("-c", `model_reasoning_effort="${options.reasoningEffort}"`);
+  }
+  return args;
 }
 
 function getCodexCommand() {
@@ -242,6 +281,296 @@ function getCodexCommand() {
 function getCodexTimeoutMs() {
   const raw = Number(process.env.ARCHITECT_CODEX_BRIDGE_TIMEOUT_MS || "");
   return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_CODEX_TIMEOUT_MS;
+}
+
+function withCodexOptions(value) {
+  const codexOptions = normalizeCodexOptions(value);
+  return Object.keys(codexOptions).length > 0 ? { codexOptions } : {};
+}
+
+function normalizeCodexOptions(value) {
+  if (!value || typeof value !== "object") {
+    return {};
+  }
+
+  const normalized = {};
+  if (typeof value.model === "string") {
+    const model = value.model.trim();
+    if (/^[A-Za-z0-9._-]{1,80}$/.test(model)) {
+      normalized.model = model;
+    }
+  }
+
+  if (REASONING_EFFORTS.has(value.reasoningEffort)) {
+    normalized.reasoningEffort = value.reasoningEffort;
+  }
+
+  if (SERVICE_TIERS.has(value.serviceTier)) {
+    normalized.serviceTier = value.serviceTier;
+  }
+
+  if (value.sandboxMode === "read-only") {
+    normalized.sandboxMode = "read-only";
+  }
+
+  return normalized;
+}
+
+async function buildUsageSummary(request) {
+  const rangeDays = normalizeUsageSummaryRange(request?.rangeDays);
+  const summary = {
+    bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
+    scannedAt: new Date().toISOString(),
+    source: "local-codex-session-metadata",
+    metadataOnly: true,
+    rangeDays,
+    status: "available",
+    sessionFileCount: 0,
+    skippedSessionCount: 0,
+    totalSessionBytes: 0,
+    direct: emptyUsageTotal(),
+    uncertain: emptyUsageTotal(),
+    buckets: [],
+    scanLimit: {
+      maxFiles: USAGE_SUMMARY_MAX_FILES,
+      maxDirectories: USAGE_SUMMARY_MAX_DIRECTORIES,
+      maxFileBytes: USAGE_SUMMARY_MAX_FILE_BYTES,
+      maxTotalBytes: USAGE_SUMMARY_MAX_TOTAL_BYTES,
+      limited: false,
+    },
+    warnings: [],
+    ...withCodexOptions(request?.codexOptions),
+  };
+
+  const sessionsRoot = path.join(getCodexHome(), "sessions");
+  try {
+    const rootStat = await stat(sessionsRoot);
+    if (!rootStat.isDirectory()) {
+      return summary;
+    }
+  } catch {
+    return summary;
+  }
+
+  const pendingDirectories = [sessionsRoot];
+  let visitedDirectories = 0;
+  let oldestMs = null;
+  let newestMs = null;
+  let totalReadBytes = 0;
+  const cutoffMs = rangeDays === 0 ? 0 : Date.now() - rangeDays * 24 * 60 * 60 * 1000;
+
+  while (pendingDirectories.length > 0) {
+    if (visitedDirectories >= USAGE_SUMMARY_MAX_DIRECTORIES) {
+      summary.scanLimit.limited = true;
+      summary.status = "partial";
+      addUsageWarning(summary, "scan_limit_reached", "Scan limit reached");
+      break;
+    }
+
+    const currentDirectory = pendingDirectories.shift();
+    visitedDirectories += 1;
+
+    let entries;
+    try {
+      entries = await readdir(currentDirectory, { withFileTypes: true });
+    } catch {
+      continue;
+    }
+
+    for (const entry of entries) {
+      if (summary.sessionFileCount >= USAGE_SUMMARY_MAX_FILES) {
+        summary.scanLimit.limited = true;
+        summary.status = "partial";
+        addUsageWarning(summary, "file_count_limit", "Session file scan limit reached");
+        break;
+      }
+
+      const candidate = path.join(currentDirectory, entry.name);
+      if (entry.isDirectory()) {
+        pendingDirectories.push(candidate);
+        continue;
+      }
+
+      if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
+        continue;
+      }
+
+      try {
+        const fileStat = await stat(candidate);
+        if (fileStat.mtimeMs < cutoffMs) {
+          summary.skippedSessionCount += 1;
+          continue;
+        }
+        if (fileStat.size > USAGE_SUMMARY_MAX_FILE_BYTES) {
+          summary.skippedSessionCount += 1;
+          addUsageWarning(summary, "file_size_limit", "Some sessions exceeded the per-file scan limit");
+          continue;
+        }
+        if (totalReadBytes + fileStat.size > USAGE_SUMMARY_MAX_TOTAL_BYTES) {
+          summary.skippedSessionCount += 1;
+          summary.scanLimit.limited = true;
+          summary.status = "partial";
+          addUsageWarning(summary, "total_size_limit", "Total scan byte limit reached");
+          break;
+        }
+
+        summary.sessionFileCount += 1;
+        summary.totalSessionBytes += Number.isFinite(fileStat.size) ? fileStat.size : 0;
+        totalReadBytes += Number.isFinite(fileStat.size) ? fileStat.size : 0;
+        const updatedMs = fileStat.mtimeMs;
+        oldestMs = oldestMs === null ? updatedMs : Math.min(oldestMs, updatedMs);
+        newestMs = newestMs === null ? updatedMs : Math.max(newestMs, updatedMs);
+        const usage = await readSessionUsage(candidate);
+        if (usage.totalTokens > 0) {
+          addUsageToSummary(summary, usage, new Date(updatedMs).toISOString().slice(0, 10));
+        }
+      } catch {
+        summary.skippedSessionCount += 1;
+        continue;
+      }
+    }
+
+    if (summary.scanLimit.limited) {
+      break;
+    }
+  }
+
+  if (oldestMs !== null) {
+    summary.oldestSessionUpdatedAt = new Date(oldestMs).toISOString();
+  }
+  if (newestMs !== null) {
+    summary.newestSessionUpdatedAt = new Date(newestMs).toISOString();
+  }
+
+  return summary;
+}
+
+function normalizeUsageSummaryRange(value) {
+  return value === 90 || value === 0 ? value : 30;
+}
+
+function emptyUsageTotal() {
+  return {
+    inputTokens: 0,
+    outputTokens: 0,
+    totalTokens: 0,
+    entryCount: 0,
+  };
+}
+
+function addUsageWarning(summary, code, label) {
+  if (!summary.warnings.some((warning) => warning.code === code)) {
+    summary.warnings.push({ code, label });
+  }
+}
+
+async function readSessionUsage(filePath) {
+  const text = await readFile(filePath, "utf8");
+  const candidates = [];
+  for (const line of text.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.length > 128 * 1024) {
+      continue;
+    }
+
+    try {
+      collectUsageCandidates(JSON.parse(trimmed), candidates);
+    } catch {
+      continue;
+    }
+  }
+
+  return candidates.reduce(
+    (best, candidate) => (candidate.totalTokens > best.totalTokens ? candidate : best),
+    emptyUsageTotal(),
+  );
+}
+
+function collectUsageCandidates(value, candidates, depth = 0) {
+  if (!value || typeof value !== "object" || depth > 5) {
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    for (const item of value.slice(0, 40)) {
+      collectUsageCandidates(item, candidates, depth + 1);
+    }
+    return;
+  }
+
+  const usage = normalizeUsageObject(value);
+  if (usage.totalTokens > 0) {
+    candidates.push(usage);
+  }
+
+  for (const nested of Object.values(value)) {
+    collectUsageCandidates(nested, candidates, depth + 1);
+  }
+}
+
+function normalizeUsageObject(value) {
+  const inputTokens = normalizeUsageCount(
+    value.inputTokens ??
+      value.input_tokens ??
+      value.promptTokens ??
+      value.prompt_tokens ??
+      value.requestTokens ??
+      value.request_tokens,
+  );
+  const outputTokens = normalizeUsageCount(
+    value.outputTokens ??
+      value.output_tokens ??
+      value.completionTokens ??
+      value.completion_tokens ??
+      value.responseTokens ??
+      value.response_tokens,
+  );
+  const totalTokens =
+    normalizeUsageCount(value.totalTokens ?? value.total_tokens) || inputTokens + outputTokens;
+
+  return {
+    inputTokens,
+    outputTokens,
+    totalTokens,
+    entryCount: totalTokens > 0 ? 1 : 0,
+  };
+}
+
+function normalizeUsageCount(value) {
+  return typeof value === "number" && Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
+}
+
+function addUsageToSummary(summary, usage, bucketKey) {
+  summary.uncertain.inputTokens += usage.inputTokens;
+  summary.uncertain.outputTokens += usage.outputTokens;
+  summary.uncertain.totalTokens += usage.totalTokens;
+  summary.uncertain.entryCount += 1;
+
+  let bucket = summary.buckets.find((item) => item.bucket === bucketKey);
+  if (!bucket) {
+    bucket = {
+      bucket: bucketKey,
+      directInputTokens: 0,
+      directOutputTokens: 0,
+      directTotalTokens: 0,
+      directEntryCount: 0,
+      uncertainInputTokens: 0,
+      uncertainOutputTokens: 0,
+      uncertainTotalTokens: 0,
+      uncertainEntryCount: 0,
+    };
+    summary.buckets.push(bucket);
+  }
+
+  bucket.uncertainInputTokens += usage.inputTokens;
+  bucket.uncertainOutputTokens += usage.outputTokens;
+  bucket.uncertainTotalTokens += usage.totalTokens;
+  bucket.uncertainEntryCount += 1;
+  summary.buckets.sort((left, right) => left.bucket.localeCompare(right.bucket));
+}
+
+function getCodexHome() {
+  return process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
 }
 
 function spawnAndCollect(command, args, stdinText, timeoutMs) {

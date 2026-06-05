@@ -3,6 +3,7 @@ import type {
   AssistantRuntimeInput,
   AssistantRuntimeOutput,
   AssistantRuntimeStatus,
+  CodexOptions,
 } from "./ArchitectLocalAssistantRuntime";
 import type { LocalRuntimeExtensionMessage, LocalRuntimeExtensionResponse } from "./native-bridge-contract";
 
@@ -23,10 +24,11 @@ export class LocalRuntimeClient implements ArchitectLocalAssistantRuntime {
     return response.ok ? response.data : [];
   }
 
-  async generateAnswer(input: AssistantRuntimeInput): Promise<AssistantRuntimeOutput> {
+  async generateAnswer(input: AssistantRuntimeInput, codexOptions?: CodexOptions): Promise<AssistantRuntimeOutput> {
     const response = await sendBackgroundMessage<AssistantRuntimeOutput>({
       type: "architect:local-runtime-generate",
       input,
+      ...(codexOptions ? { codexOptions } : {}),
     });
     if (!response.ok) {
       throw new Error(response.error);

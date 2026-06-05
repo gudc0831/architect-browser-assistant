@@ -4,6 +4,15 @@ export type AssistantRuntimeStatus = {
   available: boolean;
   mode: "local-chatgpt-codex" | "mock";
   reason?: string;
+  bridgeSchemaVersion?: number;
+  codexOptions?: CodexOptions;
+};
+
+export type CodexOptions = {
+  model?: string;
+  reasoningEffort?: "minimal" | "low" | "medium" | "high";
+  serviceTier?: "auto" | "default" | "priority";
+  sandboxMode?: "read-only";
 };
 
 export type AssistantRuntimeInput = {
@@ -25,5 +34,5 @@ export type AssistantRuntimeOutput = {
 export interface ArchitectLocalAssistantRuntime {
   isAvailable(): Promise<AssistantRuntimeStatus>;
   listCapabilities(): Promise<string[]>;
-  generateAnswer(input: AssistantRuntimeInput): Promise<AssistantRuntimeOutput>;
+  generateAnswer(input: AssistantRuntimeInput, codexOptions?: CodexOptions): Promise<AssistantRuntimeOutput>;
 }

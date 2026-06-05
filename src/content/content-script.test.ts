@@ -152,6 +152,184 @@ describe("content script local runtime page bridge", () => {
     expect(sendMessage).not.toHaveBeenCalled();
   });
 
+  it("allows usage-summary and strips unsafe Codex option fields before background forwarding", async () => {
+    const sendMessage = stubChromeRuntime((message) => ({
+      ok: true,
+      data: {
+        bridgeSchemaVersion: 1,
+        scannedAt: "2026-06-05T00:00:00.000Z",
+        source: "local-codex-session-metadata",
+        metadataOnly: true,
+        sessionFileCount: 0,
+        totalSessionBytes: 0,
+        scanLimit: {
+          maxFiles: 200,
+          maxDirectories: 80,
+          limited: false,
+        },
+        codexOptions: (message as { codexOptions?: unknown }).codexOptions,
+      },
+    }));
+
+    await import("./content-script");
+
+    const response = waitForBridgeResponse("request-usage");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-local-runtime-request",
+          requestId: "request-usage",
+          command: "usage-summary",
+          codexOptions: {
+            model: "gpt-5-codex",
+            reasoningEffort: "high",
+            serviceTier: "priority",
+            sandboxMode: "read-only",
+            configPath: "C:\\Users\\secret\\.codex\\config.toml",
+            path: "D:\\secret\\workspace",
+            env: { OPENAI_API_KEY: "secret" },
+            stderr: "raw log",
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-local-runtime-response",
+      requestId: "request-usage",
+      ok: true,
+      data: {
+        bridgeSchemaVersion: 1,
+        codexOptions: {
+          model: "gpt-5-codex",
+          reasoningEffort: "high",
+          serviceTier: "priority",
+          sandboxMode: "read-only",
+        },
+      },
+    });
+    expect(sendMessage).toHaveBeenCalledWith(
+      {
+        type: "architect:local-runtime-usage-summary",
+        codexOptions: {
+          model: "gpt-5-codex",
+          reasoningEffort: "high",
+          serviceTier: "priority",
+          sandboxMode: "read-only",
+        },
+      },
+      expect.any(Function),
+    );
+    expect(JSON.stringify(sendMessage.mock.calls)).not.toContain("configPath");
+    expect(JSON.stringify(sendMessage.mock.calls)).not.toContain("OPENAI_API_KEY");
+    expect(JSON.stringify(sendMessage.mock.calls)).not.toContain("raw log");
+  });
+
+  it("forwards sanitized top-level Codex options on page generate requests", async () => {
+    const sendMessage = stubChromeRuntime((message) => {
+      if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {
+        return {
+          ok: true,
+          data: {
+            report: {
+              status: "verified",
+              failures: [],
+              retry: [],
+            },
+            evidence: (message as { input: { evidence: unknown[] } }).input.evidence,
+          },
+        };
+      }
+
+      return {
+        ok: true,
+        data: {
+          answer: "generated with options",
+          draftSummary: {
+            conclusion: "verified",
+            tags: ["assistant"],
+            scope: "ARCH-2",
+          },
+        },
+      };
+    });
+
+    await import("./content-script");
+
+    const response = waitForBridgeResponse("request-generate-options");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-local-runtime-request",
+          requestId: "request-generate-options",
+          command: "generate",
+          codexOptions: {
+            model: "gpt-5-codex",
+            reasoningEffort: "high",
+            serviceTier: "priority",
+            sandboxMode: "read-only",
+            configPath: "C:\\Users\\secret\\.codex\\config.toml",
+            path: "D:\\secret\\workspace",
+            env: { OPENAI_API_KEY: "secret" },
+            stderr: "raw log",
+          },
+          input: {
+            question: "건축 기준 검토",
+            taskContext: {
+              taskId: "task-2",
+              projectId: "project-1",
+              title: "채광 검토",
+              description: "채광 기준 검토",
+              status: "in_review",
+              issueId: "ARCH-2",
+              projectName: "Architect",
+            },
+            evidence: [
+              {
+                id: "reg-2",
+                kind: "regulation",
+                priority: 1,
+                title: "건축 기준",
+                excerpt: "검토 대상 기준",
+              },
+            ],
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-local-runtime-response",
+      requestId: "request-generate-options",
+      ok: true,
+      data: {
+        answer: "generated with options",
+      },
+    });
+
+    const generateCall = sendMessage.mock.calls.find(
+      ([message]) => (message as { type?: string }).type === "architect:local-runtime-generate",
+    );
+    expect(generateCall?.[0]).toEqual(
+      expect.objectContaining({
+        type: "architect:local-runtime-generate",
+        codexOptions: {
+          model: "gpt-5-codex",
+          reasoningEffort: "high",
+          serviceTier: "priority",
+          sandboxMode: "read-only",
+        },
+      }),
+    );
+    expect(JSON.stringify(generateCall?.[0])).not.toContain("configPath");
+    expect(JSON.stringify(generateCall?.[0])).not.toContain("OPENAI_API_KEY");
+    expect(JSON.stringify(generateCall?.[0])).not.toContain("raw log");
+  });
+
   it("verifies official law sources before forwarding page generate requests", async () => {
     const sendMessage = stubChromeRuntime((message) => {
       if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {

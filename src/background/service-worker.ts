@@ -1,6 +1,9 @@
 import {
+  BRIDGE_SCHEMA_VERSION,
   CODEX_NATIVE_HOST,
   makeNativeRequestId,
+  normalizeCodexOptions,
+  toNativeBridgeRequest,
   type LocalRuntimeExtensionMessage,
   type NativeBridgeRequest,
   type NativeBridgeResponse,
@@ -110,6 +113,7 @@ function isLocalRuntimeMessage(message: unknown): message is LocalRuntimeExtensi
   return (
     type === "architect:local-runtime-status" ||
     type === "architect:local-runtime-capabilities" ||
+    type === "architect:local-runtime-usage-summary" ||
     type === "architect:local-runtime-generate"
   );
 }
@@ -172,45 +176,109 @@ async function handleOfficialLawVerificationMessage(
 }
 
 async function handleLocalRuntimeMessage(message: LocalRuntimeExtensionMessage) {
+  const request = toNativeBridgeRequest(
+    {
+      ...message,
+      ...("codexOptions" in message ? { codexOptions: normalizeCodexOptions(message.codexOptions) } : {}),
+    } as LocalRuntimeExtensionMessage,
+    makeNativeRequestId(),
+  );
+  const requestCodexOptions = "codexOptions" in request ? request.codexOptions : undefined;
+
   if (message.type === "architect:local-runtime-status") {
-    const response = await sendNativeBridgeRequest({ type: "status", requestId: makeNativeRequestId() });
+    const response = await sendNativeBridgeRequest(request);
     if (!response.ok) {
       return {
         ok: true,
         data: {
           available: false,
           mode: "local-chatgpt-codex",
-          reason: response.error.message,
+          reason: safeNativeErrorMessage(response.error.code),
+          bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
+          ...(requestCodexOptions ? { codexOptions: requestCodexOptions } : {}),
         },
       };
     }
 
     return {
       ok: true,
-      data: response.status ?? {
-        available: true,
-        mode: "local-chatgpt-codex",
-        reason: "Native Codex bridge responded.",
-      },
+      data: sanitizeRuntimeStatus(response.status, requestCodexOptions),
     };
   }
 
-  if (message.type === "architect:local-runtime-capabilities") {
-    const response = await sendNativeBridgeRequest({ type: "capabilities", requestId: makeNativeRequestId() });
-    return response.ok
-      ? { ok: true, data: response.capabilities ?? [] }
-      : { ok: false, error: response.error.message };
+  if (message.type === "architect:local-runtime-usage-summary") {
+    const response = await sendNativeBridgeRequest(request);
+    return response.ok && response.usageSummary
+      ? { ok: true, data: response.usageSummary }
+      : { ok: false, error: response.ok ? "Native bridge returned no usage summary." : safeNativeErrorMessage(response.error.code) };
   }
 
-  const response = await sendNativeBridgeRequest({
-    type: "generate",
-    requestId: makeNativeRequestId(),
-    payload: message.input,
-  });
+  if (message.type === "architect:local-runtime-capabilities") {
+    const response = await sendNativeBridgeRequest(request);
+    return response.ok
+      ? { ok: true, data: response.capabilities ?? [] }
+      : { ok: false, error: safeNativeErrorMessage(response.error.code) };
+  }
+
+  const response = await sendNativeBridgeRequest(request);
 
   return response.ok && response.output
     ? { ok: true, data: response.output }
-    : { ok: false, error: response.ok ? "Native bridge returned no answer." : response.error.message };
+    : { ok: false, error: response.ok ? "Native bridge returned no answer." : safeNativeErrorMessage(response.error.code) };
+}
+
+function sanitizeRuntimeStatus(
+  status: Extract<NativeBridgeResponse, { ok: true }>["status"],
+  codexOptions: Extract<NativeBridgeRequest, { type: "status" | "usageSummary" | "generate" }>["codexOptions"],
+) {
+  if (!status) {
+    return {
+      available: true,
+      mode: "local-chatgpt-codex" as const,
+      reason: "Native Codex bridge responded.",
+      bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
+      ...(codexOptions ? { codexOptions } : {}),
+    };
+  }
+
+  const statusCodexOptions = normalizeCodexOptions(status.codexOptions) ?? codexOptions;
+  return {
+    available: Boolean(status.available),
+    mode: status.mode === "mock" ? ("mock" as const) : ("local-chatgpt-codex" as const),
+    reason: safeStatusReason(status.reason, Boolean(status.available)),
+    bridgeSchemaVersion:
+      typeof status.bridgeSchemaVersion === "number" ? status.bridgeSchemaVersion : BRIDGE_SCHEMA_VERSION,
+    ...(statusCodexOptions ? { codexOptions: statusCodexOptions } : {}),
+  };
+}
+
+function safeStatusReason(value: unknown, available: boolean) {
+  if (typeof value !== "string") {
+    return available ? "Native Codex bridge responded." : "Codex CLI is unavailable. Run the local verifier for details.";
+  }
+
+  const reason = value.replaceAll("\0", "").trim();
+  if (
+    reason.length > 180 ||
+    /[A-Za-z]:[\\/]/.test(reason) ||
+    /[\\/](Users|home)[\\/]/i.test(reason) ||
+    /\b[A-Z0-9_]*(TOKEN|KEY|SECRET|ENV|PATH)[A-Z0-9_]*\s*=/i.test(reason) ||
+    /\bstderr\b/i.test(reason)
+  ) {
+    return available ? "Native Codex bridge responded." : "Codex CLI is unavailable. Run the local verifier for details.";
+  }
+
+  return reason;
+}
+
+function safeNativeErrorMessage(code: string) {
+  if (code === "native_host_unavailable") {
+    return "Native Codex bridge is not registered or could not be started.";
+  }
+  if (code === "codex_exec_failed") {
+    return "Local Codex generation failed. Run the local verifier for details.";
+  }
+  return "Native Codex bridge failed. Run the local verifier for details.";
 }
 
 function sendNativeBridgeRequest(request: NativeBridgeRequest): Promise<NativeBridgeResponse> {
@@ -223,7 +291,7 @@ function sendNativeBridgeRequest(request: NativeBridgeRequest): Promise<NativeBr
           requestId: request.requestId,
           error: {
             code: "native_host_unavailable",
-            message: lastError.message ?? "Native Codex bridge is not registered or could not be started.",
+            message: "Native Codex bridge is not registered or could not be started.",
           },
         });
         return;
