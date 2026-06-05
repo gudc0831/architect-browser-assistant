@@ -200,7 +200,7 @@ export async function verifyOfficialLawEvidence(
 
   const oc = input.oc?.trim() || (await readSafeSetting("lawOpenDataOc", DEFAULT_LAW_OPEN_DATA_OC));
   const config: OfficialLawApiConfig = {
-    fetchImpl: input.fetchImpl ?? fetch,
+    fetchImpl: resolveFetchImpl(input.fetchImpl),
     oc,
     baseUrl: input.baseUrl?.replace(/\/$/, "") || DEFAULT_LAW_API_BASE_URL,
     timeoutMs: input.timeoutMs ?? DEFAULT_TIMEOUT_MS,
@@ -230,6 +230,11 @@ export async function verifyOfficialLawEvidence(
           ]
         : [],
   };
+}
+
+function resolveFetchImpl(fetchImpl?: typeof fetch): typeof fetch {
+  const candidate = fetchImpl ?? globalThis.fetch;
+  return ((input, init) => candidate.call(globalThis, input, init)) as typeof fetch;
 }
 
 export function officialLawSourceToEvidence(source: OfficialLawApiSource): AssistantEvidence | null {

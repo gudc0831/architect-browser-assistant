@@ -165,6 +165,46 @@ describe("official law API verification", () => {
     expect(evidence?.excerpt).toContain("피난시설");
   });
 
+  it("binds official API fetch calls for worker-safe invocation", async () => {
+    const fetchImpl = vi.fn(function (this: unknown, input: RequestInfo | URL) {
+      if (this !== globalThis) {
+        throw new TypeError("Illegal invocation");
+      }
+
+      const url = String(input);
+      if (url.includes("lawSearch.do")) {
+        return Promise.resolve(
+          jsonResponse({
+            LawSearch: {
+              law: [{ 법령명한글: "건축법", 법령ID: "001234", 시행일자: "20260528" }],
+            },
+          }),
+        );
+      }
+
+      return Promise.resolve(
+        jsonResponse({
+          법령: {
+            조문: {
+              조문단위: [{ 조문번호: "49", 조문내용: "제49조 피난시설 원문" }],
+            },
+          },
+        }),
+      );
+    }) as unknown as typeof fetch;
+
+    const report = await verifyOfficialLawEvidence({
+      question: "건축법 제49조 기준으로 검토해줘",
+      evidence: [],
+      fetchImpl,
+      oc: "official-test",
+      now: () => new Date("2026-05-28T00:00:00.000Z"),
+    });
+
+    expect(report.status).toBe("verified");
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
   it("reports official API authentication failures as API errors", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({
