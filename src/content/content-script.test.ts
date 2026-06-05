@@ -271,6 +271,80 @@ describe("content script local runtime page bridge", () => {
       }),
     );
   });
+
+  it("uses server verified official law evidence without repeating the browser-side law API call", async () => {
+    const sendMessage = stubChromeRuntime({
+      ok: true,
+      data: {
+        answer: "server verified local answer",
+        draftSummary: {
+          conclusion: "verified",
+          tags: ["assistant"],
+          scope: "ARCH-1",
+        },
+      },
+    });
+
+    await import("./content-script");
+
+    const response = waitForBridgeResponse("request-server-verified");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-local-runtime-request",
+          requestId: "request-server-verified",
+          command: "generate",
+          input: {
+            question: "건축법 제49조 기준 검토",
+            taskContext: {
+              taskId: "task-1",
+              projectId: "project-1",
+              title: "피난 검토",
+              description: "피난시설 검토",
+              status: "in_review",
+              issueId: "ARCH-1",
+              projectName: "Architect",
+            },
+            evidence: [
+              {
+                id: "official-law:building-act:004900",
+                kind: "regulation",
+                priority: 0,
+                title: "건축법 제49조 원문 확인",
+                excerpt: "국가법령정보센터 Open API 확인",
+                officialSourceName: "국가법령정보센터",
+                lawName: "건축법",
+                articleLabel: "제49조",
+                checkedAt: "2026-05-28T00:00:00.000Z",
+                apiSourceUrl: "https://www.law.go.kr/DRF/lawService.do?target=eflaw&type=JSON&ID=123&JO=004900",
+                verificationStatus: "verified",
+              },
+            ],
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-local-runtime-response",
+      requestId: "request-server-verified",
+      ok: true,
+      data: {
+        answer: "server verified local answer",
+      },
+    });
+
+    expect(sendMessage).not.toHaveBeenCalledWith(
+      expect.objectContaining({ type: "architect:verify-official-law-evidence" }),
+      expect.any(Function),
+    );
+    expect(sendMessage).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "architect:local-runtime-generate" }),
+      expect.any(Function),
+    );
+  });
 });
 
 function waitForBridgeResponse(requestId: string) {

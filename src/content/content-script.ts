@@ -128,6 +128,10 @@ async function handlePageLocalRuntimeRequest(request: PageLocalRuntimeRequest) {
 async function withOfficialLawVerification(
   message: Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }>,
 ): Promise<Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }> | { ok: false; error: string }> {
+  if (hasServerVerifiedOfficialLawEvidence(message.input.evidence)) {
+    return message;
+  }
+
   const response = await sendBackgroundMessage({
     type: "architect:verify-official-law-evidence",
     input: message.input,
@@ -159,6 +163,15 @@ async function withOfficialLawVerification(
       evidence: response.data.evidence,
     },
   };
+}
+
+function hasServerVerifiedOfficialLawEvidence(evidence: AssistantRuntimeInput["evidence"]) {
+  return evidence.some(
+    (item) =>
+      item.kind === "regulation" &&
+      item.id.startsWith("official-law:") &&
+      item.verificationStatus === "verified",
+  );
 }
 
 function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeRequest {
