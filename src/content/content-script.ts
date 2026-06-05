@@ -84,6 +84,30 @@ async function handlePageLocalRuntimeRequest(request: PageLocalRuntimeRequest) {
       return;
     }
 
+    if (request.command === "verify-official-law") {
+      const input = normalizeGenerateInput(request.input);
+      if (!input) {
+        postPageLocalRuntimeResponse({
+          type: "architect:page-local-runtime-response",
+          requestId,
+          ok: false,
+          error: "Invalid official law verification payload.",
+        });
+        return;
+      }
+
+      const response = await sendBackgroundMessage({
+        type: "architect:verify-official-law-evidence",
+        input,
+      });
+      postPageLocalRuntimeResponse({
+        type: "architect:page-local-runtime-response",
+        requestId,
+        ...response,
+      });
+      return;
+    }
+
     const message = toExtensionRuntimeMessage(request);
     if (!message) {
       postPageLocalRuntimeResponse({
@@ -183,7 +207,10 @@ function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeReq
   return (
     message.type === "architect:page-local-runtime-request" &&
     typeof message.requestId === "string" &&
-    (message.command === "status" || message.command === "generate" || message.command === "select-region")
+    (message.command === "status" ||
+      message.command === "generate" ||
+      message.command === "select-region" ||
+      message.command === "verify-official-law")
   );
 }
 
