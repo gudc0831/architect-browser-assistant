@@ -115,6 +115,28 @@ describe("LocalRuntimeClient", () => {
         projectName: "Architect",
       },
       evidence: [],
+      legalEvidence: [],
+      projectContextChunks: [
+        {
+          chunkId: "chunk-1",
+          sourceDocumentTitle: "회의록",
+          normalizedText: "현장 조건은 북측 도로와 1.2m 단차가 있다.",
+          sourceQuote: "북측 도로와 1.2m 단차",
+          location: { locationType: "line_range", lineStart: 3, lineEnd: 4 },
+          contextType: "project_material",
+          chunkQualityScore: 0.91,
+          injectionRisk: "none",
+          score: 0.83,
+        },
+      ],
+      projectContextTrace: {
+        status: "chunks_found" as const,
+        fallbackMode: "none" as const,
+        includedChunkIds: ["chunk-1"],
+      },
+      evidenceReadinessWarnings: [
+        { code: "VERIFIED_LEGAL_CHANGE_WARNING", message: "법령 변경 감지 결과를 확인하세요." },
+      ],
     };
     expect(
       toNativeBridgeRequest(

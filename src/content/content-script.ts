@@ -158,10 +158,6 @@ async function handlePageLocalRuntimeRequest(request: PageLocalRuntimeRequest) {
 async function withOfficialLawVerification(
   message: Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }>,
 ): Promise<Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }> | { ok: false; error: string }> {
-  if (hasServerVerifiedOfficialLawEvidence(message.input.evidence)) {
-    return message;
-  }
-
   const response = await sendBackgroundMessage({
     type: "architect:verify-official-law-evidence",
     input: message.input,
@@ -193,15 +189,6 @@ async function withOfficialLawVerification(
       evidence: response.data.evidence,
     },
   };
-}
-
-function hasServerVerifiedOfficialLawEvidence(evidence: AssistantRuntimeInput["evidence"]) {
-  return evidence.some(
-    (item) =>
-      item.kind === "regulation" &&
-      item.id.startsWith("official-law:") &&
-      item.verificationStatus === "verified",
-  );
 }
 
 function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeRequest {
@@ -279,7 +266,145 @@ function normalizeGenerateInput(value: unknown): AssistantRuntimeInput | null {
     question,
     taskContext,
     evidence,
+    legalEvidence: normalizeEvidenceArray(input.legalEvidence),
+    projectContextChunks: normalizeProjectContextChunks(input.projectContextChunks),
+    projectContextTrace: normalizeProjectContextTrace(input.projectContextTrace),
+    evidenceReadinessWarnings: normalizeEvidenceReadinessWarnings(input.evidenceReadinessWarnings),
   };
+}
+
+function normalizeEvidenceArray(value: unknown): AssistantRuntimeInput["evidence"] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .slice(0, 12)
+    .map(normalizeEvidence)
+    .filter((item): item is AssistantRuntimeInput["evidence"][number] => Boolean(item));
+}
+
+function normalizeProjectContextChunks(value: unknown): NonNullable<AssistantRuntimeInput["projectContextChunks"]> {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .slice(0, 5)
+    .map((item): NonNullable<AssistantRuntimeInput["projectContextChunks"]>[number] | null => {
+      if (!item || typeof item !== "object") {
+        return null;
+      }
+      const chunk = item as Record<string, unknown>;
+      const chunkId = normalizeRequiredText(chunk.chunkId, 120);
+      const sourceDocumentTitle = normalizeRequiredText(chunk.sourceDocumentTitle, 300);
+      const normalizedText = normalizeRequiredText(chunk.normalizedText, 2000);
+      const sourceQuote = normalizeRequiredText(chunk.sourceQuote, 1000);
+      if (!chunkId || !sourceDocumentTitle || !normalizedText || !sourceQuote) {
+        return null;
+      }
+      const normalizedChunk: NonNullable<AssistantRuntimeInput["projectContextChunks"]>[number] = {
+        chunkId,
+        ...(normalizeOptionalText(chunk.sourceId, 120) ? { sourceId: normalizeOptionalText(chunk.sourceId, 120) } : {}),
+        ...(normalizeOptionalText(chunk.versionId, 120) ? { versionId: normalizeOptionalText(chunk.versionId, 120) } : {}),
+        sourceDocumentTitle,
+        normalizedText,
+        sourceQuote,
+        contextType: normalizeOptionalText(chunk.contextType, 120),
+        chunkQualityScore: Number.isFinite(Number(chunk.chunkQualityScore)) ? Number(chunk.chunkQualityScore) : undefined,
+        injectionRisk: normalizeOptionalText(chunk.injectionRisk, 80),
+        score: Number.isFinite(Number(chunk.score)) ? Number(chunk.score) : undefined,
+      };
+      const location = normalizeProjectContextLocation(chunk.location);
+      if (location) {
+        normalizedChunk.location = location;
+      }
+      return normalizedChunk;
+    })
+    .filter((item): item is NonNullable<AssistantRuntimeInput["projectContextChunks"]>[number] => Boolean(item));
+}
+
+function normalizeProjectContextLocation(
+  value: unknown,
+): NonNullable<NonNullable<AssistantRuntimeInput["projectContextChunks"]>[number]["location"]> | undefined {
+  if (!value || typeof value !== "object") {
+    return undefined;
+  }
+  const location = value as Record<string, unknown>;
+  const normalized: NonNullable<NonNullable<AssistantRuntimeInput["projectContextChunks"]>[number]["location"]> = {};
+  const locationType = normalizeOptionalText(location.locationType, 80);
+  const sectionLabel = normalizeOptionalText(location.sectionLabel, 160);
+  const pageNumber = Number(location.pageNumber);
+  const lineStart = Number(location.lineStart);
+  const lineEnd = Number(location.lineEnd);
+  if (locationType) {
+    normalized.locationType = locationType;
+  }
+  if (Number.isInteger(pageNumber) && pageNumber > 0 && pageNumber <= 10000) {
+    normalized.pageNumber = pageNumber;
+  }
+  if (Number.isInteger(lineStart) && lineStart > 0 && lineStart <= 1000000) {
+    normalized.lineStart = lineStart;
+  }
+  if (Number.isInteger(lineEnd) && lineEnd > 0 && lineEnd <= 1000000) {
+    normalized.lineEnd = lineEnd;
+  }
+  if (sectionLabel) {
+    normalized.sectionLabel = sectionLabel;
+  }
+  return Object.keys(normalized).length > 0 ? normalized : undefined;
+}
+
+function normalizeProjectContextTrace(value: unknown): AssistantRuntimeInput["projectContextTrace"] | undefined {
+  if (!value || typeof value !== "object") {
+    return undefined;
+  }
+  const trace = value as Record<string, unknown>;
+  const status =
+    trace.status === "chunks_found" ||
+    trace.status === "active_corpus_missing" ||
+    trace.status === "no_relevant_chunks" ||
+    trace.status === "search_failed"
+      ? trace.status
+      : undefined;
+  const fallbackMode = trace.fallbackMode === "legal_only_after_project_context_error" ? "legal_only_after_project_context_error" : "none";
+  if (!status) {
+    return undefined;
+  }
+  return {
+    corpusType: trace.corpusType === "project_context" ? "project_context" : undefined,
+    status,
+    traceId: normalizeOptionalText(trace.traceId, 120) || null,
+    fallbackMode,
+    activeVersionIds: normalizeProjectContextIdList(trace.activeVersionIds),
+    candidateChunkIds: normalizeProjectContextIdList(trace.candidateChunkIds),
+    matchedChunkIds: normalizeProjectContextIdList(trace.matchedChunkIds),
+    noRelevantChunkReason: normalizeOptionalText(trace.noRelevantChunkReason, 200) || null,
+    searchErrorCode: normalizeOptionalText(trace.searchErrorCode, 120) || null,
+    includedChunkIds: normalizeProjectContextIdList(trace.includedChunkIds),
+  };
+}
+
+function normalizeProjectContextIdList(value: unknown) {
+  return Array.isArray(value)
+    ? value.map((id) => normalizeOptionalText(id, 120)).filter(Boolean).slice(0, 12)
+    : [];
+}
+
+function normalizeEvidenceReadinessWarnings(value: unknown): NonNullable<AssistantRuntimeInput["evidenceReadinessWarnings"]> {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value
+    .slice(0, 8)
+    .map((item) => {
+      if (!item || typeof item !== "object") {
+        return null;
+      }
+      const warning = item as Record<string, unknown>;
+      const code = normalizeRequiredText(warning.code, 120);
+      const message = normalizeRequiredText(warning.message, 500);
+      return code && message ? { code, message } : null;
+    })
+    .filter((item): item is NonNullable<AssistantRuntimeInput["evidenceReadinessWarnings"]>[number] => Boolean(item));
 }
 
 function normalizeTaskContext(value: unknown): AssistantRuntimeInput["taskContext"] | null {

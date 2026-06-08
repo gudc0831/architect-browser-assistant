@@ -330,6 +330,147 @@ describe("content script local runtime page bridge", () => {
     expect(JSON.stringify(generateCall?.[0])).not.toContain("raw log");
   });
 
+  it("forwards sanitized project context and readiness warnings on page generate requests", async () => {
+    const sendMessage = stubChromeRuntime((message) => {
+      if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {
+        return {
+          ok: true,
+          data: {
+            report: {
+              status: "verified",
+              failures: [],
+              retry: [],
+            },
+            evidence: (message as { input: { evidence: unknown[] } }).input.evidence,
+          },
+        };
+      }
+
+      return {
+        ok: true,
+        data: {
+          answer: "generated with project context",
+        },
+      };
+    });
+
+    await import("./content-script");
+
+    const response = waitForBridgeResponse("request-generate-project-context");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-local-runtime-request",
+          requestId: "request-generate-project-context",
+          command: "generate",
+          input: {
+            question: "단차 검토",
+            taskContext: {
+              taskId: "task-3",
+              projectId: "project-1",
+              title: "단차 검토",
+              description: "현장 단차 검토",
+              status: "in_review",
+              issueId: "ARCH-3",
+              projectName: "Architect",
+            },
+            evidence: [
+              {
+                id: "task-3-evidence",
+                kind: "task",
+                priority: 1,
+                title: "현장 조건",
+                excerpt: "단차 조건 검토",
+              },
+            ],
+            legalEvidence: [],
+            projectContextChunks: [
+              {
+                chunkId: "chunk-1",
+                sourceId: "source-1",
+                versionId: "version-1",
+                sourceDocumentTitle: "회의록",
+                normalizedText: "현장 조건은 북측 도로와 1.2m 단차가 있다.",
+                sourceQuote: "북측 도로와 1.2m 단차",
+                location: {
+                  locationType: "line_range",
+                  lineStart: 3,
+                  lineEnd: 4,
+                  nestedObjectThatMustNotCrossTheBridge: { unsafe: true },
+                  htmlThatMustNotCrossTheBridge: "<script>alert(1)</script>",
+                },
+                contextType: "project_material",
+                chunkQualityScore: 0.91,
+                injectionRisk: "none",
+                score: 0.83,
+              },
+            ],
+            projectContextTrace: {
+              status: "chunks_found",
+              fallbackMode: "none",
+              noRelevantChunkReason: null,
+              searchErrorCode: null,
+              includedChunkIds: ["chunk-1"],
+              secretTraceField: "do-not-forward",
+            },
+            evidenceReadinessWarnings: [
+              { code: "VERIFIED_LEGAL_CHANGE_WARNING", message: "법령 변경 감지 결과를 확인하세요." },
+            ],
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-local-runtime-response",
+      requestId: "request-generate-project-context",
+      ok: true,
+    });
+
+    const generateCall = sendMessage.mock.calls.find(
+      ([message]) => (message as { type?: string }).type === "architect:local-runtime-generate",
+    );
+    expect(generateCall?.[0]).toMatchObject({
+      type: "architect:local-runtime-generate",
+      input: {
+        projectContextChunks: [
+          {
+            chunkId: "chunk-1",
+            sourceId: "source-1",
+            versionId: "version-1",
+            sourceDocumentTitle: "회의록",
+            normalizedText: "현장 조건은 북측 도로와 1.2m 단차가 있다.",
+            sourceQuote: "북측 도로와 1.2m 단차",
+            location: { locationType: "line_range", lineStart: 3, lineEnd: 4 },
+            contextType: "project_material",
+            chunkQualityScore: 0.91,
+            injectionRisk: "none",
+            score: 0.83,
+          },
+        ],
+        projectContextTrace: {
+          status: "chunks_found",
+          traceId: null,
+          fallbackMode: "none",
+          activeVersionIds: [],
+          candidateChunkIds: [],
+          matchedChunkIds: [],
+          noRelevantChunkReason: null,
+          searchErrorCode: null,
+          includedChunkIds: ["chunk-1"],
+        },
+        evidenceReadinessWarnings: [
+          { code: "VERIFIED_LEGAL_CHANGE_WARNING", message: "법령 변경 감지 결과를 확인하세요." },
+        ],
+      },
+    });
+    expect(JSON.stringify(generateCall?.[0])).not.toContain("nestedObjectThatMustNotCrossTheBridge");
+    expect(JSON.stringify(generateCall?.[0])).not.toContain("htmlThatMustNotCrossTheBridge");
+    expect(JSON.stringify(generateCall?.[0])).not.toContain("secretTraceField");
+  });
+
   it("verifies official law sources before forwarding page generate requests", async () => {
     const sendMessage = stubChromeRuntime((message) => {
       if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {
@@ -409,6 +550,22 @@ describe("content script local runtime page bridge", () => {
                 excerpt: "피난시설",
               },
             ],
+            projectContextChunks: [
+              {
+                chunkId: "chunk-1",
+                sourceDocumentTitle: "회의록",
+                normalizedText: "현장 조건은 북측 도로와 1.2m 단차가 있다.",
+                sourceQuote: "북측 도로와 1.2m 단차",
+              },
+            ],
+            projectContextTrace: {
+              status: "chunks_found",
+              fallbackMode: "none",
+              includedChunkIds: ["chunk-1"],
+            },
+            evidenceReadinessWarnings: [
+              { code: "VERIFIED_LEGAL_CHANGE_WARNING", message: "법령 변경 감지 결과를 확인하세요." },
+            ],
           },
         },
         origin: window.location.origin,
@@ -445,13 +602,41 @@ describe("content script local runtime page bridge", () => {
               verificationStatus: "verified",
             }),
           ],
+          projectContextChunks: [
+            expect.objectContaining({
+              chunkId: "chunk-1",
+              sourceQuote: "북측 도로와 1.2m 단차",
+            }),
+          ],
+          projectContextTrace: expect.objectContaining({
+            status: "chunks_found",
+            includedChunkIds: ["chunk-1"],
+          }),
+          evidenceReadinessWarnings: [
+            { code: "VERIFIED_LEGAL_CHANGE_WARNING", message: "법령 변경 감지 결과를 확인하세요." },
+          ],
         }),
       }),
     );
   });
 
-  it("uses server verified official law evidence without repeating the browser-side law API call", async () => {
-    const sendMessage = stubChromeRuntime({
+  it("reverifies page-supplied official law evidence even when it claims server verification", async () => {
+    const sendMessage = stubChromeRuntime((message) => {
+      if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {
+        return {
+          ok: true,
+          data: {
+            report: {
+              status: "verified",
+              failures: [],
+              retry: [],
+            },
+            evidence: (message as { input: { evidence: unknown[] } }).input.evidence,
+          },
+        };
+      }
+
+      return {
       ok: true,
       data: {
         answer: "server verified local answer",
@@ -461,6 +646,7 @@ describe("content script local runtime page bridge", () => {
           scope: "ARCH-1",
         },
       },
+      };
     });
 
     await import("./content-script");
@@ -514,7 +700,7 @@ describe("content script local runtime page bridge", () => {
       },
     });
 
-    expect(sendMessage).not.toHaveBeenCalledWith(
+    expect(sendMessage).toHaveBeenCalledWith(
       expect.objectContaining({ type: "architect:verify-official-law-evidence" }),
       expect.any(Function),
     );

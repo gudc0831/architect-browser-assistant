@@ -6,7 +6,7 @@ import type {
 } from "./ArchitectLocalAssistantRuntime";
 
 export const CODEX_NATIVE_HOST = "com.architect.browser_assistant.codex_bridge";
-export const BRIDGE_SCHEMA_VERSION = 2;
+export const BRIDGE_SCHEMA_VERSION = 3;
 
 const allowedReasoningEfforts = new Set<CodexOptions["reasoningEffort"]>(["minimal", "low", "medium", "high"]);
 const allowedServiceTiers = new Set<CodexOptions["serviceTier"]>(["auto", "default", "priority"]);

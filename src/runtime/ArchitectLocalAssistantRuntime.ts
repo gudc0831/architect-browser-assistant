@@ -15,10 +15,54 @@ export type CodexOptions = {
   sandboxMode?: "read-only";
 };
 
+export type ProjectContextLocationForRuntime = {
+  locationType?: string;
+  pageNumber?: number;
+  lineStart?: number;
+  lineEnd?: number;
+  sectionLabel?: string;
+};
+
+export type ProjectContextChunkForRuntime = {
+  chunkId: string;
+  sourceId?: string;
+  versionId?: string;
+  sourceDocumentTitle: string;
+  normalizedText: string;
+  sourceQuote: string;
+  location?: ProjectContextLocationForRuntime;
+  contextType?: string;
+  chunkQualityScore?: number;
+  injectionRisk?: string;
+  score?: number;
+};
+
+export type ProjectContextTraceForRuntime = {
+  corpusType?: "project_context";
+  status: "chunks_found" | "active_corpus_missing" | "no_relevant_chunks" | "search_failed";
+  traceId?: string | null;
+  fallbackMode: "none" | "legal_only_after_project_context_error";
+  activeVersionIds?: string[];
+  candidateChunkIds?: string[];
+  matchedChunkIds?: string[];
+  noRelevantChunkReason?: string | null;
+  searchErrorCode?: string | null;
+  includedChunkIds?: string[];
+};
+
+export type EvidenceReadinessWarningForRuntime = {
+  code: string;
+  message: string;
+};
+
 export type AssistantRuntimeInput = {
   question: string;
   taskContext: AssistantTaskContext;
   evidence: AssistantEvidence[];
+  legalEvidence?: AssistantEvidence[];
+  projectContextChunks?: ProjectContextChunkForRuntime[];
+  projectContextTrace?: ProjectContextTraceForRuntime;
+  evidenceReadinessWarnings?: EvidenceReadinessWarningForRuntime[];
 };
 
 export type AssistantRuntimeOutput = {
