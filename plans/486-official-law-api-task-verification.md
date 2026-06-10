@@ -2,14 +2,29 @@
 
 Status: `implemented`
 
+## 2026-06-10 Centralized Legal Boundary Update
+
+Status remains implemented for the legacy `official-law:` verification path, but this plan must no longer be read as requiring the extension to direct-reverify every SaaS-supplied `regulation` item.
+
+- [x] Legacy `official-law:` evidence can still be direct-reverified by Browser Assistant through the official law API path described below.
+- [x] Centralized SaaS evidence whose id starts with `verified-legal-search:` is already supplied by `verified-legal-evidence-api` and must not be re-queried against law.go.kr by the extension before Local Codex generation.
+- [x] Foundation `regulation` seeds without centralized verified legal evidence are not treated as extension-direct recheck material during generation.
+- [x] 2026-06-10 patch proof: `npm run release:check` passed after content-script tests were added for centralized `verified-legal-search:` evidence and foundation regulation seed behavior.
+- [x] 2026-06-10 deployed Preview proof: after rebuilding for `https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app` and reloading extension id `ianebfgjhjklildppcocmbmifedapooj`, canonical `/daily` AI review executed through Local Codex/native bridge and saved a candidate review record.
+- [x] 2026-06-10 production readiness proof: with canonical Preview-origin build, observed extension id `ianebfgjhjklildppcocmbmifedapooj`, stable native-host install root, release owner `gudc0831`, Web Store publisher `gudc083111@gmail.com`, and explicit `--allow-unsigned-native-host`, `npm run release:readiness:production` returned `18 pass, 1 warn, 0 fail`.
+- [x] 2026-06-10 Local Codex generate fix: installed native-host framed `generate` reproduced `codex_exec_failed`; Browser Assistant now omits the default `gpt-5-codex` model for Local Codex so the CLI uses its account-compatible default, and passes `model_reasoning_effort=medium` without Windows-breaking quotes. The same installed framed `generate` smoke now returns `ok: true`.
+- [ ] Signed native-host release still needs a real code-signing subject to replace the unsigned waiver before a signed production release.
+- [ ] Chrome extension reload remains a manual operator action because browser automation is not allowed to control `chrome://extensions`; after this rebuilt `dist`, reload the unpacked extension and refresh `/daily` before retesting same-task task `117` Local Codex generation/save proof.
+
 ## Scope
 
 Close the browser-side gap between retrieved `regulation` evidence and actual official legal source verification.
 
-The browser assistant now re-checks regulation evidence against the official National Law Information Center Open API before generating and saving a legal review answer. This keeps the existing architecture boundary intact:
+For legacy `official-law:` evidence, the browser assistant re-checks official-law evidence against the official National Law Information Center Open API before generating and saving a legal review answer. For centralized `verified-legal-search:` evidence, the SaaS server and `verified-legal-evidence-api` own the legal verification boundary, and the extension consumes the retrieval snapshot without direct law.go.kr re-query. This keeps the current architecture boundary intact:
 
 - SaaS still owns task retrieval, DB access, assistant record persistence, RBAC, and audit policy.
-- Browser Assistant calls the official API only to verify already-retrieved regulation evidence and to record deterministic source metadata in the answer.
+- Browser Assistant calls the official API only for legacy official-law verification material and to record deterministic source metadata in the answer.
+- Browser Assistant does not direct-query law.go.kr for centralized `verified-legal-search:` evidence supplied by the verified legal service.
 - The extension does not crawl law sites, bulk import documents, or promote external sources to central knowledge.
 
 ## Official Data Source
@@ -41,6 +56,7 @@ API guide:
 | `/daily` bridge preflight | implemented | `architect-browser-assistant` | Page `generate` requests run official law verification in the background service worker before reaching the native runtime. |
 | Runtime grounding prompt | implemented | `architect-browser-assistant` | Local Codex prompt now requires official source/API/checkedAt metadata for legal/regulation answers. |
 | Manifest permission | implemented | `architect-browser-assistant` | Adds exact `https://www.law.go.kr/*` host permission without adding content-script access to the law site. |
+| Centralized verified legal bypass | implemented | `architect-browser-assistant` | Local Codex generation direct-reverifies only legacy `official-law:` evidence; `verified-legal-search:` evidence and foundation regulation seeds do not trigger direct law.go.kr verification. |
 
 ## Verification Record Fields
 
@@ -64,6 +80,7 @@ Saved legal review answers now include a deterministic `출처 검증 기록` se
 - No automatic WIKI approval. Verified assistant records become WIKI candidates only; Knowledge admin/user review is required before they become approved WIKI.
 - No storage of SaaS, OpenAI, Codex, or DB secrets.
 - `lawOpenDataOc` is an optional extension setting for the law.go.kr Open API `OC` value; default development behavior uses the official guide's `test` sample value.
+- No extension-side direct legal API recheck for centralized `verified-legal-search:` evidence already provided by the SaaS verified legal boundary.
 
 ## Verification Log
 

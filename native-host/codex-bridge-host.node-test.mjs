@@ -171,7 +171,6 @@ describe("codex native host", () => {
       assert.equal(response.ok, true);
       assert.equal(response.status.bridgeSchemaVersion, 3);
       assert.deepEqual(response.status.codexOptions, {
-        model: "gpt-5-codex",
         reasoningEffort: "high",
         serviceTier: "priority",
         sandboxMode: "read-only",
@@ -203,10 +202,8 @@ describe("codex native host", () => {
       "--sandbox",
       "read-only",
       "--skip-git-repo-check",
-      "--model",
-      "gpt-5-codex",
       "-c",
-      'model_reasoning_effort="medium"',
+      "model_reasoning_effort=medium",
     ]);
     assert.equal(args.includes("danger-full-access"), false);
     assert.equal(args.some((arg) => /Users\\secret/.test(arg)), false);
@@ -258,7 +255,7 @@ describe("codex native host", () => {
       assert.equal(response.usageSummary.direct.totalTokens, 0);
       assert.equal(response.usageSummary.buckets.length, 1);
       assert.equal(response.usageSummary.totalSessionBytes > 0, true);
-      assert.equal(response.usageSummary.codexOptions.model, "gpt-5-codex");
+      assert.equal(response.usageSummary.codexOptions, undefined);
       const serialized = JSON.stringify(response.usageSummary);
       assert.equal(serialized.includes("rollout-secret-name"), false);
       assert.equal(serialized.includes(codexHome), false);

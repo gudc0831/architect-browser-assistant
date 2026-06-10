@@ -185,10 +185,10 @@ describe("content script local runtime page bridge", () => {
             reasoningEffort: "high",
             serviceTier: "priority",
             sandboxMode: "read-only",
-            configPath: "C:\\Users\\secret\\.codex\\config.toml",
-            path: "D:\\secret\\workspace",
-            env: { OPENAI_API_KEY: "secret" },
-            stderr: "raw log",
+          configPath: "C:\\Users\\secret\\.codex\\config.toml",
+          path: "D:\\secret\\workspace",
+          env: { OPENAI_API_KEY: "secret" },
+          stderr: "raw log",
           },
         },
         origin: window.location.origin,
@@ -203,7 +203,6 @@ describe("content script local runtime page bridge", () => {
       data: {
         bridgeSchemaVersion: 1,
         codexOptions: {
-          model: "gpt-5-codex",
           reasoningEffort: "high",
           serviceTier: "priority",
           sandboxMode: "read-only",
@@ -214,7 +213,6 @@ describe("content script local runtime page bridge", () => {
       {
         type: "architect:local-runtime-usage-summary",
         codexOptions: {
-          model: "gpt-5-codex",
           reasoningEffort: "high",
           serviceTier: "priority",
           sandboxMode: "read-only",
@@ -318,7 +316,6 @@ describe("content script local runtime page bridge", () => {
       expect.objectContaining({
         type: "architect:local-runtime-generate",
         codexOptions: {
-          model: "gpt-5-codex",
           reasoningEffort: "high",
           serviceTier: "priority",
           sandboxMode: "read-only",
@@ -543,11 +540,16 @@ describe("content script local runtime page bridge", () => {
             },
             evidence: [
               {
-                id: "reg-1",
+                id: "official-law:building-act:004900",
                 kind: "regulation",
                 priority: 2,
                 title: "건축법 제49조",
                 excerpt: "피난시설",
+                officialSourceName: "국가법령정보센터",
+                lawName: "건축법",
+                articleLabel: "제49조",
+                apiSourceUrl: "https://www.law.go.kr/DRF/lawService.do?target=eflaw&type=JSON&ID=123&JO=004900",
+                verificationStatus: "verified",
               },
             ],
             projectContextChunks: [
@@ -637,15 +639,15 @@ describe("content script local runtime page bridge", () => {
       }
 
       return {
-      ok: true,
-      data: {
-        answer: "server verified local answer",
-        draftSummary: {
-          conclusion: "verified",
-          tags: ["assistant"],
-          scope: "ARCH-1",
+        ok: true,
+        data: {
+          answer: "server verified local answer",
+          draftSummary: {
+            conclusion: "verified",
+            tags: ["assistant"],
+            scope: "ARCH-1",
+          },
         },
-      },
       };
     });
 
@@ -706,6 +708,171 @@ describe("content script local runtime page bridge", () => {
     );
     expect(sendMessage).toHaveBeenCalledWith(
       expect.objectContaining({ type: "architect:local-runtime-generate" }),
+      expect.any(Function),
+    );
+  });
+
+  it("does not direct-reverify foundation regulation seeds during generation", async () => {
+    const sendMessage = stubChromeRuntime({
+      ok: true,
+      data: {
+        answer: "foundation seed review answer",
+        draftSummary: {
+          conclusion: "review required",
+          tags: ["assistant"],
+          scope: "ARCH-102",
+        },
+      },
+    });
+
+    await import("./content-script");
+
+    const response = waitForBridgeResponse("request-foundation-regulation");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-local-runtime-request",
+          requestId: "request-foundation-regulation",
+          command: "generate",
+          input: {
+            question: "102 task의 검토 근거와 후속 조치를 정리해줘.",
+            taskContext: {
+              taskId: "task-102",
+              projectId: "project-1",
+              title: "333333",
+              description: "3333333333333",
+              status: "new",
+              issueId: "102",
+              projectName: "밀양부북",
+            },
+            evidence: [
+              {
+                id: "foundation:building-act-egress",
+                kind: "regulation",
+                priority: 2,
+                title: "건축법 피난ㆍ방화 기준 확인 seed",
+                excerpt: "관리자 검토 전 foundation seed 근거입니다. 공식 원문은 import 전에 재확인해야 합니다.",
+                sourceUrl: "https://www.law.go.kr/법령/건축법",
+              },
+              {
+                id: "task-102-evidence",
+                kind: "task",
+                priority: 3,
+                title: "Current task 밀양부북-102",
+                excerpt: "333333 / 3333333333333",
+              },
+            ],
+            legalEvidence: [],
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-local-runtime-response",
+      requestId: "request-foundation-regulation",
+      ok: true,
+      data: {
+        answer: "foundation seed review answer",
+      },
+    });
+
+    expect(sendMessage).not.toHaveBeenCalledWith(
+      expect.objectContaining({ type: "architect:verify-official-law-evidence" }),
+      expect.any(Function),
+    );
+    expect(sendMessage).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "architect:local-runtime-generate" }),
+      expect.any(Function),
+    );
+  });
+
+  it("trusts centralized verified legal-search evidence without direct law.go.kr recheck", async () => {
+    const sendMessage = stubChromeRuntime({
+      ok: true,
+      data: {
+        answer: "centralized verified legal answer",
+        draftSummary: {
+          conclusion: "verified by centralized evidence",
+          tags: ["assistant"],
+          scope: "ARCH-102",
+        },
+      },
+    });
+
+    await import("./content-script");
+
+    const centralizedEvidence = {
+      id: "verified-legal-search:law:004948:chunk-26",
+      kind: "regulation",
+      priority: 2,
+      title: "주택건설기준 등에 관한 규정",
+      excerpt: "주택건설기준 등에 관한 규정 제26조",
+      sourceUrl: "https://www.law.go.kr/DRF/lawService.do?target=law&type=JSON&ID=004948",
+      recordId: "law:004948",
+      confidenceWeight: 0.8,
+    };
+
+    const response = waitForBridgeResponse("request-centralized-legal");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-local-runtime-request",
+          requestId: "request-centralized-legal",
+          command: "generate",
+          input: {
+            question: "102 task의 검토 근거와 후속 조치를 정리해줘.",
+            taskContext: {
+              taskId: "task-102",
+              projectId: "project-1",
+              title: "333333",
+              description: "3333333333333",
+              status: "new",
+              issueId: "102",
+              projectName: "밀양부북",
+            },
+            evidence: [
+              centralizedEvidence,
+              {
+                id: "task-102-evidence",
+                kind: "task",
+                priority: 3,
+                title: "Current task 밀양부북-102",
+                excerpt: "333333 / 3333333333333",
+              },
+            ],
+            legalEvidence: [centralizedEvidence],
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-local-runtime-response",
+      requestId: "request-centralized-legal",
+      ok: true,
+      data: {
+        answer: "centralized verified legal answer",
+      },
+    });
+
+    expect(sendMessage).not.toHaveBeenCalledWith(
+      expect.objectContaining({ type: "architect:verify-official-law-evidence" }),
+      expect.any(Function),
+    );
+    expect(sendMessage).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "architect:local-runtime-generate",
+        input: expect.objectContaining({
+          evidence: expect.arrayContaining([
+            expect.objectContaining({ id: "verified-legal-search:law:004948:chunk-26" }),
+          ]),
+        }),
+      }),
       expect.any(Function),
     );
   });

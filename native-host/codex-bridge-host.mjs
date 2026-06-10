@@ -17,6 +17,7 @@ const USAGE_SUMMARY_MAX_FILE_BYTES = 512 * 1024;
 const USAGE_SUMMARY_MAX_TOTAL_BYTES = 10 * 1024 * 1024;
 const REASONING_EFFORTS = new Set(["minimal", "low", "medium", "high"]);
 const SERVICE_TIERS = new Set(["auto", "default", "priority"]);
+const CLI_DEFAULT_MODEL_ALIASES = new Set(["gpt-5-codex"]);
 const isLittleEndian = new Uint8Array(new Uint32Array([1]).buffer)[0] === 1;
 
 async function main() {
@@ -269,7 +270,7 @@ export function buildCodexExecArgs(codexOptions) {
     args.push("--model", options.model);
   }
   if (options.reasoningEffort) {
-    args.push("-c", `model_reasoning_effort="${options.reasoningEffort}"`);
+    args.push("-c", `model_reasoning_effort=${options.reasoningEffort}`);
   }
   return args;
 }
@@ -309,7 +310,7 @@ function normalizeCodexOptions(value) {
   const normalized = {};
   if (typeof value.model === "string") {
     const model = value.model.trim();
-    if (/^[A-Za-z0-9._-]{1,80}$/.test(model)) {
+    if (/^[A-Za-z0-9._-]{1,80}$/.test(model) && !CLI_DEFAULT_MODEL_ALIASES.has(model.toLowerCase())) {
       normalized.model = model;
     }
   }

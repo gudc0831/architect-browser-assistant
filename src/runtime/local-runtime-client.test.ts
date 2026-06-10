@@ -84,7 +84,6 @@ describe("LocalRuntimeClient", () => {
     });
 
     expect(codexOptions).toEqual({
-      model: "gpt-5-codex",
       reasoningEffort: "medium",
       serviceTier: "priority",
       sandboxMode: "read-only",

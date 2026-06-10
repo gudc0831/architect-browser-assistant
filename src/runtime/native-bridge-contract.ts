@@ -10,6 +10,7 @@ export const BRIDGE_SCHEMA_VERSION = 3;
 
 const allowedReasoningEfforts = new Set<CodexOptions["reasoningEffort"]>(["minimal", "low", "medium", "high"]);
 const allowedServiceTiers = new Set<CodexOptions["serviceTier"]>(["auto", "default", "priority"]);
+const cliDefaultModelAliases = new Set(["gpt-5-codex"]);
 
 export type NativeBridgeRequest =
   | {
@@ -143,7 +144,7 @@ export function normalizeCodexOptions(value: unknown): CodexOptions | undefined 
   const normalized: CodexOptions = {};
   if (typeof raw.model === "string") {
     const model = raw.model.trim();
-    if (/^[A-Za-z0-9._-]{1,80}$/.test(model)) {
+    if (/^[A-Za-z0-9._-]{1,80}$/.test(model) && !cliDefaultModelAliases.has(model.toLowerCase())) {
       normalized.model = model;
     }
   }
