@@ -235,9 +235,9 @@ describe("content script local runtime page bridge", () => {
         codexCliVersion: "26.6.11",
         models: [
           {
-            value: "codex-default",
-            label: "codex-default",
-            source: "codex-default",
+            value: "gpt-5.5",
+            label: "GPT-5.5",
+            source: "known-catalog",
             available: true,
           },
         ],

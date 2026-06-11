@@ -18,6 +18,16 @@ const USAGE_SUMMARY_MAX_TOTAL_BYTES = 10 * 1024 * 1024;
 const REASONING_EFFORTS = new Set(["minimal", "low", "medium", "high"]);
 const SERVICE_TIERS = new Set(["auto", "default", "priority"]);
 const CLI_DEFAULT_MODEL_ALIASES = new Set(["gpt-5-codex", "codex-default"]);
+const KNOWN_WINDOWS_CODEX_MODELS = [
+  { value: "gpt-5.5", label: "GPT-5.5" },
+  { value: "gpt-5.4", label: "GPT-5.4" },
+  { value: "gpt-5.4-mini", label: "GPT-5.4-Mini" },
+  { value: "gpt-5.3-codex-spark", label: "GPT-5.3-Codex-Spark" },
+];
+const LEGACY_MODEL_ALIASES = new Map([
+  ["codex-default", "gpt-5.5"],
+  ["gpt-5-codex", "gpt-5.5"],
+]);
 const isLittleEndian = new Uint8Array(new Uint32Array([1]).buffer)[0] === 1;
 
 async function main() {
@@ -355,7 +365,7 @@ function normalizeCodexOptions(value) {
 }
 
 async function buildModelCatalog(request) {
-  const savedModel = typeof request?.savedModel === "string" ? request.savedModel.trim() : "";
+  const savedModel = normalizeModelSlug(typeof request?.savedModel === "string" ? request.savedModel.trim() : "");
   const warnings = [];
   const codexCliVersion = await getCodexCliVersion();
   if (!codexCliVersion) {
@@ -365,14 +375,9 @@ async function buildModelCatalog(request) {
     });
   }
 
-  const models = [
-    {
-      value: "codex-default",
-      label: "codex-default",
-      source: "codex-default",
-      available: true,
-    },
-  ];
+  const cliModels = await readCodexDebugModels(warnings);
+  const usingFallbackCatalog = cliModels.length === 0;
+  const models = usingFallbackCatalog ? buildKnownModelCatalog() : cliModels;
   if (
     /^[A-Za-z0-9._:-]{1,80}$/.test(savedModel) &&
     !models.some((model) => model.value.toLowerCase() === savedModel.toLowerCase())
@@ -388,11 +393,77 @@ async function buildModelCatalog(request) {
   return {
     bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
     refreshedAt: new Date().toISOString(),
-    source: "local-codex-bridge",
+    source: usingFallbackCatalog ? "fallback-catalog" : "local-codex-bridge",
     ...(codexCliVersion ? { codexCliVersion } : {}),
     models,
     warnings,
   };
+}
+
+async function readCodexDebugModels(warnings) {
+  try {
+    const result = await spawnAndCollect(getCodexCommand(), ["debug", "models"], "", 5_000);
+    const parsed = JSON.parse(result.stdout);
+    const models = Array.isArray(parsed?.models)
+      ? parsed.models
+          .filter((model) => model?.visibility === "list")
+          .map((model) => ({
+            value: normalizeModelSlug(model?.slug),
+            label: normalizeModelLabel(model?.display_name) || normalizeModelSlug(model?.slug),
+            source: "known-catalog",
+            available: true,
+          }))
+          .filter((model) => model.value && model.label)
+      : [];
+
+    return uniqueModels(models);
+  } catch {
+    warnings.push({
+      code: "codex_model_catalog_unavailable",
+      label: "Codex CLI model catalog could not be detected; using known Windows Codex catalog.",
+    });
+    return [];
+  }
+}
+
+function buildKnownModelCatalog() {
+  return KNOWN_WINDOWS_CODEX_MODELS.map((model) => ({
+    value: model.value,
+    label: model.label,
+    source: "known-catalog",
+    available: true,
+  }));
+}
+
+function normalizeModelSlug(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+  const normalized = value.trim();
+  const aliased = LEGACY_MODEL_ALIASES.get(normalized.toLowerCase()) ?? normalized;
+  return /^[A-Za-z0-9._:-]{1,80}$/.test(aliased) ? aliased : "";
+}
+
+function normalizeModelLabel(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+  const normalized = value.trim();
+  return /^[A-Za-z0-9 ._:-]{1,120}$/.test(normalized) ? normalized : "";
+}
+
+function uniqueModels(models) {
+  const seen = new Set();
+  const result = [];
+  for (const model of models) {
+    const key = model.value.toLowerCase();
+    if (!key || seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    result.push(model);
+  }
+  return result;
 }
 
 async function buildUsageSummary(request) {

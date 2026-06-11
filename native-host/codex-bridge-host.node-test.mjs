@@ -230,7 +230,27 @@ describe("codex native host", () => {
     assert.equal(args.includes("--model"), false);
   });
 
-  it("returns a model catalog with codex-default and saved custom values", async () => {
+  it("passes explicit Windows Codex model slugs to the CLI", () => {
+    const args = buildCodexExecArgs({
+      model: "gpt-5.5",
+      reasoningEffort: "medium",
+    });
+
+    assert.deepEqual(args, [
+      "exec",
+      "-",
+      "--json",
+      "--sandbox",
+      "read-only",
+      "--skip-git-repo-check",
+      "--model",
+      "gpt-5.5",
+      "-c",
+      "model_reasoning_effort=medium",
+    ]);
+  });
+
+  it("returns a Windows Codex style model catalog with saved custom values", async () => {
     const response = await handleRequest({
       type: "modelCatalog",
       requestId: "models",
@@ -241,20 +261,56 @@ describe("codex native host", () => {
     assert.equal(response.modelCatalog.bridgeSchemaVersion, 3);
     assert.equal(response.modelCatalog.source, "local-codex-bridge");
     assert.equal(typeof response.modelCatalog.refreshedAt, "string");
-    assert.deepEqual(response.modelCatalog.models.slice(0, 2), [
-      {
-        value: "codex-default",
-        label: "codex-default",
-        source: "codex-default",
-        available: true,
-      },
-      {
-        value: "gpt-5.6",
-        label: "gpt-5.6",
-        source: "saved-custom",
-        available: false,
-      },
+    assert.deepEqual(response.modelCatalog.models.slice(0, 4), [
+      { value: "gpt-5.5", label: "GPT-5.5", source: "known-catalog", available: true },
+      { value: "gpt-5.4", label: "GPT-5.4", source: "known-catalog", available: true },
+      { value: "gpt-5.4-mini", label: "GPT-5.4-Mini", source: "known-catalog", available: true },
+      { value: "gpt-5.3-codex-spark", label: "GPT-5.3-Codex-Spark", source: "known-catalog", available: true },
     ]);
+    assert.deepEqual(response.modelCatalog.models.at(-1), {
+      value: "gpt-5.6",
+      label: "gpt-5.6",
+      source: "saved-custom",
+      available: false,
+    });
+  });
+
+  it("maps legacy saved model aliases to the Windows Codex default in model catalogs", async () => {
+    const response = await handleRequest({
+      type: "modelCatalog",
+      requestId: "models-legacy",
+      savedModel: "gpt-5-codex",
+    });
+
+    assert.equal(response.ok, true);
+    assert.equal(response.modelCatalog.models[0].value, "gpt-5.5");
+    assert.equal(response.modelCatalog.models.some((model) => model.value === "gpt-5-codex"), false);
+  });
+
+  it("marks the model catalog as fallback when Codex debug models cannot be read", async () => {
+    const previousCliPath = process.env.ARCHITECT_CODEX_CLI_PATH;
+    process.env.ARCHITECT_CODEX_CLI_PATH = path.join(os.tmpdir(), "missing-codex-cli.cmd");
+
+    try {
+      const response = await handleRequest({
+        type: "modelCatalog",
+        requestId: "models-fallback",
+      });
+
+      assert.equal(response.ok, true);
+      assert.equal(response.modelCatalog.source, "fallback-catalog");
+      assert.equal(response.modelCatalog.models[0].value, "gpt-5.5");
+      assert.equal(
+        response.modelCatalog.warnings.some((warning) => warning.code === "codex_model_catalog_unavailable"),
+        true,
+      );
+    } finally {
+      if (previousCliPath === undefined) {
+        delete process.env.ARCHITECT_CODEX_CLI_PATH;
+      } else {
+        process.env.ARCHITECT_CODEX_CLI_PATH = previousCliPath;
+      }
+    }
   });
 
   it("does not echo path-like unknown request types", async () => {
