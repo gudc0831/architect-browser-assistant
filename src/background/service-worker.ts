@@ -113,6 +113,7 @@ function isLocalRuntimeMessage(message: unknown): message is LocalRuntimeExtensi
   return (
     type === "architect:local-runtime-status" ||
     type === "architect:local-runtime-capabilities" ||
+    type === "architect:local-runtime-model-catalog" ||
     type === "architect:local-runtime-usage-summary" ||
     type === "architect:local-runtime-generate"
   );
@@ -211,6 +212,13 @@ async function handleLocalRuntimeMessage(message: LocalRuntimeExtensionMessage) 
     return response.ok && response.usageSummary
       ? { ok: true, data: response.usageSummary }
       : { ok: false, error: response.ok ? "Native bridge returned no usage summary." : safeNativeErrorMessage(response.error.code) };
+  }
+
+  if (message.type === "architect:local-runtime-model-catalog") {
+    const response = await sendNativeBridgeRequest(request);
+    return response.ok && response.modelCatalog
+      ? { ok: true, data: response.modelCatalog }
+      : { ok: false, error: response.ok ? "Native bridge returned no model catalog." : safeNativeErrorMessage(response.error.code) };
   }
 
   if (message.type === "architect:local-runtime-capabilities") {

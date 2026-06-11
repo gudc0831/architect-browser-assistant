@@ -3,6 +3,7 @@ import type {
   AssistantRuntimeOutput,
   AssistantRuntimeStatus,
   CodexOptions,
+  LocalCodexModelCatalog,
 } from "./ArchitectLocalAssistantRuntime";
 
 export const CODEX_NATIVE_HOST = "com.architect.browser_assistant.codex_bridge";
@@ -10,7 +11,7 @@ export const BRIDGE_SCHEMA_VERSION = 3;
 
 const allowedReasoningEfforts = new Set<CodexOptions["reasoningEffort"]>(["minimal", "low", "medium", "high"]);
 const allowedServiceTiers = new Set<CodexOptions["serviceTier"]>(["auto", "default", "priority"]);
-const cliDefaultModelAliases = new Set(["gpt-5-codex"]);
+const cliDefaultModelAliases = new Set(["gpt-5-codex", "codex-default"]);
 
 export type NativeBridgeRequest =
   | {
@@ -21,6 +22,11 @@ export type NativeBridgeRequest =
   | {
       type: "capabilities";
       requestId: string;
+    }
+  | {
+      type: "modelCatalog";
+      requestId: string;
+      savedModel?: string;
     }
   | {
       type: "usageSummary";
@@ -90,6 +96,7 @@ export type NativeBridgeResponse =
       requestId: string;
       status?: AssistantRuntimeStatus;
       capabilities?: string[];
+      modelCatalog?: LocalCodexModelCatalog;
       usageSummary?: NativeBridgeUsageSummary;
       output?: AssistantRuntimeOutput;
     }
@@ -109,6 +116,10 @@ export type LocalRuntimeExtensionMessage =
     }
   | {
       type: "architect:local-runtime-capabilities";
+    }
+  | {
+      type: "architect:local-runtime-model-catalog";
+      savedModel?: string;
     }
   | {
       type: "architect:local-runtime-usage-summary";
@@ -161,6 +172,10 @@ export function normalizeCodexOptions(value: unknown): CodexOptions | undefined 
     normalized.sandboxMode = "read-only";
   }
 
+  if (raw.noHistory === true) {
+    normalized.noHistory = true;
+  }
+
   return Object.keys(normalized).length > 0 ? normalized : undefined;
 }
 
@@ -182,6 +197,16 @@ export function toNativeBridgeRequest(
 
   if (message.type === "architect:local-runtime-capabilities") {
     return { type: "capabilities", requestId };
+  }
+
+  if (message.type === "architect:local-runtime-model-catalog") {
+    return {
+      type: "modelCatalog",
+      requestId,
+      ...(typeof message.savedModel === "string" && message.savedModel.trim()
+        ? { savedModel: message.savedModel.trim() }
+        : {}),
+    };
   }
 
   if (message.type === "architect:local-runtime-usage-summary") {

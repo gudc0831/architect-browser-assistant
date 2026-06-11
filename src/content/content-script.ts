@@ -219,6 +219,7 @@ function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeReq
     typeof message.requestId === "string" &&
     (message.command === "status" ||
       message.command === "usage-summary" ||
+      message.command === "model-catalog" ||
       message.command === "generate" ||
       message.command === "select-region" ||
       message.command === "verify-official-law")
@@ -239,6 +240,17 @@ function toExtensionRuntimeMessage(request: PageLocalRuntimeRequest): LocalRunti
       type: "architect:local-runtime-usage-summary",
       ...(typeof rangeDays === "number" ? { rangeDays } : {}),
       ...(codexOptions ? { codexOptions } : {}),
+    };
+  }
+
+  if (request.command === "model-catalog") {
+    const savedModel =
+      request.input && typeof request.input === "object" && typeof (request.input as { savedModel?: unknown }).savedModel === "string"
+        ? (request.input as { savedModel: string }).savedModel.trim()
+        : undefined;
+    return {
+      type: "architect:local-runtime-model-catalog",
+      ...(savedModel ? { savedModel } : {}),
     };
   }
 

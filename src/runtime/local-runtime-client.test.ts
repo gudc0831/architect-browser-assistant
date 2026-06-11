@@ -77,6 +77,7 @@ describe("LocalRuntimeClient", () => {
       reasoningEffort: "medium",
       serviceTier: "priority",
       sandboxMode: "read-only",
+      noHistory: true,
       configPath: "C:\\Users\\secret\\.codex\\config.toml",
       path: "D:\\workspace",
       env: { OPENAI_API_KEY: "secret" },
@@ -87,6 +88,7 @@ describe("LocalRuntimeClient", () => {
       reasoningEffort: "medium",
       serviceTier: "priority",
       sandboxMode: "read-only",
+      noHistory: true,
     });
     expect(
       toNativeBridgeRequest(
@@ -100,6 +102,12 @@ describe("LocalRuntimeClient", () => {
       type: "usageSummary",
       requestId: "usage-request",
       codexOptions,
+    });
+
+    expect(toNativeBridgeRequest({ type: "architect:local-runtime-model-catalog", savedModel: "gpt-5.6" }, "models")).toEqual({
+      type: "modelCatalog",
+      requestId: "models",
+      savedModel: "gpt-5.6",
     });
 
     const input = {

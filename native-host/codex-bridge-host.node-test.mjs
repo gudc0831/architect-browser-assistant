@@ -209,6 +209,54 @@ describe("codex native host", () => {
     assert.equal(args.some((arg) => /Users\\secret/.test(arg)), false);
   });
 
+  it("omits CLI-default model aliases and supports ephemeral no-history runs", () => {
+    const args = buildCodexExecArgs({
+      model: "codex-default",
+      reasoningEffort: "medium",
+      noHistory: true,
+    });
+
+    assert.deepEqual(args, [
+      "exec",
+      "-",
+      "--json",
+      "--sandbox",
+      "read-only",
+      "--skip-git-repo-check",
+      "--ephemeral",
+      "-c",
+      "model_reasoning_effort=medium",
+    ]);
+    assert.equal(args.includes("--model"), false);
+  });
+
+  it("returns a model catalog with codex-default and saved custom values", async () => {
+    const response = await handleRequest({
+      type: "modelCatalog",
+      requestId: "models",
+      savedModel: "gpt-5.6",
+    });
+
+    assert.equal(response.ok, true);
+    assert.equal(response.modelCatalog.bridgeSchemaVersion, 3);
+    assert.equal(response.modelCatalog.source, "local-codex-bridge");
+    assert.equal(typeof response.modelCatalog.refreshedAt, "string");
+    assert.deepEqual(response.modelCatalog.models.slice(0, 2), [
+      {
+        value: "codex-default",
+        label: "codex-default",
+        source: "codex-default",
+        available: true,
+      },
+      {
+        value: "gpt-5.6",
+        label: "gpt-5.6",
+        source: "saved-custom",
+        available: false,
+      },
+    ]);
+  });
+
   it("does not echo path-like unknown request types", async () => {
     const response = await handleRequest({
       type: "C:\\Users\\secret\\prompt.txt",

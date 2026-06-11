@@ -225,6 +225,65 @@ describe("content script local runtime page bridge", () => {
     expect(JSON.stringify(sendMessage.mock.calls)).not.toContain("raw log");
   });
 
+  it("forwards model-catalog requests with only the saved model value", async () => {
+    const sendMessage = stubChromeRuntime((message) => ({
+      ok: true,
+      data: {
+        bridgeSchemaVersion: 3,
+        refreshedAt: "2026-06-11T05:42:00.000Z",
+        source: "local-codex-bridge",
+        codexCliVersion: "26.6.11",
+        models: [
+          {
+            value: "codex-default",
+            label: "codex-default",
+            source: "codex-default",
+            available: true,
+          },
+        ],
+        warnings: [],
+        echoed: message,
+      },
+    }));
+
+    await import("./content-script");
+
+    const response = waitForBridgeResponse("request-models");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-local-runtime-request",
+          requestId: "request-models",
+          command: "model-catalog",
+          input: {
+            savedModel: "gpt-5.6",
+            configPath: "C:\\Users\\secret\\.codex\\config.toml",
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-local-runtime-response",
+      requestId: "request-models",
+      ok: true,
+      data: {
+        source: "local-codex-bridge",
+        codexCliVersion: "26.6.11",
+      },
+    });
+    expect(sendMessage).toHaveBeenCalledWith(
+      {
+        type: "architect:local-runtime-model-catalog",
+        savedModel: "gpt-5.6",
+      },
+      expect.any(Function),
+    );
+    expect(JSON.stringify(sendMessage.mock.calls)).not.toContain("config.toml");
+  });
+
   it("forwards sanitized top-level Codex options on page generate requests", async () => {
     const sendMessage = stubChromeRuntime((message) => {
       if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {

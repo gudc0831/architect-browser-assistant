@@ -13,6 +13,24 @@ export type CodexOptions = {
   reasoningEffort?: "minimal" | "low" | "medium" | "high";
   serviceTier?: "auto" | "default" | "priority";
   sandboxMode?: "read-only";
+  noHistory?: boolean;
+};
+
+export type LocalCodexModelCatalog = {
+  bridgeSchemaVersion: number;
+  refreshedAt: string;
+  source: "local-codex-bridge" | "fallback-catalog";
+  codexCliVersion?: string;
+  models: Array<{
+    value: string;
+    label: string;
+    source: "codex-default" | "known-catalog" | "saved-custom";
+    available: boolean;
+  }>;
+  warnings: Array<{
+    code: string;
+    label: string;
+  }>;
 };
 
 export type ProjectContextLocationForRuntime = {

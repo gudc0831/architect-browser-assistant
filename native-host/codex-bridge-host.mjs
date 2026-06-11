@@ -17,7 +17,7 @@ const USAGE_SUMMARY_MAX_FILE_BYTES = 512 * 1024;
 const USAGE_SUMMARY_MAX_TOTAL_BYTES = 10 * 1024 * 1024;
 const REASONING_EFFORTS = new Set(["minimal", "low", "medium", "high"]);
 const SERVICE_TIERS = new Set(["auto", "default", "priority"]);
-const CLI_DEFAULT_MODEL_ALIASES = new Set(["gpt-5-codex"]);
+const CLI_DEFAULT_MODEL_ALIASES = new Set(["gpt-5-codex", "codex-default"]);
 const isLittleEndian = new Uint8Array(new Uint32Array([1]).buffer)[0] === 1;
 
 async function main() {
@@ -100,6 +100,14 @@ export async function handleRequest(request) {
       ok: true,
       requestId: request.requestId,
       capabilities: CAPABILITIES,
+    };
+  }
+
+  if (request.type === "modelCatalog") {
+    return {
+      ok: true,
+      requestId: request.requestId,
+      modelCatalog: await buildModelCatalog(request),
     };
   }
 
@@ -255,6 +263,15 @@ async function checkCodexCli() {
   }
 }
 
+async function getCodexCliVersion() {
+  try {
+    const result = await spawnAndCollect(getCodexCommand(), ["--version"], "", 2_000);
+    return result.stdout.trim().replace(/^codex\s+/i, "").trim() || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 async function runCodexExec(input, codexOptions) {
   const prompt = buildCodexPrompt(input);
   const args = buildCodexExecArgs(codexOptions);
@@ -266,6 +283,9 @@ async function runCodexExec(input, codexOptions) {
 export function buildCodexExecArgs(codexOptions) {
   const options = normalizeCodexOptions(codexOptions);
   const args = ["exec", "-", "--json", "--sandbox", "read-only", "--skip-git-repo-check"];
+  if (options.noHistory) {
+    args.push("--ephemeral");
+  }
   if (options.model) {
     args.push("--model", options.model);
   }
@@ -327,7 +347,52 @@ function normalizeCodexOptions(value) {
     normalized.sandboxMode = "read-only";
   }
 
+  if (value.noHistory === true) {
+    normalized.noHistory = true;
+  }
+
   return normalized;
+}
+
+async function buildModelCatalog(request) {
+  const savedModel = typeof request?.savedModel === "string" ? request.savedModel.trim() : "";
+  const warnings = [];
+  const codexCliVersion = await getCodexCliVersion();
+  if (!codexCliVersion) {
+    warnings.push({
+      code: "codex_cli_version_unavailable",
+      label: "Codex CLI version could not be detected.",
+    });
+  }
+
+  const models = [
+    {
+      value: "codex-default",
+      label: "codex-default",
+      source: "codex-default",
+      available: true,
+    },
+  ];
+  if (
+    /^[A-Za-z0-9._:-]{1,80}$/.test(savedModel) &&
+    !models.some((model) => model.value.toLowerCase() === savedModel.toLowerCase())
+  ) {
+    models.push({
+      value: savedModel,
+      label: savedModel,
+      source: "saved-custom",
+      available: false,
+    });
+  }
+
+  return {
+    bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
+    refreshedAt: new Date().toISOString(),
+    source: "local-codex-bridge",
+    ...(codexCliVersion ? { codexCliVersion } : {}),
+    models,
+    warnings,
+  };
 }
 
 async function buildUsageSummary(request) {
