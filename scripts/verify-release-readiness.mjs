@@ -8,7 +8,6 @@ import { fileURLToPath } from "node:url";
 const EXTENSION_ID_PATTERN = /^[a-p]{32}$/;
 const HOST_NAME = "com.architect.browser_assistant.codex_bridge";
 const UNSIGNED_NATIVE_HOST_WAIVER_VALUE = "ALLOW_UNSIGNED_NATIVE_HOST_WITHOUT_CODE_SIGNING_CERT";
-const OFFICIAL_API_HOST_PERMISSIONS = ["https://www.law.go.kr/*"];
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..");
@@ -131,26 +130,14 @@ async function verifyDistManifest() {
     : [];
   verifyUrlPatterns("host-permissions", "Host permissions", hostPermissions);
   verifyUrlPatterns("content-script-matches", "Content script matches", contentScriptMatches);
-  const unexpectedHostPermissions = hostPermissions.filter(
-    (pattern) => !contentScriptMatches.includes(pattern) && !OFFICIAL_API_HOST_PERMISSIONS.includes(pattern),
-  );
-  const saasHostPermissions = hostPermissions.filter((pattern) => !OFFICIAL_API_HOST_PERMISSIONS.includes(pattern));
-  const hasOfficialLawApiPermission = OFFICIAL_API_HOST_PERMISSIONS.every((pattern) => hostPermissions.includes(pattern));
-  addCheck(
-    "official-law-api-host-permission",
-    "Official law API host permission",
-    hasOfficialLawApiPermission ? "pass" : "fail",
-    hasOfficialLawApiPermission
-      ? `Official law source checks are limited to ${OFFICIAL_API_HOST_PERMISSIONS.join(", ")}.`
-      : `Missing official law API host permission: ${OFFICIAL_API_HOST_PERMISSIONS.join(", ")}.`,
-  );
+  const unexpectedHostPermissions = hostPermissions.filter((pattern) => !contentScriptMatches.includes(pattern));
   addCheck(
     "host-content-match",
     "Host/content-script origin alignment",
-    sameSet(saasHostPermissions, contentScriptMatches) && unexpectedHostPermissions.length === 0 ? "pass" : "fail",
-    sameSet(saasHostPermissions, contentScriptMatches) && unexpectedHostPermissions.length === 0
-      ? "SaaS host_permissions and content_scripts.matches use the same SaaS origin pattern; official law API permissions are background/side-panel only."
-      : `Unexpected host permissions: ${unexpectedHostPermissions.join(", ") || "none"}; SaaS host permissions (${saasHostPermissions.join(", ")}) and matches (${contentScriptMatches.join(", ")}) differ.`,
+    sameSet(hostPermissions, contentScriptMatches) && unexpectedHostPermissions.length === 0 ? "pass" : "fail",
+    sameSet(hostPermissions, contentScriptMatches) && unexpectedHostPermissions.length === 0
+      ? "Host permissions and content scripts use the same SaaS origin pattern; official legal evidence is provided by SaaS/verified-legal server calls."
+      : `Unexpected host permissions: ${unexpectedHostPermissions.join(", ") || "none"}; host permissions (${hostPermissions.join(", ")}) and matches (${contentScriptMatches.join(", ")}) differ.`,
   );
 
   addCheck(

@@ -1,12 +1,8 @@
 import type { AssistantEvidence } from "../saas/contracts";
-import { readSafeSetting } from "../storage/safe-storage";
 
 export const OFFICIAL_LAW_PROVIDER_NAME = "국가법령정보센터";
 export const OFFICIAL_LAW_API_DOCS_URL = "https://open.law.go.kr/LSO/openApi/guideList.do";
 
-const DEFAULT_LAW_API_BASE_URL = "https://www.law.go.kr/DRF";
-const DEFAULT_LAW_OPEN_DATA_OC = "test";
-const DEFAULT_TIMEOUT_MS = 15_000;
 const MAX_LOCATORS = 5;
 
 const KNOWN_ARCHITECTURE_LAWS = [
@@ -75,28 +71,7 @@ export type OfficialLawVerificationReport = {
 export type VerifyOfficialLawEvidenceInput = {
   question: string;
   evidence: AssistantEvidence[];
-  fetchImpl?: typeof fetch;
   now?: () => Date;
-  oc?: string;
-  baseUrl?: string;
-  timeoutMs?: number;
-};
-
-type LawSearchResult = {
-  lawName: string;
-  lawId?: string;
-  lawSequenceNumber?: string;
-  effectiveDate?: string;
-  promulgationDate?: string;
-  ministry?: string;
-  sourceUrl?: string;
-};
-
-type OfficialLawApiConfig = {
-  fetchImpl: typeof fetch;
-  oc: string;
-  baseUrl: string;
-  timeoutMs: number;
 };
 
 export function requiresOfficialLawVerification(question: string, evidence: AssistantEvidence[]) {
@@ -104,7 +79,7 @@ export function requiresOfficialLawVerification(question: string, evidence: Assi
     return true;
   }
 
-  return /법규|법령|건축법|시행령|시행규칙|조례|고시|인허가|허가|적법|조항|피난|방화|용적률|건폐율|주차장/.test(
+  return /법규|법령|건축법|시행령|시행규칙|조례|고시|인허가|허가|적법|조항|피난|방화|용적률|건폐율|주차장법/.test(
     question,
   ) || /주택건설기준|공동주택|단지\s*(?:내|안)|도로\s*경사/.test(question);
 }
@@ -190,51 +165,51 @@ export async function verifyOfficialLawEvidence(
           reason: "법령명 또는 조문 번호를 regulation evidence나 질문에서 찾지 못했습니다.",
         },
       ],
-      failures: ["법령명 또는 조문 번호를 찾지 못해 공식 API 조회를 시작할 수 없습니다."],
+      failures: ["법령명 또는 조문 번호를 찾지 못해 공식 출처 검증을 시작할 수 없습니다."],
       retry: [
-        "SaaS retrieval이 법규 evidence를 반환하는지 확인하세요.",
+        "Architect SaaS retrieval이 verified-legal-evidence-api에서 검증된 법규 evidence를 반환하는지 확인하세요.",
         "질문이나 task evidence에 법령명과 조문(예: 건축법 제49조)을 명시하세요.",
       ],
     };
   }
 
-  const oc = input.oc?.trim() || (await readSafeSetting("lawOpenDataOc", DEFAULT_LAW_OPEN_DATA_OC));
-  const config: OfficialLawApiConfig = {
-    fetchImpl: resolveFetchImpl(input.fetchImpl),
-    oc,
-    baseUrl: input.baseUrl?.replace(/\/$/, "") || DEFAULT_LAW_API_BASE_URL,
-    timeoutMs: input.timeoutMs ?? DEFAULT_TIMEOUT_MS,
-  };
-
-  const sources: OfficialLawApiSource[] = [];
-  for (const locator of locators) {
-    sources.push(await fetchOfficialLawArticle(locator, config, checkedAt));
+  const verifiedSources = buildVerifiedSourcesFromEvidence(input.evidence, locators, checkedAt);
+  if (verifiedSources.length > 0) {
+    return {
+      status: "verified",
+      checkedAt,
+      provider,
+      locators,
+      sources: verifiedSources,
+      failures: [],
+      retry: [],
+    };
   }
 
-  const verifiedSources = sources.filter((source) => source.status === "verified");
-  const failures = sources.filter((source) => source.status !== "verified").map((source) => source.reason);
-
+  const reason =
+    "Browser Assistant는 국가법령정보센터 Open API를 직접 호출하지 않습니다. 법규 원문 검증은 Architect SaaS가 verified-legal-evidence-api를 서버 간 호출해 제공한 evidence metadata만 사용합니다.";
   return {
-    status: verifiedSources.length > 0 ? "verified" : "failed",
+    status: "failed",
     checkedAt,
     provider,
     locators,
-    sources,
-    failures,
-    retry:
-      failures.length > 0
-        ? [
-            "법제처 Open API 인증값(OC)과 네트워크 접근 권한을 확인한 뒤 다시 조회하세요.",
-            "법령명과 조문 번호가 최신 국가법령정보센터 표기와 일치하는지 확인하세요.",
-            "법제처 API가 실패하면 국가법령정보센터 원문 링크를 열어 수동 확인 후 근거를 다시 저장하세요.",
-          ]
-        : [],
+    sources: locators.map((locator) => ({
+      status: "api_error",
+      lawName: locator.lawName,
+      articleLabel: locator.articleLabel,
+      articleNumber: locator.articleNumber,
+      sourceUrl: locator.sourceUrl,
+      apiUrl: OFFICIAL_LAW_API_DOCS_URL,
+      checkedAt,
+      reason,
+      evidenceId: locator.evidenceId,
+    })),
+    failures: [reason],
+    retry: [
+      "Architect SaaS의 /api/assistant/task-review 응답에 verificationStatus=verified regulation evidence가 포함되는지 확인하세요.",
+      "verified-legal-evidence-api 배포 환경에 LAW_OPEN_DATA_OC와 R2 read 설정이 있는지 서버 측에서 확인하세요.",
+    ],
   };
-}
-
-function resolveFetchImpl(fetchImpl?: typeof fetch): typeof fetch {
-  const candidate = fetchImpl ?? globalThis.fetch;
-  return ((input, init) => candidate.call(globalThis, input, init)) as typeof fetch;
 }
 
 export function officialLawSourceToEvidence(source: OfficialLawApiSource): AssistantEvidence | null {
@@ -252,7 +227,7 @@ export function officialLawSourceToEvidence(source: OfficialLawApiSource): Assis
     priority: 0,
     title: `${source.lawName}${article} 원문 확인`,
     excerpt: [
-      `${OFFICIAL_LAW_PROVIDER_NAME} Open API로 ${source.checkedAt}에 확인했습니다.${effectiveDate}`,
+      `${OFFICIAL_LAW_PROVIDER_NAME} 검증 metadata로 ${source.checkedAt}에 확인했습니다.${effectiveDate}`,
       trimText(source.articleText, 900),
     ].join("\n"),
     sourceUrl: source.sourceUrl || source.apiUrl,
@@ -269,254 +244,72 @@ export function officialLawSourceToEvidence(source: OfficialLawApiSource): Assis
   };
 }
 
-async function fetchOfficialLawArticle(
-  locator: LawArticleLocator,
-  config: OfficialLawApiConfig,
+function buildVerifiedSourcesFromEvidence(
+  evidence: AssistantEvidence[],
+  locators: LawArticleLocator[],
   checkedAt: string,
-): Promise<OfficialLawApiSource> {
-  if (!locator.lawName.trim()) {
-    return {
-      status: "missing_query",
-      lawName: locator.lawName,
-      articleLabel: locator.articleLabel,
-      articleNumber: locator.articleNumber,
-      sourceUrl: locator.sourceUrl,
-      apiUrl: OFFICIAL_LAW_API_DOCS_URL,
-      checkedAt,
-      reason: "법령명이 비어 있어 공식 API 조회를 건너뛰었습니다.",
-      evidenceId: locator.evidenceId,
-    };
-  }
-
-  let currentApiUrl = OFFICIAL_LAW_API_DOCS_URL;
-  let currentSearchApiUrl: string | undefined;
-  try {
-    const searchUrl = buildLawSearchUrl(locator.lawName, config);
-    currentApiUrl = sanitizeOfficialApiUrl(searchUrl);
-    currentSearchApiUrl = currentApiUrl;
-    const searchJson = await fetchJson(searchUrl.toString(), config);
-    const searchResults = parseLawSearchResults(searchJson);
-    const selected = selectBestLawSearchResult(locator.lawName, searchResults);
-
-    if (!selected) {
-      return {
-        status: "not_found",
-        lawName: locator.lawName,
-        articleLabel: locator.articleLabel,
-        articleNumber: locator.articleNumber,
-        sourceUrl: locator.sourceUrl,
-        apiUrl: sanitizeOfficialApiUrl(searchUrl),
-        searchApiUrl: sanitizeOfficialApiUrl(searchUrl),
-        checkedAt,
-        reason: `${locator.lawName} 검색 결과를 국가법령정보센터 Open API에서 찾지 못했습니다.`,
-        evidenceId: locator.evidenceId,
-      };
-    }
-
-    const articleUrl = buildLawArticleUrl(selected, locator, config);
-    currentApiUrl = sanitizeOfficialApiUrl(articleUrl);
-    const articleJson = await fetchJson(articleUrl.toString(), config);
-    const articleText = extractArticleText(articleJson, locator.articleNumber);
-
-    if (!articleText) {
-      return {
-        status: "not_found",
-        lawName: selected.lawName || locator.lawName,
-        articleLabel: locator.articleLabel,
-        articleNumber: locator.articleNumber,
-        lawId: selected.lawId,
-        lawSequenceNumber: selected.lawSequenceNumber,
-        effectiveDate: selected.effectiveDate,
-        promulgationDate: selected.promulgationDate,
-        ministry: selected.ministry,
-        sourceUrl: selected.sourceUrl || locator.sourceUrl,
-        apiUrl: sanitizeOfficialApiUrl(articleUrl),
-        searchApiUrl: sanitizeOfficialApiUrl(searchUrl),
-        checkedAt,
-        reason: `${selected.lawName || locator.lawName} ${locator.articleLabel || ""} 원문 조문을 찾지 못했습니다.`,
-        evidenceId: locator.evidenceId,
-      };
-    }
-
-    return {
-      status: "verified",
-      lawName: selected.lawName || locator.lawName,
-      articleLabel: locator.articleLabel,
-      articleNumber: locator.articleNumber,
-      lawId: selected.lawId,
-      lawSequenceNumber: selected.lawSequenceNumber,
-      effectiveDate: selected.effectiveDate,
-      promulgationDate: selected.promulgationDate,
-      ministry: selected.ministry,
-      sourceUrl: selected.sourceUrl || locator.sourceUrl,
-      apiUrl: sanitizeOfficialApiUrl(articleUrl),
-      searchApiUrl: sanitizeOfficialApiUrl(searchUrl),
-      checkedAt,
-      articleText,
-      reason: `${OFFICIAL_LAW_PROVIDER_NAME} Open API에서 원문을 확인했습니다.`,
-      evidenceId: locator.evidenceId,
-    };
-  } catch (error) {
-    return {
-      status: "api_error",
-      lawName: locator.lawName,
-      articleLabel: locator.articleLabel,
-      articleNumber: locator.articleNumber,
-      sourceUrl: locator.sourceUrl,
-      apiUrl: currentApiUrl,
-      searchApiUrl: currentSearchApiUrl,
-      checkedAt,
-      reason: error instanceof Error ? error.message : "공식 법령 API 조회 중 알 수 없는 오류가 발생했습니다.",
-      evidenceId: locator.evidenceId,
-    };
-  }
-}
-
-function buildLawSearchUrl(lawName: string, config: OfficialLawApiConfig) {
-  const url = new URL(`${config.baseUrl}/lawSearch.do`);
-  url.searchParams.set("OC", config.oc);
-  url.searchParams.set("target", "eflaw");
-  url.searchParams.set("type", "JSON");
-  url.searchParams.set("query", lawName);
-  url.searchParams.set("display", "5");
-  url.searchParams.set("page", "1");
-  url.searchParams.set("nw", "3");
-  return url;
-}
-
-function buildLawArticleUrl(
-  selected: LawSearchResult,
-  locator: LawArticleLocator,
-  config: OfficialLawApiConfig,
 ) {
-  const url = new URL(`${config.baseUrl}/lawService.do`);
-  url.searchParams.set("OC", config.oc);
-  url.searchParams.set("target", "eflaw");
-  url.searchParams.set("type", "JSON");
+  const verifiedEvidence = evidence.filter(isVerifiedOfficialEvidence);
+  const matchedEvidence = verifiedEvidence.filter((item) =>
+    locators.some((locator) => locatorMatchesEvidence(locator, item)),
+  );
+  const candidates = matchedEvidence.length > 0 ? matchedEvidence : verifiedEvidence;
+  const seen = new Set<string>();
+  const sources: OfficialLawApiSource[] = [];
 
-  if (selected.lawId) {
-    url.searchParams.set("ID", selected.lawId);
-  } else if (selected.lawSequenceNumber && selected.effectiveDate) {
-    url.searchParams.set("MST", selected.lawSequenceNumber);
-    url.searchParams.set("efYd", selected.effectiveDate);
-  } else {
-    url.searchParams.set("LM", selected.lawName || locator.lawName);
+  for (const item of candidates) {
+    const article = extractArticleLocator([item.title, item.excerpt, item.sourceUrl].filter(Boolean).join("\n"));
+    const lawName = item.lawName || extractLawNames([item.title, item.excerpt].join("\n"))[0] || item.title;
+    const articleNumber = item.articleNumber || article?.articleNumber;
+    const articleLabel = item.articleLabel || article?.articleLabel;
+    const key = `${normalizeLawName(lawName)}:${articleNumber || ""}:${item.id}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    sources.push({
+      status: "verified",
+      lawName,
+      articleLabel,
+      articleNumber,
+      effectiveDate: item.effectiveDate,
+      sourceUrl: item.sourceUrl,
+      apiUrl: sanitizeApiSourceUrl(item.apiSourceUrl || item.sourceUrl),
+      searchApiUrl: item.apiSourceUrl ? sanitizeApiSourceUrl(item.apiSourceUrl) : undefined,
+      checkedAt: item.checkedAt || checkedAt,
+      articleText: item.excerpt,
+      reason:
+        "Architect SaaS retrieval이 verified-legal-evidence-api에서 검증된 법규 evidence metadata를 반환했습니다.",
+      evidenceId: item.id,
+    });
   }
 
-  if (locator.articleNumber) {
-    url.searchParams.set("JO", locator.articleNumber);
-  }
-
-  return url;
+  return sources;
 }
 
-async function fetchJson(url: string, config: OfficialLawApiConfig): Promise<unknown> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
-
-  try {
-    const response = await config.fetchImpl(url, { signal: controller.signal });
-    const text = await response.text();
-
-    if (!response.ok) {
-      throw new Error(`공식 법령 API가 HTTP ${response.status}를 반환했습니다.`);
-    }
-
-    const parsed = JSON.parse(text) as unknown;
-    const apiError = findApiErrorMessage(parsed);
-    if (apiError) {
-      throw new Error(apiError);
-    }
-    return parsed;
-  } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") {
-      throw new Error(`공식 법령 API 조회가 ${config.timeoutMs}ms 후 시간 초과되었습니다.`);
-    }
-    if (error instanceof SyntaxError) {
-      throw new Error("공식 법령 API 응답을 JSON으로 해석할 수 없습니다.");
-    }
-    throw error;
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
-function parseLawSearchResults(value: unknown): LawSearchResult[] {
-  const lawSearch = findFirstRecordByKey(value, "LawSearch") ?? (isRecord(value) ? value : null);
-  const lawValue = lawSearch ? lawSearch["law"] ?? lawSearch["Law"] : undefined;
-  const rows = Array.isArray(lawValue) ? lawValue : lawValue ? [lawValue] : [];
-
-  return rows.filter(isRecord).map((row) => ({
-    lawName: firstString(row, ["법령명한글", "법령명_한글", "법령명", "법령약칭명"]),
-    lawId: firstString(row, ["법령ID", "lawId", "ID"]),
-    lawSequenceNumber: firstString(row, ["법령일련번호", "MST", "lsiSeq"]),
-    effectiveDate: firstString(row, ["시행일자", "efYd"]),
-    promulgationDate: firstString(row, ["공포일자", "ancYd"]),
-    ministry: firstString(row, ["소관부처명", "소관부처"]),
-    sourceUrl: normalizeOfficialSourceUrl(firstString(row, ["법령상세링크", "상세링크"])),
-  }));
-}
-
-function selectBestLawSearchResult(lawName: string, results: LawSearchResult[]) {
-  const normalized = normalizeLawName(lawName);
+function isVerifiedOfficialEvidence(item: AssistantEvidence) {
   return (
-    results.find((result) => normalizeLawName(result.lawName) === normalized) ??
-    results.find((result) => normalizeLawName(result.lawName).includes(normalized)) ??
-    results[0] ??
-    null
+    item.kind === "regulation" &&
+    item.verificationStatus === "verified" &&
+    Boolean(item.officialSourceName || item.checkedAt || item.apiSourceUrl)
   );
 }
 
-function extractArticleText(value: unknown, articleNumber?: string) {
-  const articleRecords = collectRecords(value).filter((record) => hasAnyKey(record, ["조문내용", "조문제목", "항내용"]));
-  const selected =
-    articleNumber && articleRecords.length > 1
-      ? articleRecords.find((record) => articleMatches(record, articleNumber)) ?? articleRecords[0]
-      : articleRecords[0];
-
-  if (!selected) {
-    return "";
+function locatorMatchesEvidence(locator: LawArticleLocator, item: AssistantEvidence) {
+  if (locator.evidenceId && locator.evidenceId === item.id) {
+    return true;
   }
 
-  return normalizeWhitespace(flattenArticleRecord(selected)).slice(0, 6000);
-}
-
-function articleMatches(record: Record<string, unknown>, articleNumber: string) {
-  const parsed = parseArticleNumber(articleNumber);
-  if (!parsed) {
-    return false;
-  }
-
-  const main = Number(firstString(record, ["조문번호"]));
-  const sub = Number(firstString(record, ["조문가지번호"]) || "0");
-  return main === parsed.main && sub === parsed.sub;
-}
-
-function flattenArticleRecord(value: unknown): string {
-  if (typeof value === "string") {
-    return value;
-  }
-
-  if (Array.isArray(value)) {
-    return value.map(flattenArticleRecord).filter(Boolean).join("\n");
-  }
-
-  if (!isRecord(value)) {
-    return "";
-  }
-
-  const direct = ["조문내용", "조문제목", "항내용", "호내용", "목내용", "조문참고자료"]
-    .map((key) => (typeof value[key] === "string" ? String(value[key]) : ""))
-    .filter(Boolean)
-    .join("\n");
-
-  const nested = Object.values(value)
-    .filter((item) => typeof item === "object" && item !== null)
-    .map(flattenArticleRecord)
-    .filter(Boolean)
-    .join("\n");
-
-  return [direct, nested].filter(Boolean).join("\n");
+  const itemText = [item.lawName, item.title, item.excerpt, item.sourceUrl].filter(Boolean).join("\n");
+  const hasLawName =
+    Boolean(item.lawName && normalizeLawName(item.lawName) === normalizeLawName(locator.lawName)) ||
+    itemText.includes(locator.lawName);
+  const hasArticle =
+    !locator.articleNumber ||
+    item.articleNumber === locator.articleNumber ||
+    item.articleLabel === locator.articleLabel ||
+    itemText.includes(locator.articleLabel || "");
+  return hasLawName && hasArticle;
 }
 
 function extractLawNames(text: string) {
@@ -632,75 +425,6 @@ function parseArticleNumber(value: string) {
   };
 }
 
-function findFirstRecordByKey(value: unknown, key: string): Record<string, unknown> | null {
-  if (isRecord(value)) {
-    if (isRecord(value[key])) {
-      return value[key];
-    }
-    for (const child of Object.values(value)) {
-      const found = findFirstRecordByKey(child, key);
-      if (found) {
-        return found;
-      }
-    }
-  }
-
-  if (Array.isArray(value)) {
-    for (const child of value) {
-      const found = findFirstRecordByKey(child, key);
-      if (found) {
-        return found;
-      }
-    }
-  }
-
-  return null;
-}
-
-function collectRecords(value: unknown): Array<Record<string, unknown>> {
-  if (Array.isArray(value)) {
-    return value.flatMap(collectRecords);
-  }
-
-  if (!isRecord(value)) {
-    return [];
-  }
-
-  return [value, ...Object.values(value).flatMap(collectRecords)];
-}
-
-function findApiErrorMessage(value: unknown): string {
-  const records = collectRecords(value);
-  for (const record of records) {
-    const message = firstString(record, ["error", "Error", "message", "Message", "오류", "오류메시지", "result", "msg"]);
-    const detail = firstString(record, ["msg", "message", "Message", "오류메시지"]);
-    if (message && /오류|error|invalid|denied|승인|인증|실패|검증/i.test(message)) {
-      const suffix = detail && detail !== message ? ` (${detail})` : "";
-      return `공식 법령 API 오류: ${message}${suffix}`;
-    }
-  }
-
-  return "";
-}
-
-function firstString(record: Record<string, unknown>, keys: string[]) {
-  for (const key of keys) {
-    const value = record[key];
-    if (typeof value === "string" || typeof value === "number") {
-      return String(value).trim();
-    }
-  }
-  return "";
-}
-
-function hasAnyKey(record: Record<string, unknown>, keys: string[]) {
-  return keys.some((key) => key in record);
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
 function cleanLawName(value: string) {
   return normalizeWhitespace(value)
     .replace(/^(근거|관련|현재|공식|다음|및|또는|이|그|해당|대한)\s+/g, "")
@@ -741,22 +465,18 @@ function normalizeWhitespace(value: string) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
 }
 
-function normalizeOfficialSourceUrl(value: string) {
+function sanitizeApiSourceUrl(value?: string) {
   if (!value) {
-    return "";
+    return OFFICIAL_LAW_API_DOCS_URL;
   }
 
-  if (/^https?:\/\//i.test(value)) {
-    return value.replace(/^http:\/\//i, "https://");
+  try {
+    const url = new URL(value);
+    url.searchParams.delete("OC");
+    return url.toString();
+  } catch {
+    return OFFICIAL_LAW_API_DOCS_URL;
   }
-
-  return `https://www.law.go.kr${value.startsWith("/") ? "" : "/"}${value}`;
-}
-
-function sanitizeOfficialApiUrl(value: URL) {
-  const sanitized = new URL(value.toString());
-  sanitized.searchParams.delete("OC");
-  return sanitized.toString();
 }
 
 function formatDateToken(value: string) {

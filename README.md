@@ -46,24 +46,20 @@ The bridge path is intentionally narrow:
 
 ## Official Law Source Verification
 
-When retrieved evidence includes `regulation` sources, the side panel and the `/daily` in-page Local Codex bridge verify the law/article against the official National Law Information Center Open API before generation:
+When a task review needs legal/regulation grounding, Architect SaaS owns the server-side verification flow through `POST /api/assistant/task-review`. SaaS calls `verified-legal-evidence-api` with server-only credentials, receives redacted answer-ready legal evidence, and returns evidence metadata such as `verificationStatus: "verified"`, law/article fields, checked time, and source URL.
 
-- Search: `https://www.law.go.kr/DRF/lawSearch.do?target=eflaw&type=JSON`
-- Article body: `https://www.law.go.kr/DRF/lawService.do?target=eflaw&type=JSON`
-- API guide: `https://open.law.go.kr/LSO/openApi/guideList.do`
+The Browser Assistant does not store `LAW_OPEN_DATA_OC`, does not request `law.go.kr` host permissions, and does not call the National Law Information Center Open API directly. The extension consumes SaaS-returned verified regulation evidence only. If a legal task has only unverified regulation seeds, Local Codex generation fails closed before the native runtime receives the prompt.
 
-The saved answer appends a deterministic `출처 검증 기록` section with law name, article, API source, checked time, and basis excerpt. If the official API call fails or the law/article locator is missing, the side panel shows the failure reason and retry path. Legal generation is blocked when required official law source verification fails.
-
-The extension host permission is limited to the SaaS origin plus `https://www.law.go.kr/*`; no content script runs on the law site. The optional Open API `OC` value can be stored as `lawOpenDataOc`; local development falls back to the official guide's `test` sample value.
+The extension host permission is limited to the configured SaaS origin. Sensitive setting keys such as `lawOpenDataOc`, tokens, API keys, and service credentials are rejected by guarded extension storage.
 
 Manual task-flow verification:
 
 ```powershell
 cd D:\architect-workspace\architect-browser-assistant
-& <path-to-tsx.cmd> scripts\verify-official-law-task-flow.mjs --origin http://localhost:3000 --task-id <task-id> --oc <law-open-data-oc>
+node scripts\verify-official-law-task-flow.mjs --origin http://localhost:3000 --task-id <task-id> --mode preview
 ```
 
-The script uses the same verifier module as the extension flow. It retrieves SaaS evidence, calls the National Law Information Center Open API, and saves an assistant record as a WIKI candidate when verification succeeds. It does not approve WIKI items; WIKI approval is a Knowledge admin/user action in the SaaS UI/API. If the official API returns an authentication/domain registration error or no verified law article, the script exits with `status: "blocked"` and skips record/candidate writes.
+The script calls SaaS `POST /api/assistant/task-review` and verifies the current server boundary. In `preview` mode it checks that no assistant record or WIKI candidate is created. In `generate` mode it accepts only the task-review orchestrator's server-side write path, where generated records remain `candidateState: "not_candidate"` and WIKI approval remains a Knowledge admin action. If centralized legal verification fails, the script exits with `status: "blocked"` and skips Browser Assistant writes.
 
 Assistant retrieval data sources:
 
@@ -71,7 +67,7 @@ Assistant retrieval data sources:
 - `project_document`: uploaded task/project files after text extraction or manual analysis is saved.
 - `central_knowledge`: approved WIKI items only. Assistant records are candidates until a Knowledge admin approves them.
 - `web_or_skill`: user-approved external evidence saved through the assistant external-evidence API.
-- `regulation`: bundled regulation seed package plus browser-side official law API verification for legal tasks.
+- `regulation`: server-returned verified legal evidence from SaaS/verified-legal, or low-trust seeds that must not be used for legal generation until centralized verification succeeds.
 
 For local development, the SaaS local backend stores JSON metadata under `LOCAL_DATA_ROOT` or `D:\architect-start-data` by default: `data\tasks.json`, `data\files.json`, `data\assistant-records.json`, and uploaded binaries under `uploads\projects\<projectId>\tasks\<taskId>\...`. Do not rely on dropping files into the upload folder alone; retrieval only sees files that were committed through the SaaS file APIs/UI and have usable analysis metadata. To make a document searchable by the assistant, upload it to the relevant task, then save file analysis with extracted text or a summary. Use `verificationState: "user_confirmed"` when a user has checked the extracted text.
 

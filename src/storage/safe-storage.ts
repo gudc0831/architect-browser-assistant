@@ -1,8 +1,8 @@
-type SafeSettingKey = "saasBaseUrl" | "lastTaskId" | "runtimeMode" | "panelDensity" | "lawOpenDataOc";
+type SafeSettingKey = "saasBaseUrl" | "lastTaskId" | "runtimeMode" | "panelDensity";
 
 type SafeSettingValue = string;
 
-const blockedKeyPattern = /(token|secret|key|credential|password|serviceRole|openai|codex|chatgpt)/i;
+const blockedKeyPattern = /(token|secret|key|credential|password|serviceRole|openai|codex|chatgpt|lawOpenData|openDataOc)/i;
 
 export async function readSafeSetting<T extends SafeSettingValue>(key: SafeSettingKey, fallback: T): Promise<T> {
   assertSafeKey(key);

@@ -1,7 +1,6 @@
 import type { ManifestV3Export } from "@crxjs/vite-plugin";
 
 const saasOrigin = `${normalizeSaasOrigin(process.env.ARCHITECT_SAAS_ORIGIN) || "http://localhost:3000"}/*`;
-const officialLawApiOrigin = "https://www.law.go.kr/*";
 
 export const manifest: ManifestV3Export = {
   manifest_version: 3,
@@ -9,7 +8,7 @@ export const manifest: ManifestV3Export = {
   version: "0.1.0",
   description: "Task-centered assistant side panel for Architect SaaS.",
   permissions: ["sidePanel", "storage", "activeTab", "nativeMessaging"],
-  host_permissions: [saasOrigin, officialLawApiOrigin],
+  host_permissions: [saasOrigin],
   background: {
     service_worker: "src/background/service-worker.ts",
     type: "module",

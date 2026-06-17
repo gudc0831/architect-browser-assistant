@@ -1,4 +1,5 @@
 import { detectTaskContext } from "./task-context-detector";
+import { requiresOfficialLawVerification } from "../legal/official-law-api";
 import type { AssistantRuntimeInput } from "../runtime/ArchitectLocalAssistantRuntime";
 import type { AssistantEvidenceKind } from "../saas/contracts";
 import type {
@@ -158,7 +159,7 @@ async function handlePageLocalRuntimeRequest(request: PageLocalRuntimeRequest) {
 async function withOfficialLawVerification(
   message: Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }>,
 ): Promise<Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }> | { ok: false; error: string }> {
-  if (!needsDirectOfficialLawVerification(message.input)) {
+  if (!needsOfficialLawVerificationPreflight(message.input)) {
     return message;
   }
 
@@ -195,17 +196,8 @@ async function withOfficialLawVerification(
   };
 }
 
-function needsDirectOfficialLawVerification(input: AssistantRuntimeInput): boolean {
-  return [...input.evidence, ...(input.legalEvidence ?? [])].some(isLegacyOfficialLawEvidence);
-}
-
-function isLegacyOfficialLawEvidence(evidence: AssistantRuntimeInput["evidence"][number]): boolean {
-  return evidence.kind === "regulation" && (
-    evidence.id.startsWith("official-law:") ||
-    evidence.verificationStatus === "verified" ||
-    Boolean(evidence.officialSourceName) ||
-    Boolean(evidence.apiSourceUrl)
-  );
+function needsOfficialLawVerificationPreflight(input: AssistantRuntimeInput): boolean {
+  return requiresOfficialLawVerification(input.question, [...input.evidence, ...(input.legalEvidence ?? [])]);
 }
 
 function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeRequest {

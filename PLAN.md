@@ -4,6 +4,16 @@
 작업 위치: `D:\architect-workspace\architect-browser-assistant`
 연동 대상 SaaS: `D:\architect-workspace\architect-saas`
 
+## Workspace-Level Legal Corpus And WIKI Plan
+
+법규 corpus, verified legal API, approved WIKI, R2, Supabase DB 경계를 바꾸는 작업은 먼저 다음 통합 운영계획서를 읽는다.
+
+- [../docs/operating-plans/legal-corpus-and-wiki-integrated-operations.md](../docs/operating-plans/legal-corpus-and-wiki-integrated-operations.md)
+
+Browser Assistant는 R2, Supabase DB, LAW OPEN DATA credential, verified legal server secret에 직접 접근하지 않는다. 해당 경계는 workspace 통합 운영계획서가 우선한다.
+
+배포 환경의 법규 active index 원본은 R2 manifest와 active-index artifact이며, Browser Assistant는 active index나 R2 object를 직접 읽지 않는다. local data/cache는 개발 또는 런타임 임시 실행본일 뿐 source-of-truth가 아니다.
+
 ## 1. 제품 방향
 
 Architect Browser Assistant는 건축 업무 task 검토에 특화된 Chromex 참고 구조 기반 브라우저 어시스턴트다.
@@ -162,14 +172,15 @@ Supabase Postgres
      - approval history
 ```
 
-Supabase Storage는 다음 원본 파일을 보관한다.
+Supabase Storage는 제품/프로젝트 첨부 원본 파일을 보관한다.
 
 - 프로젝트 첨부파일
-- 법규 문서
 - 프로젝트 기준 문서
 - task 관련 분석 대상 파일
 
-파일에서 추출한 텍스트와 검색 메타데이터는 Postgres에 저장한다.
+파일에서 추출한 프로젝트 텍스트와 검색 메타데이터는 필요한 범위만 Postgres 또는 별도 검색 인덱스에 저장한다.
+
+법규 corpus와 active-index artifact의 배포 source-of-truth는 Browser Assistant나 SaaS DB가 아니라 workspace 통합 운영계획서의 R2 `current.json` 및 active-index artifact이다. Browser Assistant는 법규 원문, R2 object, Supabase DB, LAW OPEN DATA credential, verified legal secret에 직접 접근하지 않는다.
 
 중앙 공식 지식 영역은 향후 규모가 커질 경우 전용 검색 엔진이나 별도 지식 저장소로 분리할 수 있도록 테이블과 API 경계를 독립적으로 설계한다.
 
@@ -884,6 +895,10 @@ Verify/Time: 실행한 검증과 작업 시간 또는 완료 시각
 
 작성일: 2026-05-29
 
+Status: legacy section with corrected credential boundary.
+
+이 섹션의 "SaaS 서버가 LAW OPEN DATA OC를 보관/호출한다"는 옛 지시는 폐기한다. 현재 기준은 workspace 통합 운영계획서다. `LAW_OPEN_DATA_OC`는 `verified-legal-evidence-api`에만 둔다. `architect-saas`는 `VERIFIED_LEGAL_EVIDENCE_API_URL`과 `VERIFIED_LEGAL_EVIDENCE_API_SECRET`으로 verified legal API를 서버 간 호출한다.
+
 이 섹션은 "task 작성 -> 관련 법규 추천 -> 체크리스트 제시 -> 경고와 근거 표시 -> 사용자 수정 -> 승인형 운영지식 축적" MVP를 다음 작업자가 이어서 구현할 수 있도록 현재 구현 상태와 남은 설계를 정리한다.
 
 ### 32.1 사용자 의도와 목표 흐름
@@ -915,12 +930,12 @@ Verify/Time: 실행한 검증과 작업 시간 또는 완료 시각
 - `architect-saas` retrieval은 현재 task, 관련 project task, task 파일 분석, project 파일 분석, 이전 assistant record, user-approved external evidence, approved WIKI, regulation seed를 evidence로 묶는다.
 - approved WIKI만 `central_knowledge`로 재사용하는 경계가 있다.
 - Knowledge admin 전용 candidate review/approve API 경계가 있다.
-- `architect-browser-assistant`에는 국가법령정보센터 Open API 기반 법규명/조항 확인, API URL, 조회 시점, 판단 근거 기록, 실패 시 저장 차단 로직이 있다.
+- `architect-browser-assistant`는 국가법령정보센터 Open API를 직접 호출하지 않고, SaaS/verified-legal 경로가 반환한 `verificationStatus=verified` 법규 evidence metadata만 사용한다. verified metadata가 없는 regulation seed는 생성 전에 fail-closed 처리한다.
 - manual verifier는 verified assistant record/WIKI 후보 생성까지만 수행하고 WIKI approval은 시도하지 않는다.
 
 아직 목표와 차이가 있는 부분:
 
-- 공식 법규 검증은 browser/local bridge 중심이다. 배포 환경에서는 법규 API `OC`가 등록 도메인/IP와 결합되므로 SaaS 서버가 검증을 오케스트레이션해야 한다.
+- 공식 법규 검증은 browser/local bridge 중심이었던 옛 계획에서 `verified-legal-evidence-api` 중심으로 이동했다. 배포 환경에서는 `architect-saas`가 직접 `LAW_OPEN_DATA_OC`를 보관하지 않고, verified legal API를 서버 간 호출해 법규 근거를 받는다.
 - "각 사용자의 로그인된 GPT가 담당"이라는 요구는 실행 정책으로 더 구체화해야 한다. 서버가 사용자의 ChatGPT 로그인 세션을 직접 사용할 수 없으므로 local extension/native runtime, 사용자별 provider 연결, BYOK, 조직 SaaS API 모드 중 하나를 명시해야 한다.
 - 체크리스트, 경고, 법규 추천, 후보 생성 사유가 아직 구조화된 schema로 고정되어 있지 않다.
 - 관리자 등록 DB의 대량 import와 AURI 같은 기본 WIKI seed corpus 수집/검토 파이프라인은 아직 구현되지 않았다.
@@ -947,7 +962,8 @@ Verify/Time: 실행한 검증과 작업 시간 또는 완료 시각
    - 후속안: 조직 단위 SaaS API 모드를 관리자가 켠다.
 
 2. 국가법령정보센터 Open API `OC`는 어디에 보관할 것인가?
-   - 권장안: production SaaS 서버의 secret/credential registry에 저장하고 서버 도메인/IP를 등록한다.
+   - 현재 기준: `verified-legal-evidence-api` 서버 환경에만 저장한다.
+   - SaaS 기준: `architect-saas`에는 `VERIFIED_LEGAL_EVIDENCE_API_URL`과 `VERIFIED_LEGAL_EVIDENCE_API_SECRET`만 둔다.
    - 금지안: 일반 사용자 브라우저 storage나 client bundle에 노출한다.
 
 3. 관리자 등록 DB의 source of truth는 무엇인가?
@@ -979,10 +995,10 @@ POST /api/assistant/task-review
      - previous assistant records
      - user-approved external evidence
      - regulation seed
-  -> official law verification
-     - law locator extraction
-     - law.go.kr lawSearch/lawService 호출
-     - OC redaction
+  -> verified legal evidence request
+     - architect-saas server calls verified-legal-evidence-api
+     - verified-legal-evidence-api owns LAW OPEN DATA credential and law.go.kr calls
+     - SaaS receives redacted legal evidence/search results
      - law/article/effectiveDate/apiUrl/checkedAt/basisExcerpt 기록
   -> evidence bundle normalization
   -> user-bound LLM execution
@@ -995,7 +1011,7 @@ POST /api/assistant/task-review
 핵심 모듈 책임:
 
 - `TaskReviewOrchestrator`: 전체 flow와 failure policy를 조율한다.
-- `OfficialLawVerifier`: 국가법령정보센터 API 호출, 응답 normalization, 오류/재시도 사유 기록.
+- `VerifiedLegalEvidenceAdapter`: Architect SaaS server-side adapter that calls `verified-legal-evidence-api` with `VERIFIED_LEGAL_EVIDENCE_API_SECRET`.
 - `EvidenceBundleBuilder`: task/project/admin DB/approved WIKI/법규 evidence를 같은 schema로 묶고 우선순위와 confidence weight를 부여.
 - `UserBoundLlmExecutor`: local runtime, user provider, organization SaaS API mode 중 실제 활성화된 실행 경로만 호출.
 - `StructuredReviewValidator`: 답변이 공식 API 응답과 evidence id를 참조하는지 검증.
@@ -1012,9 +1028,10 @@ POST /api/assistant/task-review
 배포 환경:
 
 - 사용자는 SaaS upload/API를 통해 문서를 등록한다.
-- binary는 cloud object storage, metadata와 extracted text/chunk는 production DB/index에 저장한다.
+- 프로젝트/사용자 문서 binary는 cloud object storage, metadata와 extracted text/chunk는 production DB/index에 저장한다.
 - assistant는 서버 DB/index에서 데이터를 불러와 법규 API 결과와 함께 LLM에 전달한다.
 - 관리자 DB는 "폴더 경로"가 아니라 server-side import job의 source로 취급한다. 예: object storage prefix, admin upload batch, signed import manifest.
+- 법규 corpus snapshot, raw LAW OPEN DATA payload, active-index artifact는 `verified-legal-evidence-api`와 R2 운영계획의 소유이며 Browser Assistant가 직접 import하거나 읽지 않는다.
 
 AURI/기본 WIKI seed:
 
@@ -1025,11 +1042,12 @@ AURI/기본 WIKI seed:
 
 ### 32.7 구현 단계
 
-Phase 1: 서버 공식 법규 verifier 이식
+Phase 1: verified legal API 서버 간 연동
 
-- `architect-browser-assistant/src/legal/official-law-api.ts`의 검증 로직을 SaaS에서 재사용 가능하게 port 또는 shared package화한다.
-- SaaS 서버 secret에서 `LAW_OPEN_DATA_OC`를 읽고, API URL에는 OC를 redaction해서 저장한다.
-- 법규 API authentication/domain 오류는 `blocked`로 처리하고 assistant record/WIKI candidate 저장을 막는다.
+- `architect-saas`는 `VERIFIED_LEGAL_EVIDENCE_API_URL`과 `VERIFIED_LEGAL_EVIDENCE_API_SECRET`을 서버 환경에서 읽는다.
+- `architect-saas`는 `/api/legal/search` 또는 `/api/evidence/bundle`을 verified legal API에 서버 간 호출한다.
+- `verified-legal-evidence-api`만 `LAW_OPEN_DATA_OC`를 읽고, law.go.kr 응답을 redaction한 evidence/search 결과로 반환한다.
+- verified legal API authentication/domain 오류는 `blocked` 또는 verified legal unavailable 상태로 처리하고, 법규 근거가 필수인 record/WIKI candidate 저장을 막는다.
 
 Phase 2: task review structured output schema
 
@@ -1059,8 +1077,8 @@ Phase 5: WIKI candidate policy
 
 Phase 6: admin corpus ingestion
 
-- admin upload batch 또는 import manifest를 추가한다.
-- AURI PDF와 기본 실무 기준 자료를 raw source로 등록한다.
+- admin upload batch 또는 import manifest는 SaaS/verified-legal owner 경계 안에서만 추가한다.
+- AURI PDF와 기본 실무 기준 자료를 raw source로 등록하는 작업은 verified-legal corpus 운영계획과 Knowledge Admin 승인 경계를 따라야 한다.
 - extraction/chunking/indexing 후 후보 생성 preview를 제공한다.
 - production import 전 source review coverage와 Knowledge admin acknowledgement를 요구한다.
 
@@ -1071,9 +1089,9 @@ Phase 6: admin corpus ingestion
 1. 일반 사용자가 "공동주택 단지내 도로 경사도 검토" task를 생성한다.
 2. AI 검토를 요청한다.
 3. 서버가 task, 관련 task, approved WIKI, admin corpus, project document, regulation evidence를 조회한다.
-4. 서버가 국가법령정보센터 API에서 법규명, 조항, API URL, 조회 시점, 판단 근거를 확인한다.
-5. 유효한 OC가 없으면 assistant record와 WIKI candidate 저장 없이 blocked 응답을 반환한다.
-6. 유효한 OC가 있으면 structured answer/checklist/warnings/wikiCandidateDraft를 생성한다.
+4. SaaS 서버가 verified legal API를 서버 간 호출하고, verified legal API가 법규명, 조항, API URL, 조회 시점, 판단 근거를 확인한다.
+5. verified legal API secret이 없거나 verified legal API가 법규 근거를 검증하지 못하면 assistant record와 WIKI candidate 저장 없이 blocked 응답을 반환한다.
+6. verified legal evidence가 유효하면 structured answer/checklist/warnings/wikiCandidateDraft를 생성한다.
 7. assistant record와 WIKI candidate가 저장된다.
 8. 새 후보는 retrieval에서 `central_knowledge`로 나오지 않는다.
 9. Knowledge admin이 후보를 승인한다.
@@ -1081,7 +1099,7 @@ Phase 6: admin corpus ingestion
 
 필수 자동 검증:
 
-- 공식 법규 verifier 성공/실패/timeout/auth error/OC redaction 테스트.
+- verified legal server adapter 성공/실패/timeout/auth error/redaction 테스트.
 - task review API가 verification failed 상태에서 record/candidate write를 하지 않는 테스트.
 - task review API가 candidate 생성 후 approve API를 호출하지 않는 테스트.
 - non-admin 사용자가 candidate approve/reject/hold/delete를 호출할 수 없는 테스트.
@@ -1099,8 +1117,8 @@ PLAN.md section 32를 기준으로 "공식 법규 API + 관리자 등록 DB + �
 작업 순서:
 1. PLAN.md section 32, README.md의 Official Law Source Verification, plans/486-official-law-api-task-verification.md, docs/worklogs/2026-05-28-1735-official-law-api-task-verification.md, docs/worklogs/2026-05-29-0952-task-review-orchestration-planning.md를 먼저 읽으십시오.
 2. architect-saas의 retrieveAssistantEvidence, assistant records, knowledge candidate approve/reject route, knowledge-guards를 확인하십시오.
-3. 서버-side OfficialLawVerifier 설계를 시작하십시오. browser-side verifier를 그대로 client secret 경계에 두지 말고 SaaS server secret LAW_OPEN_DATA_OC를 사용하는 구조로 옮기십시오.
-4. POST /api/assistant/task-review의 최소 vertical slice를 설계하십시오. 유효한 OC가 없거나 공식 API 검증이 실패하면 assistant record와 WIKI candidate 저장을 중단해야 합니다.
+3. 서버-side VerifiedLegalEvidenceAdapter 설계를 시작하십시오. browser-side verifier를 client secret 경계에 두지 말고, SaaS가 `VERIFIED_LEGAL_EVIDENCE_API_URL`과 `VERIFIED_LEGAL_EVIDENCE_API_SECRET`으로 verified-legal-evidence-api를 호출하게 하십시오.
+4. POST /api/assistant/task-review의 최소 vertical slice를 설계하십시오. verified legal API secret이 없거나 공식 근거 검증이 실패하면 assistant record와 WIKI candidate 저장을 중단해야 합니다.
 5. structured review schema(answerMarkdown, lawCitations, checklistItems, warnings, evidenceConflicts, confidence, wikiCandidateDraft)를 추가하십시오.
 6. candidate creation은 허용하되 WIKI approve는 호출하지 마십시오. 승인/수정 후 승인/보류/삭제는 Knowledge admin만 할 수 있어야 합니다.
 7. admin corpus ingestion은 우선 설계와 테스트 fixture로 시작하십시오. AURI PDF는 raw source 후보로 취급하고 approved WIKI로 바로 넣지 마십시오.
@@ -1108,7 +1126,7 @@ PLAN.md section 32를 기준으로 "공식 법규 API + 관리자 등록 DB + �
 
 주의:
 - 사용자의 ChatGPT/Codex credential을 SaaS나 extension storage에 저장하지 마십시오.
-- law.go.kr OC 값을 client에 노출하지 마십시오.
+- law.go.kr OC 값을 client 또는 architect-saas에 노출하지 마십시오. 이 값은 verified-legal-evidence-api에만 둡니다.
 - mock 법규 답변으로 성공 처리하지 마십시오.
 - 법규 API 원문 근거 없이 법규 검토 record/WIKI candidate를 저장하지 마십시오.
 ```

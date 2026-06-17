@@ -771,17 +771,40 @@ describe("content script local runtime page bridge", () => {
     );
   });
 
-  it("does not direct-reverify foundation regulation seeds during generation", async () => {
-    const sendMessage = stubChromeRuntime({
-      ok: true,
-      data: {
-        answer: "foundation seed review answer",
-        draftSummary: {
-          conclusion: "review required",
-          tags: ["assistant"],
-          scope: "ARCH-102",
+  it("fails closed for foundation regulation seeds without verified legal metadata", async () => {
+    const sendMessage = stubChromeRuntime((message) => {
+      if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {
+        return {
+          ok: true,
+          data: {
+            report: {
+              status: "failed",
+              checkedAt: "2026-06-17T00:00:00.000Z",
+              provider: {
+                name: "국가법령정보센터",
+                docsUrl: "https://open.law.go.kr/LSO/openApi/guideList.do",
+              },
+              locators: [],
+              sources: [],
+              failures: ["Verified legal evidence metadata is missing."],
+              retry: ["Retrieve legal evidence through Architect SaaS/verified-legal-evidence-api first."],
+            },
+            evidence: [],
+          },
+        };
+      }
+
+      return {
+        ok: true,
+        data: {
+          answer: "foundation seed review answer",
+          draftSummary: {
+            conclusion: "review required",
+            tags: ["assistant"],
+            scope: "ARCH-102",
+          },
         },
-      },
+      };
     });
 
     await import("./content-script");
@@ -832,37 +855,20 @@ describe("content script local runtime page bridge", () => {
     await expect(response).resolves.toMatchObject({
       type: "architect:page-local-runtime-response",
       requestId: "request-foundation-regulation",
-      ok: true,
-      data: {
-        answer: "foundation seed review answer",
-      },
+      ok: false,
     });
 
-    expect(sendMessage).not.toHaveBeenCalledWith(
+    expect(sendMessage).toHaveBeenCalledWith(
       expect.objectContaining({ type: "architect:verify-official-law-evidence" }),
       expect.any(Function),
     );
-    expect(sendMessage).toHaveBeenCalledWith(
+    expect(sendMessage).not.toHaveBeenCalledWith(
       expect.objectContaining({ type: "architect:local-runtime-generate" }),
       expect.any(Function),
     );
   });
 
-  it("trusts centralized verified legal-search evidence without direct law.go.kr recheck", async () => {
-    const sendMessage = stubChromeRuntime({
-      ok: true,
-      data: {
-        answer: "centralized verified legal answer",
-        draftSummary: {
-          conclusion: "verified by centralized evidence",
-          tags: ["assistant"],
-          scope: "ARCH-102",
-        },
-      },
-    });
-
-    await import("./content-script");
-
+  it("uses centralized verified legal-search evidence after metadata preflight", async () => {
     const centralizedEvidence = {
       id: "verified-legal-search:law:004948:chunk-26",
       kind: "regulation",
@@ -872,7 +878,51 @@ describe("content script local runtime page bridge", () => {
       sourceUrl: "https://www.law.go.kr/DRF/lawService.do?target=law&type=JSON&ID=004948",
       recordId: "law:004948",
       confidenceWeight: 0.8,
+      officialSourceName: "국가법령정보센터",
+      lawName: "주택건설기준 등에 관한 규정",
+      articleLabel: "제26조",
+      articleNumber: "002600",
+      effectiveDate: "20260617",
+      checkedAt: "2026-06-17T00:00:00.000Z",
+      apiSourceUrl: "https://www.law.go.kr/DRF/lawService.do?target=law&type=JSON&ID=004948",
+      verificationStatus: "verified",
     };
+    const sendMessage = stubChromeRuntime((message) => {
+      if ((message as { type?: string }).type === "architect:verify-official-law-evidence") {
+        return {
+          ok: true,
+          data: {
+            report: {
+              status: "verified",
+              checkedAt: "2026-06-17T00:00:00.000Z",
+              provider: {
+                name: "국가법령정보센터",
+                docsUrl: "https://open.law.go.kr/LSO/openApi/guideList.do",
+              },
+              locators: [],
+              sources: [],
+              failures: [],
+              retry: [],
+            },
+            evidence: [centralizedEvidence],
+          },
+        };
+      }
+
+      return {
+        ok: true,
+        data: {
+          answer: "centralized verified legal answer",
+          draftSummary: {
+            conclusion: "verified by centralized evidence",
+            tags: ["assistant"],
+            scope: "ARCH-102",
+          },
+        },
+      };
+    });
+
+    await import("./content-script");
 
     const response = waitForBridgeResponse("request-centralized-legal");
     window.dispatchEvent(
@@ -919,7 +969,7 @@ describe("content script local runtime page bridge", () => {
       },
     });
 
-    expect(sendMessage).not.toHaveBeenCalledWith(
+    expect(sendMessage).toHaveBeenCalledWith(
       expect.objectContaining({ type: "architect:verify-official-law-evidence" }),
       expect.any(Function),
     );
