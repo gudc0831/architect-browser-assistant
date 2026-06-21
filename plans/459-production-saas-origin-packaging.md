@@ -18,20 +18,21 @@ Browser Assistant extension manifest가 localhost에 고정되지 않고 product
 | 항목 | 상태 | repo | 검증 |
 | --- | --- | --- | --- |
 | `ARCHITECT_SAAS_ORIGIN` build-time manifest 설정 | 구현 완료 | `architect-browser-assistant` | `npm run release:check` 통과 |
-| invalid/missing origin localhost fallback | 구현 완료 | `architect-browser-assistant` | `npm run release:check` 통과 |
+| invalid/missing origin canonical Preview fallback | 구현 완료 | `architect-browser-assistant` | `npm run build` 통과 |
 | README packaging 안내 | 구현 완료 | `architect-browser-assistant` | 문서 갱신 |
 
 ## Scope
 
 1. `src/manifest.ts`에서 `ARCHITECT_SAAS_ORIGIN`을 읽어 `host_permissions`와 `content_scripts.matches`를 생성한다.
 2. `http`/`https` origin만 허용한다.
-3. 값이 없거나 유효하지 않으면 기존 local 개발 origin을 유지한다.
+3. 값이 없거나 유효하지 않으면 stable Preview alias를 사용하고, local 개발은 `ARCHITECT_SAAS_ORIGIN=http://localhost:3000`을 명시한다.
 
 ## Verification Log
 
 | 날짜 | 범위 | 결과 |
 | --- | --- | --- |
 | 2026-05-14 | Browser Assistant release gate | `npm run release:check` 통과 |
+| 2026-06-18 | Preview default origin hardening | `npm run build` 통과; 기본 manifest origin이 stable Preview alias로 생성됨 |
 
 ## Residual Risks
 

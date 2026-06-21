@@ -452,7 +452,7 @@ Slice 455 adds the Browser Assistant release gate script and CI workflow for typ
 Slice 456 connects approved WIKI metadata to assistant retrieval as `central_knowledge` evidence.
 Slice 457 separates Knowledge admin authorization into an explicit SaaS guard while preserving the MVP global-admin mapping.
 Slice 458 extends assistant retrieval to project-wide file analysis evidence so uploaded 기준/법규-like project documents can be ranked beyond the current task attachment list.
-Slice 459 lets extension packages use a production SaaS origin through `ARCHITECT_SAAS_ORIGIN` while preserving localhost fallback for development.
+Slice 459 lets extension packages use a production SaaS origin through `ARCHITECT_SAAS_ORIGIN`; when unset, builds default to the stable Architect Preview alias, and localhost must be requested explicitly for development.
 Slice 460 adds a local regulation seed/import contract, dry-run validation, fixed evaluation questions, and first assistant retrieval connection for `regulation` evidence.
 Slice 461 adds Postgres FTS + lexical rerank for approved WIKI and project document retrieval, with the 460 regulation fixture reused as a hybrid quality baseline.
 Slice 462 adds OCR provider contract, user-reviewed OCR/selected-region evidence storage, optional Tesseract CLI gate, and `/daily` OCR/region controls.

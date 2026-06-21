@@ -1,6 +1,8 @@
 import type { ManifestV3Export } from "@crxjs/vite-plugin";
 
-const saasOrigin = `${normalizeSaasOrigin(process.env.ARCHITECT_SAAS_ORIGIN) || "http://localhost:3000"}/*`;
+const DEFAULT_SAAS_ORIGIN = "https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app";
+
+const saasOrigin = `${normalizeSaasOrigin(process.env.ARCHITECT_SAAS_ORIGIN) || DEFAULT_SAAS_ORIGIN}/*`;
 
 export const manifest: ManifestV3Export = {
   manifest_version: 3,
