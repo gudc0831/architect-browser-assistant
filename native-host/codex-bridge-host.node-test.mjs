@@ -44,6 +44,8 @@ describe("codex native host", () => {
     assert.match(prompt, /Evidence is incomplete\./);
     assert.match(prompt, /official source, API URL, and checkedAt timestamp/);
     assert.match(prompt, /AI review answer contract v1:/);
+    assert.match(prompt, /Write the JSON answer string in Korean Markdown/);
+    assert.doesNotMatch(prompt, /answerMarkdown/);
     assert.match(prompt, /## 결론/);
     assert.match(prompt, /## 근거/);
     assert.match(prompt, /## 리스크/);
@@ -187,6 +189,30 @@ describe("codex native host", () => {
     assert.equal(result.usage.totalTokens, 20);
     assert.equal(result.usage.entryCount, 1);
     assert.equal(JSON.stringify(result).includes("private prompt"), false);
+  });
+
+  it("preserves JSON agent messages that carry Markdown in the answer field", () => {
+    const answerJson = JSON.stringify({
+      answer: "## 결론\n검토 의견입니다.\n\n## 근거\n[evidence:evidence-1]\n\n## 리스크\n전문가 확인 필요\n\n## 후속 조치\n공식 근거를 확인합니다.",
+      confidence: "medium",
+    });
+    const result = parseCodexJsonlResult(
+      [
+        '{"type":"thread.started","thread_id":"t"}',
+        JSON.stringify({
+          type: "item.completed",
+          item: {
+            type: "agent_message",
+            text: answerJson,
+          },
+        }),
+      ].join("\n"),
+    );
+
+    assert.equal(result.finalText, answerJson);
+    const parsed = JSON.parse(result.finalText);
+    assert.match(parsed.answer, /## 결론/);
+    assert.equal("answerMarkdown" in parsed, false);
   });
 
   it("returns a mock generated response for protocol self tests", async () => {

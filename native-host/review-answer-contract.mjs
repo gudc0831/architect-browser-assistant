@@ -10,7 +10,7 @@ export const AI_REVIEW_ANSWER_REQUIRED_HEADINGS = [
 export function buildAiReviewAnswerContractPrompt() {
   return [
     `AI review answer contract v${AI_REVIEW_ANSWER_CONTRACT_VERSION}:`,
-    "Write answerMarkdown in Korean Markdown using these headings exactly:",
+    "Write the JSON answer string in Korean Markdown using these headings exactly:",
     ...AI_REVIEW_ANSWER_REQUIRED_HEADINGS.map((heading) => `- ${heading}`),
     "Under ## 근거, cite every material claim with an evidence marker like [evidence:<evidence id>].",
     "For legal or regulation claims, include law name, article label, official source/API URL when available, checkedAt, and the matching evidence marker.",
