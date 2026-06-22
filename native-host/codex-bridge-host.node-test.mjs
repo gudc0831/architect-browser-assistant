@@ -43,6 +43,12 @@ describe("codex native host", () => {
     assert.match(prompt, /Permit evidence review/);
     assert.match(prompt, /Evidence is incomplete\./);
     assert.match(prompt, /official source, API URL, and checkedAt timestamp/);
+    assert.match(prompt, /AI review answer contract v1:/);
+    assert.match(prompt, /## 결론/);
+    assert.match(prompt, /## 근거/);
+    assert.match(prompt, /## 리스크/);
+    assert.match(prompt, /## 후속 조치/);
+    assert.match(prompt, /\[evidence:<evidence id>\]/);
     assert.match(prompt, /Return only valid JSON/);
   });
 
