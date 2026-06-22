@@ -46,6 +46,16 @@ describe("codex native host", () => {
     assert.match(prompt, /Return only valid JSON/);
   });
 
+  it("includes the user instruction in the Codex prompt", () => {
+    const prompt = buildCodexPrompt({
+      ...input,
+      instruction: "결론, 근거, 리스크, 후속 조치 순서로 짧게 작성하세요.",
+    });
+
+    assert.match(prompt, /User instruction:/);
+    assert.match(prompt, /결론, 근거, 리스크, 후속 조치 순서로 짧게 작성하세요\./);
+  });
+
   it("includes project upload context as untrusted project facts", () => {
     const prompt = buildCodexPrompt({
       ...input,

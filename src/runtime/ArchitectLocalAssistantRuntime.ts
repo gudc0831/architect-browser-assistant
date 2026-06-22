@@ -75,6 +75,7 @@ export type EvidenceReadinessWarningForRuntime = {
 
 export type AssistantRuntimeInput = {
   question: string;
+  instruction?: string;
   taskContext: AssistantTaskContext;
   evidence: AssistantEvidence[];
   legalEvidence?: AssistantEvidence[];

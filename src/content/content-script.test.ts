@@ -355,6 +355,7 @@ describe("content script local runtime page bridge", () => {
           },
           input: {
             question: "건축 기준 검토",
+            instruction: "결론, 근거, 리스크, 후속 조치 순서로 짧게 작성하세요.",
             taskContext: {
               taskId: "task-2",
               projectId: "project-1",
@@ -395,6 +396,9 @@ describe("content script local runtime page bridge", () => {
     expect(generateCall?.[0]).toEqual(
       expect.objectContaining({
         type: "architect:local-runtime-generate",
+        input: expect.objectContaining({
+          instruction: "결론, 근거, 리스크, 후속 조치 순서로 짧게 작성하세요.",
+        }),
         codexOptions: {
           reasoningEffort: "high",
           serviceTier: "priority",

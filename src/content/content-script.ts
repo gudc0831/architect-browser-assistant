@@ -282,6 +282,7 @@ function normalizeGenerateInput(value: unknown): AssistantRuntimeInput | null {
 
   const input = value as Partial<AssistantRuntimeInput>;
   const question = normalizeRequiredText(input.question, 4000);
+  const instruction = normalizeOptionalText(input.instruction, 2000);
   const taskContext = normalizeTaskContext(input.taskContext);
   if (!question || !taskContext || !Array.isArray(input.evidence)) {
     return null;
@@ -298,6 +299,7 @@ function normalizeGenerateInput(value: unknown): AssistantRuntimeInput | null {
 
   return {
     question,
+    ...(instruction ? { instruction } : {}),
     taskContext,
     evidence,
     legalEvidence: normalizeEvidenceArray(input.legalEvidence),
