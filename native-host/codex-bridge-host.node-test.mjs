@@ -69,6 +69,17 @@ describe("codex native host", () => {
     assert.equal(instruction, "a".repeat(2000));
   });
 
+  it("uses the default Korean instruction when the supplied instruction is blank", () => {
+    const prompt = buildCodexPrompt({
+      ...input,
+      instruction: " \n\t ",
+    });
+    const lines = prompt.split("\n");
+    const instruction = lines[lines.indexOf("User instruction:") + 1];
+
+    assert.equal(instruction, "건축 실무 PM 관점에서 근거, 리스크, 후속 조치를 분리해 답변하세요.");
+  });
+
   it("includes project upload context as untrusted project facts", () => {
     const prompt = buildCodexPrompt({
       ...input,

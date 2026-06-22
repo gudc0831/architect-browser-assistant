@@ -28,6 +28,7 @@ const LEGACY_MODEL_ALIASES = new Map([
   ["codex-default", "gpt-5.5"],
   ["gpt-5-codex", "gpt-5.5"],
 ]);
+const DEFAULT_CODEX_INSTRUCTION = "건축 실무 PM 관점에서 근거, 리스크, 후속 조치를 분리해 답변하세요.";
 const isLittleEndian = new Uint8Array(new Uint32Array([1]).buffer)[0] === 1;
 
 async function main() {
@@ -826,10 +827,8 @@ function quotePowerShellArg(value) {
 
 export function buildCodexPrompt(input) {
   const task = input.taskContext;
-  const instruction = trimInstructionText(
-    input.instruction || "건축 실무 PM 관점에서 근거, 리스크, 후속 조치를 분리해 답변하세요.",
-    2000,
-  );
+  const suppliedInstruction = trimInstructionText(input.instruction, 2000);
+  const instruction = suppliedInstruction || DEFAULT_CODEX_INSTRUCTION;
   const evidence = Array.isArray(input.evidence) ? input.evidence : [];
   const legalEvidence = Array.isArray(input.legalEvidence) ? input.legalEvidence : [];
   const projectContextChunks = Array.isArray(input.projectContextChunks) ? input.projectContextChunks : [];
