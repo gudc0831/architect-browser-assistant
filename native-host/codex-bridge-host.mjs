@@ -826,7 +826,7 @@ function quotePowerShellArg(value) {
 
 export function buildCodexPrompt(input) {
   const task = input.taskContext;
-  const instruction = trimText(
+  const instruction = trimInstructionText(
     input.instruction || "건축 실무 PM 관점에서 근거, 리스크, 후속 조치를 분리해 답변하세요.",
     2000,
   );
@@ -1128,6 +1128,13 @@ function buildMockOutput(input) {
 function trimText(value, maxLength) {
   const text = String(value ?? "").replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, " ").trim();
   return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+}
+
+function trimInstructionText(value, maxLength) {
+  return String(value ?? "")
+    .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, " ")
+    .trim()
+    .slice(0, maxLength);
 }
 
 function errorResponse(code, message, requestId) {

@@ -56,6 +56,19 @@ describe("codex native host", () => {
     assert.match(prompt, /결론, 근거, 리스크, 후속 조치 순서로 짧게 작성하세요\./);
   });
 
+  it("caps the rendered user instruction text at 2000 characters", () => {
+    const longInstruction = "a".repeat(2100);
+    const prompt = buildCodexPrompt({
+      ...input,
+      instruction: longInstruction,
+    });
+    const lines = prompt.split("\n");
+    const instruction = lines[lines.indexOf("User instruction:") + 1];
+
+    assert.equal(instruction.length, 2000);
+    assert.equal(instruction, "a".repeat(2000));
+  });
+
   it("includes project upload context as untrusted project facts", () => {
     const prompt = buildCodexPrompt({
       ...input,
