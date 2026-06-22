@@ -13,6 +13,7 @@ import type {
   OfficialLawVerificationExtensionMessage,
 } from "../runtime/legal-verification-contract";
 import {
+  BRIDGE_SCHEMA_VERSION,
   normalizeCodexOptions,
   normalizeUsageRangeDays,
   type LocalRuntimeExtensionMessage,
@@ -32,10 +33,20 @@ type PageLocalRuntimeResponse = {
   requestId: string;
 } & LocalRuntimeExtensionResponse<unknown | BrowserCapturePayload>;
 
+type PageLocalRuntimeReadyEvent = {
+  type: "architect:page-local-runtime-ready";
+  bridgeSchemaVersion: number;
+  extensionId: string;
+  origin: string;
+  injectedAt: string;
+};
+
 type ExtensionBackgroundMessage =
   | LocalRuntimeExtensionMessage
   | BrowserCaptureExtensionMessage
   | OfficialLawVerificationExtensionMessage;
+
+const PAGE_LOCAL_RUNTIME_READY = "architect:page-local-runtime-ready";
 
 const assistantEvidenceKinds = new Set<AssistantEvidenceKind>([
   "central_knowledge",
@@ -62,6 +73,8 @@ window.addEventListener("message", (event) => {
 
   void handlePageLocalRuntimeRequest(event.data);
 });
+
+postPageLocalRuntimeReady();
 
 async function handlePageLocalRuntimeRequest(request: PageLocalRuntimeRequest) {
   const requestId = String(request.requestId);
@@ -758,4 +771,15 @@ function sendBackgroundMessage(
 
 function postPageLocalRuntimeResponse(response: PageLocalRuntimeResponse) {
   window.postMessage(response, window.location.origin);
+}
+
+function postPageLocalRuntimeReady() {
+  const readyEvent: PageLocalRuntimeReadyEvent = {
+    type: PAGE_LOCAL_RUNTIME_READY,
+    bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
+    extensionId: chrome.runtime.id,
+    origin: window.location.origin,
+    injectedAt: new Date().toISOString(),
+  };
+  window.postMessage(readyEvent, window.location.origin);
 }

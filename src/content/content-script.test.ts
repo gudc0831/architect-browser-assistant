@@ -1,11 +1,32 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { LocalRuntimeExtensionResponse } from "../runtime/native-bridge-contract";
+import { BRIDGE_SCHEMA_VERSION, type LocalRuntimeExtensionResponse } from "../runtime/native-bridge-contract";
 
 describe("content script local runtime page bridge", () => {
   afterEach(() => {
     document.body.innerHTML = "";
     vi.resetModules();
     vi.unstubAllGlobals();
+  });
+
+  it("announces when the content script is attached to the page", async () => {
+    stubChromeRuntime({
+      ok: true,
+      data: {
+        available: true,
+        mode: "local-chatgpt-codex",
+      },
+    });
+
+    const readyEvent = waitForReadyEvent();
+    await import("./content-script");
+
+    await expect(readyEvent).resolves.toMatchObject({
+      type: "architect:page-local-runtime-ready",
+      bridgeSchemaVersion: BRIDGE_SCHEMA_VERSION,
+      extensionId: "test-extension-id",
+      origin: window.location.origin,
+      injectedAt: expect.any(String),
+    });
   });
 
   it("forwards same-origin page status and region-capture requests to the extension runtime", async () => {
@@ -1003,6 +1024,22 @@ function waitForBridgeResponse(requestId: string) {
   });
 }
 
+function waitForReadyEvent() {
+  return new Promise((resolve) => {
+    function handleMessage(event: MessageEvent) {
+      const data = event.data as { type?: string };
+      if (data?.type !== "architect:page-local-runtime-ready") {
+        return;
+      }
+
+      window.removeEventListener("message", handleMessage);
+      resolve(event.data);
+    }
+
+    window.addEventListener("message", handleMessage);
+  });
+}
+
 function stubChromeRuntime(
   response: LocalRuntimeExtensionResponse<unknown> | ((message: unknown) => LocalRuntimeExtensionResponse<unknown>),
 ) {
@@ -1011,6 +1048,7 @@ function stubChromeRuntime(
   });
   vi.stubGlobal("chrome", {
     runtime: {
+      id: "test-extension-id",
       lastError: undefined,
       onMessage: {
         addListener: vi.fn(),

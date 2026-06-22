@@ -10,6 +10,7 @@ import {
   buildSpawnInvocation,
   handleRequest,
   parseCodexJsonlOutput,
+  parseCodexJsonlResult,
   readNativeMessage,
 } from "./codex-bridge-host.mjs";
 
@@ -129,6 +130,23 @@ describe("codex native host", () => {
     );
 
     assert.equal(output, "final");
+  });
+
+  it("extracts per-run usage metadata from Codex JSONL without exposing raw text", () => {
+    const result = parseCodexJsonlResult(
+      [
+        '{"type":"thread.started","thread_id":"t","prompt":"private prompt"}',
+        '{"type":"item.completed","item":{"type":"agent_message","text":"final answer"}}',
+        '{"type":"turn.completed","usage":{"input_tokens":12,"output_tokens":8,"total_tokens":20}}',
+      ].join("\n"),
+    );
+
+    assert.equal(result.finalText, "final answer");
+    assert.equal(result.usage.inputTokens, 12);
+    assert.equal(result.usage.outputTokens, 8);
+    assert.equal(result.usage.totalTokens, 20);
+    assert.equal(result.usage.entryCount, 1);
+    assert.equal(JSON.stringify(result).includes("private prompt"), false);
   });
 
   it("returns a mock generated response for protocol self tests", async () => {

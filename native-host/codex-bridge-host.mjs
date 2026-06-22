@@ -286,8 +286,16 @@ async function runCodexExec(input, codexOptions) {
   const prompt = buildCodexPrompt(input);
   const args = buildCodexExecArgs(codexOptions);
   const result = await spawnAndCollect(getCodexCommand(), args, prompt, getCodexTimeoutMs());
-  const finalText = parseCodexJsonlOutput(result.stdout);
-  return parseAssistantOutput(finalText, input);
+  const parsed = parseCodexJsonlResult(result.stdout);
+  return {
+    ...parseAssistantOutput(parsed.finalText, input),
+    localCodexUsage: {
+      inputTokens: parsed.usage.inputTokens,
+      outputTokens: parsed.usage.outputTokens,
+      totalTokens: parsed.usage.totalTokens,
+      usageAvailable: parsed.usage.totalTokens > 0,
+    },
+  };
 }
 
 export function buildCodexExecArgs(codexOptions) {
@@ -995,8 +1003,15 @@ function buildEvidenceVerificationBlock(item) {
 }
 
 export function parseCodexJsonlOutput(stdoutText) {
+  return parseCodexJsonlResult(stdoutText).finalText;
+}
+
+export function parseCodexJsonlResult(stdoutText) {
   let lastAgentMessage = "";
-  for (const line of stdoutText.split(/\r?\n/)) {
+  let fallbackText = "";
+  const usageCandidates = [];
+
+  for (const line of String(stdoutText || "").split(/\r?\n/)) {
     const trimmed = line.trim();
     if (!trimmed) {
       continue;
@@ -1007,17 +1022,24 @@ export function parseCodexJsonlOutput(stdoutText) {
       if (event.type === "item.completed" && event.item?.type === "agent_message" && typeof event.item.text === "string") {
         lastAgentMessage = event.item.text;
       }
+      collectUsageCandidates(event, usageCandidates);
       if (event.type === "turn.failed" && event.error?.message) {
-        throw new Error(String(event.error.message));
+        fallbackText ||= String(event.error.message);
       }
     } catch {
-      if (!lastAgentMessage) {
-        lastAgentMessage = trimmed;
+      if (!fallbackText) {
+        fallbackText = trimmed;
       }
     }
   }
 
-  return lastAgentMessage || stdoutText.trim();
+  return {
+    finalText: lastAgentMessage || fallbackText || String(stdoutText || "").trim(),
+    usage: usageCandidates.reduce(
+      (best, candidate) => (candidate.totalTokens > best.totalTokens ? candidate : best),
+      emptyUsageTotal(),
+    ),
+  };
 }
 
 function parseAssistantOutput(finalText, input) {
