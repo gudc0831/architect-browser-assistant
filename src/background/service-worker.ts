@@ -17,6 +17,22 @@ import type {
   OfficialLawVerificationExtensionData,
   OfficialLawVerificationExtensionMessage,
 } from "../runtime/legal-verification-contract";
+import {
+  SIDE_PANEL_CONTEXT_BROADCAST_MESSAGE,
+  UPDATE_SIDE_PANEL_CONTEXT_MESSAGE,
+  normalizeSidePanelContextSnapshot,
+  normalizeSidePanelLaunchContext,
+  sidePanelContextSnapshotToLaunchContext,
+  sidePanelLaunchContextToSnapshot,
+  type SidePanelContextSnapshot,
+  type SidePanelContextUpdateExtensionMessage,
+  type SidePanelLaunchContext,
+  type SidePanelOpenExtensionMessage,
+  type SidePanelOpenResponse,
+} from "../runtime/side-panel-contract";
+
+let latestSidePanelLaunchContext: SidePanelLaunchContext | null = null;
+const sidePanelContextByTabId = new Map<number, SidePanelContextSnapshot>();
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch((error) => {
@@ -24,7 +40,50 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+if (chrome.tabs?.onRemoved) {
+  chrome.tabs.onRemoved.addListener((tabId) => {
+    sidePanelContextByTabId.delete(tabId);
+  });
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (isSidePanelOpenMessage(message)) {
+    handleSidePanelOpenMessage(message, sender)
+      .then(sendResponse)
+      .catch((error) => {
+        sendResponse({ ok: false, error: error instanceof Error ? error.message : "Side panel launch failed" });
+      });
+    return true;
+  }
+
+  if (isSidePanelContextUpdateMessage(message)) {
+    handleSidePanelContextUpdateMessage(message, sender)
+      .then(sendResponse)
+      .catch((error) => {
+        sendResponse({ ok: false, error: error instanceof Error ? error.message : "Side panel context update failed" });
+      });
+    return true;
+  }
+
+  if (message?.type === "architect:get-side-panel-launch-context") {
+    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+      if (typeof tab?.id === "number") {
+        const activeContext = sidePanelContextByTabId.get(tab.id);
+        sendResponse({
+          ok: true,
+          data: activeContext ? sidePanelContextSnapshotToLaunchContext(activeContext) : null,
+        });
+        return;
+      }
+
+      sendResponse({
+        ok: true,
+        data: latestSidePanelLaunchContext,
+      });
+    });
+    return true;
+  }
+
   if (isLocalRuntimeMessage(message)) {
     handleLocalRuntimeMessage(message)
       .then(sendResponse)
@@ -78,6 +137,22 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     return false;
   }
 
+  const requestedSourceTabId =
+    typeof (message as { sourceTabId?: unknown }).sourceTabId === "number"
+      ? (message as { sourceTabId: number }).sourceTabId
+      : undefined;
+  if (typeof requestedSourceTabId === "number") {
+    chrome.tabs.sendMessage(requestedSourceTabId, { type: "architect:detect-task-context" }, (response) => {
+      const lastError = chrome.runtime.lastError;
+      sendResponse(
+        lastError
+          ? { ok: false, error: lastError.message ?? "Task context unavailable" }
+          : response ?? { ok: false, error: "No task context response" },
+      );
+    });
+    return true;
+  }
+
   chrome.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
     if (!tab?.id) {
       sendResponse({ ok: false, error: "No active tab" });
@@ -94,6 +169,97 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   return true;
 });
+
+async function handleSidePanelOpenMessage(
+  message: SidePanelOpenExtensionMessage,
+  sender: chrome.runtime.MessageSender,
+): Promise<{ ok: true; data: SidePanelOpenResponse }> {
+  const input = normalizeSidePanelLaunchContext(message.input);
+  if (!input) {
+    throw new Error("Invalid side panel launch payload.");
+  }
+
+  const openedAt = new Date().toISOString();
+  const sourceTabId = typeof sender.tab?.id === "number" ? sender.tab.id : undefined;
+  latestSidePanelLaunchContext = {
+    ...input,
+    openedAt,
+    ...(typeof sourceTabId === "number" ? { sourceTabId } : {}),
+  };
+  const launchSnapshot = sidePanelLaunchContextToSnapshot(latestSidePanelLaunchContext, {
+    pageUrl: input.url || sender.tab?.url,
+    reason: "launch",
+    selectedAt: openedAt,
+    ...(typeof sourceTabId === "number" ? { sourceTabId } : {}),
+  });
+  if (launchSnapshot && typeof sourceTabId === "number") {
+    sidePanelContextByTabId.set(sourceTabId, launchSnapshot);
+  }
+
+  if (typeof sender.tab?.id === "number") {
+    await chrome.sidePanel.open({ tabId: sender.tab.id });
+  } else if (typeof sender.tab?.windowId === "number") {
+    await chrome.sidePanel.open({ windowId: sender.tab.windowId });
+  } else {
+    const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (typeof activeTab?.id === "number") {
+      await chrome.sidePanel.open({ tabId: activeTab.id });
+    } else if (typeof activeTab?.windowId === "number") {
+      await chrome.sidePanel.open({ windowId: activeTab.windowId });
+    } else {
+      throw new Error("No active tab is available for side panel launch.");
+    }
+  }
+
+  return {
+    ok: true,
+    data: {
+      opened: true,
+      taskId: input.taskId,
+      openedAt,
+    },
+  };
+}
+
+async function handleSidePanelContextUpdateMessage(
+  message: SidePanelContextUpdateExtensionMessage,
+  sender: chrome.runtime.MessageSender,
+): Promise<{ ok: true; data: { taskId: string } }> {
+  if (typeof sender.tab?.id !== "number") {
+    throw new Error("Side panel context update requires a source tab.");
+  }
+
+  const sourceTabId = sender.tab.id;
+  const input = isRecord(message.input) ? { ...message.input, sourceTabId } : message.input;
+  const snapshot = normalizeSidePanelContextSnapshot(input);
+  if (!snapshot) {
+    throw new Error("Invalid side panel context update payload.");
+  }
+
+  sidePanelContextByTabId.set(sourceTabId, snapshot);
+  broadcastSidePanelContext(snapshot);
+
+  return {
+    ok: true,
+    data: {
+      taskId: snapshot.task.taskId,
+    },
+  };
+}
+
+function broadcastSidePanelContext(context: SidePanelContextSnapshot) {
+  try {
+    const result = chrome.runtime.sendMessage({
+      type: SIDE_PANEL_CONTEXT_BROADCAST_MESSAGE,
+      context,
+    }) as unknown;
+    if (result && typeof (result as { catch?: unknown }).catch === "function") {
+      void (result as Promise<unknown>).catch(() => undefined);
+    }
+  } catch {
+    // A missing side-panel listener should not make context storage fail.
+  }
+}
 
 function isHttpUrl(value: string) {
   try {
@@ -133,6 +299,20 @@ function isOfficialLawVerificationMessage(message: unknown): message is Official
   }
 
   return (message as { type?: unknown }).type === "architect:verify-official-law-evidence";
+}
+
+function isSidePanelOpenMessage(message: unknown): message is SidePanelOpenExtensionMessage {
+  return Boolean(message && typeof message === "object" && (message as { type?: unknown }).type === "architect:open-side-panel");
+}
+
+function isSidePanelContextUpdateMessage(message: unknown): message is SidePanelContextUpdateExtensionMessage {
+  return Boolean(
+    message && typeof message === "object" && (message as { type?: unknown }).type === UPDATE_SIDE_PANEL_CONTEXT_MESSAGE,
+  );
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value && typeof value === "object" && !Array.isArray(value));
 }
 
 async function handleBrowserCaptureMessage(message: BrowserCaptureExtensionMessage) {

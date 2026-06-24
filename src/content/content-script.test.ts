@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { BRIDGE_SCHEMA_VERSION, type LocalRuntimeExtensionResponse } from "../runtime/native-bridge-contract";
+import {
+  SIDE_PANEL_CONTEXT_UPDATED_EVENT,
+  UPDATE_SIDE_PANEL_CONTEXT_MESSAGE,
+} from "../runtime/side-panel-contract";
 
 describe("content script local runtime page bridge", () => {
   afterEach(() => {
@@ -171,6 +175,261 @@ describe("content script local runtime page bridge", () => {
       error: "Invalid local runtime generate payload.",
     });
     expect(sendMessage).not.toHaveBeenCalled();
+  });
+
+  it("forwards same-origin page side panel launch requests to the extension runtime", async () => {
+    const sendMessage = stubChromeRuntime((message) => {
+      if ((message as { type?: string }).type === "architect:open-side-panel") {
+        return {
+          ok: true,
+          data: {
+            opened: true,
+            taskId: (message as { input: { taskId: string } }).input.taskId,
+            openedAt: "2026-06-23T10:00:00.000Z",
+          },
+        };
+      }
+
+      return { ok: false, error: "Unexpected message" };
+    });
+
+    await import("./content-script");
+
+    const response = waitForSidePanelResponse("side-panel-request-1");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-side-panel-request",
+          requestId: "side-panel-request-1",
+          input: {
+            taskId: "task-1",
+            projectId: "project-1",
+            title: "피난 계단 검토",
+            question: "피난 계단 검토 질문",
+            url: window.location.href,
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-side-panel-response",
+      requestId: "side-panel-request-1",
+      ok: true,
+      data: {
+        opened: true,
+        taskId: "task-1",
+      },
+    });
+    expect(sendMessage).toHaveBeenCalledWith(
+      {
+        type: "architect:open-side-panel",
+        input: {
+          taskId: "task-1",
+          projectId: "project-1",
+          title: "피난 계단 검토",
+          question: "피난 계단 검토 질문",
+          url: window.location.href,
+        },
+      },
+      expect.any(Function),
+    );
+  });
+
+  it("forwards valid page side panel context update events to the extension runtime", async () => {
+    const sendMessage = stubChromeRuntime({
+      ok: true,
+      data: {
+        taskId: "task-1",
+      },
+    });
+
+    await import("./content-script");
+
+    window.dispatchEvent(
+      new CustomEvent(SIDE_PANEL_CONTEXT_UPDATED_EVENT, {
+        detail: {
+          task: {
+            taskId: " task-1 ",
+            projectId: "project-1",
+            title: "Daily task",
+          },
+          review: {
+            question: "What should be checked?",
+            assistantMode: "basic",
+          },
+          page: {
+            url: window.location.href,
+            route: "/daily",
+          },
+          reason: "question-change",
+          selectedAt: "2026-06-23T01:02:03.000Z",
+          source: "architect-saas-daily",
+        },
+      }),
+    );
+
+    await Promise.resolve();
+
+    expect(sendMessage).toHaveBeenCalledWith(
+      {
+        type: UPDATE_SIDE_PANEL_CONTEXT_MESSAGE,
+        input: {
+          task: {
+            taskId: "task-1",
+            projectId: "project-1",
+            title: "Daily task",
+          },
+          review: {
+            question: "What should be checked?",
+            assistantMode: "basic",
+          },
+          page: {
+            url: window.location.href,
+            route: "/daily",
+          },
+          reason: "question-change",
+          selectedAt: "2026-06-23T01:02:03.000Z",
+          source: "architect-saas-daily",
+        },
+      },
+      expect.any(Function),
+    );
+  });
+
+  it("ignores invalid page side panel context update events", async () => {
+    const sendMessage = stubChromeRuntime({
+      ok: true,
+      data: {
+        taskId: "task-1",
+      },
+    });
+
+    await import("./content-script");
+
+    window.dispatchEvent(
+      new CustomEvent(SIDE_PANEL_CONTEXT_UPDATED_EVENT, {
+        detail: {
+          task: {
+            taskId: "",
+          },
+          page: {
+            url: window.location.href,
+          },
+          reason: "selection-change",
+          source: "architect-saas-daily",
+        },
+      }),
+    );
+
+    await Promise.resolve();
+
+    expect(sendMessage).not.toHaveBeenCalled();
+  });
+
+  it("returns a refreshable side panel error when the extension context was invalidated", async () => {
+    const sendMessage = vi.fn(() => {
+      throw new Error("Extension context invalidated.");
+    });
+    vi.stubGlobal("chrome", {
+      runtime: {
+        id: "test-extension-id",
+        lastError: undefined,
+        onMessage: {
+          addListener: vi.fn(),
+        },
+        sendMessage,
+      },
+    });
+
+    await import("./content-script");
+
+    const response = waitForSidePanelResponse("side-panel-invalidated-1");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        data: {
+          type: "architect:page-side-panel-request",
+          requestId: "side-panel-invalidated-1",
+          input: {
+            taskId: "task-1",
+            projectId: "project-1",
+            title: "피난 계단 검토",
+            question: "피난 계단 검토 질문",
+            url: window.location.href,
+          },
+        },
+        origin: window.location.origin,
+        source: window,
+      }),
+    );
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-side-panel-response",
+      requestId: "side-panel-invalidated-1",
+      ok: false,
+      errorCode: "extension_context_invalidated",
+      error: "Chrome 확장이 새로 로드되었습니다. /daily 탭을 새로고침한 뒤 오른쪽 패널을 다시 여세요.",
+    });
+    expect(sendMessage).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "architect:open-side-panel" }),
+      expect.any(Function),
+    );
+  });
+
+  it("forwards marked side panel button clicks with the rendered task context", async () => {
+    const sendMessage = stubChromeRuntime((message) => {
+      if ((message as { type?: string }).type === "architect:open-side-panel") {
+        return {
+          ok: true,
+          data: {
+            opened: true,
+            taskId: (message as { input: { taskId: string } }).input.taskId,
+            openedAt: "2026-06-23T10:01:00.000Z",
+          },
+        };
+      }
+
+      return { ok: false, error: "Unexpected message" };
+    });
+
+    await import("./content-script");
+
+    const button = document.createElement("button");
+    button.dataset.architectSidePanelLaunch = "true";
+    button.dataset.architectSidePanelRequestId = "side-panel-click-1";
+    button.dataset.architectSidePanelTaskId = "task-2";
+    button.dataset.architectSidePanelProjectId = "project-1";
+    button.dataset.architectSidePanelTitle = "방화 기준 검토";
+    button.dataset.architectSidePanelQuestion = "방화 기준 검토 질문";
+    document.body.append(button);
+
+    const response = waitForSidePanelResponse("side-panel-click-1");
+    button.click();
+
+    await expect(response).resolves.toMatchObject({
+      type: "architect:page-side-panel-response",
+      requestId: "side-panel-click-1",
+      ok: true,
+      data: {
+        opened: true,
+        taskId: "task-2",
+      },
+    });
+    expect(sendMessage).toHaveBeenCalledWith(
+      {
+        type: "architect:open-side-panel",
+        input: {
+          taskId: "task-2",
+          projectId: "project-1",
+          title: "방화 기준 검토",
+          question: "방화 기준 검토 질문",
+          url: window.location.href,
+        },
+      },
+      expect.any(Function),
+    );
   });
 
   it("allows usage-summary and strips unsafe Codex option fields before background forwarding", async () => {
@@ -1017,6 +1276,22 @@ function waitForBridgeResponse(requestId: string) {
     function handleMessage(event: MessageEvent) {
       const data = event.data as { type?: string; requestId?: string };
       if (data?.type !== "architect:page-local-runtime-response" || data.requestId !== requestId) {
+        return;
+      }
+
+      window.removeEventListener("message", handleMessage);
+      resolve(event.data);
+    }
+
+    window.addEventListener("message", handleMessage);
+  });
+}
+
+function waitForSidePanelResponse(requestId: string) {
+  return new Promise((resolve) => {
+    function handleMessage(event: MessageEvent) {
+      const data = event.data as { type?: string; requestId?: string };
+      if (data?.type !== "architect:page-side-panel-response" || data.requestId !== requestId) {
         return;
       }
 

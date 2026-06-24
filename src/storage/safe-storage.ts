@@ -1,4 +1,4 @@
-type SafeSettingKey = "saasBaseUrl" | "lastTaskId" | "runtimeMode" | "panelDensity";
+type SafeSettingKey = "saasBaseUrl" | "lastTaskId" | "runtimeMode" | "panelDensity" | "assistantPanelMode";
 
 type SafeSettingValue = string;
 

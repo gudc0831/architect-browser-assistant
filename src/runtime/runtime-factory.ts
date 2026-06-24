@@ -4,6 +4,6 @@ import { LocalRuntimeClient } from "./local-runtime-client";
 import { MockAssistantRuntime } from "./mock-runtime";
 
 export async function createAssistantRuntime(): Promise<ArchitectLocalAssistantRuntime> {
-  const mode = await readSafeSetting<"mock" | "local-chatgpt-codex">("runtimeMode", "mock");
+  const mode = await readSafeSetting<"mock" | "local-chatgpt-codex">("runtimeMode", "local-chatgpt-codex");
   return mode === "local-chatgpt-codex" ? new LocalRuntimeClient() : new MockAssistantRuntime();
 }

@@ -136,7 +136,7 @@ async function verifyDistManifest() {
     "Host/content-script origin alignment",
     sameSet(hostPermissions, contentScriptMatches) && unexpectedHostPermissions.length === 0 ? "pass" : "fail",
     sameSet(hostPermissions, contentScriptMatches) && unexpectedHostPermissions.length === 0
-      ? "Host permissions and content scripts use the same SaaS origin pattern; official legal evidence is provided by SaaS/verified-legal server calls."
+      ? "Host permissions and content scripts use the same exact SaaS origin patterns; official legal evidence is provided by SaaS/verified-legal server calls."
       : `Unexpected host permissions: ${unexpectedHostPermissions.join(", ") || "none"}; host permissions (${hostPermissions.join(", ")}) and matches (${contentScriptMatches.join(", ")}) differ.`,
   );
 
@@ -176,8 +176,8 @@ function verifyUrlPatterns(id, label, patterns) {
     scope: local.length > 0 && !options.production ? "local-dev" : "production-promotion",
     resolution:
       local.length > 0
-        ? "Set ARCHITECT_SAAS_ORIGIN to the production SaaS origin and rebuild before production readiness."
-        : "Keep URL patterns limited to one exact SaaS HTTP(S) origin.",
+        ? "Set ARCHITECT_SAAS_ORIGIN to production SaaS origin values without localhost and rebuild before production readiness."
+        : "Keep URL patterns limited to exact SaaS HTTP(S) origins.",
   });
 }
 

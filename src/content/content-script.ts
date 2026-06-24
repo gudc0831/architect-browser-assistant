@@ -19,6 +19,14 @@ import {
   type LocalRuntimeExtensionMessage,
   type LocalRuntimeExtensionResponse,
 } from "../runtime/native-bridge-contract";
+import {
+  SIDE_PANEL_CONTEXT_UPDATED_EVENT,
+  UPDATE_SIDE_PANEL_CONTEXT_MESSAGE,
+  normalizeSidePanelContextSnapshot,
+  normalizeSidePanelLaunchContext,
+  type SidePanelContextUpdateExtensionMessage,
+  type SidePanelOpenExtensionMessage,
+} from "../runtime/side-panel-contract";
 
 type PageLocalRuntimeRequest = {
   type: "architect:page-local-runtime-request";
@@ -41,12 +49,28 @@ type PageLocalRuntimeReadyEvent = {
   injectedAt: string;
 };
 
+type PageSidePanelRequest = {
+  type: "architect:page-side-panel-request";
+  requestId?: unknown;
+  input?: unknown;
+};
+
+type PageSidePanelResponse = {
+  type: "architect:page-side-panel-response";
+  requestId: string;
+} & LocalRuntimeExtensionResponse<unknown>;
+
 type ExtensionBackgroundMessage =
   | LocalRuntimeExtensionMessage
   | BrowserCaptureExtensionMessage
-  | OfficialLawVerificationExtensionMessage;
+  | OfficialLawVerificationExtensionMessage
+  | SidePanelOpenExtensionMessage
+  | SidePanelContextUpdateExtensionMessage;
 
 const PAGE_LOCAL_RUNTIME_READY = "architect:page-local-runtime-ready";
+const EXTENSION_CONTEXT_INVALIDATED_ERROR_CODE = "extension_context_invalidated";
+const EXTENSION_CONTEXT_INVALIDATED_MESSAGE =
+  "Chrome 확장이 새로 로드되었습니다. /daily 탭을 새로고침한 뒤 오른쪽 패널을 다시 여세요.";
 
 const assistantEvidenceKinds = new Set<AssistantEvidenceKind>([
   "central_knowledge",
@@ -67,12 +91,57 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 });
 
 window.addEventListener("message", (event) => {
-  if (event.source !== window || event.origin !== window.location.origin || !isPageLocalRuntimeRequest(event.data)) {
+  if (event.source !== window || event.origin !== window.location.origin) {
     return;
   }
 
-  void handlePageLocalRuntimeRequest(event.data);
+  if (isPageLocalRuntimeRequest(event.data)) {
+    void handlePageLocalRuntimeRequest(event.data);
+    return;
+  }
+
+  if (isPageSidePanelRequest(event.data)) {
+    void handlePageSidePanelRequest(event.data);
+  }
 });
+
+window.addEventListener(SIDE_PANEL_CONTEXT_UPDATED_EVENT, (event) => {
+  if (!(event instanceof CustomEvent)) {
+    return;
+  }
+
+  const context = normalizeSidePanelContextSnapshot(event.detail);
+  if (!context) {
+    return;
+  }
+
+  void sendBackgroundMessage({
+    type: UPDATE_SIDE_PANEL_CONTEXT_MESSAGE,
+    input: context,
+  });
+});
+
+document.addEventListener("click", (event) => {
+  const target = event.target instanceof Element
+    ? event.target.closest<HTMLElement>("[data-architect-side-panel-launch='true']")
+    : null;
+  if (!target) {
+    return;
+  }
+
+  const requestId = target.dataset.architectSidePanelRequestId || `architect-side-panel-${Date.now()}`;
+  void handlePageSidePanelRequest({
+    type: "architect:page-side-panel-request",
+    requestId,
+    input: {
+      taskId: target.dataset.architectSidePanelTaskId,
+      projectId: target.dataset.architectSidePanelProjectId,
+      title: target.dataset.architectSidePanelTitle,
+      question: target.dataset.architectSidePanelQuestion,
+      url: window.location.href,
+    },
+  });
+}, true);
 
 postPageLocalRuntimeReady();
 
@@ -169,6 +238,39 @@ async function handlePageLocalRuntimeRequest(request: PageLocalRuntimeRequest) {
   }
 }
 
+async function handlePageSidePanelRequest(request: PageSidePanelRequest) {
+  const requestId = String(request.requestId);
+  const input = normalizeSidePanelLaunchContext(request.input);
+  if (!input) {
+    postPageSidePanelResponse({
+      type: "architect:page-side-panel-response",
+      requestId,
+      ok: false,
+      error: "Invalid side panel launch payload.",
+    });
+    return;
+  }
+
+  try {
+    const response = await sendBackgroundMessage({
+      type: "architect:open-side-panel",
+      input,
+    });
+    postPageSidePanelResponse({
+      type: "architect:page-side-panel-response",
+      requestId,
+      ...response,
+    });
+  } catch (error) {
+    postPageSidePanelResponse({
+      type: "architect:page-side-panel-response",
+      requestId,
+      ok: false,
+      error: error instanceof Error ? error.message : "Side panel launch failed.",
+    });
+  }
+}
+
 async function withOfficialLawVerification(
   message: Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }>,
 ): Promise<Extract<LocalRuntimeExtensionMessage, { type: "architect:local-runtime-generate" }> | { ok: false; error: string }> {
@@ -229,6 +331,15 @@ function isPageLocalRuntimeRequest(value: unknown): value is PageLocalRuntimeReq
       message.command === "select-region" ||
       message.command === "verify-official-law")
   );
+}
+
+function isPageSidePanelRequest(value: unknown): value is PageSidePanelRequest {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const message = value as PageSidePanelRequest;
+  return message.type === "architect:page-side-panel-request" && typeof message.requestId === "string";
 }
 
 function toExtensionRuntimeMessage(request: PageLocalRuntimeRequest): LocalRuntimeExtensionMessage | null {
@@ -759,19 +870,44 @@ function sendBackgroundMessage(
   message: ExtensionBackgroundMessage,
 ): Promise<LocalRuntimeExtensionResponse<unknown | BrowserCapturePayload>> {
   return new Promise((resolve) => {
-    chrome.runtime.sendMessage(message, (response?: LocalRuntimeExtensionResponse<unknown | BrowserCapturePayload>) => {
-      const lastError = chrome.runtime.lastError;
-      if (lastError) {
-        resolve({ ok: false, error: lastError.message ?? "Chrome extension runtime failed." });
-        return;
-      }
+    try {
+      chrome.runtime.sendMessage(message, (response?: LocalRuntimeExtensionResponse<unknown | BrowserCapturePayload>) => {
+        const lastError = chrome.runtime.lastError;
+        if (lastError) {
+          resolve(toChromeRuntimeFailure(lastError.message ?? "Chrome extension runtime failed."));
+          return;
+        }
 
-      resolve(response ?? { ok: false, error: "Chrome extension runtime returned no response." });
-    });
+        resolve(response ?? { ok: false, error: "Chrome extension runtime returned no response." });
+      });
+    } catch (error) {
+      resolve(toChromeRuntimeFailure(error));
+    }
   });
 }
 
+function toChromeRuntimeFailure(error: unknown): LocalRuntimeExtensionResponse<unknown | BrowserCapturePayload> {
+  const message = error instanceof Error ? error.message : typeof error === "string" ? error : "Chrome extension runtime failed.";
+  if (isExtensionContextInvalidatedMessage(message)) {
+    return {
+      ok: false,
+      error: EXTENSION_CONTEXT_INVALIDATED_MESSAGE,
+      errorCode: EXTENSION_CONTEXT_INVALIDATED_ERROR_CODE,
+    };
+  }
+
+  return { ok: false, error: message };
+}
+
+function isExtensionContextInvalidatedMessage(message: string) {
+  return message.toLowerCase().includes("extension context invalidated");
+}
+
 function postPageLocalRuntimeResponse(response: PageLocalRuntimeResponse) {
+  window.postMessage(response, window.location.origin);
+}
+
+function postPageSidePanelResponse(response: PageSidePanelResponse) {
   window.postMessage(response, window.location.origin);
 }
 

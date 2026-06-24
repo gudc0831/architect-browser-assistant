@@ -140,6 +140,7 @@ export type LocalRuntimeExtensionResponse<T> =
   | {
       ok: false;
       error: string;
+      errorCode?: string;
     };
 
 export function makeNativeRequestId() {

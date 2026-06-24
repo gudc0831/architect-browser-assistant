@@ -88,7 +88,7 @@ Current warning policy:
 
 | Readiness check | Scope | Local action | Production action |
 | --- | --- | --- | --- |
-| `host-permissions`, `content-script-matches` | Defaults to the canonical Preview alias when `ARCHITECT_SAAS_ORIGIN` is unset | Keep this default for Preview validation. Use an explicit local origin only for local development. | Set `ARCHITECT_SAAS_ORIGIN` to the exact production SaaS origin and rebuild. |
+| `host-permissions`, `content-script-matches` | Defaults to the canonical Preview alias when `ARCHITECT_SAAS_ORIGIN` is unset | Keep this default for Preview validation. Use explicit exact origins for local development, such as localhost plus the Preview alias. | Set `ARCHITECT_SAAS_ORIGIN` to the exact production SaaS origin and rebuild. |
 | `repo-local-native-host-launcher`, `generated-native-host-manifest` | `local-dev` | Keep as warnings; these are generated per machine/extension id and must not be committed. | Generate with the Windows installer only after the Chrome extension id and install root are known. |
 | `production-signing-metadata` | `production-promotion` | No local secret or certificate is required. | Provide extension id, release owner, Web Store publisher, native-host install root, and signing subject or an explicit unsigned waiver. |
 | `web-store-upload-boundary` | `production-promotion` or `manual-release` | No upload is performed by local validation. | Upload to Chrome Web Store outside this validator after package checks pass and operator approval is recorded. |
@@ -100,7 +100,16 @@ $env:ARCHITECT_SAAS_ORIGIN="https://your-saas-origin.example"
 npm run build
 ```
 
-`ARCHITECT_SAAS_ORIGIN` controls the MV3 `host_permissions` and content-script `matches` entries at build time. If it is unset or invalid, the manifest falls back to the stable Preview alias `https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app/*` so Preview `/daily` keeps the in-page Local Codex bridge. For local development, set `ARCHITECT_SAAS_ORIGIN=http://localhost:3000` explicitly before building.
+`ARCHITECT_SAAS_ORIGIN` controls the MV3 `host_permissions` and content-script `matches` entries at build time. It accepts one or more exact origins separated by commas, semicolons, or spaces. If it is unset or every value is invalid, the manifest falls back to the stable Preview alias `https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app/*` so Preview `/daily` keeps the in-page Local Codex bridge.
+
+For a local development package that works on both localhost and the deployed Preview alias, build with both origins:
+
+```powershell
+$env:ARCHITECT_SAAS_ORIGIN="http://localhost:3000,https://architect-start2-git-codex-multi-d1c003-chois-projects-7b2948cf.vercel.app"
+npm run build
+```
+
+Reload the unpacked extension in `chrome://extensions` and refresh `/daily` after rebuilding.
 
 Production release readiness:
 
