@@ -231,8 +231,8 @@ export function App() {
     [panelState.state, question, runtimeStatus],
   );
   const canSaveReviewRecord = Boolean(taskContext && output && !recordId && !mockFallbackReview);
-  const canDeferSummary = Boolean(taskContext && recordId && summaryDraft && !mockFallbackReview && !summarySaveState && !summarySavePending);
-  const canApproveSummary = canDeferSummary && summaryAcknowledged;
+  const canSaveSummary = Boolean(taskContext && recordId && summaryDraft && !mockFallbackReview && !summarySaveState && !summarySavePending);
+  const canApproveSummary = canSaveSummary && summaryAcknowledged;
   const summaryTags = useMemo(() => parseSummaryTags(summaryTagsInput), [summaryTagsInput]);
   const taskUpdateProposal = useMemo(
     () =>
@@ -277,7 +277,7 @@ export function App() {
     }
     if (!summarySaveState) {
       return summaryAcknowledged
-        ? "검토 내용을 확인했습니다. 작업 기록을 승인하거나 보류하세요."
+        ? "검토 내용을 확인했습니다. 작업 기록 승인으로 다음 단계를 진행하세요."
         : "검토내용을 확인하고 승인해주세요.";
     }
     return "검토 흐름이 처리되었습니다.";
@@ -850,7 +850,7 @@ export function App() {
       return;
     }
     if (mockFallbackReview) {
-      setSummaryStatus("임시 근거 결과는 승인/보류 저장할 수 없습니다. 확장 연결을 복구한 뒤 다시 실행하세요.");
+      setSummaryStatus("임시 근거 결과는 저장할 수 없습니다. 확장 연결을 복구한 뒤 다시 실행하세요.");
       return;
     }
     if (status === "approved" && !summaryAcknowledged) {
@@ -858,7 +858,7 @@ export function App() {
       return;
     }
 
-    setSummaryStatus(status === "approved" ? "작업 기록을 승인하는 중입니다." : "보류 저장하는 중입니다.");
+    setSummaryStatus(status === "approved" ? "작업 기록을 승인하는 중입니다." : "검토 기록 상태를 저장하는 중입니다.");
     setSummarySavePending(true);
     try {
       const saved = await saveWorkSummaryDraft({
@@ -870,7 +870,7 @@ export function App() {
       });
       const savedStatus = saved.status === "approved" || saved.status === "deferred" ? saved.status : status;
       setSummarySaveState(savedStatus);
-      setSummaryStatus(savedStatus === "approved" ? "작업 기록을 승인했습니다." : "보류 저장했습니다.");
+      setSummaryStatus(savedStatus === "approved" ? "작업 기록을 승인했습니다." : "검토 기록 상태를 저장했습니다.");
     } catch (error) {
       setSummaryStatus(formatSaasAccessError(error));
     } finally {
@@ -1586,9 +1586,6 @@ export function App() {
               <div className="button-row">
                 <button type="button" className="button-primary" onClick={() => handleSaveSummary("approved")} disabled={!canApproveSummary}>
                   작업 기록 승인
-                </button>
-                <button type="button" className="button-secondary" onClick={() => handleSaveSummary("deferred")} disabled={!canDeferSummary}>
-                  보류 저장
                 </button>
               </div>
               {taskUpdateProposal || followUpTaskProposal ? (

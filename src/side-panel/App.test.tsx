@@ -404,7 +404,7 @@ describe("App", () => {
     expect(rootElement?.textContent).toContain("신뢰도 76%");
     expect(rootElement?.textContent).toContain("Central knowledge matched, but regulation evidence is still missing.");
     expect(getButton("작업 기록 승인").disabled).toBe(true);
-    expect(getButton("보류 저장").disabled).toBe(false);
+    expect(queryButton("보류 저장")).toBeNull();
 
     await act(async () => {
       getSummaryApprovalCheckbox().click();
