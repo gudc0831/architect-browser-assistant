@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { PassThrough } from "node:stream";
@@ -335,28 +335,41 @@ describe("codex native host", () => {
   });
 
   it("returns a Windows Codex style model catalog with saved custom values", async () => {
-    const response = await handleRequest({
-      type: "modelCatalog",
-      requestId: "models",
-      savedModel: "gpt-5.6",
-    });
+    const previousCliPath = process.env.ARCHITECT_CODEX_CLI_PATH;
+    const fakeCodex = await writeFakeCodexCli();
+    process.env.ARCHITECT_CODEX_CLI_PATH = fakeCodex.cliPath;
 
-    assert.equal(response.ok, true);
-    assert.equal(response.modelCatalog.bridgeSchemaVersion, 3);
-    assert.equal(response.modelCatalog.source, "local-codex-bridge");
-    assert.equal(typeof response.modelCatalog.refreshedAt, "string");
-    assert.deepEqual(response.modelCatalog.models.slice(0, 4), [
-      { value: "gpt-5.5", label: "GPT-5.5", source: "known-catalog", available: true },
-      { value: "gpt-5.4", label: "GPT-5.4", source: "known-catalog", available: true },
-      { value: "gpt-5.4-mini", label: "GPT-5.4-Mini", source: "known-catalog", available: true },
-      { value: "gpt-5.3-codex-spark", label: "GPT-5.3-Codex-Spark", source: "known-catalog", available: true },
-    ]);
-    assert.deepEqual(response.modelCatalog.models.at(-1), {
-      value: "gpt-5.6",
-      label: "gpt-5.6",
-      source: "saved-custom",
-      available: false,
-    });
+    try {
+      const response = await handleRequest({
+        type: "modelCatalog",
+        requestId: "models",
+        savedModel: "gpt-5.6",
+      });
+
+      assert.equal(response.ok, true);
+      assert.equal(response.modelCatalog.bridgeSchemaVersion, 3);
+      assert.equal(response.modelCatalog.source, "local-codex-bridge");
+      assert.equal(typeof response.modelCatalog.refreshedAt, "string");
+      assert.deepEqual(response.modelCatalog.models.slice(0, 4), [
+        { value: "gpt-5.5", label: "GPT-5.5", source: "known-catalog", available: true },
+        { value: "gpt-5.4", label: "GPT-5.4", source: "known-catalog", available: true },
+        { value: "gpt-5.4-mini", label: "GPT-5.4-Mini", source: "known-catalog", available: true },
+        { value: "gpt-5.3-codex-spark", label: "GPT-5.3-Codex-Spark", source: "known-catalog", available: true },
+      ]);
+      assert.deepEqual(response.modelCatalog.models.at(-1), {
+        value: "gpt-5.6",
+        label: "gpt-5.6",
+        source: "saved-custom",
+        available: false,
+      });
+    } finally {
+      if (previousCliPath === undefined) {
+        delete process.env.ARCHITECT_CODEX_CLI_PATH;
+      } else {
+        process.env.ARCHITECT_CODEX_CLI_PATH = previousCliPath;
+      }
+      await rm(fakeCodex.directory, { recursive: true, force: true });
+    }
   });
 
   it("maps legacy saved model aliases to the Windows Codex default in model catalogs", async () => {
@@ -571,3 +584,44 @@ describe("codex native host", () => {
     assert.deepEqual(message, { type: "status", requestId: "framed-status" });
   });
 });
+
+async function writeFakeCodexCli() {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "architect-fake-codex-"));
+  const scriptPath = path.join(directory, "fake-codex.mjs");
+  await writeFile(
+    scriptPath,
+    [
+      "const args = process.argv.slice(2);",
+      "if (args[0] === '--version') {",
+      "  console.log('codex 1.2.3');",
+      "  process.exit(0);",
+      "}",
+      "if (args[0] === 'debug' && args[1] === 'models') {",
+      `  console.log(${JSON.stringify(
+        JSON.stringify({
+          models: [
+            { slug: "gpt-5.5", display_name: "GPT-5.5", visibility: "list" },
+            { slug: "gpt-5.4", display_name: "GPT-5.4", visibility: "list" },
+            { slug: "gpt-5.4-mini", display_name: "GPT-5.4-Mini", visibility: "list" },
+            { slug: "gpt-5.3-codex-spark", display_name: "GPT-5.3-Codex-Spark", visibility: "list" },
+          ],
+        }),
+      )});`,
+      "  process.exit(0);",
+      "}",
+      "process.exit(1);",
+      "",
+    ].join("\n"),
+  );
+
+  if (process.platform === "win32") {
+    const cliPath = path.join(directory, "codex.cmd");
+    await writeFile(cliPath, `@echo off\r\n"${process.execPath}" "${scriptPath}" %*\r\n`);
+    return { cliPath, directory };
+  }
+
+  const cliPath = path.join(directory, "codex");
+  await writeFile(cliPath, `#!/bin/sh\n"${process.execPath}" "${scriptPath}" "$@"\n`);
+  await chmod(cliPath, 0o755);
+  return { cliPath, directory };
+}
