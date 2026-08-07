@@ -173,8 +173,12 @@ export async function verifyOfficialLawEvidence(
     };
   }
 
-  const verifiedSources = buildVerifiedSourcesFromEvidence(input.evidence, locators, checkedAt);
-  if (verifiedSources.length > 0) {
+  const verifiedEvidence = input.evidence.filter(isVerifiedOfficialEvidence);
+  const verifiedSources = buildVerifiedSourcesFromEvidence(verifiedEvidence, locators, checkedAt);
+  const allLocatorsVerified = locators.every((locator) =>
+    verifiedEvidence.some((item) => locatorMatchesEvidence(locator, item)),
+  );
+  if (verifiedSources.length > 0 && allLocatorsVerified) {
     return {
       status: "verified",
       checkedAt,
@@ -249,15 +253,13 @@ function buildVerifiedSourcesFromEvidence(
   locators: LawArticleLocator[],
   checkedAt: string,
 ) {
-  const verifiedEvidence = evidence.filter(isVerifiedOfficialEvidence);
-  const matchedEvidence = verifiedEvidence.filter((item) =>
+  const matchedEvidence = evidence.filter((item) =>
     locators.some((locator) => locatorMatchesEvidence(locator, item)),
   );
-  const candidates = matchedEvidence.length > 0 ? matchedEvidence : verifiedEvidence;
   const seen = new Set<string>();
   const sources: OfficialLawApiSource[] = [];
 
-  for (const item of candidates) {
+  for (const item of matchedEvidence) {
     const article = extractArticleLocator([item.title, item.excerpt, item.sourceUrl].filter(Boolean).join("\n"));
     const lawName = item.lawName || extractLawNames([item.title, item.excerpt].join("\n"))[0] || item.title;
     const articleNumber = item.articleNumber || article?.articleNumber;

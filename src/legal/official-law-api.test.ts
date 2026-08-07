@@ -174,6 +174,45 @@ describe("official law API verification", () => {
     expect(report.retry[0]).toContain("verificationStatus=verified");
   });
 
+  it("fails closed when any requested law locator lacks matching verified evidence", async () => {
+    const report = await verifyOfficialLawEvidence({
+      question: "건축법 제49조 기준으로 검토해줘",
+      evidence: [
+        {
+          id: "building-unverified",
+          kind: "regulation",
+          priority: 2,
+          title: "건축법 제49조",
+          excerpt: "피난 및 방화 기준 seed",
+        },
+        {
+          id: "parking-verified",
+          kind: "regulation",
+          priority: 2,
+          title: "주차장법 제6조",
+          excerpt: "주차장 설치 기준",
+          lawName: "주차장법",
+          articleLabel: "제6조",
+          articleNumber: "000600",
+          officialSourceName: "국가법령정보센터",
+          checkedAt: "2026-07-10T00:00:00.000Z",
+          apiSourceUrl: "https://www.law.go.kr/DRF/lawService.do?target=law&type=JSON&ID=000000",
+          verificationStatus: "verified",
+        },
+      ],
+      now: () => new Date("2026-07-10T00:00:00.000Z"),
+    });
+
+    expect(report.status).toBe("failed");
+    expect(report.locators).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ lawName: "건축법", articleLabel: "제49조" }),
+        expect.objectContaining({ lawName: "주차장법", articleLabel: "제6조" }),
+      ]),
+    );
+    expect(report.failures.length).toBeGreaterThan(0);
+  });
+
   it("returns a clear failure when a legal task has no law locator", async () => {
     const report = await verifyOfficialLawEvidence({
       question: "법규 기준으로 적합한지 확인해줘",
